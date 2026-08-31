@@ -2204,7 +2204,7 @@ input,textarea,select{font-size:14px}
 .nvf-arttitle{font-size:20px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.2px;margin:9px 0;cursor:pointer;transition:color .15s}
 .nvf-arttitle:hover{color:var(--teal)}
 .nvf-artlead{font-size:14px;color:#5b6672;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.nvf-artread{display:inline-flex;align-items:center;gap:8px;margin-top:14px;color:var(--teal);font-size:13px;font-weight:700;cursor:pointer}
+.nvf-artread{display:inline-flex;align-items:center;gap:6px;margin-top:14px;color:#0c7d7d;font-size:14px;font-weight:700;cursor:pointer}
 .nvf-artread i{font-size:11px;transition:transform .15s}
 .nvf-artread:hover i{transform:translateX(3px)}
 /* Leitor de artigo */
@@ -2760,19 +2760,19 @@ body.demo-empty .demo-empty-state{display:flex}
 /* ============ Feed (estilo LinkedIn) ============ */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
 .feed{display:flex;flex-direction:column;gap:8px}
-.post{padding:16px}
-.post>.post-img:last-child,.post>.banner:last-child{margin-bottom:-16px;border-radius:0 0 var(--radius) var(--radius);overflow:hidden}
+.post{padding:16px 16px 10px}
+.post>.post-img:last-child,.post>.banner:last-child{margin-bottom:-10px;border-radius:0 0 var(--radius) var(--radius);overflow:hidden}
 .post .post-stats:last-child{padding-bottom:0}
 .post-head{display:flex;gap:11px;align-items:flex-start}
 .post-id{flex:1;min-width:0}
-.post-name{font-weight:600;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:6px}
+.post-name{font-weight:700;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:6px}
 .verified{color:var(--teal);font-size:14px}
 .post-sub{font-size:13px;color:var(--muted);margin-top:1px}
 .post-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px}
 .post-meta i{font-size:11px}
 .edited-tag{font-style:italic;color:var(--muted)}
 .post-more{
-  width:34px;height:34px;border-radius:50%;color:#8a94a0;
+  width:34px;height:34px;border-radius:50%;color:#5b6672;
   display:flex;align-items:center;justify-content:center;transition:background .15s;
 }
 .post-more:hover{background:#f3f5f8}
@@ -2800,7 +2800,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .banner .big-emoji{font-size:46px;line-height:1}
 /* o padding de baixo separa a linha de reações/comentários da barra de ações
    logo abaixo, que antes ficava colada nela */
-.post-stats{display:flex;align-items:center;gap:7px;padding:10px 2px;color:var(--muted);font-size:14px}
+.post-stats{display:flex;align-items:center;gap:4px;padding:10px 2px;color:var(--muted);font-size:14px}
 .rx{display:flex}
 .rx span{
   width:24px;height:24px;border-radius:50%;font-size:11px;color:#fff;
@@ -2808,10 +2808,10 @@ body.demo-empty .demo-empty-state{display:flex}
   border:2px solid #fff;margin-left:-7px;
 }
 .rx span:first-child{margin-left:0}
-.post-stats .right{margin-left:auto}
-.post-stats .rx-count{margin-left:5px;background:none;color:var(--muted);font-size:14px;font-weight:600;min-width:0;height:auto;padding:0;border-radius:0;display:inline}
+.post-stats .right{margin-left:auto;font-weight:600}
+.post-stats .rx-count{margin-left:0;background:none;color:var(--muted);font-size:14px;font-weight:600;min-width:0;height:auto;padding:0;border-radius:0;display:inline}
 .post-stats .right:hover{color:var(--teal);text-decoration:underline;cursor:pointer}
-.post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:16px 0 0}
+.post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:10px 0 0}
 .p-act{
   flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
   padding:10px 6px;margin:0 2px;border-radius:8px;
@@ -3046,16 +3046,15 @@ body.demo-empty .demo-empty-state{display:flex}
   flex-shrink:0;margin-top:7px;box-shadow:0 0 0 3px rgba(0,172,172,.15);
 }
 .com-more{
-  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
   padding:14px;border-top:1px solid var(--line);
-  font-size:13px;font-weight:700;color:var(--teal);transition:background .15s;
+  font-size:13px;font-weight:700;color:#0c7d7d;
 }
-.com-more:hover{background:#f3f6f9}
 .com-more i{font-size:11px;transition:transform .15s}
 .com-more:hover i{transform:translateX(3px)}
 
 /* ============ Comentários (estilo LinkedIn) ============ */
-.post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:16px 0 0}
+.post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:10px 0 0}
 .comments{display:none;flex-direction:column;gap:14px;padding:8px 4px 16px;border-top:1px solid var(--line);margin-top:2px}
 .comments.open{display:flex}
 .comment-composer{display:flex;gap:10px;align-items:center;padding-top:6px}
@@ -3919,9 +3918,9 @@ body.demo-empty .demo-empty-state{display:flex}
 .reel-title{font-size:13px}
 .qp-start,.nvf-start{font-size:15px}
 .nvf-qbtn,.qp-tool{font-size:14px}
-.post-name{font-size:15px}
-.post-sub,.post-meta{font-size:13px}
-.post-text{font-size:15px}
+.post-name{font-size:16px}
+.post-sub,.post-meta{font-size:12px}
+.post-text{font-size:14px}
 .p-act{font-size:16px}
 .post-stats{font-size:14px}
 
@@ -4513,7 +4512,7 @@ body.demo-empty .demo-empty-state{display:flex}
             <div class="nvf-artlead">Informações estratégicas centralizadas, economia em licenciamento de plataformas e tomada de decisão orientada por dados para toda a rede de franqueados.</div>
             <div class="nvf-artread" id="homeArtOpen3">Ler matéria completa <i class="fa-solid fa-arrow-right"></i></div>
           </div>
-          <div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span><span class="rx-count">342</span><span class="right">57 comentários</span></div>
+          <div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span><span class="rx-count">342</span><span class="right">Ver 57 comentários</span></div>
           <div class="post-actions"><button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button><button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button></div>
         </article>
 
@@ -4538,7 +4537,7 @@ body.demo-empty .demo-empty-state{display:flex}
           <div class="post-stats">
             <span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span>
             <span class="rx-count">128</span>
-            <span class="right">24 comentários</span>
+            <span class="right">Ver 24 comentários</span>
           </div>
           <div class="post-actions">
             <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
@@ -4563,7 +4562,7 @@ Obrigada a todos que abraçaram as novas rotinas de onboarding e acompanhamento.
           <div class="post-stats">
             <span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span></span>
             <span class="rx-count">96</span>
-            <span class="right">18 comentários</span>
+            <span class="right">Ver 18 comentários</span>
           </div>
           <div class="post-actions">
             <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
@@ -4588,7 +4587,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           <div class="post-stats">
             <span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span>
             <span class="rx-count">154</span>
-            <span class="right">31 comentários</span>
+            <span class="right">Ver 31 comentários</span>
           </div>
           <div class="post-actions">
             <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
@@ -4617,7 +4616,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           <div class="post-stats">
             <span class="rx"><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span><span class="rxs" data-rx="like"></span></span>
             <span class="rx-count">210</span>
-            <span class="right">45 comentários</span>
+            <span class="right">Ver 45 comentários</span>
           </div>
           <div class="post-actions">
             <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
@@ -4735,7 +4734,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           </a>
         </div>
 
-        <button class="com-more demo-filled">Ver todos os comunicados <i class="fa-solid fa-chevron-right"></i></button>
+        <button class="com-more demo-filled">Ver todos os comunicados <i class="fa-solid fa-arrow-right"></i></button>
       </div>
     </aside>
 
@@ -7663,7 +7662,7 @@ function addHomePost(n, append){
       '<div class="post-meta">'+metaTxt+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div>'+
       '<button class="post-more"><i class="fa-solid fa-ellipsis"></i></button></div>'+
     title + (bodyTxt?'<p class="post-text">'+bodyTxt+'</p>':'') + media +
-    '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span>'+(rcount>=90?'<span class="rxs" data-rx="love"></span>':'')+(rcount>=120?'<span class="rxs" data-rx="celebrate"></span>':'')+'</span><span class="rx-count">'+rcount+'</span><span class="right">'+ccount+' comentários</span></div>'+
+    '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span>'+(rcount>=90?'<span class="rxs" data-rx="love"></span>':'')+(rcount>=120?'<span class="rxs" data-rx="celebrate"></span>':'')+'</span><span class="rx-count">'+rcount+'</span><span class="right">'+(ccount?'Ver ':'')+ccount+' comentários</span></div>'+
     '<div class="post-actions"><button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button><button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button></div>';
   if (append) feed.appendChild(art); else feed.insertBefore(art, feed.firstChild);
   initReactions(art.querySelector('.p-act.like'));
@@ -9750,7 +9749,7 @@ function renderNewsFeed(){
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"><span class="art-badge">'+n.article.kicker+'</span></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler matéria completa <i class="fa-solid fa-arrow-right"></i></div></div>'+
-        '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+cc+' comentários</span></div>'+
+        '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
         '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
         '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
       '</article>';
@@ -9777,7 +9776,7 @@ function renderNewsFeed(){
       pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+n.date+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
       (bodyTxt?'<p class="post-text nvf-postlink" data-act="open">'+bodyTxt+'</p>':'') + colored + banner + image + event + poll +
       (n.pendAppr ? '' :
-      '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+cc+' comentários</span></div>'+
+      '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
       '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
       '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div><div class="nvf-cm-list">'+cmList+'</div></div>') +
     '</article>';
