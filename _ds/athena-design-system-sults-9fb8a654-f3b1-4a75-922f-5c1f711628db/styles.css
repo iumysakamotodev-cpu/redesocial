@@ -1,0 +1,5 @@
+/* SULTS Design System — global CSS entry point. Imports only. */
+@import './tokens/fonts.css';
+@import './tokens/fig-tokens.css';
+@import './tokens/semantic.css';
+@import './tokens/typography.css';

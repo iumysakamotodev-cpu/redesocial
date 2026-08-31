@@ -1,0 +1,13 @@
+/* Typefaces used by the SULTS Figma library.
+   Inter — the workhorse UI face (660 regular / 581 semibold / 191 bold uses).
+   Archivo — used on documentation labels and micro-copy (46 semibold / 38 regular uses).
+   Open Sans — 4 legacy uses in the file; kept as a fallback family only.
+   "SULTS Sans" appears once in the source and no binary ships with the .fig — see readme.md. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@400;600&family=Open+Sans:wght@400;700&display=swap');
+
+:root{
+  --font-family-core:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --font-family-doc:'Archivo','Inter',-apple-system,sans-serif;
+  --font-family-legacy:'Open Sans','Inter',-apple-system,sans-serif;
+  /* No monospace face is defined in the source library. */
+}

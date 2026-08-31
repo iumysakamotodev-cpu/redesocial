@@ -1,0 +1,52 @@
+/* Pixel-resolved aliases over tokens/fig-tokens.css.
+   Figma float variables are unitless; these wrap the ones used as lengths so
+   components can write var(--radius-s) instead of calc(var(--shape-8) * 1px). */
+:root{
+  --radius-xxxs:calc(var(--radii-component-xxxs) * 1px);
+  --radius-xxs:calc(var(--radii-component-xxs) * 1px);
+  --radius-xs:calc(var(--radii-component-xs) * 1px);
+  --radius-s:calc(var(--radii-component-s) * 1px);
+  --radius-m:calc(var(--radii-component-m) * 1px);
+  --radius-l:calc(var(--radii-component-l) * 1px);
+  --radius-xl:calc(var(--radii-component-xl) * 1px);
+  --radius-xxl:calc(var(--radii-component-xxl) * 1px);
+  --radius-xxxl:calc(var(--radii-component-xxxl) * 1px);
+  --radius-pill:32px;
+  --radius-surface:calc(var(--radii-surface) * 1px);
+
+  --space-3xs:calc(var(--padding-xxxs) * 1px);
+  --space-xxs:calc(var(--padding-xxs) * 1px);
+  --space-xs:calc(var(--padding-xs) * 1px);
+  --space-s:calc(var(--padding-s) * 1px);
+  --space-m:calc(var(--padding-m) * 1px);
+  --space-l:calc(var(--padding-l) * 1px);
+  --space-xl:calc(var(--padding-xl) * 1px);
+  --space-xxl:calc(var(--padding-xxl) * 1px);
+  --space-xxxl:calc(var(--padding-xxxl) * 1px);
+
+  /* Control heights, named exactly as the Figma size axis labels. */
+  --control-x-small:16px;
+  --control-small:20px;
+  --control-medium:24px;
+  --control-large:36px;
+  --control-2x-large:44px;
+
+  /* Interaction primitives lifted verbatim from the component variants. */
+  --overlay-hover:rgba(28,28,30,0.08);
+  --ring-brand:0 0 0 2px rgba(0,172,172,0.24);
+  --ring-cyber:0 0 0 2px rgba(0,136,255,0.16);
+  --ring-error:0 0 0 2px rgba(255,56,60,0.24);
+  --ring-neutral:0 0 0 2px rgba(8,11,18,0.08);
+  --hairline:inset 0 0 0 1px var(--border-input-default);
+  --shadow-card:0 4px 16px rgba(0,0,0,0.1);
+  --motion-fast:120ms cubic-bezier(0.4,0,0.2,1); /* @kind other */
+  --motion-base:200ms cubic-bezier(0.4,0,0.2,1); /* @kind other */
+
+  /* Text link colours — the library has no link component, so these follow
+     the cyber-blue action ramp used by primary buttons. */
+  --link-color:var(--color-blue-light-500);
+  --link-color-hover:var(--color-blue-light-700);
+}
+
+a{color:var(--link-color);text-decoration:underline;text-underline-offset:2px}
+a:hover{color:var(--link-color-hover)}

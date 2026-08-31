@@ -1,0 +1,5 @@
+# Estado local do wrangler (guarda dados da conta Cloudflare)
+.wrangler/
+
+# Dependências, caso alguém rode npm aqui
+node_modules/

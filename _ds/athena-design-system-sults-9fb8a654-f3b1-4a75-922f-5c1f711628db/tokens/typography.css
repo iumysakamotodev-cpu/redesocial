@@ -1,0 +1,39 @@
+/* Type ramp.
+   The source .fig defines NO Figma text styles (0 TEXT/EFFECT styles); the ramp
+   below is transcribed from the "Devices" Figma Variable collection
+   (font/size/display|heading|label|paragraph/*) plus the weights and
+   line-heights observed on the real component text layers. */
+.sults-display-l,.sults-display-m,.sults-display-s,.sults-display-xs,
+.sults-h1,.sults-h2,.sults-h3,.sults-h4,.sults-h5,.sults-h6,
+.sults-label-l,.sults-label-m,.sults-label-s,.sults-label-xs,.sults-label-xxs,
+.sults-paragraph-l,.sults-paragraph-m,.sults-paragraph-s,.sults-paragraph-xs,.sults-paragraph-xxs{
+  font-family:var(--font-family-core);color:var(--content-primary);margin:0
+}
+
+.sults-display-l{font-size:calc(var(--font-size-display-l) * 1px);line-height:calc(var(--font-line-height-104) * 1px);font-weight:800;letter-spacing:-1px}
+.sults-display-m{font-size:calc(var(--font-size-display-m) * 1px);line-height:calc(var(--font-line-height-64) * 1px);font-weight:800;letter-spacing:-1px}
+.sults-display-s{font-size:calc(var(--font-size-display-s) * 1px);line-height:calc(var(--font-line-height-52) * 1px);font-weight:700;letter-spacing:-1px}
+.sults-display-xs{font-size:calc(var(--font-size-display-xs) * 1px);line-height:calc(var(--font-line-height-44) * 1px);font-weight:700;letter-spacing:-1px}
+
+.sults-h1{font-size:calc(var(--font-size-heading-h1) * 1px);line-height:calc(var(--font-line-height-52) * 1px);font-weight:700}
+.sults-h2{font-size:calc(var(--font-size-heading-h2) * 1px);line-height:calc(var(--font-line-height-44) * 1px);font-weight:700}
+.sults-h3{font-size:calc(var(--font-size-heading-h3) * 1px);line-height:calc(var(--font-line-height-40) * 1px);font-weight:700}
+.sults-h4{font-size:calc(var(--font-size-heading-h4) * 1px);line-height:calc(var(--font-line-height-36) * 1px);font-weight:600}
+.sults-h5{font-size:calc(var(--font-size-heading-h5) * 1px);line-height:calc(var(--font-line-height-32) * 1px);font-weight:600}
+.sults-h6{font-size:calc(var(--font-size-heading-h6) * 1px);line-height:calc(var(--font-line-height-28) * 1px);font-weight:600}
+
+/* Labels are the interface voice: semibold, +0.3px tracking on control labels. */
+.sults-label-l{font-size:calc(var(--font-size-label-l) * 1px);line-height:calc(var(--font-line-height-24) * 1px);font-weight:600}
+.sults-label-m{font-size:calc(var(--font-size-label-m) * 1px);line-height:calc(var(--font-line-height-24) * 1px);font-weight:600}
+.sults-label-s{font-size:calc(var(--font-size-label-s) * 1px);line-height:calc(var(--font-line-height-20) * 1px);font-weight:600;letter-spacing:0.3px}
+.sults-label-xs{font-size:calc(var(--font-size-label-xs) * 1px);line-height:calc(var(--font-line-height-16) * 1px);font-weight:600;letter-spacing:0.3px}
+.sults-label-xxs{font-size:calc(var(--font-size-label-xxs) * 1px);line-height:calc(var(--font-line-height-14) * 1px);font-weight:600;letter-spacing:0.3px}
+
+.sults-paragraph-l{font-size:calc(var(--font-size-paragraph-l) * 1px);line-height:calc(var(--font-line-height-28) * 1px);font-weight:400}
+.sults-paragraph-m{font-size:calc(var(--font-size-paragraph-m) * 1px);line-height:calc(var(--font-line-height-24) * 1px);font-weight:400}
+.sults-paragraph-s{font-size:calc(var(--font-size-paragraph-s) * 1px);line-height:calc(var(--font-line-height-20) * 1px);font-weight:400}
+.sults-paragraph-xs{font-size:calc(var(--font-size-paragraph-xs) * 1px);line-height:calc(var(--font-line-height-16) * 1px);font-weight:400}
+.sults-paragraph-xxs{font-size:calc(var(--font-size-paragraph-xxs) * 1px);line-height:calc(var(--font-line-height-14) * 1px);font-weight:400}
+
+/* Documentation micro-labels use Archivo. */
+.sults-doc-label{font-family:var(--font-family-doc);font-size:10px;line-height:14px;font-weight:600;letter-spacing:0.3px;color:var(--content-secondary)}

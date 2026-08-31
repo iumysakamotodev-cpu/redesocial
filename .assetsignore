@@ -1,0 +1,6 @@
+# Arquivos de trabalho local: não vão para o site publicado.
+.claude
+.assetsignore
+wrangler.jsonc
+.thumbnail
+tmp

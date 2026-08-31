@@ -1,0 +1,12 @@
+{
+  // Deploy da home do SULTS Social como site estático no Worker já existente.
+  // Os valores de assets espelham o que está no painel (Advanced settings):
+  // Assets directory "/", HTML handling "auto-trailing-slash", Not found "none".
+  "name": "still-king-eb4b",
+  "compatibility_date": "2026-08-27",
+  "assets": {
+    "directory": "./",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}
