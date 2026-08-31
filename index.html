@@ -2634,9 +2634,9 @@ input,textarea,select{font-size:14px}
 }
 .reel-meta{font-size:10px;font-weight:600;opacity:.9;text-shadow:0 1px 5px rgba(0,0,0,.5)}
 .st-arrow{
-  position:absolute;top:88px;width:34px;height:34px;border-radius:50%;
+  position:absolute;top:87px;width:40px;height:40px;border-radius:50%;
   background:#fff;box-shadow:var(--shadow);color:#44505c;z-index:2;
-  display:flex;align-items:center;justify-content:center;font-size:13px;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
   transition:transform .15s;
 }
 .st-arrow:hover{transform:scale(1.08)}
@@ -2800,7 +2800,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .banner .big-emoji{font-size:46px;line-height:1}
 /* o padding de baixo separa a linha de reações/comentários da barra de ações
    logo abaixo, que antes ficava colada nela */
-.post-stats{display:flex;align-items:center;gap:7px;padding:11px 2px 10px;color:var(--muted);font-size:14px}
+.post-stats{display:flex;align-items:center;gap:7px;padding:10px 2px;color:var(--muted);font-size:14px}
 .rx{display:flex}
 .rx span{
   width:24px;height:24px;border-radius:50%;font-size:11px;color:#fff;
@@ -2811,14 +2811,14 @@ body.demo-empty .demo-empty-state{display:flex}
 .post-stats .right{margin-left:auto}
 .post-stats .rx-count{margin-left:5px;background:none;color:var(--muted);font-size:14px;font-weight:600;min-width:0;height:auto;padding:0;border-radius:0;display:inline}
 .post-stats .right:hover{color:var(--teal);text-decoration:underline;cursor:pointer}
-.post-actions{display:flex;border-top:1px solid var(--line);margin-top:2px;padding:4px 0}
+.post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:16px 0 0}
 .p-act{
   flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:11px 6px;margin:0 2px;border-radius:8px;
-  font-size:15px;font-weight:600;color:#5b6672;transition:background .15s,color .15s;
+  padding:10px 6px;margin:0 2px;border-radius:8px;
+  font-size:16px;font-weight:700;color:#5b6672;transition:background .15s,color .15s;
 }
 .p-act:hover{background:#f3f5f8}
-.p-act i{font-size:15px}
+.p-act i{font-size:16px}
 .p-act.liked{color:var(--teal)}
 
 /* Reações estilo LinkedIn */
@@ -2842,13 +2842,13 @@ body.demo-empty .demo-empty-state{display:flex}
 .rx .rxs[data-rx="sensational"],.nv-rxc .rxs[data-rx="sensational"]{background-image:url(uploads/reactions/Sensational.svg)}
 .rb-emoji{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
 .rb-emoji .rx-svg{width:100%;height:100%}
-.rx-emoji .rx-svg{width:18px;height:18px}
+.rx-emoji .rx-svg{width:20px;height:20px}
 .rxv-tab .em,.rxv-trx .em{display:inline-flex;align-items:center}
 .rxv-tab .em .rx-svg,.rxv-trx .em .rx-svg{width:18px;height:18px}
 .p-act .rx-emoji{display:inline-flex;align-items:center}
 .react-bar{
-  position:absolute;bottom:calc(100% + 6px);left:0;
-  display:flex;align-items:flex-end;gap:6px;padding:8px 12px;background:#fff;border-radius:999px;
+  position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
+  display:flex;align-items:flex-end;gap:8px;padding:10px 14px;background:#fff;border-radius:999px;
   box-shadow:0 18px 44px -8px rgba(16,32,48,.38),0 6px 16px rgba(16,32,48,.18);border:1px solid var(--line);
   opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .2s ease,visibility .2s;z-index:30;
@@ -2883,13 +2883,14 @@ body.demo-empty .demo-empty-state{display:flex}
   100%{transform:scale(.45) translateY(8px);opacity:0}
 }
 .react-btn .rb-label{
-  position:absolute;bottom:calc(100% + 26px);left:50%;transform:translateX(-50%);z-index:5;
+  position:absolute;bottom:calc(100% + 34px);left:50%;transform:translateX(-50%);z-index:5;
   display:inline-flex;align-items:center;height:20px;padding:0 8px 1px;
-  background:#1c2b3a;color:#fff;font-size:12px;font-weight:600;border-radius:999px;
+  background:#1c2b3a;color:#fff;font-size:14px;font-weight:600;border-radius:999px;
   white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;
 }
 .react-btn:hover .rb-label{opacity:1;visibility:visible}
-.p-act .rx-emoji{font-size:16px;line-height:1}
+.p-act .rx-emoji{font-size:16px;line-height:1;animation:rxPop .34s cubic-bezier(.34,1.56,.64,1)}
+@keyframes rxPop{0%{transform:scale(.2)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
 .post-stats .rx,.post-stats .rx-count{cursor:pointer}
 .post-stats .rx:hover ~ .rx-count,.post-stats .rx-count:hover{color:var(--teal);text-decoration:underline}
 
@@ -3054,7 +3055,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .com-more:hover i{transform:translateX(3px)}
 
 /* ============ Comentários (estilo LinkedIn) ============ */
-.post-actions{display:flex;border-top:1px solid var(--line);margin-top:2px;padding:4px 0}
+.post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:16px 0 0}
 .comments{display:none;flex-direction:column;gap:14px;padding:8px 4px 16px;border-top:1px solid var(--line);margin-top:2px}
 .comments.open{display:flex}
 .comment-composer{display:flex;gap:10px;align-items:center;padding-top:6px}
@@ -3921,7 +3922,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .post-name{font-size:15px}
 .post-sub,.post-meta{font-size:13px}
 .post-text{font-size:15px}
-.p-act{font-size:14px}
+.p-act{font-size:16px}
 .post-stats{font-size:14px}
 
 /* a logo do header é só do mobile; no desktop quem mostra a marca é o rail */
@@ -4070,6 +4071,9 @@ body.demo-empty .demo-empty-state{display:flex}
   }
   .nmod-top #nmtApps i{font-size:22px;line-height:1;display:block}
   .nmod-topav{display:block;width:34px;height:34px;font-size:0;flex:none;border:2px solid rgba(255,255,255,.35)}
+
+  /* a barra de reacoes nao cabe centralizada numa tela estreita */
+  .react-bar{left:0;transform:none}
 
   /* setas do carrossel: no celular se arrasta, nao se clica */
   .st-arrow,.nvf-stories .st-arrow{display:none}
