@@ -826,38 +826,52 @@ input,textarea,select{font-size:14px}
   content:"";position:absolute;top:8px;bottom:8px;width:3px;border-radius:3px;background:#48484A;z-index:3}
 .apps-panel.editing .tile.drop-before::before{left:-6px}
 .apps-panel.editing .tile.drop-after::after{right:-6px}
-/* O balanco do iOS sao dois movimentos pequenos correndo juntos: o icone
-   gira pouco e o conjunto desliza menos ainda, em periodos quase iguais.
-   Como os periodos nao batem, o par nunca volta ao mesmo ponto e o
-   movimento soa organico. O anterior girava 1,4deg em 0,42s: aberto e
-   lento demais, mais aceno do que balanco. */
-@keyframes jiggle-gira{
-  0%,100%{transform:rotate(-.65deg)}
-  50%    {transform:rotate(.65deg)}
+/* O balanco do iOS nao e um giro simetrico em torno do centro. Sao tres
+   coisas juntas:
+
+   1. o pivo fica perto do topo do icone, nao no meio — girar em torno de
+      um ponto deslocado e o que faz a base varrer de lado e o movimento
+      ler como balanco em vez de rotacao;
+   2. a amplitude e assimetrica (-1deg de um lado, 1.5deg do outro), e o
+      icone acelera saindo (ease-in) e freia voltando (ease-out);
+   3. icones vizinhos usam variantes espelhadas, com duracao e atraso
+      proprios, para que a grade nunca se mova em bloco.
+
+   A versao anterior girava simetrico em torno do centro, num periodo so:
+   por isso soava mecanica por mais que o periodo estivesse certo. */
+@keyframes jiggle-a{
+  0%  {transform:rotate(-1deg);   animation-timing-function:ease-in}
+  50% {transform:rotate(1.5deg);  animation-timing-function:ease-out}
 }
-@keyframes jiggle-desliza{
-  0%,100%{transform:translate(-.5px,.4px)}
-  50%    {transform:translate(.5px,-.4px)}
+@keyframes jiggle-b{
+  0%  {transform:rotate(1deg);    animation-timing-function:ease-in}
+  50% {transform:rotate(-1.5deg); animation-timing-function:ease-out}
 }
-.apps-panel.editing .tile{cursor:grab;animation:jiggle-desliza .23s ease-in-out infinite}
+.apps-panel.editing .tile{cursor:grab}
 .apps-panel.editing .tile:active{cursor:grabbing}
-.apps-panel.editing .tile-ic{animation:jiggle-gira .25s ease-in-out infinite}
-/* O iOS sorteia o instante em que cada icone comeca a balancar. Aqui a
-   defasagem vem da posicao, mas em blocos de 5 para o deslize e de 7 para o
-   giro: com a grade em 6 colunas, 2n e 3n dariam a mesma fase para a coluna
-   inteira e as colunas balancariam em bloco. 5 e 7 sao primos com 6, entao a
-   fase so se repete depois de 5 e de 7 linhas — e como os dois blocos tem
-   tamanhos diferentes, nenhum icone acompanha o vizinho. */
-.apps-panel.editing .tile:nth-child(5n+2){animation-delay:-.05s}
-.apps-panel.editing .tile:nth-child(5n+3){animation-delay:-.11s}
-.apps-panel.editing .tile:nth-child(5n+4){animation-delay:-.16s}
-.apps-panel.editing .tile:nth-child(5n+5){animation-delay:-.20s}
-.apps-panel.editing .tile:nth-child(7n+2) .tile-ic{animation-delay:-.04s}
-.apps-panel.editing .tile:nth-child(7n+3) .tile-ic{animation-delay:-.08s}
-.apps-panel.editing .tile:nth-child(7n+4) .tile-ic{animation-delay:-.11s}
-.apps-panel.editing .tile:nth-child(7n+5) .tile-ic{animation-delay:-.15s}
-.apps-panel.editing .tile:nth-child(7n+6) .tile-ic{animation-delay:-.19s}
-.apps-panel.editing .tile:nth-child(7n+7) .tile-ic{animation-delay:-.22s}
+.apps-panel.editing .tile-ic{
+  animation-name:jiggle-a;animation-duration:.25s;animation-iteration-count:infinite;
+  transform-origin:50% 10%;
+}
+.apps-panel.editing .tile:nth-child(2n-1) .tile-ic{
+  animation-name:jiggle-b;animation-direction:alternate;
+  transform-origin:30% 5%;
+}
+/* O iOS sorteia duracao e inicio de cada icone. Aqui os dois vem da
+   posicao, em blocos de 5 e de 7: a grade tem 6 colunas, entao blocos de
+   2 ou 3 dariam a mesma cadencia para a coluna inteira e as colunas
+   balancariam juntas. 5 e 7 sao primos com 6, e como os dois blocos tem
+   tamanhos diferentes a combinacao so se repete depois de 35 icones. */
+.apps-panel.editing .tile:nth-child(5n+2) .tile-ic{animation-duration:.29s}
+.apps-panel.editing .tile:nth-child(5n+3) .tile-ic{animation-duration:.22s}
+.apps-panel.editing .tile:nth-child(5n+4) .tile-ic{animation-duration:.33s}
+.apps-panel.editing .tile:nth-child(5n+5) .tile-ic{animation-duration:.26s}
+.apps-panel.editing .tile:nth-child(7n+2) .tile-ic{animation-delay:-.05s}
+.apps-panel.editing .tile:nth-child(7n+3) .tile-ic{animation-delay:-.29s}
+.apps-panel.editing .tile:nth-child(7n+4) .tile-ic{animation-delay:-.12s}
+.apps-panel.editing .tile:nth-child(7n+5) .tile-ic{animation-delay:-.41s}
+.apps-panel.editing .tile:nth-child(7n+6) .tile-ic{animation-delay:-.18s}
+.apps-panel.editing .tile:nth-child(7n+7) .tile-ic{animation-delay:-.6s}
 .tile.dragging{opacity:.35}
 .tile.dragging,
 .tile.dragging .tile-ic{animation:none!important}
