@@ -177,7 +177,7 @@
 .demo-toggle:hover{filter:brightness(1.08)}
 .demo-empty-state{
   display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  padding:52px 32px;border-radius:20px;position:relative;overflow:hidden;
+  padding:32px;border-radius:14px;position:relative;overflow:hidden;
   background:
     radial-gradient(120% 90% at 50% -10%, rgba(0,172,172,.09), transparent 60%),
     linear-gradient(180deg,#fdfefe,#f6f9fa);
@@ -224,12 +224,12 @@ body.demo-empty .demo-empty-state{display:flex}
   animation:deSpin 22s linear infinite;
 }
 @keyframes deSpin{to{transform:rotate(360deg)}}
-.demo-empty-state .de-title{font-size:17px;font-weight:700;color:var(--ink);margin-top:22px;letter-spacing:-.2px;position:relative}
+.demo-empty-state .de-title{font-size:16px;font-weight:700;color:var(--ink);margin-top:22px;letter-spacing:-.2px;position:relative}
 .demo-empty-state .de-sub{font-size:13px;color:var(--muted);margin-top:7px;max-width:340px;line-height:1.55;position:relative}
 .com-empty.demo-empty-state{margin:0;padding:20px;border-radius:8px}
 .com-empty .de-ic{width:60px;height:60px;font-size:24px;border-radius:18px}
 .com-empty .de-ic::after{inset:-8px;border-radius:24px}
-.com-empty .de-title{font-size:15px;margin-top:18px}
+.com-empty .de-title{margin-top:18px}
 
 /* ============ Visualizador de shorts ============ */
 .short-viewer{
