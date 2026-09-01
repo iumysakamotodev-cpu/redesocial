@@ -184,14 +184,16 @@
 /* Comunicados: sem degradê, sem sombra colorida */
 .com-featured{background:#008A8A !important;box-shadow:none !important}
 .com-featured .wm{display:none !important}
-.com-ico{width:32px !important;height:32px !important;border-radius:8px !important;font-size:12px !important;
+.com-ico{width:42px !important;height:42px !important;border-radius:8px !important;font-size:16px !important;
   background:color-mix(in srgb, var(--c2) 12%, #fff) !important;color:var(--c2) !important;
   box-shadow:none !important;border:1.5px solid color-mix(in srgb, var(--c2) 5%, #fff);
   transition:background .18s ease,border-color .18s ease}
 .com-ico i{filter:none}
 .com-item:hover .com-ico{background:color-mix(in srgb, var(--c2) 20%, #fff) !important;border-color:var(--c2)}
 .com-item{position:relative}
-.com-list .com-item + .com-item{border-top:1px solid #f1f4f6}
+.com-list .com-item + .com-item::before{
+  content:"";position:absolute;left:8px;right:8px;top:0;height:1px;background:#f1f4f6;
+}
 .com-item h4{margin-top:0}
 /* Fixado: degradê sutil e brilho de borda, como os ícones de módulo */
 .com-featured{position:relative;color:#fff !important;border:0 !important;border-radius:12px;

@@ -751,10 +751,13 @@
 .qp-emojis{position:absolute;bottom:52px;left:12px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px -12px rgba(16,32,48,.4);padding:10px;display:grid;grid-template-columns:repeat(8,1fr);gap:2px;z-index:5}
 .qp-emojis span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer;border-radius:8px}
 .qp-emojis span:hover{background:#f0f3f6}
-.qp-tool{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:0;background:none;border-radius:8px;color:#5b6672;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+/* os mesmos botoes da home: dividem a largura em partes iguais e cada
+   icone leva a cor do seu tipo */
+.qp-tool{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 10px;border:0;background:none;border-radius:8px;color:#5b6672;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.qp-tool.img i{color:#2f6fe4}.qp-tool.color i{color:#00acac}.qp-tool.video i{color:#a93438}.qp-tool.news i{color:#e08a1e}
 .qp-tool i{font-size:17px}
 .qp-tool:hover{background:#f0f3f6;color:var(--ink)}
-.qp-tool.color.on i{color:#00acac}
+.qp-tool.on{background:#f0f3f6;color:var(--ink)}
 .qp-foot{display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid var(--line)}
 .qp-adv{border:0;background:none;font:inherit;font-size:13px;font-weight:700;color:#8161d8;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
 .qp-adv:hover{text-decoration:underline}
