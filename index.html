@@ -680,7 +680,7 @@ input,textarea,select{font-size:14px}
     /* a base escurece: e o que faz o cartao ler como um bloco com espessura */
     linear-gradient(180deg, rgba(0,0,0,0) 44%, rgba(0,0,0,.07) 76%, rgba(0,0,0,.16) 100%),
     /* corpo */
-    linear-gradient(165deg,color-mix(in srgb,var(--c1) 28%,var(--c2)) 0%,var(--c2) 100%);
+    linear-gradient(165deg,color-mix(in srgb,var(--c1) 18%,var(--c2)) 0%,var(--c2) 100%);
   -webkit-mask:var(--squircle) center / 100% 100% no-repeat;
   mask:var(--squircle) center / 100% 100% no-repeat;
   /* box-shadow seria recortado pela mascara e border seguiria o retangulo;
@@ -2795,7 +2795,7 @@ body.demo-empty .demo-empty-state{display:flex}
 @keyframes deSpin{to{transform:rotate(360deg)}}
 .demo-empty-state .de-title{font-size:17px;font-weight:700;color:var(--ink);margin-top:22px;letter-spacing:-.2px;position:relative}
 .demo-empty-state .de-sub{font-size:13px;color:var(--muted);margin-top:7px;max-width:340px;line-height:1.55;position:relative}
-.com-empty.demo-empty-state{margin:12px 0 16px;padding:0 22px;border-radius:14px}
+.com-empty.demo-empty-state{margin:0;padding:20px;border-radius:8px}
 .com-empty .de-ic{width:60px;height:60px;font-size:24px;border-radius:18px}
 .com-empty .de-ic::after{inset:-8px;border-radius:24px}
 .com-empty .de-title{font-size:15px;margin-top:18px}
@@ -3089,7 +3089,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .ds-cta:hover i{transform:translateX(3px)}
 /* Painel de Comunicados */
 .com-panel{overflow:hidden;padding:16px}
-.com-head{display:flex;align-items:center;gap:10px;padding:0}
+.com-head{display:flex;align-items:center;gap:10px;padding:0;margin-bottom:16px}
 .com-head h2{font-size:18px;font-weight:700;color:var(--ink)}
 .com-count{background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
 .com-featured{
@@ -3985,7 +3985,7 @@ body.demo-empty .demo-empty-state{display:flex}
 /* Fixado: degradê sutil e brilho de borda, como os ícones de módulo */
 .com-featured{position:relative;color:#fff !important;border:0 !important;border-radius:12px;
   background:#008A8A !important;
-  padding:16px !important;margin:12px 0 !important;
+  padding:16px !important;margin:0 0 12px !important;
   box-shadow:none !important}
 .com-featured .pin{background:rgba(255,255,255,.22) !important;color:#fff !important;font-size:10px;font-weight:700;letter-spacing:.6px;padding:4px 11px}
 .com-featured h4{color:#fff !important;font-size:17px !important;margin-top:0 !important;line-height:1.24}
@@ -7455,9 +7455,10 @@ function buildStories(){
   updNvfArrows();
 }
 const SHORT_SUGESTOES = [
-  { ic:'fa-bullhorn', txt:'Divulgue suas campanhas' },
-  { ic:'fa-trophy',   txt:'Compartilhe conquistas' },
-  { ic:'fa-box-open', txt:'Anuncie um lançamento' },
+  { ic:'fa-bullhorn', txt:'Clique para divulgar suas campanhas' },
+  { ic:'fa-trophy',   txt:'Clique para compartilhar conquistas' },
+  { ic:'fa-box-open', txt:'Clique para anunciar um lançamento' },
+  { ic:'fa-star',     txt:'Clique para compartilhar um momento' },
 ];
 function renderShortsInto(row){
   row.innerHTML = '';

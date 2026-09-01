@@ -196,7 +196,7 @@
 /* Fixado: degradê sutil e brilho de borda, como os ícones de módulo */
 .com-featured{position:relative;color:#fff !important;border:0 !important;border-radius:12px;
   background:#008A8A !important;
-  padding:16px !important;margin:12px 0 !important;
+  padding:16px !important;margin:0 0 12px !important;
   box-shadow:none !important}
 .com-featured .pin{background:rgba(255,255,255,.22) !important;color:#fff !important;font-size:10px;font-weight:700;letter-spacing:.6px;padding:4px 11px}
 .com-featured h4{color:#fff !important;font-size:17px !important;margin-top:0 !important;line-height:1.24}

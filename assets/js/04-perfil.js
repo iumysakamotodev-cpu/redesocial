@@ -375,9 +375,10 @@ function buildStories(){
   updNvfArrows();
 }
 const SHORT_SUGESTOES = [
-  { ic:'fa-bullhorn', txt:'Divulgue suas campanhas' },
-  { ic:'fa-trophy',   txt:'Compartilhe conquistas' },
-  { ic:'fa-box-open', txt:'Anuncie um lançamento' },
+  { ic:'fa-bullhorn', txt:'Clique para divulgar suas campanhas' },
+  { ic:'fa-trophy',   txt:'Clique para compartilhar conquistas' },
+  { ic:'fa-box-open', txt:'Clique para anunciar um lançamento' },
+  { ic:'fa-star',     txt:'Clique para compartilhar um momento' },
 ];
 function renderShortsInto(row){
   row.innerHTML = '';
