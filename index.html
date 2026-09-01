@@ -18,7 +18,7 @@
      módulos que não têm ícone próprio, e nas mesmas classes (mdi mdi-<nome>) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
 <style>
 /* tokens, reset, tipografia e avatares */
 /* ============ Base ============ */
@@ -44,10 +44,21 @@
      como no icone de app do iOS e do Android. */
   --squircle: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M100.00,50.00L99.96,66.80L99.83,72.14L99.61,76.01L99.31,79.12L98.92,81.75L98.44,84.05L97.87,86.08L97.20,87.89L96.44,89.52L95.58,91.00L94.61,92.33L93.53,93.53L92.33,94.61L91.00,95.58L89.52,96.44L87.89,97.20L86.08,97.87L84.05,98.44L81.75,98.92L79.12,99.31L76.01,99.61L72.14,99.83L66.80,99.96L50.00,100.00L33.20,99.96L27.86,99.83L23.99,99.61L20.88,99.31L18.25,98.92L15.95,98.44L13.92,97.87L12.11,97.20L10.48,96.44L9.00,95.58L7.67,94.61L6.47,93.53L5.39,92.33L4.42,91.00L3.56,89.52L2.80,87.89L2.13,86.08L1.56,84.05L1.08,81.75L0.69,79.12L0.39,76.01L0.17,72.14L0.04,66.80L0.00,50.00L0.04,33.20L0.17,27.86L0.39,23.99L0.69,20.88L1.08,18.25L1.56,15.95L2.13,13.92L2.80,12.11L3.56,10.48L4.42,9.00L5.39,7.67L6.47,6.47L7.67,5.39L9.00,4.42L10.48,3.56L12.11,2.80L13.92,2.13L15.95,1.56L18.25,1.08L20.88,0.69L23.99,0.39L27.86,0.17L33.20,0.04L50.00,0.00L66.80,0.04L72.14,0.17L76.01,0.39L79.12,0.69L81.75,1.08L84.05,1.56L86.08,2.13L87.89,2.80L89.52,3.56L91.00,4.42L92.33,5.39L93.53,6.47L94.61,7.67L95.58,9.00L96.44,10.48L97.20,12.11L97.87,13.92L98.44,15.95L98.92,18.25L99.31,20.88L99.61,23.99L99.83,27.86L99.96,33.20Z' fill='%23000'/></svg>");
   --shadow:0 1px 2px rgba(16,32,48,.06),0 8px 24px -14px rgba(16,32,48,.22);
+
+  /* Tipografia do sistema: Open Sans em toda parte, em tres pesos e so
+     nesses tres. Regular 400 para corpo de texto, Semibold 600 para
+     rotulos e apoio, Bold 700 para titulos e acoes. Nao introduza 500,
+     800 nem a palavra bold: esses cortes nem sao carregados. */
+  --fonte:"Open Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --regular:400;
+  --semibold:600;
+  --bold:700;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;font-family:var(--fonte)}
+input,textarea,select,button{font-family:inherit}
+b,strong,h1,h2,h3,h4,h5,h6,th{font-weight:700}
 body{
-  font-family:"Open Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-family:var(--fonte);
   background:var(--bg);
   color:var(--body);
   display:flex;
@@ -641,14 +652,25 @@ input,textarea,select{font-size:14px}
 .apps-search input::placeholder{color:#8a96a3;font-weight:400}
 .apps-search input:disabled{opacity:.5}
 .apps-head-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.apps-hint{font-size:12px;font-weight:700;color:var(--teal)}
+/* mesma caixa do Organizar, porem sem contorno: fica ao lado dele, a
+   esquerda, e so aparece enquanto se organiza */
+.apps-cancel{
+  display:flex;align-items:center;justify-content:center;gap:8px;height:40px;box-sizing:border-box;
+  padding:0 16px;border-radius:999px;font:inherit;font-size:14px;font-weight:700;
+  color:#5b6672;border:1px solid #e9edf1;background:#fff;cursor:pointer;transition:.15s;
+}
+.apps-cancel:hover{border-color:#c62828;color:#c62828;background:#fff}
+.apps-cancel[hidden]{display:none}
 .apps-edit{
   display:flex;align-items:center;justify-content:center;gap:8px;height:40px;box-sizing:border-box;
   padding:0 16px;border-radius:999px;font-size:14px;font-weight:700;color:#5b6672;
   border:1px solid var(--line);background:#fff;transition:.15s;
 }
 .apps-edit:hover{border-color:var(--teal);color:var(--teal)}
-.apps-edit.on{background:var(--teal);border-color:var(--teal);color:#fff}
+/* no modo organizar o botao vira Salvar, em contorno: preenchido ele
+   competia com o Cancelar ao lado */
+.apps-edit.on{background:#fff;border-color:var(--teal);color:var(--teal)}
+.apps-edit.on:hover{background:var(--teal);border-color:var(--teal);color:#fff}
 .apps{
   /* 6 módulos por linha: com o feed em 752px a grade tem ~704px úteis, e
      seis cartões de 80 deixam ~40px entre um e outro. Com cinco a folga
@@ -804,17 +826,40 @@ input,textarea,select{font-size:14px}
   content:"";position:absolute;top:8px;bottom:8px;width:3px;border-radius:3px;background:#48484A;z-index:3}
 .apps-panel.editing .tile.drop-before::before{left:-6px}
 .apps-panel.editing .tile.drop-after::after{right:-6px}
-@keyframes jiggle{
-  0%{transform:rotate(-1.4deg) translate(-.5px,.5px)}
-  50%{transform:rotate(1.4deg) translate(.5px,-.5px)}
-  100%{transform:rotate(-1.7deg)}
+/* O balanco do iOS sao dois movimentos pequenos correndo juntos: o icone
+   gira pouco e o conjunto desliza menos ainda, em periodos quase iguais.
+   Como os periodos nao batem, o par nunca volta ao mesmo ponto e o
+   movimento soa organico. O anterior girava 1,4deg em 0,42s: aberto e
+   lento demais, mais aceno do que balanco. */
+@keyframes jiggle-gira{
+  0%,100%{transform:rotate(-.65deg)}
+  50%    {transform:rotate(.65deg)}
 }
-.apps-panel.editing .tile{cursor:grab}
+@keyframes jiggle-desliza{
+  0%,100%{transform:translate(-.5px,.4px)}
+  50%    {transform:translate(.5px,-.4px)}
+}
+.apps-panel.editing .tile{cursor:grab;animation:jiggle-desliza .23s ease-in-out infinite}
 .apps-panel.editing .tile:active{cursor:grabbing}
-.apps-panel.editing .tile-ic{animation:jiggle .42s ease-in-out infinite}
-.apps-panel.editing .tile:nth-child(2n) .tile-ic{animation-duration:.47s;animation-delay:-.2s}
-.apps-panel.editing .tile:nth-child(3n) .tile-ic{animation-duration:.38s;animation-delay:-.11s}
+.apps-panel.editing .tile-ic{animation:jiggle-gira .25s ease-in-out infinite}
+/* O iOS sorteia o instante em que cada icone comeca a balancar. Aqui a
+   defasagem vem da posicao, mas em blocos de 5 para o deslize e de 7 para o
+   giro: com a grade em 6 colunas, 2n e 3n dariam a mesma fase para a coluna
+   inteira e as colunas balancariam em bloco. 5 e 7 sao primos com 6, entao a
+   fase so se repete depois de 5 e de 7 linhas — e como os dois blocos tem
+   tamanhos diferentes, nenhum icone acompanha o vizinho. */
+.apps-panel.editing .tile:nth-child(5n+2){animation-delay:-.05s}
+.apps-panel.editing .tile:nth-child(5n+3){animation-delay:-.11s}
+.apps-panel.editing .tile:nth-child(5n+4){animation-delay:-.16s}
+.apps-panel.editing .tile:nth-child(5n+5){animation-delay:-.20s}
+.apps-panel.editing .tile:nth-child(7n+2) .tile-ic{animation-delay:-.04s}
+.apps-panel.editing .tile:nth-child(7n+3) .tile-ic{animation-delay:-.08s}
+.apps-panel.editing .tile:nth-child(7n+4) .tile-ic{animation-delay:-.11s}
+.apps-panel.editing .tile:nth-child(7n+5) .tile-ic{animation-delay:-.15s}
+.apps-panel.editing .tile:nth-child(7n+6) .tile-ic{animation-delay:-.19s}
+.apps-panel.editing .tile:nth-child(7n+7) .tile-ic{animation-delay:-.22s}
 .tile.dragging{opacity:.35}
+.tile.dragging,
 .tile.dragging .tile-ic{animation:none!important}
 .apps-expand{display:flex;justify-content:center;margin:20px 0 0}
 .apps-expand button{
@@ -1074,7 +1119,7 @@ input,textarea,select{font-size:14px}
 .perm-tutart{flex-shrink:0;width:280px}
 .perm-tutart img{display:block;width:100%;height:auto}
 .perm-tuttx{min-width:0;max-width:640px}
-.perm-tutkicker{display:block;font-family:"Open Sans",sans-serif;font-size:12px;line-height:16px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8E8E93}
+.perm-tutkicker{display:block;font-family:var(--fonte);font-size:12px;line-height:16px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8E8E93}
 .perm-tuttx h3{margin:6px 0 10px;font-size:24px;line-height:30px;font-weight:700;letter-spacing:0;color:#1C1C1E;text-wrap:pretty}
 .perm-tuttx p{margin:0;font-size:15px;line-height:22px;color:#48484A;text-wrap:pretty}
 @media(max-width:900px){ .perm-tut{flex-direction:column;align-items:flex-start;gap:18px} .perm-tutart{width:100%} }
@@ -1144,7 +1189,7 @@ input,textarea,select{font-size:14px}
 .rx-toolbar{display:none;align-items:center;gap:14px;margin-bottom:16px}
 .reels-view.in-module .rx-toolbar{display:none}
 .rx-tool{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted)}
-.rx-select{font:600 12px/1.2 'Open Sans','Segoe UI',sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer;outline:none}
+.rx-select{font:600 12px/1.2 var(--fonte);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer;outline:none}
 .rx-select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.15)}
 .rx-viewtg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
 .rx-viewtg button{border:0;background:none;padding:8px 13px;cursor:pointer;color:var(--muted);font-size:13px}
@@ -1471,7 +1516,7 @@ input,textarea,select{font-size:14px}
    Oxford #0C1F38 ground · cyber blue #0088FF = ação/seleção · Inter 600 14/20 ls .3px
    raio 4 em controles · hairline inset · hover = wash 8% · foco = ring 2px */
 .nmod-top{display:none;align-items:center;gap:16px;padding:0 24px;height:60px;flex-shrink:0;
-  font-family:"Open Sans","Segoe UI",system-ui,sans-serif;background:#0C334A;color:#fff;
+  font-family:var(--fonte);background:#0C334A;color:#fff;
   box-shadow:inset 0 -1px 0 rgba(255,255,255,.08)}
 .news-view.mod-mode .nmod-top{display:flex}
 .nmod-top-logo{width:32px;height:32px;color:#00ACAC;flex-shrink:0}
@@ -2760,17 +2805,22 @@ input,textarea,select{font-size:14px}
   background-size:22px 22px;-webkit-mask-image:radial-gradient(120% 80% at 50% 0%, #000, transparent 70%);
           mask-image:radial-gradient(120% 80% at 50% 0%, #000, transparent 70%);
 }
-/* Cenário "só módulos" (demo, pelo item Falar com o suporte): a rede ainda não
-   usa shorts, feed nem comunicados, então a home fica só com os aplicativos —
-   e a grade abre inteira, já que não há mais nada abaixo dela. */
+/* Cenário de permissão (demo, pelo item Falar com o suporte): a pessoa vê o
+   Feed mas não pode publicar, e não tem Shorts. Some a fileira de shorts e o
+   campo de publicar; o Feed fica só com o estado vazio, e os comunicados
+   seguem visíveis no seu próprio estado vazio. */
 body.demo-suporte #homeShorts,
-body.demo-suporte #homeFeedTitle,
 body.demo-suporte .col-main > .nvf-composer,
-body.demo-suporte .col-main > .feed,
-body.demo-suporte .col-main > .feed ~ .demo-empty-state,
-body.demo-suporte #homeComPanel,
-body.demo-suporte .apps-expand{display:none !important}
-body.demo-suporte .tile.over-fold{display:flex !important}
+body.demo-suporte .col-main > .feed{display:none !important}
+body.demo-suporte .col-main > .feed ~ .demo-empty-state{display:flex !important}
+/* os comunicados aparecem vazios, como no cenário "Vazio" */
+body.demo-suporte #homeComPanel .demo-filled{display:none !important}
+body.demo-suporte #homeComPanel .com-empty{display:flex !important}
+
+/* Cada cenário mostra o seu par de textos no estado vazio do feed. */
+.de-quando-sem-permissao{display:none}
+body.demo-suporte .de-quando-vazio{display:none}
+body.demo-suporte .de-quando-sem-permissao{display:block}
 body.demo-empty .demo-filled{display:none}
 body.demo-empty .demo-empty-state{display:flex}
 /* ilustração no lugar do ícone: largura limitada e o título logo abaixo */
@@ -3282,7 +3332,7 @@ body.demo-empty .demo-empty-state{display:flex}
   .apps-head{flex-wrap:wrap}
   .apps-search{max-width:none;min-width:200px}
   /* arrastar para reordenar é um gesto de mouse: fora do celular */
-  .apps-edit,.apps-hint,.apps-head-right{display:none !important}
+  .apps-edit,.apps-cancel,.apps-head-right{display:none !important}
   .apps-search{flex:1 1 100%;min-width:0}
   .apps{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 6px}
   .tile-ic{width:64px;height:64px}
@@ -4196,7 +4246,7 @@ body.demo-empty .demo-empty-state{display:flex}
       <path fill="#00acac" d="M10 30 26 6h8L18 30Z"/>
       <path fill="#00acac" opacity=".85" d="M14 42 30 18h8L22 42Z"/>
     </g>
-    <text x="600" y="560" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="6" fill="#fff" text-anchor="middle">SULTS</text>
+    <text x="600" y="560" font-family="Open Sans, Segoe UI, Arial, sans-serif" font-size="72" font-weight="700" letter-spacing="6" fill="#fff" text-anchor="middle">SULTS</text>
   </svg>
 </template>
 
@@ -4395,7 +4445,7 @@ body.demo-empty .demo-empty-state{display:flex}
             <input type="text" id="appSearch" placeholder="Buscar módulo" autocomplete="off">
           </div>
           <div class="apps-head-right">
-            <span class="apps-hint" id="appsHint" hidden>Arraste os módulos para reordenar</span>
+            <button class="apps-cancel" id="appsCancel" hidden><i class="fa-solid fa-xmark"></i><span>Cancelar</span></button>
             <button class="apps-edit" id="appsEdit" title="Reordenar módulos"><i class="fa-solid fa-arrows-up-down-left-right"></i><span>Organizar</span></button>
           </div>
         </div>
@@ -4729,8 +4779,10 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
       </section>
       <div class="demo-empty-state" style="margin-top:4px">
         <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
-        <div class="de-title">Seja o primeiro a publicar</div>
-        <div class="de-sub">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+        <div class="de-title de-quando-vazio">Seja o primeiro a publicar</div>
+        <div class="de-sub de-quando-vazio">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+        <div class="de-title de-quando-sem-permissao">Nenhuma publicação por aqui</div>
+        <div class="de-sub de-quando-sem-permissao">Quando alguém da sua rede publicar, a publicação aparece aqui para você.</div>
       </div>
     </main>
 
@@ -7851,7 +7903,13 @@ const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase
 /* Colapsado mostra apenas 2 linhas (calculado pelo nº real de colunas) */
 appTiles.forEach(t => t.classList.remove('extra'));
 function applyFold(){
-  if (appsPanel.classList.contains('editing')) return;
+  /* organizando, todos os módulos ficam à mostra: sem limpar o over-fold
+     aqui, as classes da dobra anterior sobreviviam e a grade continuava
+     recolhida mesmo com a classe expanded. */
+  if (appsPanel.classList.contains('editing')){
+    appTiles.forEach(t => t.classList.remove('over-fold'));
+    return;
+  }
   const searching = appsGrid.classList.contains('searching');
   const expanded  = appsGrid.classList.contains('expanded');
   appTiles.forEach(t => t.classList.remove('over-fold'));
@@ -7939,17 +7997,20 @@ appSearch.addEventListener('input', filterApps);
 
 /* ---------- Modo organizar (arrastar e soltar) ---------- */
 const appsEdit = $('#appsEdit');
-const appsHint = $('#appsHint');
+const appsCancel = $('#appsCancel');
 let editing = false, estavaExpandido = false, dragEl = null;
 
-appsEdit.addEventListener('click', () => {
-  editing = !editing;
+/* guarda a ordem de antes para o Cancelar poder devolvê-la */
+let ordemAntesDeOrganizar = null;
+
+function organizar(ligar){
+  editing = ligar;
   appsPanel.classList.toggle('editing', editing);
   appsEdit.classList.toggle('on', editing);
   appsEdit.innerHTML = editing
-    ? '<i class="fa-solid fa-check"></i><span>Concluir</span>'
+    ? '<i class="fa-solid fa-check"></i><span>Salvar</span>'
     : '<i class="fa-solid fa-arrows-up-down-left-right"></i><span>Organizar</span>';
-  appsHint.hidden = !editing;
+  if (appsCancel) appsCancel.hidden = !editing;
   appSearch.disabled = editing;
   appsToggle.disabled = editing;
 
@@ -7957,6 +8018,7 @@ appsEdit.addEventListener('click', () => {
     appSearch.value = '';
     filterApps();
     estavaExpandido = appsGrid.classList.contains('expanded');
+    ordemAntesDeOrganizar = [...appsGrid.children];
     appsGrid.classList.add('expanded');        // mostra todos os módulos para organizar
     appsToggle.classList.add('open');
   } else if (!estavaExpandido){
@@ -7965,6 +8027,15 @@ appsEdit.addEventListener('click', () => {
   }
   appTiles.forEach(t => t.draggable = editing);
   applyFold();
+}
+
+appsEdit.addEventListener('click', () => organizar(!editing));
+
+appsCancel && appsCancel.addEventListener('click', () => {
+  /* devolve a ordem exatamente como estava ao abrir o modo */
+  if (ordemAntesDeOrganizar) ordemAntesDeOrganizar.forEach(el => appsGrid.appendChild(el));
+  organizar(false);
+  fgToast('Reordenação cancelada');
 });
 
 appTiles.forEach(t => {
@@ -8689,15 +8760,21 @@ $('#navNovidades') && $('#navNovidades').addEventListener('click', e => {
   document.body.classList.remove('demo-suporte');   /* os cenários não se somam */
   demoToggle.click();
   setNav($('#navNovidades'));
+  /* o mesmo aviso do outro cenário: o toggle já alternou, então o estado
+     lido aqui é o que acabou de entrar */
+  fgToast(document.body.classList.contains('demo-empty')
+    ? 'Cenário: rede ainda sem conteúdo'
+    : 'Cenário: rede com conteúdo');
 });
-/* Falar com o suporte: cenário de demonstração em que a rede só tem os módulos
-   — shorts, feed e comunicados desligados, e a grade de aplicativos aberta. */
+/* Falar com o suporte: cenário de demonstração em que a pessoa vê o Feed mas
+   não pode publicar nele nem criar Shorts — a fileira de shorts some, o campo
+   de publicar some, e os comunicados aparecem no estado vazio. */
 $('#navSuporte') && $('#navSuporte').addEventListener('click', e => {
   e.preventDefault();
   if (document.body.classList.contains('demo-empty')) demoToggle.click();
   document.body.classList.add('demo-suporte');
   setNav($('#navSuporte'));       /* fica selecionado no menu */
-  fgToast('Cenário: rede só com módulos');
+  fgToast('Cenário: sem permissão para publicar');
 });
 
 

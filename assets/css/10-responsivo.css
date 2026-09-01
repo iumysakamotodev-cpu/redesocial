@@ -71,7 +71,7 @@
   .apps-head{flex-wrap:wrap}
   .apps-search{max-width:none;min-width:200px}
   /* arrastar para reordenar é um gesto de mouse: fora do celular */
-  .apps-edit,.apps-hint,.apps-head-right{display:none !important}
+  .apps-edit,.apps-cancel,.apps-head-right{display:none !important}
   .apps-search{flex:1 1 100%;min-width:0}
   .apps{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 6px}
   .tile-ic{width:64px;height:64px}

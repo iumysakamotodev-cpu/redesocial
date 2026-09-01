@@ -7,7 +7,7 @@
    Oxford #0C1F38 ground · cyber blue #0088FF = ação/seleção · Inter 600 14/20 ls .3px
    raio 4 em controles · hairline inset · hover = wash 8% · foco = ring 2px */
 .nmod-top{display:none;align-items:center;gap:16px;padding:0 24px;height:60px;flex-shrink:0;
-  font-family:"Open Sans","Segoe UI",system-ui,sans-serif;background:#0C334A;color:#fff;
+  font-family:var(--fonte);background:#0C334A;color:#fff;
   box-shadow:inset 0 -1px 0 rgba(255,255,255,.08)}
 .news-view.mod-mode .nmod-top{display:flex}
 .nmod-top-logo{width:32px;height:32px;color:#00ACAC;flex-shrink:0}

@@ -35,7 +35,7 @@
 .perm-tutart{flex-shrink:0;width:280px}
 .perm-tutart img{display:block;width:100%;height:auto}
 .perm-tuttx{min-width:0;max-width:640px}
-.perm-tutkicker{display:block;font-family:"Open Sans",sans-serif;font-size:12px;line-height:16px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8E8E93}
+.perm-tutkicker{display:block;font-family:var(--fonte);font-size:12px;line-height:16px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8E8E93}
 .perm-tuttx h3{margin:6px 0 10px;font-size:24px;line-height:30px;font-weight:700;letter-spacing:0;color:#1C1C1E;text-wrap:pretty}
 .perm-tuttx p{margin:0;font-size:15px;line-height:22px;color:#48484A;text-wrap:pretty}
 @media(max-width:900px){ .perm-tut{flex-direction:column;align-items:flex-start;gap:18px} .perm-tutart{width:100%} }
@@ -105,7 +105,7 @@
 .rx-toolbar{display:none;align-items:center;gap:14px;margin-bottom:16px}
 .reels-view.in-module .rx-toolbar{display:none}
 .rx-tool{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted)}
-.rx-select{font:600 12px/1.2 'Open Sans','Segoe UI',sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer;outline:none}
+.rx-select{font:600 12px/1.2 var(--fonte);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer;outline:none}
 .rx-select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.15)}
 .rx-viewtg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
 .rx-viewtg button{border:0;background:none;padding:8px 13px;cursor:pointer;color:var(--muted);font-size:13px}

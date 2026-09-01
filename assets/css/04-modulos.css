@@ -27,14 +27,25 @@
 .apps-search input::placeholder{color:#8a96a3;font-weight:400}
 .apps-search input:disabled{opacity:.5}
 .apps-head-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.apps-hint{font-size:12px;font-weight:700;color:var(--teal)}
+/* mesma caixa do Organizar, porem sem contorno: fica ao lado dele, a
+   esquerda, e so aparece enquanto se organiza */
+.apps-cancel{
+  display:flex;align-items:center;justify-content:center;gap:8px;height:40px;box-sizing:border-box;
+  padding:0 16px;border-radius:999px;font:inherit;font-size:14px;font-weight:700;
+  color:#5b6672;border:1px solid #e9edf1;background:#fff;cursor:pointer;transition:.15s;
+}
+.apps-cancel:hover{border-color:#c62828;color:#c62828;background:#fff}
+.apps-cancel[hidden]{display:none}
 .apps-edit{
   display:flex;align-items:center;justify-content:center;gap:8px;height:40px;box-sizing:border-box;
   padding:0 16px;border-radius:999px;font-size:14px;font-weight:700;color:#5b6672;
   border:1px solid var(--line);background:#fff;transition:.15s;
 }
 .apps-edit:hover{border-color:var(--teal);color:var(--teal)}
-.apps-edit.on{background:var(--teal);border-color:var(--teal);color:#fff}
+/* no modo organizar o botao vira Salvar, em contorno: preenchido ele
+   competia com o Cancelar ao lado */
+.apps-edit.on{background:#fff;border-color:var(--teal);color:var(--teal)}
+.apps-edit.on:hover{background:var(--teal);border-color:var(--teal);color:#fff}
 .apps{
   /* 6 módulos por linha: com o feed em 752px a grade tem ~704px úteis, e
      seis cartões de 80 deixam ~40px entre um e outro. Com cinco a folga
@@ -190,17 +201,40 @@
   content:"";position:absolute;top:8px;bottom:8px;width:3px;border-radius:3px;background:#48484A;z-index:3}
 .apps-panel.editing .tile.drop-before::before{left:-6px}
 .apps-panel.editing .tile.drop-after::after{right:-6px}
-@keyframes jiggle{
-  0%{transform:rotate(-1.4deg) translate(-.5px,.5px)}
-  50%{transform:rotate(1.4deg) translate(.5px,-.5px)}
-  100%{transform:rotate(-1.7deg)}
+/* O balanco do iOS sao dois movimentos pequenos correndo juntos: o icone
+   gira pouco e o conjunto desliza menos ainda, em periodos quase iguais.
+   Como os periodos nao batem, o par nunca volta ao mesmo ponto e o
+   movimento soa organico. O anterior girava 1,4deg em 0,42s: aberto e
+   lento demais, mais aceno do que balanco. */
+@keyframes jiggle-gira{
+  0%,100%{transform:rotate(-.65deg)}
+  50%    {transform:rotate(.65deg)}
 }
-.apps-panel.editing .tile{cursor:grab}
+@keyframes jiggle-desliza{
+  0%,100%{transform:translate(-.5px,.4px)}
+  50%    {transform:translate(.5px,-.4px)}
+}
+.apps-panel.editing .tile{cursor:grab;animation:jiggle-desliza .23s ease-in-out infinite}
 .apps-panel.editing .tile:active{cursor:grabbing}
-.apps-panel.editing .tile-ic{animation:jiggle .42s ease-in-out infinite}
-.apps-panel.editing .tile:nth-child(2n) .tile-ic{animation-duration:.47s;animation-delay:-.2s}
-.apps-panel.editing .tile:nth-child(3n) .tile-ic{animation-duration:.38s;animation-delay:-.11s}
+.apps-panel.editing .tile-ic{animation:jiggle-gira .25s ease-in-out infinite}
+/* O iOS sorteia o instante em que cada icone comeca a balancar. Aqui a
+   defasagem vem da posicao, mas em blocos de 5 para o deslize e de 7 para o
+   giro: com a grade em 6 colunas, 2n e 3n dariam a mesma fase para a coluna
+   inteira e as colunas balancariam em bloco. 5 e 7 sao primos com 6, entao a
+   fase so se repete depois de 5 e de 7 linhas — e como os dois blocos tem
+   tamanhos diferentes, nenhum icone acompanha o vizinho. */
+.apps-panel.editing .tile:nth-child(5n+2){animation-delay:-.05s}
+.apps-panel.editing .tile:nth-child(5n+3){animation-delay:-.11s}
+.apps-panel.editing .tile:nth-child(5n+4){animation-delay:-.16s}
+.apps-panel.editing .tile:nth-child(5n+5){animation-delay:-.20s}
+.apps-panel.editing .tile:nth-child(7n+2) .tile-ic{animation-delay:-.04s}
+.apps-panel.editing .tile:nth-child(7n+3) .tile-ic{animation-delay:-.08s}
+.apps-panel.editing .tile:nth-child(7n+4) .tile-ic{animation-delay:-.11s}
+.apps-panel.editing .tile:nth-child(7n+5) .tile-ic{animation-delay:-.15s}
+.apps-panel.editing .tile:nth-child(7n+6) .tile-ic{animation-delay:-.19s}
+.apps-panel.editing .tile:nth-child(7n+7) .tile-ic{animation-delay:-.22s}
 .tile.dragging{opacity:.35}
+.tile.dragging,
 .tile.dragging .tile-ic{animation:none!important}
 .apps-expand{display:flex;justify-content:center;margin:20px 0 0}
 .apps-expand button{

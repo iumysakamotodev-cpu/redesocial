@@ -22,7 +22,13 @@ const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase
 /* Colapsado mostra apenas 2 linhas (calculado pelo nº real de colunas) */
 appTiles.forEach(t => t.classList.remove('extra'));
 function applyFold(){
-  if (appsPanel.classList.contains('editing')) return;
+  /* organizando, todos os módulos ficam à mostra: sem limpar o over-fold
+     aqui, as classes da dobra anterior sobreviviam e a grade continuava
+     recolhida mesmo com a classe expanded. */
+  if (appsPanel.classList.contains('editing')){
+    appTiles.forEach(t => t.classList.remove('over-fold'));
+    return;
+  }
   const searching = appsGrid.classList.contains('searching');
   const expanded  = appsGrid.classList.contains('expanded');
   appTiles.forEach(t => t.classList.remove('over-fold'));
@@ -110,17 +116,20 @@ appSearch.addEventListener('input', filterApps);
 
 /* ---------- Modo organizar (arrastar e soltar) ---------- */
 const appsEdit = $('#appsEdit');
-const appsHint = $('#appsHint');
+const appsCancel = $('#appsCancel');
 let editing = false, estavaExpandido = false, dragEl = null;
 
-appsEdit.addEventListener('click', () => {
-  editing = !editing;
+/* guarda a ordem de antes para o Cancelar poder devolvê-la */
+let ordemAntesDeOrganizar = null;
+
+function organizar(ligar){
+  editing = ligar;
   appsPanel.classList.toggle('editing', editing);
   appsEdit.classList.toggle('on', editing);
   appsEdit.innerHTML = editing
-    ? '<i class="fa-solid fa-check"></i><span>Concluir</span>'
+    ? '<i class="fa-solid fa-check"></i><span>Salvar</span>'
     : '<i class="fa-solid fa-arrows-up-down-left-right"></i><span>Organizar</span>';
-  appsHint.hidden = !editing;
+  if (appsCancel) appsCancel.hidden = !editing;
   appSearch.disabled = editing;
   appsToggle.disabled = editing;
 
@@ -128,6 +137,7 @@ appsEdit.addEventListener('click', () => {
     appSearch.value = '';
     filterApps();
     estavaExpandido = appsGrid.classList.contains('expanded');
+    ordemAntesDeOrganizar = [...appsGrid.children];
     appsGrid.classList.add('expanded');        // mostra todos os módulos para organizar
     appsToggle.classList.add('open');
   } else if (!estavaExpandido){
@@ -136,6 +146,15 @@ appsEdit.addEventListener('click', () => {
   }
   appTiles.forEach(t => t.draggable = editing);
   applyFold();
+}
+
+appsEdit.addEventListener('click', () => organizar(!editing));
+
+appsCancel && appsCancel.addEventListener('click', () => {
+  /* devolve a ordem exatamente como estava ao abrir o modo */
+  if (ordemAntesDeOrganizar) ordemAntesDeOrganizar.forEach(el => appsGrid.appendChild(el));
+  organizar(false);
+  fgToast('Reordenação cancelada');
 });
 
 appTiles.forEach(t => {

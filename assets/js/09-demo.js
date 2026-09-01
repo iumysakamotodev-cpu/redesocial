@@ -17,14 +17,20 @@ $('#navNovidades') && $('#navNovidades').addEventListener('click', e => {
   document.body.classList.remove('demo-suporte');   /* os cenários não se somam */
   demoToggle.click();
   setNav($('#navNovidades'));
+  /* o mesmo aviso do outro cenário: o toggle já alternou, então o estado
+     lido aqui é o que acabou de entrar */
+  fgToast(document.body.classList.contains('demo-empty')
+    ? 'Cenário: rede ainda sem conteúdo'
+    : 'Cenário: rede com conteúdo');
 });
-/* Falar com o suporte: cenário de demonstração em que a rede só tem os módulos
-   — shorts, feed e comunicados desligados, e a grade de aplicativos aberta. */
+/* Falar com o suporte: cenário de demonstração em que a pessoa vê o Feed mas
+   não pode publicar nele nem criar Shorts — a fileira de shorts some, o campo
+   de publicar some, e os comunicados aparecem no estado vazio. */
 $('#navSuporte') && $('#navSuporte').addEventListener('click', e => {
   e.preventDefault();
   if (document.body.classList.contains('demo-empty')) demoToggle.click();
   document.body.classList.add('demo-suporte');
   setNav($('#navSuporte'));       /* fica selecionado no menu */
-  fgToast('Cenário: rede só com módulos');
+  fgToast('Cenário: sem permissão para publicar');
 });
 

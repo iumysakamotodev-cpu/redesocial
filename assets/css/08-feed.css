@@ -189,17 +189,22 @@
   background-size:22px 22px;-webkit-mask-image:radial-gradient(120% 80% at 50% 0%, #000, transparent 70%);
           mask-image:radial-gradient(120% 80% at 50% 0%, #000, transparent 70%);
 }
-/* Cenário "só módulos" (demo, pelo item Falar com o suporte): a rede ainda não
-   usa shorts, feed nem comunicados, então a home fica só com os aplicativos —
-   e a grade abre inteira, já que não há mais nada abaixo dela. */
+/* Cenário de permissão (demo, pelo item Falar com o suporte): a pessoa vê o
+   Feed mas não pode publicar, e não tem Shorts. Some a fileira de shorts e o
+   campo de publicar; o Feed fica só com o estado vazio, e os comunicados
+   seguem visíveis no seu próprio estado vazio. */
 body.demo-suporte #homeShorts,
-body.demo-suporte #homeFeedTitle,
 body.demo-suporte .col-main > .nvf-composer,
-body.demo-suporte .col-main > .feed,
-body.demo-suporte .col-main > .feed ~ .demo-empty-state,
-body.demo-suporte #homeComPanel,
-body.demo-suporte .apps-expand{display:none !important}
-body.demo-suporte .tile.over-fold{display:flex !important}
+body.demo-suporte .col-main > .feed{display:none !important}
+body.demo-suporte .col-main > .feed ~ .demo-empty-state{display:flex !important}
+/* os comunicados aparecem vazios, como no cenário "Vazio" */
+body.demo-suporte #homeComPanel .demo-filled{display:none !important}
+body.demo-suporte #homeComPanel .com-empty{display:flex !important}
+
+/* Cada cenário mostra o seu par de textos no estado vazio do feed. */
+.de-quando-sem-permissao{display:none}
+body.demo-suporte .de-quando-vazio{display:none}
+body.demo-suporte .de-quando-sem-permissao{display:block}
 body.demo-empty .demo-filled{display:none}
 body.demo-empty .demo-empty-state{display:flex}
 /* ilustração no lugar do ícone: largura limitada e o título logo abaixo */
