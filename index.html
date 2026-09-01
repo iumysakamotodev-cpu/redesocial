@@ -680,7 +680,7 @@ input,textarea,select{font-size:14px}
     /* a base escurece: e o que faz o cartao ler como um bloco com espessura */
     linear-gradient(180deg, rgba(0,0,0,0) 44%, rgba(0,0,0,.07) 76%, rgba(0,0,0,.16) 100%),
     /* corpo */
-    linear-gradient(165deg,color-mix(in srgb,var(--c1) 45%,var(--c2)) 0%,var(--c2) 100%);
+    linear-gradient(165deg,color-mix(in srgb,var(--c1) 28%,var(--c2)) 0%,var(--c2) 100%);
   -webkit-mask:var(--squircle) center / 100% 100% no-repeat;
   mask:var(--squircle) center / 100% 100% no-repeat;
   /* box-shadow seria recortado pela mascara e border seguiria o retangulo;
@@ -2795,7 +2795,7 @@ body.demo-empty .demo-empty-state{display:flex}
 @keyframes deSpin{to{transform:rotate(360deg)}}
 .demo-empty-state .de-title{font-size:17px;font-weight:700;color:var(--ink);margin-top:22px;letter-spacing:-.2px;position:relative}
 .demo-empty-state .de-sub{font-size:13px;color:var(--muted);margin-top:7px;max-width:340px;line-height:1.55;position:relative}
-.com-empty.demo-empty-state{margin:6px 14px 16px;padding:38px 22px;border-radius:14px}
+.com-empty.demo-empty-state{margin:12px 0 16px;padding:0 22px;border-radius:14px}
 .com-empty .de-ic{width:60px;height:60px;font-size:24px;border-radius:18px}
 .com-empty .de-ic::after{inset:-8px;border-radius:24px}
 .com-empty .de-title{font-size:15px;margin-top:18px}
@@ -2976,8 +2976,8 @@ body.demo-empty .demo-empty-state{display:flex}
 }
 .react-btn .rb-label{
   position:absolute;bottom:calc(100% + 34px);left:50%;transform:translateX(-50%);z-index:5;
-  display:inline-flex;align-items:center;height:20px;padding:0 8px 1px;
-  background:#1c2b3a;color:#fff;font-size:14px;font-weight:600;border-radius:999px;
+  display:inline-flex;align-items:center;height:24px;padding:0 9px 1px;
+  background:#1c2b3a;color:#fff;font-size:14px;font-weight:700;border-radius:4px;
   white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;
 }
 .react-btn:hover .rb-label{opacity:1;visibility:visible}
