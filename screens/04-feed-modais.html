@@ -1,0 +1,146 @@
+<!-- modais do feed, reacoes e editor rapido -->
+<div class="fg-backdrop" id="cmLikesModal">
+  <div class="fg-modal" style="width:420px;max-height:70vh;display:flex;flex-direction:column">
+    <div class="fg-head"><h2 style="display:flex;align-items:center;gap:9px"><span class="cml-ic"><i class="fa-solid fa-thumbs-up"></i></span> <span id="cmLikesTitle">Curtidas</span></h2><span style="flex:1"></span><button class="fg-close" id="cmLikesClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body" id="cmLikesList" style="overflow-y:auto"></div>
+  </div>
+</div>
+<div class="fg-backdrop" id="cmApprModal">
+  <div class="fg-modal" style="width:min(560px,95vw)">
+    <div class="fg-head"><h2>Aprovar comentário</h2><span style="flex:1"></span><button class="fg-close" id="cmApprClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div style="padding:20px">
+      <div class="cmappr-post" id="cmApprPostCard" style="margin-top:0;margin-bottom:16px">
+        <span class="cmappr-thumb" id="cmApprThumb"></span>
+        <div class="cmappr-pinfo"><span class="cmappr-plabel">Comentário na publicação</span><b id="cmApprPost"></b><span id="cmApprPsub"></span></div>
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span class="avatar" id="cmApprAv" style="width:46px;height:46px;font-size:0"></span><div><b id="cmApprName" style="display:block;color:var(--ink);font-size:14px"></b><span id="cmApprUnit" style="font-size:12px;color:var(--muted)"></span></div></div>
+      <div id="cmApprText" style="font-size:15px;color:#334;line-height:1.55;background:#f2f5f7;border-radius:12px;padding:14px 16px"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:10px"><i class="fa-regular fa-clock"></i> <span id="cmApprWhen"></span></div>
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="fo-btn ghost" id="cmApprRej" style="flex:1;justify-content:center;background:#fdecea;color:#c62828"><i class="fa-solid fa-xmark"></i> Recusar</button>
+        <button class="fo-btn" id="cmApprOk" style="flex:1;justify-content:center"><i class="fa-solid fa-check"></i> Aprovar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fg-backdrop" id="pubApprModal">
+  <div class="fg-modal" style="width:min(600px,95vw)">
+    <div class="fg-head"><h2>Aprovar publicação</h2><span style="flex:1"></span><button class="fg-close" id="pubApprClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div style="padding:20px">
+      <div class="cmappr-post" id="pubApprCard" style="margin-top:0;margin-bottom:16px">
+        <span class="cmappr-thumb" id="pubApprThumb"></span>
+        <div class="cmappr-pinfo"><span class="cmappr-plabel" id="pubApprType">Publicação</span><b id="pubApprTitle"></b><span id="pubApprSub"></span></div>
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span class="avatar" id="pubApprAv" style="width:46px;height:46px;font-size:0"></span><div><b id="pubApprName" style="display:block;color:var(--ink);font-size:14px"></b><span id="pubApprUnit" style="font-size:12px;color:var(--muted)"></span></div></div>
+      <div id="pubApprText" style="font-size:15px;color:#334;line-height:1.55;background:#f2f5f7;border-radius:12px;padding:14px 16px"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:10px"><i class="fa-regular fa-clock"></i> <span id="pubApprWhen"></span></div>
+      <div style="display:flex;gap:10px;margin-top:20px" id="pubApprActs">
+        <button class="fo-btn ghost" id="pubApprRej" style="flex:1;justify-content:center;background:#fdecea;color:#c62828"><i class="fa-solid fa-xmark"></i> Recusar</button>
+        <button class="fo-btn" id="pubApprOk" style="flex:1;justify-content:center"><i class="fa-solid fa-check"></i> Aprovar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ==================== QUEM INTERAGIU (reações) ==================== -->
+<div class="rx-viewer" id="rxViewer" hidden>
+  <div class="rxv-backdrop" id="rxvBackdrop"></div>
+  <div class="rxv-card">
+    <div class="rxv-head">
+      <div class="rxv-tabs" id="rxvTabs"></div>
+      <button class="rxv-close" id="rxvClose" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="rxv-list" id="rxvList"></div>
+  </div>
+</div>
+
+<!-- ==================== VISUALIZADOR DE STORIES ==================== -->
+<div class="short-viewer" id="storyViewer" hidden>
+  <div class="sv-backdrop" id="svBackdrop"></div>
+  <button class="sv-nav prev" id="svPrev" title="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+  <div class="sv-frame">
+    <div class="sv-content" id="svContent"></div>
+    <div class="sv-tap"><div class="l" id="tapL"></div><div class="r" id="tapR"></div></div>
+    <div class="sv-progress" id="svProgress"></div>
+    <div class="sv-header">
+      <span class="avatar" id="svAv"></span>
+      <div>
+        <div class="sv-hname" id="svName"></div>
+        <div class="sv-htime" id="svTime"></div>
+      </div>
+      <button class="sv-close" id="svClose" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+  <button class="sv-nav next" id="svNext" title="Próximo"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<!-- ==================== QUICK POST (LinkedIn-style) ==================== -->
+<div class="qp-back" id="qpBack">
+  <div class="qp-modal">
+    <div class="qp-head">
+      <span class="avatar av-rc"></span>
+      <div class="qp-audwrap"><b>Rodrigo Caetano Silva</b><button type="button" class="qp-aud qp-audhidden" id="qpAudBtn"><i class="fa-solid fa-earth-americas" id="qpAudIc"></i> <span id="qpAudLbl">Publicar para Todos</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
+      <div class="qp-catmenu qp-audmenu" id="qpAudMenu" hidden>
+        <button type="button" data-aud="rede" data-ic="fa-earth-americas"><i class="fa-solid fa-earth-americas"></i>Publicar para Todos</button>
+        <button type="button" data-aud="unidades" data-ic="fa-store"><i class="fa-solid fa-store"></i>Publicar para Unidades</button>
+        <button type="button" data-aud="matriz" data-ic="fa-building"><i class="fa-solid fa-building"></i>Publicar para Matriz</button>
+      </div>
+      <div class="qp-unitwrap"><button type="button" class="qp-aud qp-unit" id="qpUnitBtn"><i class="fa-solid fa-store" id="qpUnitIc"></i> <span id="qpUnitLbl">Não vincular unidade</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
+        <div class="qp-catmenu qp-unitmenu" id="qpUnitMenu" hidden></div>
+      </div></div>
+      <div class="qp-catwrap"><button type="button" class="qp-cat" id="qpCatBtn"><span class="qp-cat-ic" id="qpCatIc"></span><span id="qpCatLbl">Categoria</span><i class="fa-solid fa-chevron-down" style="font-size:10px"></i></button><div class="qp-catmenu" id="qpCatMenu" hidden></div></div>
+      <button class="qp-x" id="qpX"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="qp-body" id="qpBody"><textarea class="qp-text" id="qpText" placeholder="Sobre o que você quer falar?"></textarea><input class="qp-sub" id="qpSub" placeholder="Adicione um subtítulo (opcional)" hidden><div class="qp-imgwrap" id="qpImgWrap" hidden><img id="qpImgPreview" alt=""><button class="qp-imgx" id="qpImgX" title="Remover imagem"><i class="fa-solid fa-xmark"></i></button></div><div class="qp-imggrid" id="qpImgGrid" hidden></div><input type="file" id="qpImgFile" accept="image/*" multiple hidden></div>
+    <div class="qp-colors hidden" id="qpColors"></div>
+    <div class="qp-colorback hidden" id="qpColorBack"><button type="button" class="pp-btn" id="qpColorExit"><i class="fa-solid fa-arrow-left"></i> Voltar</button></div>
+    <div class="qp-advpanel" id="qpAdvPanel" hidden>
+      <div class="cr-advhd qp-advhd"><button type="button" class="cr-advback" id="qpAdvBack"><i class="fa-solid fa-arrow-left"></i> Voltar</button><b>Avançado</b></div>
+      <div class="nv-def-wrap">
+
+        <div class="nv-def-sec">Publicação</div>
+        <div class="nv-def-row"><div class="nv-def-lbl"><b>Início da publicação</b><span>Quando ela fica visível no feed.</span></div>
+          <div class="nv-def-ctl"><div class="nv-seg2" id="qpDefStartSeg"><button type="button" data-s="now" class="on">Imediato</button><button type="button" data-s="sched">Agendar</button></div><div class="nv-dtrow" id="qpDefStartRow" style="display:none"><input type="date" id="qpDefStart"><input type="time" id="qpDefStartTime" value="08:00"></div></div></div>
+        <div class="nv-def-row"><div class="nv-def-lbl"><b>Encerra em</b><span>Deixe como "sem expiração" para manter no feed.</span></div>
+          <div class="nv-def-ctl"><div class="nv-seg2" id="qpDefEndSeg"><button type="button" data-s="never" class="on">Sem expiração</button><button type="button" data-s="date">Definir data</button></div><div class="nv-dtrow" id="qpDefEndRow" style="display:none"><input type="date" id="qpDefEnd"><input type="time" id="qpDefEndTime" value="23:59"></div></div></div>
+        <div class="nv-def-sec">Distribuição</div>
+        <div class="nv-def-row">
+          <div class="nv-def-lbl"><b>Alcance</b><span>Quem vê esta publicação na rede.</span></div>
+          <div class="nv-def-ctl"><div class="nv-def-aud" id="qpAudSlot"></div></div>
+        </div>
+        <input type="checkbox" id="qpDefEmail" checked hidden>
+        <div class="nv-def-row"><div class="nv-def-lbl"><b>Notificação push</b><span>Alerta no app dos destinatários.</span></div>
+          <div class="nv-def-ctl"><label class="nv-toggle"><input type="checkbox" id="qpDefPush"><span class="nv-tk"></span> Enviar push</label></div></div>
+      </div>
+    </div>
+    <div class="qp-tools">
+      <button class="qp-tool" id="qpToolEmoji" title="Emoji"><i class="fa-regular fa-face-smile"></i> Emoji</button>
+      <button class="qp-tool" id="qpToolImg" title="Imagem"><i class="fa-regular fa-image"></i> Imagem</button>
+      <button class="qp-tool" id="qpToolVideo" title="Vídeo"><i class="fa-solid fa-video"></i> Vídeo</button>
+      <button class="qp-tool color" id="qpToolColor" title="Colorida"><i class="fa-solid fa-palette"></i> Colorida</button>
+      <button class="qp-tool" id="qpToolArt" title="Artigo"><i class="fa-solid fa-newspaper"></i> Artigo</button>
+      <input type="file" id="qpVideoFile" accept="video/*" hidden>
+      <div class="qp-emojis" id="qpEmojis" hidden></div>
+    </div>
+    <div class="qp-foot">
+      <button class="qp-adv" id="qpAdv"><i class="fa-solid fa-sliders"></i> Avançado</button>
+      <button class="qp-pub" id="qpPub" disabled><span>Publicar</span><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Preview de vídeo em tela cheia (mobile) ============
+     Ao escolher um vídeo no celular, ele aparece aqui em vez de ir para dentro
+     do editor: "Próximo" leva ao editor com o vídeo já anexado, o X descarta e
+     volta para a home. -->
+<div class="mvid" id="mvidPrev" hidden>
+  <video class="mvid-video" id="mvidVideo" playsinline autoplay muted loop></video>
+  <img class="mvid-img" id="mvidImg" alt="">
+  <button class="mvid-x" id="mvidX" type="button" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+  <div class="mvid-foot">
+    <button class="mvid-next" id="mvidNext" type="button"><span>Próximo</span><i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- ==================== MÓDULO NOTÍCIAS ==================== -->

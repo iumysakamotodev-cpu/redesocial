@@ -1,0 +1,807 @@
+<!-- modulo Rede Social e telas de configuracao -->
+<aside class="rmod-side" id="nmodSide">
+  <svg class="rmod-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
+  <button class="rmod-item active" id="nmodPub"><i class="fa-solid fa-newspaper"></i>Publicações</button>
+  <button class="rmod-item" id="nmodCats"><i class="fa-solid fa-tags"></i>Categorias</button>
+  <button class="rmod-item" id="nmodPerm"><i class="fa-solid fa-user-shield"></i>Permissões</button>
+  <span class="rmod-sp"></span>
+  <button class="rmod-item" id="nmodApps" title="Voltar para a home"><i class="fa-solid fa-grip"></i>Módulos</button>
+  <span class="avatar av-rc" style="width:36px;height:36px;flex-shrink:0"></span>
+</aside>
+
+<div class="news-view env-social" id="newsView">
+  <div class="nmod-top" id="nmodTop">
+    <svg class="nmod-top-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
+    <span class="nmod-envname" id="nmodEnvName">Social</span>
+    <span class="nmod-envdiv"></span>
+    <div class="nmod-top-tabs nmod-grp" id="nmodGrpManage">
+      <button class="nmod-tab" id="nmtPub"><i class="fa-solid fa-newspaper"></i> Publicações</button>
+      <button class="nmod-tab" id="nmtMgShorts"><i class="fa-solid fa-clapperboard"></i> Shorts</button>
+      <button class="nmod-tab" id="nmtApr"><span class="nmt-ic"><i class="fa-solid fa-circle-check"></i><span class="tab-badge" id="aprTabBadge" hidden></span></span> Aprovações</button>
+      <button class="nmod-tab" id="nmtInter"><span class="nmt-ic"><i class="fa-solid fa-heart"></i><span class="tab-badge" id="interTabBadge" hidden></span></span> Reações</button>
+      <button class="nmod-tab" id="nmtCmts"><i class="fa-solid fa-comment"></i> Comentários</button>
+      <button class="nmod-tab" id="nmtCfg"><i class="fa-solid fa-gear"></i> Configurações</button>
+    </div>
+    <div class="nmod-top-tabs nmod-grp on" id="nmodGrpSocial">
+      <button class="nmod-tab active" id="nmtFeed"><i class="fa-solid fa-newspaper"></i> Publicações</button>
+      <button class="nmod-tab" id="nmtStories"><i class="fa-solid fa-clapperboard"></i> Shorts</button>
+    </div>
+    <span style="flex:1"></span>
+    <div class="nmod-search" id="nmodSearchWrap">
+      <input type="text" id="nmodSearchIn" placeholder="Buscar shorts e publicações" autocomplete="off">
+      <button type="button" id="nmodSearchBtn">Pesquisar</button>
+    </div>
+    <span style="flex:1"></span>
+    <button class="nmod-switch" id="nmodEnvSwitch"><i class="fa-solid fa-gear"></i><span class="lbl">Gerenciar</span></button>
+    <button class="nmod-tab" id="nmtApps"><i class="fa-solid fa-grip"></i> Módulos</button>
+    <span class="avatar av-rc nmod-topav" id="nmodTopAv" title="Rodrigo Caetano"></span>
+  </div>
+  <aside class="nv-cfgside" id="nvCfgSide">
+    <div class="nv-cfgside-hd"></div>
+    <div class="apr-grp-hd"><i class="fa-solid fa-newspaper"></i> Publicações</div>
+    <button class="nv-cfgitem apr-sub" id="nvcfgPubWho"><i class="fa-solid fa-users"></i> Quem pode postar</button>
+    <button class="nv-cfgitem apr-sub" id="nvcfgPubApr"><i class="fa-solid fa-circle-check"></i> Aprovação</button>
+    <button class="nv-cfgitem" id="nvcfgPermPub" hidden></button>
+    <button class="nv-cfgitem" id="nvcfgCats" hidden></button>
+    <button class="nv-cfgitem" id="nvcfgPerm" hidden></button><button class="nv-cfgitem" id="nvcfgParams" hidden></button>
+  </aside>
+  <aside class="nv-cfgside" id="nvCatSide">
+    <div class="apr-grp-hd"><i class="fa-solid fa-user-shield"></i> Permissões</div>
+    <button class="nv-cfgitem apr-sub" id="cfgNavWho"><i class="fa-solid fa-users"></i> Quem pode postar</button>
+    <button class="nv-cfgitem apr-sub" id="cfgNavTeam"><i class="fa-solid fa-user-shield"></i> Administradores</button>
+    <button class="nv-cfgitem apr-sub" id="cfgNavApr"><i class="fa-solid fa-circle-check"></i> Aprovação</button>
+    <div class="apr-grp-hd" style="margin-top:14px"><i class="fa-solid fa-pen-to-square"></i> Postagem</div>
+    <button class="nv-cfgitem apr-sub active" id="nvcfgCats2"><i class="fa-solid fa-tags"></i> Categorias</button>
+  </aside>
+  <aside class="nv-cfgside" id="nvAprSide">
+    <div class="apr-grp-hd"><i class="fa-solid fa-newspaper"></i> Publicações</div>
+    <button class="nv-cfgitem apr-sub" data-scope="pub"><i class="fa-solid fa-align-left"></i> Postagens <span class="cfg-badge" id="aprPubBadge" hidden></span></button>
+    <button class="nv-cfgitem apr-sub" data-scope="com"><i class="fa-solid fa-comment-dots"></i> Comentário <span class="cfg-badge" id="aprComBadge" hidden></span></button>
+    <div class="apr-grp-hd" style="margin-top:14px"><i class="fa-solid fa-clapperboard"></i> Shorts</div>
+    <button class="nv-cfgitem apr-sub" data-scope="reel"><i class="fa-solid fa-align-left"></i> Postagens <span class="cfg-badge" id="aprReelBadge" hidden></span></button>
+    <button class="nv-cfgitem" id="nvaprCom" hidden></button><button class="nv-cfgitem" id="nvaprPub" hidden></button>
+  </aside>
+  <!-- FEED (estilo LinkedIn) -->
+  <div class="nv-screen active" id="nvFeedScreen">
+    <div class="cat-head" hidden><div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Feed</h2></div><span style="flex:1"></span><button class="cat-add" id="nvManageBtn" style="background:#eef2f5;color:#5b6672"><i class="fa-solid fa-gear"></i> Gerenciar</button></div>
+    <div class="nv-reelsbanner"><i class="fa-solid fa-circle-info"></i> Aplicação: Shorts exibe o mesmo conteúdo do Feed até o layout próprio ser definido.</div>
+    <div class="nvf-body"><div class="nvf-layout">
+      <aside class="nvf-profile">
+        <div class="nvf-pcard nvf-pclick" style="cursor:pointer">
+          <div class="nvf-pcover"></div>
+          <div class="nvf-pbody" style="text-align:center">
+            <span class="avatar av-rc nvf-pav" style="margin:-38px auto 0"></span>
+            <div class="nvf-pname" style="justify-content:center">Rodrigo Caetano</div>
+            <div class="nvf-prole">CEO · SULTS</div>
+          </div>
+        </div>
+        <div class="nvf-pcard nvf-unitcard" hidden>
+          <div class="nvf-side-hd" style="padding:0 2px 12px">Minhas unidades</div>
+          <div class="nvf-unit">
+            <span class="nvf-unit-ic" style="background:linear-gradient(135deg,#00acac,#0c7d7d)"><i class="fa-solid fa-building"></i></span>
+            <div class="nvf-unit-tx"><b>Matriz · Uberaba</b><span>Gestor de rede · #001</span></div>
+            <span class="nvf-unit-tag">Ativa</span>
+          </div>
+          <div class="nvf-unit">
+            <span class="nvf-unit-ic" style="background:linear-gradient(135deg,#2f6fe4,#1e4fb0)"><i class="fa-solid fa-store"></i></span>
+            <div class="nvf-unit-tx"><b>Unidade Boatlux Litoral 01</b><span>Gestor de unidade · #873</span></div>
+          </div>
+          <div class="nvf-unit">
+            <span class="nvf-unit-ic" style="background:linear-gradient(135deg,#8161d8,#5e35b1)"><i class="fa-solid fa-store"></i></span>
+            <div class="nvf-unit-tx"><b>Unidade Constance Centro</b><span>Colaborador · #912</span></div>
+          </div>
+        </div>
+        <div class="nvf-pcard nvf-porgcard" hidden>
+          <div class="nvf-side-hd" style="padding:0 0 10px">Minhas publicações</div>
+          <div class="nvf-postbig"><b id="nvfPostTotal">0</b><span>publicações no total</span></div>
+          <div class="nvf-pdiv"></div>
+          <button class="nvf-pstat"><span><i class="fa-solid fa-earth-americas" style="color:#2f6fe4;margin-right:8px"></i>Para a rede</span><b id="nvfPostRede">0</b></button>
+          <button class="nvf-pstat"><span><i class="fa-solid fa-store" style="color:#27a689;margin-right:8px"></i>Para unidades</span><b id="nvfPostUni">0</b></button>
+          <button class="nvf-pstat"><span><i class="fa-solid fa-newspaper" style="color:#e08a1e;margin-right:8px"></i>Artigos</span><b id="nvfPostArt">0</b></button>
+          <div class="nvf-pdiv"></div>
+          <button class="nvf-plink between" id="nvfMinhas">Ver minhas publicações <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="nvf-pcard" hidden>
+          <button class="nvf-plink"><i class="fa-solid fa-bookmark"></i> Itens salvos</button>
+          <button class="nvf-plink"><i class="fa-solid fa-people-group"></i> Grupos</button>
+          <button class="nvf-plink"><i class="fa-solid fa-newspaper"></i> Newsletters</button>
+          <button class="nvf-plink"><i class="fa-regular fa-calendar"></i> Eventos</button>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Minha atividade</div>
+          <button class="nvf-fitem nvf-mine active" data-mine=""><i class="fa-solid fa-list"></i> Tudo</button>
+          <button class="nvf-fitem nvf-mine" data-mine="minhas"><i class="fa-solid fa-user-pen"></i> Publicados por mim <span class="nvf-fn" id="nvfnMinhas3"></span></button>
+          <button class="nvf-fitem nvf-mine" data-mine="curti"><i class="fa-solid fa-heart"></i> Que eu curti <span class="nvf-fn" id="nvfnCurti"></span></button>
+          <button class="nvf-fitem nvf-mine" data-mine="comentei"><i class="fa-solid fa-reply"></i> Que eu comentei <span class="nvf-fn" id="nvfnComentei"></span></button>
+          <button class="nvf-fitem nvf-mine" data-mine="naovistos"><i class="fa-solid fa-circle-play"></i> Não vistos <span class="nvf-fn" id="nvfnNaovistos"></span></button>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Filtrar feed</div>
+          <button class="nvf-fitem active" data-fq="todos"><i class="fa-solid fa-layer-group"></i> Todas as publicações <span class="nvf-fn" id="nvfnTodos"></span></button>
+          <button class="nvf-fitem" data-fq="artigo"><i class="fa-solid fa-newspaper"></i> Artigos <span class="nvf-fn" id="nvfnArt"></span></button>
+          <button class="nvf-fitem" data-fq="post"><i class="fa-solid fa-align-left"></i> Posts <span class="nvf-fn" id="nvfnPost"></span></button>
+          <button class="nvf-fitem" data-fq="midia" hidden><i class="fa-solid fa-photo-film"></i> Com mídia <span class="nvf-fn" id="nvfnMidia"></span></button>
+          <button class="nvf-fitem" data-fq="enquete" hidden><i class="fa-solid fa-square-poll-horizontal"></i> Enquetes <span class="nvf-fn" id="nvfnPoll"></span></button>
+        </div>
+        <div class="nvf-side-card" hidden>
+          <div class="nvf-side-hd">Minhas publicações</div>
+          <button class="nvf-fitem nvf-mine" data-mine="minhas"><i class="fa-solid fa-pen-nib"></i> Publicadas por mim <span class="nvf-fn" id="nvfnMinhas"></span></button>
+        </div>
+        <div class="nvf-side-card" hidden>
+          <div class="nvf-side-hd">Ordenar por</div>
+          <button class="nvf-fitem nvf-sort active" data-sort="recentes"><i class="fa-solid fa-clock"></i> Mais recentes</button>
+          <button class="nvf-fitem nvf-sort" data-sort="curtidas"><i class="fa-solid fa-thumbs-up"></i> Mais curtidas</button>
+          <button class="nvf-fitem nvf-sort" data-sort="comentadas"><i class="fa-solid fa-comments"></i> Mais comentadas</button>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Categorias</div>
+          <div id="nvfCats"></div>
+        </div>
+      </aside>
+      <aside class="nvf-side">
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Localizar</div>
+          <div class="nvf-fsearch"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvfTextSearch" placeholder="Pesquisar no feed" autocomplete="off"></div>
+          <div class="nvf-searchhint" id="nvfSearchHint" hidden></div>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Ordenar por</div>
+          <button class="nvf-fitem nvf-sort active" data-sort="recentes"><i class="fa-solid fa-clock"></i> Mais recentes</button>
+          <button class="nvf-fitem nvf-sort" data-sort="curtidas"><i class="fa-solid fa-thumbs-up"></i> Mais curtidas</button>
+          <button class="nvf-fitem nvf-sort" data-sort="comentadas"><i class="fa-solid fa-comments"></i> Mais comentadas</button>
+        </div>
+        <div class="nvf-side-card nvf-minecard" hidden>
+          <div class="nvf-side-hd">Minhas publicações</div>
+          <div class="nvf-minegrid">
+            <button class="nvf-minetile nvf-mine" data-mine="minhas">
+              <span class="nvf-minetile-ic" style="background:linear-gradient(135deg,#00acac,#0c7d7d)"><i class="fa-solid fa-pen-nib"></i></span>
+              <b id="nvfnMinhas2">0</b><span>Publicadas por mim</span>
+            </button>
+            <button class="nvf-minetile nvf-mine" data-mine="curti">
+              <span class="nvf-minetile-ic" style="background:linear-gradient(135deg,#4d96e8,#2f6fe4)"><i class="fa-solid fa-thumbs-up"></i></span>
+              <b id="nvfnCurti2">0</b><span>Que eu curti</span>
+            </button>
+          </div>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Autor</div>
+          <button class="nvf-selbtn" id="nvfAuthorBtn"><i class="fa-solid fa-user" id="nvfAuthorBtnIc"></i><span id="nvfAuthorBtnLbl">Todos os autores</span><i class="fa-solid fa-magnifying-glass nvf-selmag"></i></button>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Período</div>
+          <select class="nvf-fsel" id="nvfPeriod"><option value="">Qualquer data</option><option value="1">Hoje</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option></select>
+        </div>
+      </aside>
+      <div class="nvf-wrap">
+      <section class="stories-section nvf-stories" style="margin:0 0 16px">
+        <div class="section-title-row" style="margin-bottom:10px">
+          <h2 class="section-title" style="font-size:20px;margin:0">Shorts</h2>
+          <a href="#" class="see-all" id="nvfStoriesAll">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="stories-wrap">
+          <button class="st-arrow left" id="nvfStLeft" hidden><i class="fa-solid fa-chevron-left"></i></button>
+          <div class="shorts" id="nvfStoriesRow"></div>
+          <button class="st-arrow right" id="nvfStRight"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </section>
+      <div class="nvf-composer">
+        <div class="nvf-composer-top">
+          <span class="avatar av-rc"></span>
+          <button class="nvf-start" id="nvfStart">Comece uma publicação</button>
+        </div>
+        <div class="nvf-quick">
+          <button class="nvf-qbtn img" id="nvqImg"><i class="fa-solid fa-image"></i> Imagem</button>
+          <button class="nvf-qbtn color" id="nvqColor"><i class="fa-solid fa-palette"></i> Colorida</button>
+          <button class="nvf-qbtn video" id="nvqVideo"><i class="fa-solid fa-video"></i> Vídeo</button>
+          <button class="nvf-qbtn news" id="nvqArt"><i class="fa-solid fa-newspaper"></i> Artigo</button>
+        </div>
+      </div>
+      <div class="nvf-clearwrap" id="nvfClearWrap" hidden><button class="nvf-clearpill" id="nvfClear"><span id="nvfClearLbl">Limpar filtros</span> <i class="fa-solid fa-xmark"></i></button></div>
+      <div class="nvf-fbar" id="nvfFbar" hidden></div>
+      <div class="nvf-clearwrap" id="nvSearchNote" hidden><button class="nvf-clearpill" id="nvSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
+      <div id="nvFeed"></div>
+      <div class="demo-empty-state" id="nvFeedVazio" hidden>
+        <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
+        <div class="de-title">Seja o primeiro a publicar</div>
+        <div class="de-sub">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+      </div>
+    </div></div></div>
+  </div>
+  <!-- SHORTS B -->
+  <div class="nv-screen" id="nvShortsBScreen">
+    <div class="sb-body">
+      <aside class="sb-side">
+        <div class="nvf-pcard nvf-pclick" style="cursor:pointer">
+          <div class="nvf-pcover"></div>
+          <div class="nvf-pbody" style="text-align:center">
+            <span class="avatar av-rc nvf-pav" style="margin:-38px auto 0"></span>
+            <div class="nvf-pname" style="justify-content:center">Rodrigo Caetano</div>
+            <div class="nvf-prole">CEO · SULTS</div>
+          </div>
+        </div>
+        <button class="rxs-newbtn" id="sbNew"><span class="rc-plus2"><i class="fa-solid fa-plus"></i></span><span class="rc-label">Criar short</span></button>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Minha atividade</div>
+          <button class="nvf-fitem sb-act active" data-sbact=""><i class="fa-solid fa-list"></i> Tudo</button>
+          <button class="nvf-fitem sb-act" data-sbact="meus"><i class="fa-solid fa-user-pen"></i> Publicados por mim</button>
+          <button class="nvf-fitem sb-act" data-sbact="curti"><i class="fa-solid fa-heart"></i> Que eu curti</button>
+          <button class="nvf-fitem sb-act" data-sbact="naovistos"><i class="fa-solid fa-circle-play"></i> Não vistos</button>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Tipo</div>
+          <button class="nvf-fitem sb-fmt active" data-sbfmt=""><i class="fa-solid fa-layer-group"></i> Todos</button>
+          <button class="nvf-fitem sb-fmt" data-sbfmt="video"><i class="fa-solid fa-video"></i> Vídeo</button>
+          <button class="nvf-fitem sb-fmt" data-sbfmt="imagem"><i class="fa-solid fa-image"></i> Imagem</button>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Localizar</div>
+          <div class="nvf-fsearch"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="sbSearch" placeholder="Pesquisar shorts" autocomplete="off"></div>
+        </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Pessoa</div>
+          <button class="nvf-selbtn" id="sbAuthorBtn"><i class="fa-solid fa-user"></i><span id="sbAuthorBtnLbl">Todas as pessoas</span><i class="fa-solid fa-magnifying-glass nvf-selmag"></i></button>
+        </div>
+      </aside>
+      <div class="sb-main">
+        <div class="sb-pillrow">
+          <button class="sb-pillarrow left" id="sbPillLeft" hidden><i class="fa-solid fa-chevron-left"></i></button>
+          <div class="sb-pills" id="sbPills"></div>
+          <button class="sb-pillarrow right" id="sbPillRight"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div class="nvf-clearwrap" id="sbSearchNote" hidden><button class="nvf-clearpill" id="sbSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
+        <div class="nvf-clearwrap" id="sbClearWrap" hidden><button class="nvf-clearpill" id="sbClear"><span id="sbClearLbl">Limpar filtros</span> <i class="fa-solid fa-xmark"></i></button></div>
+        <div class="sb-grid" id="sbGrid"></div>
+        <div class="sb-more" id="sbMore" hidden><span class="sb-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando</span></div>
+        <div class="sb-empty" id="sbEmpty" hidden><i class="fa-solid fa-clapperboard"></i><b>Nenhum short encontrado</b><span>Ajuste os filtros para ver outros resultados.</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- LISTA (Publicadas) -->
+  <div class="nv-screen" id="nvListScreen">
+    <div class="cat-head">
+      <div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Publicações</h2></div>
+      <button class="fl-toggle" data-fltoggle><i class="fa-solid fa-filter"></i> <span>Esconder filtros</span> <i class="fa-solid fa-chevron-up fl-carat"></i></button>
+      <span style="flex:1"></span>
+    </div>
+    <div class="cat-body nv-listwrap">
+      <aside class="nv-filters">
+        <div class="rx-search nv-fsearch"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvSearch" placeholder="Buscar publicação" autocomplete="off"></div>
+        <div class="nv-fsec"><div class="nv-fsec-hd">Quais publicações você quer ver? <i class="fa-solid fa-chevron-up"></i></div>
+          <div class="cv-seg nv-sitcards" id="nvListSeg">
+            <button data-f="todas" class="active"><i class="fa-solid fa-layer-group"></i>Todos</button>
+            <button data-f="post"><i class="fa-solid fa-align-left"></i>Postagem</button>
+            <button data-f="article"><i class="fa-solid fa-newspaper"></i>Artigo</button>
+          </div>
+        </div>
+        <div class="nv-fsec"><div class="nv-fsec-hd">Publicação <i class="fa-solid fa-chevron-up"></i></div>
+          <div class="nv-fgrid"><div><label>Situação</label><select class="nv-fsel" id="nvFStatus"><option value="">Todas as situações</option><option value="pub">Publicado</option><option value="agendado">Agendado</option><option value="removido">Removidos</option></select></div>
+          <div><label>Categoria</label><select class="nv-fsel" id="nvFCat"></select></div></div>
+        </div>
+        <div class="nv-fsec"><div class="nv-fsec-hd">Distribuição <i class="fa-solid fa-chevron-up"></i></div>
+          <div class="nv-fgrid"><div><label>Alcance</label><select class="nv-fsel" id="nvFReach"><option value="">Todo alcance</option><option value="rede">Toda a rede</option><option value="unidades">Unidades</option><option value="matriz">Sua Marca (Matriz)</option></select></div>
+          <div><label>Autor</label><select class="nv-fsel" id="nvFAutor"></select></div></div>
+        </div>
+        <div class="nv-filters-ft"><button class="nv-fclear" id="nvFClear"><i class="fa-solid fa-filter-circle-xmark"></i> Limpar filtros</button><button class="nv-fapply" id="nvFApply">Aplicar filtros <i class="fa-solid fa-chevron-right"></i></button></div>
+      </aside>
+      <div class="nv-listmain" style="flex:1;min-width:0"><div class="rlist" id="nvList"></div></div>
+    </div>
+  </div>
+  <!-- COMPOR (Nova publicação) -->
+  <div class="nv-screen" id="nvComposeScreen">
+    <div class="cat-head">
+      <button class="nv-back" id="nvBack"><i class="fa-solid fa-arrow-left"></i></button>
+      <div class="rx-title"><i class="fa-solid fa-pen-to-square"></i><h2 id="nvComposeTitle">Novo artigo</h2></div>
+    </div>
+    <div class="nv-sheet">
+    <div class="nv-steps" id="nvSteps"></div>
+    <div class="nv-pane active" id="nvPaneTipo">
+      <div class="nv-tipo">
+        <h3>Que tipo de publicação você quer criar?</h3>
+        <p>Escolha o formato, você poderá ajustar o conteúdo nas próximas etapas.</p>
+        <div class="nv-tipo-cards">
+          <div class="nv-tipo-card" data-type="post">
+            <i class="fa-solid fa-circle-check nv-tipo-check"></i>
+            <div class="nv-tipo-ic" style="background:linear-gradient(135deg,#2f6fe4,#1e4fb0)"><i class="fa-solid fa-comment"></i></div>
+            <h4>Post simples</h4>
+            <span>Uma publicação rápida, estilo rede social: texto, imagem, enquete ou evento. Aparece no feed como um post.</span>
+          </div>
+          <div class="nv-tipo-card" data-type="article">
+            <i class="fa-solid fa-circle-check nv-tipo-check"></i>
+            <div class="nv-tipo-ic" style="background:linear-gradient(135deg,#00acac,#0c7d7d)"><i class="fa-solid fa-newspaper"></i></div>
+            <h4>Artigo</h4>
+            <span>Um conteúdo completo, estilo matéria: capa, título, subtítulo e corpo formatado. Aparece no feed como um card de artigo.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nv-pane" id="nvPaneDestino">
+      <div class="nv-tipo">
+        <h3>Para quem você quer publicar?</h3>
+        <p>Defina o público que vai receber esta publicação.</p>
+        <div class="nv-tipo-cards three">
+          <div class="nv-tipo-card" data-dest="rede">
+            <i class="fa-solid fa-circle-check nv-tipo-check"></i>
+            <div class="nv-tipo-ic" style="background:linear-gradient(135deg,#00acac,#0c7d7d)"><i class="fa-solid fa-earth-americas"></i></div>
+            <h4>Toda a rede</h4>
+            <span class="nv-destsub">Todos os colaboradores da rede recebem a publicação.</span>
+          </div>
+          <div class="nv-tipo-card" data-dest="unidades">
+            <i class="fa-solid fa-circle-check nv-tipo-check"></i>
+            <div class="nv-tipo-ic" style="background:linear-gradient(135deg,#2f6fe4,#1e4fb0)"><i class="fa-solid fa-store"></i></div>
+            <h4>Unidades</h4>
+            <span class="nv-destsub">Selecione empresas específicas que vão receber.</span>
+          </div>
+          <div class="nv-tipo-card" data-dest="matriz">
+            <i class="fa-solid fa-circle-check nv-tipo-check"></i>
+            <div class="nv-tipo-ic" style="background:linear-gradient(135deg,#8161d8,#5e35b1)"><i class="fa-solid fa-building"></i></div>
+            <h4>Sua Marca (Matriz)</h4>
+            <span class="nv-destsub">Apenas as equipes da matriz recebem a publicação.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nv-pane" id="nvPaneEmpresas">
+      <div class="nv-emp">
+        <div class="nv-emptools">
+          <button class="nv-empbtn" id="nvEmpAll"><i class="fa-solid fa-check-double"></i> Todas as empresas</button>
+          <button class="nv-empbtn" id="nvEmpNone"><i class="fa-regular fa-square"></i> Desmarcar todas</button>
+          <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvEmpSearch" placeholder="Pesquisar empresa" autocomplete="off"></div>
+          <span class="nv-emp-cnt" id="nvEmpCount">0 selecionadas</span>
+        </div>
+        <div class="nv-empscroll"><div class="rlist" id="nvEmpList"></div></div>
+      </div>
+    </div>
+    <div class="nv-pane" id="nvPanePessoas">
+      <div class="nv-emp">
+        <div class="nv-emptools">
+          <button class="nv-empbtn" id="nvPeoAll"><i class="fa-solid fa-check-double"></i> Selecionar todas</button>
+          <button class="nv-empbtn" id="nvPeoNone"><i class="fa-regular fa-square"></i> Desmarcar todas</button>
+          <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvPeoSearch" placeholder="Pesquisar pessoa" autocomplete="off"></div>
+          <span class="nv-emp-cnt" id="nvPeoCount">0 selecionadas</span>
+        </div>
+        <div class="nv-empscroll"><div class="rlist" id="nvPeoList"></div></div>
+      </div>
+    </div>
+    <div class="nv-pane" id="nvPaneDefinicoes">
+      <div class="nv-def"><div class="nv-def-wrap">
+        <div class="nv-def-sec">Publicação</div>
+        <div class="nv-def-row">
+          <div class="nv-def-lbl"><b>Categoria</b><span>Classifique a publicação.</span></div>
+          <div class="nv-def-ctl"><select id="nvDefCat"><option value="">Sem categoria</option><option>Comunicados oficiais</option><option>Eventos</option><option>Gente &amp; Cultura</option><option>Produto</option><option>Expansão</option></select></div>
+        </div>
+        <div class="nv-def-row">
+          <div class="nv-def-lbl"><b>Início da publicação</b><span>Quando ela fica visível no feed.</span></div>
+          <div class="nv-def-ctl">
+            <div class="nv-seg2" id="nvDefStartSeg"><button type="button" data-s="now" class="on">Imediato</button><button type="button" data-s="sched">Agendar</button></div>
+            <div class="nv-dtrow" id="nvDefStartRow" style="display:none"><input type="date" id="nvDefStart"><input type="time" id="nvDefStartTime" value="08:00"></div>
+          </div>
+        </div>
+        <div class="nv-def-row">
+          <div class="nv-def-lbl"><b>Encerra em</b><span>Deixe como “sem expiração” para manter no feed.</span></div>
+          <div class="nv-def-ctl">
+            <div class="nv-seg2" id="nvDefEndSeg"><button type="button" data-s="never" class="on">Sem expiração</button><button type="button" data-s="date">Definir data</button></div>
+            <div class="nv-dtrow" id="nvDefEndRow" style="display:none"><input type="date" id="nvDefEnd"><input type="time" id="nvDefEndTime" value="23:59"></div>
+          </div>
+        </div>
+        <div class="nv-def-sec">Distribuição</div>
+        <div class="nv-def-row">
+          <div class="nv-def-lbl"><b>Alcance</b><span>Quem vê esta publicação na rede.</span></div>
+          <div class="nv-def-ctl"><div class="nv-def-aud" id="nvArtAudSlot"></div></div>
+        </div>
+        <input type="checkbox" id="nvDefEmail" checked hidden>
+        <div class="nv-def-row">
+          <div class="nv-def-lbl"><b>Notificação push</b><span>Alerta no app dos destinatários.</span></div>
+          <div class="nv-def-ctl"><label class="nv-toggle"><input type="checkbox" id="nvDefPush"><span class="nv-tk"></span> Enviar push</label></div>
+        </div>
+        <input type="checkbox" id="nvDefPin" hidden>
+        <input type="checkbox" id="nvDefInter" checked hidden>
+      </div></div>
+    </div>
+    <div class="nv-pane" id="nvPaneContent">
+      <div class="nv-card" id="nvCardPost">
+        <div class="nvp-author"><span class="avatar av-rc"></span><div><b>Rodrigo Caetano Silva</b><span class="nvp-aud"><i class="fa-solid fa-earth-americas"></i> Publicar para Todos</span></div></div>
+        <div class="nvp-body" id="nvpBody">
+          <textarea class="nvp-text" id="nvpText" placeholder="Sobre o que você quer falar?"></textarea>
+          <input class="nvp-sub" id="nvpSub" placeholder="Adicione um subtítulo (opcional)" hidden>
+          <div class="nvp-imgwrap" id="nvpImgWrap" hidden><img id="nvpImgPreview" alt=""><button class="nvp-imgx" id="nvpImgX" title="Remover imagem"><i class="fa-solid fa-xmark"></i></button></div>
+        </div>
+        <div class="nvp-colors hidden" id="nvpColors"></div>
+        <div class="nvp-tools">
+          <button class="nvp-tool" id="nvpToolEmoji" title="Emoji"><i class="fa-regular fa-face-smile"></i></button>
+          <button class="nvp-tool" id="nvpToolImg" title="Imagem"><i class="fa-regular fa-image"></i></button>
+          <button class="nvp-tool color" id="nvpToolColor" title="Colorida"><i class="fa-solid fa-palette"></i></button>
+          <div class="qp-emojis" id="nvpEmojis" hidden></div>
+        </div>
+        <input type="file" id="nvpImgFile" accept="image/*" hidden>
+      </div>
+      <div class="nv-card" id="nvCardArticle" style="display:none">
+        <div class="nv-author">
+          <span class="avatar av-rc" style="width:46px;height:46px;font-size:0"></span>
+          <div class="qp-audwrap"><b>Rodrigo Caetano Silva</b><button type="button" class="qp-aud qp-audhidden" id="nvArtAudBtn"><i class="fa-solid fa-earth-americas" id="nvArtAudIc"></i> <span id="nvArtAudLbl">Publicar para Todos</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
+            <div class="qp-catmenu qp-audmenu" id="nvArtAudMenu" hidden>
+              <button type="button" data-aud="rede" data-ic="fa-earth-americas"><i class="fa-solid fa-earth-americas"></i>Publicar para Todos</button>
+              <button type="button" data-aud="unidades" data-ic="fa-store"><i class="fa-solid fa-store"></i>Publicar para Unidades</button>
+              <button type="button" data-aud="matriz" data-ic="fa-building"><i class="fa-solid fa-building"></i>Publicar para Matriz</button>
+            </div>
+            <div class="qp-unitwrap"><button type="button" class="qp-aud qp-unit" id="nvArtUnitBtn"><i class="fa-solid fa-store" id="nvArtUnitIc"></i> <span id="nvArtUnitLbl">Não vincular unidade</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
+              <div class="qp-catmenu qp-unitmenu" id="nvArtUnitMenu" hidden></div>
+            </div></div>
+          <div class="qp-catwrap art-catwrap"><button type="button" class="qp-cat" id="nvArtCatBtn"><span class="qp-cat-ic" id="nvArtCatIc"></span><span id="nvArtCatLbl">Categoria</span><i class="fa-solid fa-chevron-down" style="font-size:10px;color:#8E8E93"></i></button><div class="qp-catmenu" id="nvArtCatMenu" hidden></div></div>
+        </div>
+        <div class="nv-artcover" id="nvArtCover">
+          <i class="fa-solid fa-image"></i><b>Adicionar imagem de capa</b><span>Proporção recomendada 16:9</span>
+          <button class="nv-cover-x" id="nvArtCoverX" title="Remover"><i class="fa-solid fa-xmark"></i></button>
+          <img id="nvArtCoverImg" alt="">
+          <input type="file" id="nvArtCoverFile" accept="image/*" hidden>
+        </div>
+        <input class="nv-art-title" id="nvArtTitle" maxlength="120" placeholder="Título do artigo">
+        <input class="nv-art-sub" id="nvArtSub" maxlength="160" placeholder="Subtítulo ou chamada (opcional)">
+        <div class="rt-editor" style="margin-top:14px">
+          <div class="rt-toolbar" id="nvArtToolbar">
+            <button type="button" data-cmd="bold" title="Negrito"><b>B</b></button>
+            <button type="button" data-cmd="italic" title="Itálico"><i>I</i></button>
+            <button type="button" data-cmd="underline" title="Sublinhado"><u>U</u></button>
+            <span class="rt-sep"></span>
+            <select data-size title="Tamanho"><option value="3">Normal</option><option value="1">Pequeno</option><option value="5">Grande</option><option value="6">Título</option></select>
+            <span class="rt-sep"></span>
+            <button type="button" data-cmd="justifyLeft" title="Esquerda"><i class="fa-solid fa-align-left"></i></button>
+            <button type="button" data-cmd="justifyCenter" title="Centro"><i class="fa-solid fa-align-center"></i></button>
+            <button type="button" data-cmd="justifyRight" title="Direita"><i class="fa-solid fa-align-right"></i></button>
+            <button type="button" data-cmd="justifyFull" title="Justificar"><i class="fa-solid fa-align-justify"></i></button>
+            <span class="rt-sep"></span>
+            <button type="button" data-cmd="insertUnorderedList" title="Lista"><i class="fa-solid fa-list-ul"></i></button>
+            <button type="button" data-cmd="insertOrderedList" title="Lista numerada"><i class="fa-solid fa-list-ol"></i></button>
+            <button type="button" data-cmd="outdent" title="Diminuir recuo"><i class="fa-solid fa-outdent"></i></button>
+            <button type="button" data-cmd="indent" title="Aumentar recuo"><i class="fa-solid fa-indent"></i></button>
+            <span class="rt-sep"></span>
+            <button type="button" data-cmd="createLink" title="Link"><i class="fa-solid fa-link"></i></button>
+            <button type="button" id="nvArtRtImg" title="Imagem"><i class="fa-solid fa-image"></i></button>
+            <button type="button" id="nvArtRtVid" title="Vídeo"><i class="fa-solid fa-video"></i></button>
+          </div>
+          <div class="rt-area" id="nvArtBodyIn" contenteditable="true" data-ph="Escreva o conteúdo do artigo..." style="min-height:500px;max-height:none"></div>
+          <input type="file" id="nvArtImgFile" accept="image/*" hidden>
+        </div>
+      </div>
+      <div class="nv-pv-wrap">
+        <div class="nv-pv-label">Pré-visualização</div>
+        <div class="nv-pv" id="nvPvStd">
+          <div class="nv-pv-top">
+            <span class="nv-logo"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
+            <div><b>SULTS <i class="fa-solid fa-circle-check verified"></i></b><small>Comunicados oficiais · agora</small></div>
+          </div>
+          <h4 id="pvTitle" style="display:none"></h4>
+          <div class="pvtext empty" id="pvText">Sobre o que você quer falar?</div>
+          <div id="pvBanner" style="display:none"></div>
+          <div id="pvExtra"></div>
+          <div class="nv-pv-foot"><span><i class="fa-regular fa-thumbs-up"></i> Gostei</span><span><i class="fa-regular fa-comment"></i> Comentar</span></div>
+        </div>
+        <div class="nv-pv" id="nvPvArt" style="display:none">
+          <div id="nvArtPv"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nv-pane" id="nvPaneRevisao">
+      <div class="nv-rev"><div class="nv-rev-wrap">
+        <div class="nv-rev-h">Revise antes de publicar</div>
+        <div class="nv-rev-card" id="nvRevBody"></div>
+        <div class="nv-rev-actions"><button class="fo-btn ghost" id="nvRevDraft"><i class="fa-regular fa-floppy-disk"></i> Salvar rascunho</button><button class="fo-btn" id="nvRevPublish"><i class="fa-solid fa-paper-plane"></i> Publicar</button></div>
+      </div></div>
+    </div>
+    <div class="nv-advover" id="nvArtAdvOver" hidden>
+      <div class="nv-advdlg">
+        <div class="cr-advhd"><b>Avançado</b><span style="flex:1"></span><button type="button" class="fg-close" id="nvArtAdvBack"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="cr-advbody"><div id="nvArtAdvSlot"></div></div>
+        <div class="nv-advfoot"><span style="flex:1"></span><button type="button" class="nv-wbtn ghost" id="nvArtAdvCancel">Cancelar</button><button type="button" class="nv-wbtn primary" id="nvArtAdvSave"><i class="fa-solid fa-check"></i> Salvar</button></div>
+      </div>
+    </div>
+    <div class="nv-wizfoot" id="nvWizFoot">
+      <button class="nv-wbtn ghost" id="nvWizPrev"><i class="fa-solid fa-arrow-left"></i> Anterior</button>
+      <button class="nv-wbtn ghost" id="nvArtAdv" style="display:none"><i class="fa-solid fa-sliders"></i> Avançado</button>
+      <span class="spacer"></span>
+      <button class="nv-wbtn ghost" id="nvComposeDraft" style="display:none"><i class="fa-regular fa-floppy-disk"></i> Salvar rascunho</button>
+      <button class="nv-wbtn primary" id="nvComposePub" style="display:none"><i class="fa-solid fa-paper-plane"></i> Publicar</button>
+      <button class="nv-wbtn primary" id="nvWizNext" disabled>Próximo <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    </div>
+  </div>
+  <!-- PERMISSÕES -->
+  <div class="nv-screen" id="nvPermScreen">
+    <div class="cat-head"><div class="rx-title"><i class="fa-solid fa-user-shield" id="permHeadIc"></i><h2 id="permHeadTtl">Quem pode postar</h2></div><span style="flex:1"></span><button type="button" class="perm-tutbtn" id="permTutorial" hidden><span class="pt-ic"><i class="fa-solid fa-info"></i></span> <span class="pt-lbl">Exibir tutorial</span> <i class="fa-solid fa-chevron-down pt-carat"></i></button></div>
+    <div class="perm-tut" id="permTut" hidden>
+      <div class="perm-tutart" aria-hidden="true"><img id="permTutArt" src="uploads/tutorial/post.svg" alt=""></div>
+      <div class="perm-tuttx">
+        <span class="perm-tutkicker" id="permTutKicker"></span>
+        <h3 id="permTutTitle"></h3>
+        <p id="permTutText"></p>
+      </div>
+    </div>
+    <div class="perm-body">
+      <div id="permStep1">
+        <div class="nv-secttl pub-secttl" id="permPubSecTtl"><i class="fa-solid fa-newspaper"></i> Publicações</div>
+      <div class="perm-card">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#a06be0,#5e35b1)"><i class="fa-solid fa-building"></i></div>
+        <h3>Sua Marca (Matriz)</h3><p class="perm2-desc">Equipes internas da franqueadora. Ao ativar, os colaboradores da matriz poderão publicar comunicados e notícias oficiais para toda a rede, libere para todos da matriz ou apenas para pessoas selecionadas.</p>
+        <input type="checkbox" id="permCentralOn" hidden>
+        <div class="perm2-foot" id="permCentralFoot"></div>
+        <div class="perm-summary" id="permCentralSummary" style="display:none"></div>
+        <div id="permCentralBody" style="display:none">
+          <div class="perm-opts" style="margin-top:16px">
+            <label class="perm-opt"><input type="radio" name="npermMode" value="todos" checked><span class="perm-opt-in"><i class="fa-solid fa-users"></i><b>Todos da matriz</b><span>Qualquer colaborador da matriz pode publicar.</span></span></label>
+            <label class="perm-opt"><input type="radio" name="npermMode" value="selecionados"><span class="perm-opt-in"><i class="fa-solid fa-user-check"></i><b>Somente selecionados</b><span>Apenas as pessoas da lista abaixo.</span></span></label>
+          </div>
+          <div class="perm-members" id="npermMembers" style="display:none;margin-top:16px">
+            <div class="perm-mhead">
+              <h3>Pessoas autorizadas <span class="rx-labelcount" id="npermCount"></span></h3>
+              <button class="cat-add" id="npermAdd"><i class="fa-solid fa-user-plus"></i> Adicionar membro</button>
+              <span style="flex:1"></span>
+              <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="npermSearch" placeholder="Pesquisar pessoas" autocomplete="off"></div>
+            </div>
+            <div id="npermList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="perm-card">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#4d96e8,#1e4fb0)"><i class="fa-solid fa-store"></i></div>
+        <h3>Unidades</h3><p class="perm2-desc">Franquias e suas equipes espalhadas pela rede. Ao ativar, os colaboradores das unidades poderão criar e publicar conteúdos no feed, você define se todos os cargos podem publicar ou apenas cargos específicos (franqueado, gerente, etc.).</p>
+        <input type="checkbox" id="permUnitOn" hidden>
+        <div class="perm2-foot" id="permUnitFoot"></div>
+        <div class="perm-summary" id="permUnitSummary" style="display:none"></div>
+        <div id="permUnitBody" style="display:none">
+          <div class="perm-opts" style="margin-top:16px">
+            <label class="perm-opt"><input type="radio" name="npermUnitMode" value="todos" checked><span class="perm-opt-in"><i class="fa-solid fa-users"></i><b>Todos os cargos</b><span>Qualquer cargo da unidade pode publicar.</span></span></label>
+            <label class="perm-opt"><input type="radio" name="npermUnitMode" value="especificos"><span class="perm-opt-in"><i class="fa-solid fa-user-check"></i><b>Somente cargos específicos</b><span>Apenas os cargos selecionados abaixo.</span></span></label>
+          </div>
+          <div class="perm-members" id="permUnitRolesWrap" style="display:none;margin-top:16px">
+            <div class="perm-mhead">
+              <h3>Cargos autorizados <span class="rx-labelcount" id="unitRoleCount"></span></h3>
+              <button class="cat-add" id="unitRoleAdd"><i class="fa-solid fa-plus"></i> Adicionar cargo</button>
+            </div>
+            <div id="permUnitRoles"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div id="permTeamSec" style="display:none">
+        <div class="perm-members" style="margin-top:0">
+          <div class="perm-mhead">
+            <button class="cat-add" id="teamAdd"><i class="fa-solid fa-user-plus"></i> Novo administrador</button>
+            <span style="flex:1"></span>
+            <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="teamSearch" placeholder="Pesquisar administrador" autocomplete="off"></div>
+          </div>
+          <div id="teamList" class="perm-picktbl"></div>
+        </div>
+      </div>
+      <div id="permStoriesSec">
+        <div class="nv-secttl"><i class="fa-solid fa-clapperboard"></i> Shorts</div>
+        <div id="permStoriesSlot"></div>
+      </div>
+      <input type="checkbox" id="pmCatReq" checked hidden>
+      <div id="permApprGrid" style="display:none"><div class="nv-secttl apr-secttl"><i class="fa-solid fa-newspaper"></i> Publicações</div><div class="perm-card apr-rulecard" id="permApprCard">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#26c6da,#0097a7)"><i class="fa-solid fa-comment-dots"></i></div>
+        <input type="checkbox" id="pmApprove" checked hidden>
+        <h3>Aprovar comentários</h3><p class="perm2-desc">Os comentários das publicações ficam pendentes e só aparecem no feed após um administrador aprovar na fila de Aprovações.</p>
+        <div class="apr-subtog" id="aprComSub">
+          <div class="apr-subrow2"><div class="apr-sublbl"><b>Comentários da unidade</b><span>Comentários feitos por colaboradores das unidades exigem aprovação.</span></div><label class="perm-tog nv-toggle apr-subtg"><input type="checkbox" id="pmApproveUnit" checked><span class="nv-tk"></span> <span class="tgtxt">Ativo</span></label></div>
+          <div class="apr-subrow2"><div class="apr-sublbl"><b>Comentários da matriz</b><span>Comentários feitos por colaboradores da matriz exigem aprovação.</span></div><label class="perm-tog nv-toggle apr-subtg"><input type="checkbox" id="pmApproveMatriz" checked><span class="nv-tk"></span> <span class="tgtxt">Ativo</span></label></div>
+        </div>
+      </div>
+      <div class="perm-card apr-rulecard">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#4d96e8,#1e4fb0)"><i class="fa-solid fa-newspaper"></i></div>
+        <input type="checkbox" id="pmPostApprove" checked hidden>
+        <h3>Aprovar publicações</h3><p class="perm2-desc">Publicações de terceiros passam por aprovação antes de irem ao ar. Um administrador revisa e libera o conteúdo na fila de Aprovações.</p>
+        <div class="apr-subtog" id="aprPubSub">
+          <div class="apr-subrow2"><div class="apr-sublbl"><b>Publicações da unidade</b><span>Publicações feitas por colaboradores das unidades exigem aprovação.</span></div><label class="perm-tog nv-toggle apr-subtg"><input type="checkbox" id="pmPostApproveUnit" checked><span class="nv-tk"></span> <span class="tgtxt">Ativo</span></label></div>
+          <div class="apr-subrow2"><div class="apr-sublbl"><b>Publicações da matriz</b><span>Publicações feitas por colaboradores da matriz exigem aprovação.</span></div><label class="perm-tog nv-toggle apr-subtg"><input type="checkbox" id="pmPostApproveMatriz" checked><span class="nv-tk"></span> <span class="tgtxt">Ativo</span></label></div>
+        </div>
+      </div>
+      <div class="nv-secttl apr-secttl"><i class="fa-solid fa-clapperboard"></i> Shorts</div>
+      <div class="perm-card apr-rulecard">
+        <input type="checkbox" id="pmShortApprove" checked hidden>
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#f27794,#d63a5f)"><i class="fa-solid fa-clapperboard"></i></div>
+        <h3>Aprovar shorts</h3><p class="perm2-desc">Shorts publicados por terceiros passam por aprovação antes de irem ao ar. Um administrador revisa e libera o conteúdo na fila de Aprovações.</p>
+        <div class="apr-subtog" id="aprShortSub">
+          <div class="apr-subrow2"><div class="apr-sublbl"><b>Shorts da unidade</b><span>Shorts publicados por colaboradores das unidades exigem aprovação.</span></div><label class="perm-tog nv-toggle apr-subtg"><input type="checkbox" id="pmShortApproveUnit" checked><span class="nv-tk"></span> <span class="tgtxt">Ativo</span></label></div>
+          <div class="apr-subrow2"><div class="apr-sublbl"><b>Shorts da matriz</b><span>Shorts publicados por colaboradores da matriz exigem aprovação.</span></div><label class="perm-tog nv-toggle apr-subtg"><input type="checkbox" id="pmShortApproveMatriz" checked><span class="nv-tk"></span> <span class="tgtxt">Ativo</span></label></div>
+        </div>
+      </div></div>
+      </div>
+    </div>
+  </div>
+  <!-- PARÂMETROS -->
+  <div class="nv-screen" id="nvParamsScreen">
+    <div class="cat-head"><div class="rx-title"><i class="fa-solid fa-comment-dots"></i><h2>Comentários</h2></div></div>
+    <div class="perm-body">
+      <div class="perm-card">
+        <h3>Comentários</h3>
+        <p>Como os comentários das publicações se comportam.</p>
+        <div class="pm-row"><div class="pm-lbl"><b>Permitir comentários</b><span>Habilita o campo de comentários nas publicações.</span></div><label class="nv-toggle"><input type="checkbox" id="pmComments" checked><span class="nv-tk"></span></label></div>
+        <div class="pm-row"><div class="pm-lbl"><b>Permitir reações</b><span>Curtidas e demais reações nas publicações.</span></div><label class="nv-toggle"><input type="checkbox" id="pmReactions" checked><span class="nv-tk"></span></label></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;padding:4px 0 8px"><button class="cat-add" id="pmSave"><i class="fa-solid fa-check"></i> Salvar</button></div>
+    </div>
+  </div>
+  <!-- APROVAÇÕES (home cards) -->
+  <div class="nv-screen" id="nvAprHomeScreen">
+    <div class="cat-head"><div class="rx-title"><i class="fa-solid fa-circle-check"></i><h2>Aprovações</h2></div></div>
+    <div class="perm-body"><div id="aprHome">
+      <button class="perm-card apr-card" id="aprCardCom">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#26c6da,#0097a7)"><i class="fa-solid fa-comment-dots"></i></div>
+        <h3>Aprovar comentários</h3><p class="perm2-desc">Modere os comentários enviados nas publicações. Aprove para exibir ou recuse com um motivo.</p>
+        <div class="apr-card-foot"><span class="apr-card-badge" id="aprCardComN">0 pendentes</span><span class="apr-card-go">Abrir <i class="fa-solid fa-arrow-right"></i></span></div>
+      </button>
+      <button class="perm-card apr-card" id="aprCardPub">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#4d96e8,#1e4fb0)"><i class="fa-solid fa-newspaper"></i></div>
+        <h3>Aprovar publicações</h3><p class="perm2-desc">Revise as publicações de terceiros antes de irem ao ar. Aprove para publicar ou recuse com um motivo.</p>
+        <div class="apr-card-foot"><span class="apr-card-badge" id="aprCardPubN">0 pendentes</span><span class="apr-card-go">Abrir <i class="fa-solid fa-arrow-right"></i></span></div>
+      </button>
+    </div></div>
+  </div>
+  <!-- INTERAÇÕES -->
+  <div class="nv-screen" id="nvInterScreen">
+    <div class="cat-head"><div class="rx-title"><i class="fa-solid fa-heart"></i><h2>Interações</h2></div><button class="fl-toggle" data-fltoggle><i class="fa-solid fa-filter"></i> <span>Esconder filtros</span> <i class="fa-solid fa-chevron-up fl-carat"></i></button><span class="mod-count" id="interCount"></span>
+      <span style="flex:1"></span>
+    </div>
+    <div class="cat-body nv-listwrap">
+      <aside class="nv-filters">
+        <div class="rx-search nv-fsearch"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="interSearch" placeholder="Buscar pessoa, unidade ou publicação" autocomplete="off"></div>
+        <div class="nv-fsec"><div class="nv-fsec-hd" id="interFSecHd">Reação</div>
+          <div class="nv-fgrid">
+          <div><label>Colaborador</label><select class="nv-fsel" id="interFPerson"></select></div>
+          <div><label>Loja</label><select class="nv-fsel" id="interFStore"></select></div>
+          <div><label>Período</label><select class="nv-fsel" id="interFPeriod"><option value="">Qualquer período</option><option value="60">Última hora</option><option value="1440">Últimas 24 h</option><option value="10080">Últimos 7 dias</option></select></div>
+          <div id="interFReactWrap"><label>Tipo de reação</label><select class="nv-fsel" id="interFReact"><option value="">Todas as reações</option></select></div>
+          <div><label>Publicação</label><select class="nv-fsel" id="interFPost"></select></div>
+          <div><label>Cargo</label><select class="nv-fsel" id="interFRole"></select></div></div>
+        </div>
+        <div class="nv-filters-ft"><button class="nv-fclear" id="interFClear"><i class="fa-solid fa-filter-circle-xmark"></i> Limpar filtros</button><button class="nv-fapply" id="interFApply">Aplicar filtros</button></div>
+      </aside>
+      <div class="nv-listmain" style="flex:1;min-width:0"><div class="il-kpis" id="interKpis" hidden></div><div class="rlist" id="interList"></div></div>
+    </div>
+  </div>
+  <!-- POPUP INTERAÇÕES DA PUBLICAÇÃO -->
+  <div class="fg-backdrop" id="interModal">
+    <div class="fg-modal itbl-modal">
+      <div class="fg-head">
+        <div style="flex:1;min-width:0"><h2 id="interMTitle" style="white-space:normal">Interações</h2><div class="itbl-msub" id="interMSub"></div></div>
+        <button class="fg-close" id="interMClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="itbl-mbar"><div class="apr-seg" id="interMSeg"><button data-f="todas" class="on">Todas</button><button data-f="novas" class="itbl-newfilter"><i class="fa-solid fa-bolt"></i> Somente novas <span class="apr-segn seg-n">0</span></button></div></div>
+      <div class="itbl-mbody" id="interMBody"></div>
+    </div>
+  </div>
+  <!-- POPUP VER COMENTÁRIO -->
+  <div class="fg-backdrop" id="cmtPop">
+    <div class="fg-modal" style="width:min(440px,94vw)">
+      <div class="fg-head"><h2>Comentário</h2><span style="flex:1"></span><button class="fg-close" id="cmtPopClose"><i class="fa-solid fa-xmark"></i></button></div>
+      <div style="padding:20px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span class="avatar" id="cmtPopAv" style="width:46px;height:46px;font-size:0"></span><div><b id="cmtPopName" style="display:block;color:var(--ink);font-size:14px"></b><span id="cmtPopRole" style="font-size:12px;color:var(--muted)"></span></div></div>
+        <div id="cmtPopText" style="font-size:15px;color:#334;line-height:1.55;background:#f2f5f7;border-radius:12px;padding:14px 16px"></div>
+        <div id="cmtPopWhen" style="font-size:12px;color:var(--muted);margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+  <!-- MODERAÇÃO -->
+  <div class="nv-screen" id="nvModScreen">
+    <div class="cat-head"><div class="rx-title"><i class="fa-solid fa-comment-dots"></i><h2>Comentários pendentes</h2></div><span class="mod-count" id="modCount"></span></div>
+    <div class="perm-body"><div class="apr-seg" id="modSeg"><button class="on" data-f="pend"><i class="fa-regular fa-clock"></i> Pendentes <span class="apr-segn" id="modNPend"></span></button><button data-f="aprovado"><i class="fa-solid fa-circle-check"></i> Aprovados <span class="apr-segn" id="modNApr"></span></button><button data-f="rejeitado"><i class="fa-solid fa-circle-xmark"></i> Rejeitados <span class="apr-segn" id="modNRej"></span></button></div><div id="modQueue"></div></div>
+  </div>
+  <!-- APROVAÇÃO DE PUBLICAÇÕES -->
+  <div class="nv-screen" id="nvPubApprScreen">
+    <div class="cat-head"><div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Publicações pendentes</h2></div><span class="mod-count" id="pubApprCount"></span></div>
+    <div class="perm-body"><div class="apr-seg" id="pubSeg"><button data-f="proc"><i class="fa-solid fa-arrows-rotate"></i> Em processamento <span class="apr-segn" id="pubNProc"></span></button><button class="on" data-f="pend"><i class="fa-regular fa-clock"></i> Pendentes <span class="apr-segn" id="pubNPend"></span></button><button data-f="aprovado"><i class="fa-solid fa-circle-check"></i> Aprovados <span class="apr-segn" id="pubNApr"></span></button><button data-f="rejeitado"><i class="fa-solid fa-circle-xmark"></i> Rejeitados <span class="apr-segn" id="pubNRej"></span></button></div><div id="pubApprQueue"></div></div>
+  </div>
+  <!-- APROVAÇÃO DE REELS -->
+  <div class="nv-screen" id="nvReelApprScreen">
+    <div class="cat-head"><div class="rx-title"><i class="fa-solid fa-clapperboard"></i><h2>Shorts pendentes</h2></div><span class="mod-count" id="reelApprCount"></span></div>
+    <div class="perm-body"><div class="apr-seg" id="reelSeg"><button data-f="proc"><i class="fa-solid fa-arrows-rotate"></i> Em processamento <span class="apr-segn" id="reelNProc"></span></button><button class="on" data-f="pend"><i class="fa-regular fa-clock"></i> Pendentes <span class="apr-segn" id="reelNPend"></span></button><button data-f="aprovado"><i class="fa-solid fa-circle-check"></i> Aprovados <span class="apr-segn" id="reelNApr"></span></button><button data-f="rejeitado"><i class="fa-solid fa-circle-xmark"></i> Rejeitados <span class="apr-segn" id="reelNRej"></span></button></div><div id="reelApprQueue"></div></div>
+  </div>
+  <div class="fg-backdrop" id="permWhoModal">
+    <div class="fg-modal" style="width:720px;height:540px;max-width:none">
+      <div class="fg-head"><h2 id="permWhoTitle">Quem pode publicar</h2><span style="flex:1"></span><button class="fg-close" id="permWhoClose"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="fg-body" id="permWhoBody" style="overflow-y:auto"></div>
+    </div>
+  </div>
+  <!-- ARTIGO (leitor) -->
+  <div class="nv-screen" id="nvArticleScreen">
+    <div class="cat-head"><button class="nv-back" id="nvArtBack"><i class="fa-solid fa-arrow-left"></i></button><div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Publicação</h2></div><span style="flex:1"></span><button class="cat-add" id="nvArtEdit" style="background:#eef2f5;color:#5b6672"><i class="fa-solid fa-pen"></i> Editar</button></div>
+    <div id="nvArtReview" hidden class="artreview"><div class="artreview-in"><span class="artreview-tx"><i class="fa-solid fa-clock"></i> Esta publicação está <b>aguardando aprovação</b></span><span style="flex:1"></span><button class="artreview-no" id="nvArtRej"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="artreview-ok" id="nvArtApr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>
+    <div class="nv-artscroll"><div class="art" id="nvArtBody"></div></div>
+  </div>
+  <!-- CATEGORIAS -->
+  <div class="nv-screen" id="nvCatsScreen">
+    <div class="cat-head">
+      <div class="rx-title"><i class="fa-solid fa-tags"></i><h2>Categorias</h2></div>
+      <button class="cat-add" id="nvCatAdd"><i class="fa-solid fa-plus"></i> Nova categoria</button>
+      <span style="flex:1"></span>
+      <select class="nv-fsel nvcat-sel" id="nvCatSeg"><option value="ativos">Ativos</option><option value="inativos">Inativos</option></select>
+      <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvCatSearch" placeholder="Buscar categoria" autocomplete="off"></div>
+    </div>
+    <div class="cat-body"><div class="rlist" id="nvCatList"></div></div>
+  </div>
+  <div class="fg-backdrop" id="nvCatModal">
+    <div class="fg-modal" style="width:460px">
+      <div class="fg-head"><h2 id="nvCatModalTitle">Nova categoria</h2><span style="flex:1"></span><button class="fg-close" id="nvCatModalClose"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="fg-body">
+        <div><label class="fg-label">Nome da categoria</label><input class="fg-input" id="nvCatName" maxlength="40" placeholder="Dê um nome para a categoria"></div>
+        <div style="margin-top:18px"><label class="fg-label">Cor</label><div class="cat-swatches" id="nvCatSw"></div></div>
+        <div style="margin-top:18px"><label class="fg-label">Ícone</label><div class="cat-icons" id="nvCatIcons"></div></div>
+        <div style="margin-top:24px;display:flex;justify-content:flex-end;gap:10px">
+          <button class="fo-btn ghost" id="nvCatCancel">Cancelar</button>
+          <button class="fo-btn" id="nvCatSave"><i class="fa-solid fa-check"></i> Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Adicionar membro (Notícias) -->
+<div class="fg-backdrop" id="npermModal">
+  <div class="fg-modal" style="width:480px">
+    <div class="fg-head"><h2>Adicionar membro</h2><span style="flex:1"></span><button class="fg-close" id="npermModalClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body">
+      <div class="rx-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="npermPickSearch" placeholder="Buscar colaborador" autocomplete="off"></div>
+      <div class="perm-pick" id="npermPickList"></div>
+    </div>
+  </div>
+</div>
+<div class="fg-backdrop" id="unitPickModal">
+  <div class="fg-modal" style="width:860px;height:540px;max-width:none">
+    <div class="fg-head"><h2>Unidades autorizadas</h2><span style="flex:1"></span><button class="fg-close" id="unitPickClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body" style="overflow-y:auto">
+      <div class="perm-members" style="display:block">
+        <div class="perm-mhead">
+          <h3>Unidades autorizadas <span class="rx-labelcount" id="unitSelCount"></span></h3>
+          <button class="cat-add" id="unitPickAdd"><i class="fa-solid fa-store"></i> Adicionar unidade</button>
+          <span style="flex:1"></span>
+          <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="unitPickSearch" placeholder="Pesquisar unidade" autocomplete="off"></div>
+        </div>
+        <div id="unitPickList" class="perm-picktbl"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fg-backdrop" id="sbAuthorPickModal">
+  <div class="fg-modal" style="width:520px">
+    <div class="fg-head"><h2>Selecionar pessoa</h2><span style="flex:1"></span><button class="fg-close" id="sbAuthorPickClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body">
+      <div class="rx-search" style="margin-bottom:12px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="sbAuthorSearch" placeholder="Pesquisar..." autocomplete="off"></div>
+      <div id="sbAuthors" class="nvf-picklist"></div>
+    </div>
+  </div>
+</div>
+<div class="fg-backdrop" id="authorPickModal">
+  <div class="fg-modal" style="width:520px">
+    <div class="fg-head"><h2>Selecionar autor</h2><span style="flex:1"></span><button class="fg-close" id="authorPickClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body">
+      <div class="rx-search" style="margin-bottom:12px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvfAuthorSearch" placeholder="Pesquisar..." autocomplete="off"></div>
+      <div id="nvfAuthors" class="nvf-picklist"></div>
+    </div>
+  </div>
+</div>
+<div class="fg-backdrop" id="teamAddModal">
+  <div class="fg-modal" style="width:480px">
+    <div class="fg-head"><h2>Novo administrador</h2><span style="flex:1"></span><button class="fg-close" id="teamAddClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body">
+      <p style="font-size:12px;line-height:16px;color:#8E8E93;margin:0 0 12px">Aplicação: apenas administradores da rede podem aprovar conteúdo.</p>
+      <div class="rx-search" style="margin-bottom:12px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="teamAddSearch" placeholder="Buscar pessoa" autocomplete="off"></div>
+      <div class="perm-pick" id="teamAddList"></div>
+    </div>
+  </div>
+</div>
+<div class="fg-backdrop" id="unitAddModal">
+  <div class="fg-modal" style="width:480px">
+    <div class="fg-head"><h2>Adicionar unidade</h2><span style="flex:1"></span><button class="fg-close" id="unitAddClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body">
+      <div class="rx-search" style="margin-bottom:12px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="unitAddSearch" placeholder="Buscar unidade" autocomplete="off"></div>
+      <div class="perm-pick" id="unitAddList"></div>
+    </div>
+  </div>
+</div>
+<div class="fg-backdrop" id="uroleModal">
+  <div class="fg-modal" style="width:480px">
+    <div class="fg-head"><h2>Adicionar cargo</h2><span style="flex:1"></span><button class="fg-close" id="uroleModalClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body"><div class="perm-pick" id="urolePickList"></div></div>
+  </div>
+</div>
+
+<!-- ==================== MÓDULO REELS · SIDEBAR ==================== -->

@@ -1,0 +1,145 @@
+<!-- modulo Shorts, categorias, permissoes e player -->
+<aside class="rmod-side" id="rmodSide">
+  <svg class="rmod-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
+  <button class="rmod-item" id="rmodFeed"><i class="fa-solid fa-house"></i>Feed</button>
+  <button class="rmod-item" id="rmodNew" hidden><i class="fa-solid fa-plus"></i>Novo short</button>
+  <button class="rmod-item active" id="rmodPub"><i class="fa-solid fa-clapperboard"></i>Publicados</button>
+  <button class="rmod-item" id="rmodCats"><i class="fa-solid fa-tags"></i>Categorias</button>
+  <button class="rmod-item" id="rmodPerm"><i class="fa-solid fa-user-shield"></i>Permissões</button>
+  <span class="rmod-sp"></span>
+  <button class="rmod-item" id="rmodApps" title="Voltar para a home"><i class="fa-solid fa-grip"></i>Módulos</button>
+  <span class="avatar av-rc" style="width:36px;height:36px;flex-shrink:0"></span>
+</aside>
+
+<!-- ==================== TELA DE REELS · EXPLORAR ==================== -->
+<div class="reels-view" id="reelsView">
+  <div class="rx-header">
+    <div class="rx-title"><i class="fa-solid fa-clapperboard"></i><h2>Shorts</h2></div>
+    <button class="fl-toggle" data-fltoggle><i class="fa-solid fa-filter"></i> <span>Esconder filtros</span> <i class="fa-solid fa-chevron-up fl-carat"></i></button>
+    <span style="flex:1"></span>
+  </div>
+  <div class="rx-body">
+    <nav class="rx-nav nv-filters rx-filters" id="rxFilters">
+      <span class="rx-nav-label">Filtrar por</span>
+      <button class="rx-navitem active" data-f="todos"><i class="fa-solid fa-border-all"></i> Todos</button>
+      <button class="rx-navitem" data-f="naovistos"><i class="fa-solid fa-circle" style="color:#25d366"></i> Não vistos <span class="rx-count" id="rxUnseenCount"></span></button>
+      <button class="rx-navitem" data-f="eventos"><i class="fa-solid fa-calendar-day"></i> Eventos</button>
+      <button class="rx-navitem" data-f="depoimentos"><i class="fa-solid fa-comment-dots"></i> Depoimentos</button>
+      <button class="rx-navitem" data-f="produtos"><i class="fa-solid fa-box"></i> Produtos</button>
+    </nav>
+    <div class="rx-main">
+      <div class="rx-kpis" id="rxKpis"></div>
+      <div class="rx-toolbar" id="rxToolbar">
+        <label class="rx-tool">Ordenar por
+          <select id="rxSort" class="rx-select">
+            <option value="relevancia">Relevância</option>
+            <option value="recentes">Mais recentes</option>
+            <option value="vistos">Mais visualizados</option>
+            <option value="curtidos">Mais curtidos</option>
+          </select></label>
+        <label class="rx-tool">Período
+          <select id="rxPeriod" class="rx-select">
+            <option value="tudo">Todo o período</option>
+            <option value="24h">Últimas 24 h</option>
+            <option value="7d">Últimos 7 dias</option>
+            <option value="30d">Últimos 30 dias</option>
+          </select></label>
+        <span style="flex:1"></span>
+        <div class="rx-viewtg">
+          <button id="rxVGrade" class="active" title="Grade"><i class="fa-solid fa-border-all"></i></button>
+          <button id="rxVLista" title="Lista"><i class="fa-solid fa-list"></i></button>
+        </div>
+      </div>
+      <div class="rx-grid" id="rxGrid"></div>
+      <div class="rx-empty" id="rxEmpty" hidden>
+        <i class="fa-regular fa-face-frown" style="font-size:26px"></i>
+        Nenhum short encontrado para esse filtro.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MÓDULO REELS · CATEGORIAS ==================== -->
+<div class="cat-view" id="catView">
+  <div class="cat-head">
+    <div class="rx-title"><i class="fa-solid fa-tags"></i><h2>Categorias</h2></div>
+    <button class="cat-add" id="catAdd"><i class="fa-solid fa-plus"></i> Adicionar categoria</button>
+    <span style="flex:1"></span>
+    <select class="rx-select" id="catFilter">
+      <option value="ativas">Categorias ativas</option>
+      <option value="arquivadas">Arquivadas</option>
+      <option value="todas">Todas</option>
+    </select>
+    <div class="rx-search" style="max-width:260px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="catSearch" placeholder="Pesquisar categorias" autocomplete="off"></div>
+  </div>
+  <div class="cat-body"><div class="cat-list" id="catList"></div></div>
+</div>
+
+<!-- Modal Adicionar/Editar categoria -->
+<div class="fg-backdrop" id="catModal">
+  <div class="fg-modal" style="width:460px">
+    <div class="fg-head"><h2 id="catModalTitle">Adicionar categoria</h2><span style="flex:1"></span><button class="fg-close" id="catModalClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body">
+      <div><label class="fg-label">Nome da categoria</label><input class="fg-input" id="catNameInput" maxlength="40" placeholder="Dê um nome para a categoria"></div>
+      <div style="margin-top:18px"><label class="fg-label">Cor da categoria</label><div class="cat-swatches" id="catSwatches"></div></div>
+      <div style="margin-top:24px;display:flex;justify-content:flex-end;gap:10px">
+        <button class="fo-btn ghost" id="catCancel">Cancelar</button>
+        <button class="fo-btn" id="catSave"><i class="fa-solid fa-check"></i> Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MÓDULO REELS · PERMISSÕES ==================== -->
+<div class="perm-view" id="permView">
+  <div class="cat-head">
+    <div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Publicações</h2></div>
+  </div>
+  <div class="perm-body">
+    <div id="permStoriesGrid">
+      <div class="perm-card">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#a06be0,#5e35b1)"><i class="fa-solid fa-building"></i></div>
+        <h3>Sua Marca (Matriz)</h3><p class="perm2-desc">Equipes internas da franqueadora. Ao ativar, os colaboradores da matriz poderão publicar shorts oficiais para toda a rede, libere para todos da matriz ou apenas para pessoas selecionadas.</p>
+        <div class="perm2-foot" id="stPermCentralFoot"></div>
+      </div>
+      <div class="perm-card">
+        <div class="perm2-ic" style="background:linear-gradient(135deg,#4d96e8,#1e4fb0)"><i class="fa-solid fa-store"></i></div>
+        <h3>Unidades</h3><p class="perm2-desc">Franquias e suas equipes espalhadas pela rede. Ao ativar, os colaboradores das unidades poderão criar e publicar shorts, você define se todos os cargos podem publicar ou apenas cargos específicos.</p>
+        <div class="perm2-foot" id="stPermUnitFoot"></div>
+      </div>
+    </div>
+    <div class="perm-note" id="permNote" hidden></div>
+    <div class="perm-members" id="permMembers" style="display:none">
+      <div class="perm-mhead">
+        <h3>Pessoas autorizadas <span class="rx-labelcount" id="permCount"></span></h3>
+        <button class="cat-add" id="permAdd"><i class="fa-solid fa-user-plus"></i> Adicionar membro</button>
+        <span style="flex:1"></span>
+        <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="permSearch" placeholder="Pesquisar pessoas" autocomplete="off"></div>
+      </div>
+      <div id="permList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Adicionar membro -->
+<div class="fg-backdrop" id="permModal">
+  <div class="fg-modal" style="width:480px">
+    <div class="fg-head"><h2>Adicionar membro</h2><span style="flex:1"></span><button class="fg-close" id="permModalClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-body">
+      <div class="rx-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="permPickSearch" placeholder="Buscar colaborador" autocomplete="off"></div>
+      <div class="perm-pick" id="permPickList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Player imersivo de Shorts -->
+<div class="reels-player" id="reelsPlayer">
+  <button class="rp-close" id="rpClose" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
+  <div class="rv-feed" id="rvFeed"></div>
+  <div class="rv-nav">
+    <button id="rvUp" title="Anterior"><i class="fa-solid fa-chevron-up"></i></button>
+    <button id="rvDown" title="Próximo"><i class="fa-solid fa-chevron-down"></i></button>
+  </div>
+</div>
+
+<!-- ==================== MÓDULO FÓRUM ==================== -->

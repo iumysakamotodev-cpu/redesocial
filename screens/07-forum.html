@@ -1,0 +1,75 @@
+<!-- modulo Forum -->
+<div class="forum-view" id="forumView">
+  <div class="fo-scroll" id="foScroll">
+    <div class="fo-wrap" id="foBody"></div>
+  </div>
+</div>
+
+<!-- Modal Criar grupo -->
+<div class="fg-backdrop" id="fgModal">
+  <div class="fg-modal">
+    <div class="fg-head">
+      <h2>Criar grupo</h2>
+      <div class="fg-steps" id="fgSteps">
+        <span class="fg-step on" data-s="1"><span class="n">1</span> Identidade</span>
+        <span class="fg-step" data-s="2"><span class="n">2</span> Privacidade</span>
+        <span class="fg-step" data-s="3"><span class="n">3</span> Participantes</span>
+      </div>
+      <button class="fg-close" id="fgClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="fg-body">
+      <div class="fg-pane on" data-p="1">
+        <div class="fg-field">
+          <label class="fg-label">Nome do grupo</label>
+          <input class="fg-input" id="fgName" maxlength="60" placeholder="Ex.: Gestores de Unidade">
+        </div>
+        <div class="fg-field">
+          <label class="fg-label">Descrição</label>
+          <textarea class="fg-textarea" id="fgDesc" maxlength="200" placeholder="Sobre o que é este grupo"></textarea>
+        </div>
+        <div class="fg-field">
+          <label class="fg-label">Cor</label>
+          <div class="fg-swatches" id="fgSwatches"></div>
+        </div>
+        <div class="fg-field">
+          <label class="fg-label">Ícone</label>
+          <div class="fg-icons" id="fgIcons"></div>
+        </div>
+        <div class="fg-field">
+          <label class="fg-label">Pré-visualização</label>
+          <div class="fg-preview" id="fgPreview"></div>
+        </div>
+      </div>
+      <div class="fg-pane" data-p="2">
+        <label class="fg-radio on" data-priv="aberto"><span class="dot"></span><span><span class="rt">Aberto</span><span class="rd">Toda a rede vê e qualquer pessoa entra com 1 clique</span></span></label>
+        <label class="fg-radio" data-priv="restrito"><span class="dot"></span><span><span class="rt">Restrito</span><span class="rd">Aparece no Descobrir; entra quem atende à regra ou é aprovado</span></span></label>
+        <label class="fg-radio" data-priv="secreto"><span class="dot"></span><span><span class="rt">Secreto</span><span class="rd">Apenas membros veem; entra pela regra ou por convite</span></span></label>
+      </div>
+      <div class="fg-pane" data-p="3">
+        <div class="fg-field">
+          <label class="fg-label">Papéis incluídos</label>
+          <label class="fg-check"><input type="checkbox" class="fg-role" value="rede"> Gestor de rede</label>
+          <label class="fg-check"><input type="checkbox" class="fg-role" value="unidade" checked> Gestor de unidade</label>
+          <label class="fg-check"><input type="checkbox" class="fg-role" value="colab"> Colaborador</label>
+        </div>
+        <div class="fg-field">
+          <label class="fg-label">Regionais / grupos de unidades</label>
+          <input class="fg-input" value="Sul, Sudeste" placeholder="Buscar regionais">
+        </div>
+        <div class="fg-count" id="fgCount">Essa regra inclui 312 pessoas de 87 unidades</div>
+        <label class="fg-toggle on" id="fgAuto"><span class="fg-sw2"></span> Entrada automática de novas pessoas que atenderem à regra</label>
+        <div class="fg-field" style="margin-top:16px">
+          <label class="fg-label">Administradores</label>
+          <input class="fg-input" placeholder="Buscar pessoas para moderar">
+        </div>
+      </div>
+    </div>
+    <div class="fg-foot">
+      <button class="fo-btn ghost" id="fgBack" style="display:none">Voltar</button>
+      <span class="sp"></span>
+      <button class="fo-btn" id="fgNext">Continuar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Novo tópico -->

@@ -1,0 +1,551 @@
+/* blocos menores que ficavam soltos no fim do documento */
+function permConfirm(title, msg, onOk){
+  let bd=document.getElementById('permConfirmBd');
+  if(!bd){ bd=document.createElement('div'); bd.id='permConfirmBd'; bd.className='qp-back'; bd.innerHTML='<div class="qp-modal" style="width:min(440px,92%)"><div style="padding:24px 26px"><h3 id="pcfTitle" style="font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px"></h3><p id="pcfMsg" style="font-size:14px;color:var(--muted);line-height:1.55"></p><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px"><button class="fo-btn ghost" id="pcfNo">Cancelar</button><button class="fo-btn" id="pcfYes">Confirmar</button></div></div></div>'; document.body.appendChild(bd); }
+  bd.querySelector('#pcfTitle').textContent=title; bd.querySelector('#pcfMsg').textContent=msg; bd.classList.add('open');
+  const close=()=>bd.classList.remove('open');
+  bd.querySelector('#pcfNo').onclick=close;
+  bd.onclick=(ev)=>{ if(ev.target===bd) close(); };
+  bd.querySelector('#pcfYes').onclick=()=>{ close(); onOk&&onOk(); };
+}
+function syncTgTxt(){ document.querySelectorAll('.perm-tog input[type=checkbox]').forEach(c=>{ const t=c.parentNode.querySelector('.tgtxt'); if(t) t.textContent=c.checked?'Ativo':'Inativo'; }); }
+document.addEventListener('change', e=>{ if(e.target.closest('.perm-tog')) syncTgTxt(); });
+document.addEventListener('DOMContentLoaded', syncTgTxt); setTimeout(syncTgTxt,300);
+(function(){
+  var map={pmApproveUnit:'Comentários da unidade',pmApproveMatriz:'Comentários da matriz',pmPostApproveUnit:'Publicações da unidade',pmPostApproveMatriz:'Publicações da matriz',pmShortApproveUnit:'Shorts da unidade',pmShortApproveMatriz:'Shorts da matriz'};
+  document.addEventListener('change', function(e){ var t=e.target; if(t&&map[t.id]&&typeof fgToast==='function') fgToast(map[t.id]+(t.checked?' passam a exigir aprovação':' não exigem mais aprovação')); });
+})();
+document.addEventListener('click',function __cmDropClose(e){ if(!e.target.closest('.comment-menu')){ document.querySelectorAll('.comment-drop').forEach(function(d){d.hidden=true;}); } });
+function openCmLikes(count){
+  count = count||0; if(count<=0) count=1;
+  var el=document.getElementById('cmLikesList'); if(!el) return;
+  document.getElementById('cmLikesTitle').textContent = count+(count===1?' curtida':' curtidas');
+  var pool=(typeof PEOPLE!=='undefined')?PEOPLE:[];
+  var rows='';
+  for(var i=0;i<count;i++){ var p=pool[i%Math.max(pool.length,1)]||{name:'Colaborador',av:'av-rc',role:'SULTS'}; rows+='<div class="cml-row"><span class="avatar '+(p.av||'av-rc')+'"></span><div><b>'+p.name+'</b><span>'+(p.role||'SULTS')+'</span></div></div>'; }
+  el.innerHTML=rows;
+  document.getElementById('cmLikesModal').classList.add('open');
+}
+(function(){ var m=document.getElementById('cmLikesModal'); if(!m) return; var c=document.getElementById('cmLikesClose'); if(c)c.addEventListener('click',function(){m.classList.remove('open');}); m.addEventListener('click',function(e){ if(e.target===m) m.classList.remove('open'); }); })();
+var cmApprCur=null;
+function openCmAppr(e){
+  cmApprCur=e;
+  var $q=function(id){return document.getElementById(id);};
+  $q('cmApprAv').className='avatar '+(e.av||'av-rc');
+  $q('cmApprName').textContent=e.author||'';
+  $q('cmApprUnit').textContent=e.unit||((typeof STORES!=='undefined')?STORES[(e.mid||1)%STORES.length].name:'');
+  $q('cmApprText').textContent=e.text||'';
+  $q('cmApprPost').textContent=e.post||'';
+  var np=(typeof NEWS!=='undefined' && e.newsId)?NEWS.find(function(x){return x.id===e.newsId;}):null;
+  var th=$q('cmApprThumb');
+  if(np && np.image){ th.style.backgroundImage='url('+np.image+')'; th.className='cmappr-thumb'; th.innerHTML=''; }
+  else { th.style.backgroundImage=''; th.className='cmappr-thumb ph'; th.innerHTML='<i class="fa-solid fa-'+((np&&np.article)?'newspaper':'align-left')+'"></i>'; }
+  $q('cmApprPsub').textContent = np ? ((np.article?'Artigo':'Publicação')+' · '+(np.sub||'SULTS')) : 'Publicação';
+  $q('cmApprPostCard').style.display = e.newsId ? '' : 'none';
+  $q('cmApprWhen').textContent=e.dt||e.time||'agora';
+  var pend=(typeof MOD_QUEUE!=='undefined') && MOD_QUEUE.some(function(x){return x.mid===e.mid;});
+  $q('cmApprOk').style.display=pend?'':'none';
+  $q('cmApprRej').style.display=pend?'':'none';
+  $q('cmApprModal').classList.add('open');
+}
+function closeCmAppr(){ var m=document.getElementById('cmApprModal'); if(m) m.classList.remove('open'); cmApprCur=null; }
+(function(){
+  var m=document.getElementById('cmApprModal'); if(!m) return;
+  document.getElementById('cmApprClose').addEventListener('click', closeCmAppr);
+  m.addEventListener('click', function(ev){ if(ev.target===m) closeCmAppr(); });
+  document.getElementById('cmApprPostCard').addEventListener('click', function(){ var e=cmApprCur; if(!e||!e.newsId) return; closeCmAppr(); focusPublication(e.newsId); });
+  document.getElementById('cmApprOk').addEventListener('click', function(){ var e=cmApprCur; if(!e) return; if(e.approve) e.approve(); modRemove(e.mid,'aprovado'); fgToast('Comentário aprovado'); closeCmAppr(); });
+  document.getElementById('cmApprRej').addEventListener('click', function(){ var e=cmApprCur; if(!e) return; askReject(function(motivo){ e.motivo=motivo; if(e.reject) e.reject(); modRemove(e.mid,'rejeitado'); fgToast('Comentário recusado'); closeCmAppr(); }); });
+})();
+var pubApprCur=null;
+function openPubAppr(n){
+  pubApprCur=n;
+  var $q=function(id){return document.getElementById(id);};
+  var th=$q('pubApprThumb');
+  if(n.image){ th.style.backgroundImage='url('+n.image+')'; th.className='cmappr-thumb'; th.innerHTML=''; }
+  else { th.style.backgroundImage=''; th.className='cmappr-thumb ph'; th.innerHTML='<i class="fa-solid fa-'+(n.article?'newspaper':'align-left')+'"></i>'; }
+  $q('pubApprType').textContent = n.article?'Artigo':'Publicação';
+  $q('pubApprTitle').textContent = n.title||'(sem título)';
+  $q('pubApprSub').textContent = n.sub||'SULTS';
+  $q('pubApprAv').className='avatar '+(n.av||'av-rc');
+  $q('pubApprName').textContent=n.author||'SULTS';
+  $q('pubApprUnit').textContent=n.unit||((typeof STORES!=='undefined')?STORES[(n.paid||1)%STORES.length].name:'');
+  $q('pubApprText').textContent=(n.text||'').replace(/<[^>]+>/g,'').slice(0,400)||',';
+  $q('pubApprWhen').textContent=n.date||'agora';
+  var pend=(typeof PUB_APPR!=='undefined') && PUB_APPR.some(function(x){return x.paid===n.paid;});
+  $q('pubApprActs').style.display=pend?'flex':'none';
+  var _old=$q('pubApprModal').querySelector('#reelFailNote'); if(_old) _old.remove();
+  if(!n.__story && (n.proc || n.procFail)){
+    var _ok=$q('pubApprOk'), _acts=$q('pubApprActs');
+    var _bd=$q('pubApprCard') && $q('pubApprCard').parentElement;
+    if(n.procFail){ if(_acts) _acts.style.display='flex'; if(_ok) _ok.style.display='none';
+      if(_bd) _bd.insertAdjacentHTML('afterbegin','<div class="reel-failnote" id="reelFailNote"><i class="fa-solid fa-triangle-exclamation"></i><div><b>Falha no processamento</b><span>Atenção: houve uma falha na formatação do arquivo enviado. Esta publicação não pode ser aprovada. É necessário que o autor reenvie o arquivo para aprovação.</span></div></div>');
+    } else { if(_acts) _acts.style.display='none';
+      if(_bd) _bd.insertAdjacentHTML('afterbegin','<div class="reel-failnote reel-procnote" id="reelFailNote"><span class="rl-spin"></span><div><b>Em processamento</b><span>A aprovação fica disponível quando o processamento terminar.</span></div></div>');
+    }
+  } else if(!n.__story){ var _ok2=$q('pubApprOk'); if(_ok2) _ok2.style.display=''; }
+  var _h2=$q('pubApprModal').querySelector('.fg-head h2'); if(_h2 && !n.__story) _h2.textContent='Aprovar publicação';
+  $q('pubApprModal').classList.add('open');
+}
+function closePubAppr(){ var m=document.getElementById('pubApprModal'); if(m) m.classList.remove('open'); pubApprCur=null; }
+(function(){
+  var m=document.getElementById('pubApprModal'); if(!m) return;
+  document.getElementById('pubApprClose').addEventListener('click', closePubAppr);
+  m.addEventListener('click', function(ev){ if(ev.target===m) closePubAppr(); });
+  document.getElementById('pubApprCard').addEventListener('click', function(){
+    var n=pubApprCur; if(!n) return;
+    closePubAppr();
+    if(n.__story){
+      if(n.procFail || n.proc) { fgToast('Short indisponível: arquivo ainda não processado'); return; }
+      var idx = (typeof n.rid==='number') ? n.rid : parseInt(String(n.paid||'').replace('short-',''),10);
+      if(typeof openPlayer==='function' && typeof REELS_DATA!=='undefined' && REELS_DATA[idx]) { openPlayer(REELS_DATA, idx); return; }
+    }
+    reviewPub(n);
+  });
+  function storyDecide(n, ok, motivo){
+    var rid = (typeof n.rid==='number') ? n.rid : parseInt(String(n.paid||'').replace('short-',''),10);
+    var r = REEL_APPR.find(function(x){ return x.rid===rid; });
+    REEL_APPR = REEL_APPR.filter(function(x){ return x.rid!==rid; });
+    if(r){
+      r.apprStatus = ok ? 'aprovado' : 'rejeitado';
+      r.decidedBy = 'Rodrigo Caetano';
+      r.decidedAt = (typeof aprDT==='function') ? aprDT() : r.date;
+      if(!ok) r.motivo = motivo || (n.procFail ? 'Falha no processamento do arquivo.' : '');
+      REEL_HIST.unshift(r);
+    }
+    if(typeof aprBadges==='function') aprBadges();
+    renderReelAppr();
+    fgToast(ok ? 'Short aprovado' : 'Short recusado');
+  }
+  document.getElementById('pubApprOk').addEventListener('click', function(){
+    var n=pubApprCur; if(!n) return;
+    closePubAppr();
+    if(n.__story){ storyDecide(n, true); return; }
+    reviewingPub=n; reviewDecide(true);
+  });
+  document.getElementById('pubApprRej').addEventListener('click', function(){
+    var n=pubApprCur; if(!n) return;
+    closePubAppr();
+    if(n.__story){
+      if(n.procFail){ storyDecide(n, false); return; }
+      askReject(function(motivo){ storyDecide(n, false, motivo); });
+      return;
+    }
+    reviewingPub=n;
+    if(n.procFail){ window.__skipReject=true; reviewDecide(false); window.__skipReject=false; return; }
+    reviewDecide(false);
+  });
+})();
+
+document.addEventListener('click',function(e){ if(e.target.closest('#rxHeaderNew')||e.target.closest('#rxSocialNew')){ if(typeof crOpen==='function') crOpen(); else { var b=document.getElementById('rmodNew'); if(b) b.click(); } } });
+
+document.addEventListener('click',function(e){
+  if(e.target.closest('#rmodFeed')){
+    document.querySelectorAll('#rmodSide .rmod-item').forEach(function(b){ b.classList.remove('active'); });
+    var f=document.getElementById('rmodFeed'); if(f) f.classList.add('active');
+    try{
+      curView='grade';
+      var g=document.getElementById('rxVGrade'), l=document.getElementById('rxVLista');
+      if(g) g.classList.add('active'); if(l) l.classList.remove('active');
+      closeCats(); closePerm();
+      openStories();
+      document.querySelectorAll('#rmodSide .rmod-item').forEach(function(b){ b.classList.remove('active'); });
+      if(f) f.classList.add('active');
+    }catch(err){}
+  }
+});
+(function(){
+  var r=document.getElementById('nvfStoriesRow');
+  var l=document.getElementById('nvfStLeft'), rt=document.getElementById('nvfStRight');
+  if(r){
+    r.addEventListener('scroll', function(){ if(typeof updNvfArrows==='function') updNvfArrows(); });
+    if(l) l.addEventListener('click', function(){ r.scrollBy({left:-r.clientWidth*0.8, behavior:'smooth'}); });
+    if(rt) rt.addEventListener('click', function(){ r.scrollBy({left:r.clientWidth*0.8, behavior:'smooth'}); });
+  }
+  document.addEventListener('click', function(e){
+    if(e.target.closest('#nvfStoriesAll')){ e.preventDefault(); if(typeof newsShow==='function') newsShow('shorts'); return; }
+    if(e.target.closest('#nmtFeed')||e.target.closest('#tileNews')||e.target.closest('#navNews')) setTimeout(function(){ if(typeof buildStories==='function') buildStories(); },150);
+  });
+  setTimeout(function(){ if(typeof buildStories==='function') buildStories(); }, 700);
+})();
+function openRailAll(title, arr){
+  var grid=document.getElementById('rxGrid'); if(!grid) return;
+  grid.style.display='block';
+  var head='<div class="rail-allhd"><button class="rail-back" id="railBack"><i class="fa-solid fa-arrow-left"></i></button>'+
+    '<div><h3>'+title+'</h3><small>'+arr.length+' shorts</small></div></div>';
+  grid.innerHTML=head+'<div class="rail-allgrid"></div>';
+  var g=grid.querySelector('.rail-allgrid');
+  arr.forEach(function(r,i){ var w=document.createElement('div'); w.innerHTML=reelCardHTML(r); var c=w.firstElementChild;
+    c.addEventListener('click', function(){ openPlayer(arr, i); });
+    g.appendChild(c); });
+  var bk=document.getElementById('railBack');
+  if(bk) bk.addEventListener('click', function(){ renderGrid(); });
+  var main=document.querySelector('.rx-main'); if(main) main.scrollTop=0;
+}
+document.addEventListener('click', function(e){
+  var m=document.getElementById('railAllModal'); if(!m) return;
+  if(e.target.closest('#railAllClose') || e.target===m) m.classList.remove('open');
+});
+function openReelInfo(r){
+  var post=POSTS[r.p], cat=(typeof catById==='function'?catById(r.cat):null);
+  var m=document.getElementById('reelInfoModal'), b=document.getElementById('riBody'); if(!m||!b) return;
+  var v=numVal(r.views), l=numVal(likeDisplay(r));
+  var cm=r.comments||Math.max(3,Math.round(v/900));
+  var eng=v?(((l+cm)/v)*100).toFixed(1)+'%':',';
+  var emp=post.company||post.store||post.label||'SULTS';
+  var kpi=function(ic,val,lb){return '<div class="ri-kpi"><i class="fa-solid '+ic+'"></i><b>'+val+'</b><span>'+lb+'</span></div>';};
+  var row=function(k,val){return '<div class="ri-row"><b>'+k+'</b><span>'+val+'</span></div>';};
+  var stat=function(v,lb,act,lbl){
+    if(!act) return '<div class="dv-stat"><b>'+v+'</b><span>'+lb+'</span></div>';
+    return '<div class="dv-stat dv-statcard"><b>'+v+'</b><span>'+lb+'</span>'+
+      '<button type="button" class="dv-statlink" data-ri="'+act+'">'+(lbl||('Ver '+lb.toLowerCase()))+' <i class="fa-solid fa-chevron-right"></i></button></div>'; };
+  var field=function(k,v){return '<div class="dv-field"><span class="dv-fk">'+k+'</span><span class="dv-fv">'+v+'</span></div>';};
+  b.innerHTML='<div class="dv">'+
+      '<div class="dv-head">'+
+        '<div class="dv-thumb portrait" style="background-image:url('+(post.img||'')+')" data-ri="play"><i class="fa-solid fa-play"></i></div>'+
+        '<div class="dv-headmain">'+
+          '<h3 class="dv-title">'+(post.title||post.alt||'Short')+'</h3>'+
+          '<p class="dv-sub">'+(post.caption||post.alt||'')+'</p>'+
+          '<div class="dv-fields">'+
+            field('Categoria', cat?'<span class="dv-catdot" style="background:'+cat.color+'"></span>'+cat.name:'Sem categoria')+
+            field('Formato', rFormat(r)==='imagem'?'Imagem':'Vídeo')+
+            field('Situação','Publicado')+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="dv-byline"><span class="avatar '+post.av+'"></span>'+
+        '<div class="dv-bytxt"><b>'+post.name+'</b><span>'+emp+'</span></div>'+
+        '<span class="dv-when">'+rxPubDT(post.time)+'</span></div>'+
+      '<div class="dv-stats">'+
+        stat(r.views,'Visualizações','views','Ver quem assistiu')+stat(likeDisplay(r),'Curtidas','likes','Ver quem curtiu')+
+      '</div>'+
+    '</div>'+
+    '<div class="dv-foot">'+
+      '<span style="flex:1"></span>'+
+      '<button class="dv-primary" data-ri="play"><i class="fa-solid fa-play"></i> Assistir short</button></div>';
+  b.onclick=function(e){ var t=e.target.closest('[data-ri]'); if(!t) return; var a=t.dataset.ri;
+    if(a==='play'){ m.classList.remove('open'); openPlayer([r],0); }
+    else { m.classList.remove('open'); openReelAudience(r, a); } };
+  m.classList.add('open');
+}
+document.addEventListener('click', function(e){
+  var ft=e.target.closest('[data-fltoggle]');
+  if(ft){
+    var scope=ft.closest('.nv-screen')||ft.closest('#reelsView');
+    if(scope){
+      var off=scope.classList.toggle('nofilters');
+      ft.querySelector('span').textContent = off ? 'Mostrar filtros' : 'Esconder filtros';
+      ft.querySelector('.fl-carat').className = 'fa-solid fa-chevron-'+(off?'down':'up')+' fl-carat';
+    }
+    return;
+  }
+  var cap=e.target.closest('[data-rvcap]');
+  if(cap){ var cm=document.getElementById('rvCapModal'); document.getElementById('rvCapBody').textContent=cap.textContent.trim(); cm.classList.add('open'); return; }
+  var cm2=document.getElementById('rvCapModal');
+  if(cm2 && (e.target.closest('#rvCapClose')||e.target===cm2)) cm2.classList.remove('open');
+  var m=document.getElementById('reelInfoModal'); if(!m) return;
+  if(e.target.closest('#riClose')||e.target===m) m.classList.remove('open');
+});
+function openNewsInfo(n){
+  var m=document.getElementById('newsInfoModal'), b=document.getElementById('niBody'); if(!m||!b) return;
+  var cat=(typeof newsCatByName==='function'?newsCatByName(n.sub):null);
+  var title=n.title || (n.text? n.text.replace(/<[^>]+>/g,'').slice(0,70) : 'Publicação');
+  var rx=n.reactions||0, cm=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
+  var views=(typeof newsViews==='function')?newsViews(n):(rx*7+cm*11+140);
+  var eng=views?(((rx+cm)/views)*100).toFixed(1)+'%':',';
+  var au=n.autorNome||n.author||'SULTS', av=n.autorAv||n.av||'av-brand';
+  var reach={rede:'Toda a rede',unidades:'Unidades',matriz:'Sua Marca (Matriz)'}[n.reach||'rede']||'Toda a rede';
+  var kpi=function(ic,val,lb){return '<div class="ri-kpi"><i class="fa-solid '+ic+'"></i><b>'+val+'</b><span>'+lb+'</span></div>';};
+  var row=function(k,v){return '<div class="ri-row"><b>'+k+'</b><span>'+v+'</span></div>';};
+  var pill=function(ic,txt,col){return '<span class="ri-chip" style="color:'+col+';background:'+col+'16"><i class="fa-solid '+ic+'"></i> '+txt+'</span>';};
+  var stat=function(v,lb,act,lbl){
+    if(!act) return '<div class="dv-stat"><b>'+v+'</b><span>'+lb+'</span></div>';
+    return '<div class="dv-stat dv-statcard"><b>'+v+'</b><span>'+lb+'</span>'+
+      '<button type="button" class="dv-statlink" data-ni="'+act+'">'+(lbl||('Ver '+lb.toLowerCase()))+' <i class="fa-solid fa-chevron-right"></i></button></div>'; };
+  var field=function(k,v){return '<div class="dv-field"><span class="dv-fk">'+k+'</span><span class="dv-fv">'+v+'</span></div>';};
+  var cover = n.image ? '<div class="dv-thumb" style="background-image:url('+n.image+')"></div>'
+    : '<div class="dv-thumb ph"><i class="fa-solid fa-'+(n.article?'newspaper':'align-left')+'"></i></div>';
+  b.innerHTML='<div class="dv">'+
+      '<div class="dv-head">'+cover+
+        '<div class="dv-headmain">'+
+          '<h3 class="dv-title">'+title+'</h3>'+
+          '<p class="dv-sub">'+((n.article&&n.article.lead)||(n.text?n.text.replace(/<[^>]+>/g,'').slice(0,160):''))+'</p>'+
+          '<div class="dv-fields">'+
+            field('Categoria', cat?'<span class="dv-catdot" style="background:'+cat.color+'"></span>'+cat.name:'Sem categoria')+
+            field('Tipo', n.article?'Artigo':'Post')+
+            field('Situação', n.status==='pub'?'Publicada':'Rascunho')+
+            (n.pinned?field('Destaque','Fixada no feed'):'')+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="dv-byline"><span class="avatar '+av+'"></span>'+
+        '<div class="dv-bytxt"><b>'+au+'</b><span>'+reach+'</span></div>'+
+        '<span class="dv-when">'+(n.date||'')+'</span></div>'+
+      '<div class="dv-stats">'+
+        stat(views.toLocaleString('pt-BR'),'Visualizações','views','Ver quem visualizou')+stat(rx,'Reações','rx','Ver reações')+stat(cm,'Comentários','cm','Ver comentários')+
+      '</div>'+
+    '</div>'+
+    '<div class="dv-foot">'+
+      '<span style="flex:1"></span>'+
+      '<button class="dv-primary" data-ni="open"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir publicação</button></div>';
+  b.onclick=function(e){ var t=e.target.closest('[data-ni]'); if(!t) return; var a=t.dataset.ni;
+    m.classList.remove('open');
+    if(a==='open') openArticle(n);
+    else if(a==='views') openNewsViewers(n, views.toLocaleString('pt-BR'));
+    else if(a==='rx') openReactions(0);
+    else if(a==='cm') openInterModal(title);
+    else if(a==='edit') nvEdit(n.id); };
+  m.classList.add('open');
+}
+document.addEventListener('click', function(e){
+  var m=document.getElementById('newsInfoModal'); if(!m) return;
+  if(e.target.closest('#niClose')||e.target===m) m.classList.remove('open');
+});
+document.addEventListener('click', function(e){
+  if(e.target.closest('#tileSocial')){ e.preventDefault(); var t=document.getElementById('tileNews'); if(t) t.click(); }
+});
+/* Arrastar para rolar horizontalmente as tabelas */
+(function(){
+  var SEL='.rl-tblwrap,.nv-listmain .rlist,#interList.rlist,#modQueue .rlist,#pubApprQueue .rlist,#reelApprQueue .rlist';
+  var el=null,x0=0,l0=0,moved=false;
+  document.addEventListener('pointerdown',function(e){
+    if(e.button!==0) return;
+    var t=e.target.closest(SEL); if(!t) return;
+    if(t.scrollWidth<=t.clientWidth) return;
+    if(e.target.closest('button,a,input,select,textarea,label')) return;
+    el=t; x0=e.clientX; l0=t.scrollLeft; moved=false;
+  });
+  document.addEventListener('pointermove',function(e){
+    if(!el) return;
+    var dx=e.clientX-x0;
+    if(!moved && Math.abs(dx)<4) return;
+    if(!moved){ moved=true; el.style.cursor='grabbing'; el.style.userSelect='none'; }
+    el.scrollLeft=l0-dx;
+    e.preventDefault();
+  });
+  function end(){ if(!el) return; el.style.cursor=''; el.style.userSelect='';
+    if(moved){ var c=function(ev){ ev.stopPropagation(); document.removeEventListener('click',c,true); };
+      document.addEventListener('click',c,true);
+      setTimeout(function(){ document.removeEventListener('click',c,true); },0); }
+    el=null; }
+  document.addEventListener('pointerup',end);
+  document.addEventListener('pointercancel',end);
+})();
+
+/* No celular, escolher um vídeo abre o preview em tela cheia em vez de jogá-lo
+   dentro do editor. Este listener é registrado depois dos originais, então
+   quando ele roda o qpVideo já foi preenchido por eles. */
+(() => {
+  const soMobile = () => window.matchMedia('(max-width:640px)').matches;
+  const prev = document.getElementById('mvidPrev');
+  const video = document.getElementById('mvidVideo');
+  if (!prev || !video) return;
+
+  const imagem = document.getElementById('mvidImg');
+  let aoFechar = null;   /* o que o X desfaz, definido por quem abriu */
+
+  const abrir = ({ src, ehVideo, canto, fechar }) => {
+    aoFechar = fechar || null;
+    prev.classList.toggle('tem-img', !ehVideo);
+    prev.classList.toggle('mvid--canto', !!canto);
+    if (ehVideo) video.src = src; else imagem.src = src;
+    prev.hidden = false;
+    prev.classList.add('open');
+    if (ehVideo) video.play().catch(() => {});   /* autoplay barrado fica no 1º quadro */
+  };
+  const esconder = () => {
+    prev.classList.remove('open');
+    prev.hidden = true;
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+    imagem.removeAttribute('src');
+  };
+
+  /* alguns navegadores recusam o autoplay mesmo mudo; o toque resolve */
+  video.addEventListener('click', () => { if (video.paused) video.play().catch(() => {}); else video.pause(); });
+
+  /* Próximo: só sai da frente — o fluxo de quem abriu continua atrás */
+  document.getElementById('mvidNext').addEventListener('click', esconder);
+
+  /* X: sai e desfaz, do jeito que quem abriu definiu */
+  document.getElementById('mvidX').addEventListener('click', () => {
+    const desfazer = aoFechar;
+    esconder();
+    if (desfazer) desfazer();
+  });
+
+  /* 1) editor de publicação: vídeo escolhido em Imagem/Vídeo */
+  ['#qpVideoFile', '#qpImgFile'].forEach(sel => {
+    const inp = document.querySelector(sel);
+    if (!inp) return;
+    inp.addEventListener('change', () => {
+      if (!soMobile() || !qpVideo) return;
+      abrir({ src: qpVideo, ehVideo: true, canto: false, fechar: () => {
+        qpVideo = null;
+        ['#qpVideoFile', '#qpImgFile'].forEach(s => { const i = document.querySelector(s); if (i) i.value = ''; });
+        if (typeof qpRenderImgs === 'function') qpRenderImgs();
+        if (typeof qpClose === 'function') qpClose();
+      } });
+    });
+  });
+
+  /* 2) criar short: a mídia aparece cheia antes da tela de legenda */
+  const crInp = document.querySelector('#crFile');
+  if (crInp) crInp.addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!soMobile() || !f) return;
+    abrir({
+      src: URL.createObjectURL(f),
+      ehVideo: /^video\//.test(f.type),
+      canto: true,                       /* Próximo como pílula no canto direito */
+      fechar: () => { crInp.value = ''; if (typeof crClose === 'function') crClose(); },
+    });
+  });
+})();
+
+/* No celular os dois seletores do editor (unidade e categoria) ganham uma linha
+   só para eles, abaixo da foto/nome. Para isso precisam ser filhos diretos do
+   cabeçalho — no HTML a unidade mora dentro do bloco do autor. No desktop cada
+   um volta para o lugar de origem. São os mesmos nós, então listeners e menus
+   seguem valendo. */
+(() => {
+  const head = document.querySelector('#qpBack .qp-head');
+  const uni = document.querySelector('#qpBack .qp-unitwrap');
+  const cat = document.querySelector('#qpBack .qp-catwrap');
+  if (!head || !uni || !cat) return;
+  const casaDaUni = uni.parentElement, depoisDaUni = uni.nextElementSibling;
+  const casaDaCat = cat.parentElement, depoisDaCat = cat.nextElementSibling;
+  const mq = window.matchMedia('(max-width:640px)');
+  const posicionar = () => {
+    if (mq.matches) {
+      if (uni.parentElement !== head) head.appendChild(uni);
+      if (cat.parentElement !== head) head.appendChild(cat);
+    } else {
+      if (uni.parentElement !== casaDaUni) casaDaUni.insertBefore(uni, depoisDaUni);
+      if (cat.parentElement !== casaDaCat) casaDaCat.insertBefore(cat, depoisDaCat);
+    }
+  };
+  mq.addEventListener('change', posicionar);
+  posicionar();
+})();
+
+/* No celular o "Ver +N módulos" mora dentro do cartão dos aplicativos; no
+   desktop ele volta para baixo dele. Só o DOM muda — o comportamento é o mesmo. */
+(() => {
+  const painel = document.getElementById('appsPanel');
+  const expand = document.querySelector('.apps-expand');
+  if (!painel || !expand) return;
+  const foraDoPainel = expand.parentElement;
+  const proximoIrmao = expand.nextElementSibling;
+  const mq = window.matchMedia('(max-width:640px)');
+  const posicionar = () => {
+    if (mq.matches) { if (expand.parentElement !== painel) painel.appendChild(expand); }
+    else if (expand.parentElement !== foraDoPainel) foraDoPainel.insertBefore(expand, proximoIrmao);
+  };
+  mq.addEventListener('change', posicionar);
+  posicionar();
+})();
+
+/* Dentro de Rede Social o modo vazio vale igual à home: a grade de shorts vira
+   o "Criar short" com as sugestões, e o feed fica só com o compositor e a
+   mensagem. Envolve as funções de render em vez de mexer dentro de cada uma. */
+(() => {
+  const vazio = () => document.body.classList.contains('demo-empty');
+
+  const rsb = window.renderShortsB;
+  if (typeof rsb === 'function') window.renderShortsB = function (...a) {
+    const r = rsb.apply(this, a);
+    if (!vazio()) return r;
+    const el = document.getElementById('sbGrid');
+    if (!el) return r;
+    const em = document.getElementById('sbEmpty');
+    if (em) em.hidden = true;
+    el.innerHTML = '';
+    const criar = document.createElement('button');
+    criar.className = 'reel reel-create';
+    criar.innerHTML = '<span class="rc-bg"><span class="rc-plus2"><i class="fa-solid fa-plus"></i></span>' +
+                      '<span class="rc-label">Criar short</span></span>';
+    criar.addEventListener('click', crOpen);
+    el.appendChild(criar);
+    SHORT_SUGESTOES.forEach(s => {
+      const b = document.createElement('button');
+      b.className = 'reel reel-sugestao';
+      b.innerHTML = '<span class="rs-ic"><i class="fa-solid ' + s.ic + '"></i></span>' +
+                    '<span class="rs-txt">' + s.txt + '</span>';
+      b.addEventListener('click', crOpen);
+      el.appendChild(b);
+    });
+    return r;
+  };
+
+  const rnf = window.renderNewsFeed;
+  if (typeof rnf === 'function') window.renderNewsFeed = function (...a) {
+    const r = rnf.apply(this, a);
+    const lista = document.getElementById('nvFeed');
+    const msg = document.getElementById('nvFeedVazio');
+    if (!lista || !msg) return r;
+    const semNada = vazio();
+    if (semNada) lista.innerHTML = '';
+    lista.hidden = semNada;
+    msg.hidden = !semNada;
+    return r;
+  };
+})();
+
+/* ============================================================================
+   No celular a home é a única tela.
+   Em vez de caçar cada botão que leva a um módulo, as próprias funções que
+   abrem tela cheia ficam inertes abaixo de 640px — assim qualquer caminho até
+   elas (tile, "ver todos", card de perfil, post) para no mesmo lugar. O editor
+   de publicação NÃO entra na lista: ele é um modal da própria home.
+   Roda por último, quando todas essas funções já foram declaradas.
+   ========================================================================== */
+(() => {
+  const soHome = () => window.matchMedia('(max-width:640px)').matches;
+  const saemDaHome = [
+    'openStories', 'openStoriesModule', 'openForum', 'openNewsModule',
+    'openNewsUser', 'openPersonProfile', 'openArticle', 'openCats', 'openPerm',
+  ];
+  const semBloqueio = {};
+  saemDaHome.forEach(nome => {
+    const original = window[nome];
+    if (typeof original !== 'function') return;
+    semBloqueio[nome] = original;
+    window[nome] = function (...args) {
+      if (soHome()) return;
+      return original.apply(this, args);
+    };
+  });
+
+  /* A barra inferior acompanha o módulo: aberta, ela mostra as abas dele
+     (Publicações · + · Shorts); fechada, volta para a navegação da home.
+     Um observer cobre todos os caminhos que abrem ou fecham o módulo. */
+  (() => {
+    const nv = document.getElementById('newsView');
+    const mnav = document.getElementById('mnav');
+    if (!nv || !mnav) return;
+    const sincroniza = () => {
+      const aberto = nv.classList.contains('open');
+      mnav.classList.toggle('mnav--modulo', aberto);
+      if (!aberto) return;
+      const emShorts = !!document.querySelector('#nvShortsBScreen.active');
+      mnav.querySelectorAll('button').forEach(b => b.classList.remove('on'));
+      const alvo = mnav.querySelector(emShorts ? '[data-t="mod-shorts"]' : '[data-t="mod-pub"]');
+      if (alvo) alvo.classList.add('on');
+    };
+    new MutationObserver(sincroniza).observe(nv, { attributes: true, attributeFilter: ['class'], subtree: true });
+    sincroniza();
+  })();
+
+  /* Shorts e Publicações são as telas do módulo já adaptadas ao celular, então
+     têm uma porta própria que passa por fora do bloqueio. As demais (compor,
+     aprovações, configurações, artigo) seguem barradas. */
+  window.abrirModuloSocial = function (tela) {
+    const abre = semBloqueio.openNewsModule || window.openNewsModule;
+    if (typeof abre !== 'function') return;
+    abre();
+    newsShow(tela || 'shorts');
+  };
+  window.abrirShorts = function () { window.abrirModuloSocial('shorts'); };
+})();

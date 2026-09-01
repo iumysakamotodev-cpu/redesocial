@@ -1,0 +1,463 @@
+<!-- home: modulos, shorts, feed e comunicados -->
+  <div class="content">
+
+    <!-- ========== Coluna central ========== -->
+    <main class="col-main">
+
+      <!-- Grade de aplicativos -->
+      <section class="apps-panel" id="appsPanel">
+        <div class="apps-head">
+          <div class="apps-search">
+            <span class="as-ic"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" id="appSearch" placeholder="Buscar módulo" autocomplete="off">
+          </div>
+          <div class="apps-head-right">
+            <span class="apps-hint" id="appsHint" hidden>Arraste os módulos para reordenar</span>
+            <button class="apps-edit" id="appsEdit" title="Reordenar módulos"><i class="fa-solid fa-arrows-up-down-left-right"></i><span>Organizar</span></button>
+          </div>
+        </div>
+        <div class="apps" id="appsGrid">
+        <a class="tile" style="--c1:#73beff;--c2:#0088FF" href="#" id="tileSocial">
+          <span class="tile-ic"><span class="smi smi-rede-social" aria-hidden="true"></span></span>
+          <span class="tl">Rede Social</span>
+        </a>
+
+        <a class="tile" style="--c1:#43d6cd;--c2:#00918a" href="#">
+          <span class="tile-ic"><span class="smi smi-unidades" aria-hidden="true"></span></span>
+          <span class="tl">Unidades</span>
+        </a>
+
+        <a class="tile" style="--c1:#62a9ff;--c2:#1d6ede" href="#">
+          <span class="tile-ic"><span class="smi smi-chamados" aria-hidden="true"></span><span class="tile-badges"><span class="tbadge">5</span></span></span>
+          <span class="tl">Chamados</span>
+        </a>
+
+        <a class="tile" style="--c1:#9ba1f4;--c2:#575fd1" href="#">
+          <span class="tile-ic"><span class="smi smi-comunicados" aria-hidden="true"></span></span>
+          <span class="tl">Comunicado</span>
+        </a>
+
+        <a class="tile" style="--c1:#5ecc7f;--c2:#219348" href="#">
+          <span class="tile-ic"><span class="smi smi-checklist" aria-hidden="true"></span></span>
+          <span class="tl">Checklist</span>
+        </a>
+
+        <a class="tile" style="--c1:#ff77a9;--c2:#d6285f" href="#">
+          <span class="tile-ic"><span class="smi smi-marketing" aria-hidden="true"></span></span>
+          <span class="tl">Marketing</span>
+        </a>
+
+        <a class="tile" style="--c1:#43d6cd;--c2:#00918a" href="#">
+          <span class="tile-ic"><span class="smi smi-compras" aria-hidden="true"></span></span>
+          <span class="tl">Compras</span>
+        </a>
+
+        <a class="tile" style="--c1:#d16565;--c2:#9c2b2b" href="#">
+          <span class="tile-ic"><span class="smi smi-agenda" aria-hidden="true"></span></span>
+          <span class="tl">Agenda</span>
+        </a>
+
+        <a class="tile" style="--c1:#5aa2f2;--c2:#1565c0" href="#">
+          <span class="tile-ic"><span class="smi smi-seguranca" aria-hidden="true"></span></span>
+          <span class="tl">Segurança</span>
+        </a>
+
+        <a class="tile" style="--c1:#bd90ec;--c2:#7c4cc4" href="#">
+          <span class="tile-ic"><span class="smi smi-enquetes" aria-hidden="true"></span></span>
+          <span class="tl">Enquete</span>
+        </a>
+
+        <a class="tile" style="--c1:#3fe3c8;--c2:#00a08a" href="#">
+          <span class="tile-ic"><span class="smi smi-nes" aria-hidden="true"></span></span>
+          <span class="tl">NES</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#6fb2ff;--c2:#2b74dd" href="#">
+          <span class="tile-ic"><span class="smi smi-disco-virtual" aria-hidden="true"></span></span>
+          <span class="tl"><span class="tl-full">Disco Virtual</span><span class="tl-curto">Disco</span></span>
+        </a>
+
+        <a class="tile extra" style="--c1:#5cc0a0;--c2:#2aa17e" href="#">
+          <span class="tile-ic"><span class="smi smi-implantacao-de-unidades" aria-hidden="true"></span><span class="tile-badges"><span class="tbadge">19343</span></span></span>
+          <span class="tl"><span class="tl-full">Implantação de Unidades</span><span class="tl-curto">Implantações</span></span>
+        </a>
+
+        <a class="tile extra" style="--c1:#b18ae6;--c2:#6d47b5" href="#">
+          <span class="tile-ic"><span class="smi smi-universidade" aria-hidden="true"></span></span>
+          <span class="tl"><span class="tl-full">Universidade Corporativa</span><span class="tl-curto">Universidade</span></span>
+        </a>
+
+        <a class="tile" style="--c1:#a9d97a;--c2:#6ba838;display:none" href="#" id="tileNews" hidden>
+          <span class="tile-ic"><span class="smi smi-noticias" aria-hidden="true"></span></span>
+          <span class="tl">Notícias</span>
+        </a>
+
+        <a class="tile" style="--c1:#f27794;--c2:#d63a5f;display:none" href="#" id="tileStories" hidden>
+          <span class="tile-ic"><i class="mdi mdi-play-box-multiple"></i></span>
+          <span class="tl">Shorts</span>
+        </a>
+
+        <a class="tile" style="--c1:#ff8a7a;--c2:#e0392c" href="#">
+          <span class="tile-ic"><span class="smi smi-expancao" aria-hidden="true"></span></span>
+          <span class="tl">Expansão</span>
+        </a>
+
+        <a class="tile" style="--c1:#77b6f7;--c2:#2e7ed4" href="#">
+          <span class="tile-ic"><span class="smi smi-empresa" aria-hidden="true"></span></span>
+          <span class="tl">Asgard</span>
+        </a>
+
+        <a class="tile" style="--c1:#ff8a7a;--c2:#e0392c" href="#">
+          <span class="tile-ic"><span class="smi smi-projetos" aria-hidden="true"></span><span class="tile-badges"><span class="tbadge dark">124</span><span class="tbadge">16663</span></span></span>
+          <span class="tl">Projetos</span>
+        </a>
+
+        <a class="tile" style="--c1:#5aa2f2;--c2:#1460c4" href="#">
+          <span class="tile-ic"><span class="smi smi-powerups" aria-hidden="true"></span></span>
+          <span class="tl">Powerups</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#ffc95e;--c2:#e08e00" href="#">
+          <span class="tile-ic"><span class="smi smi-analitycs" aria-hidden="true"></span></span>
+          <span class="tl">Analytics</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#7986cb;--c2:#283593" href="#">
+          <span class="tile-ic"><span class="smi smi-jornada" aria-hidden="true"></span></span>
+          <span class="tl">Jornada</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#6fe08f;--c2:#2ea44f" href="#">
+          <span class="tile-ic"><span class="smi smi-nps" aria-hidden="true"></span></span>
+          <span class="tl">NPS</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#a1887f;--c2:#5d4037" href="#">
+          <span class="tile-ic"><span class="smi smi-termos-lgpd" aria-hidden="true"></span></span>
+          <span class="tl"><span class="tl-full">Termos LGPD</span><span class="tl-curto">LGPD</span></span>
+        </a>
+
+        <a class="tile extra" style="--c1:#ffcf4d;--c2:#d99e00" href="#">
+          <span class="tile-ic"><span class="smi smi-certificacoes" aria-hidden="true"></span></span>
+          <span class="tl">Certificações</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#bd90ec;--c2:#7c4cc4" href="#">
+          <span class="tile-ic"><span class="smi smi-processo" aria-hidden="true"></span></span>
+          <span class="tl">Processos</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#5a7fa8;--c2:#1f3f63" href="#">
+          <span class="tile-ic"><span class="smi smi-tarefas" aria-hidden="true"></span></span>
+          <span class="tl">Tarefas</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#98a4b0;--c2:#66727d" href="#">
+          <span class="tile-ic"><span class="smi smi-pdi" aria-hidden="true"></span></span>
+          <span class="tl">PDI</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#ff8a65;--c2:#f4511e" href="#">
+          <span class="tile-ic"><span class="smi smi-vendas" aria-hidden="true"></span></span>
+          <span class="tl">Vendas</span>
+        </a>
+
+        <a class="tile extra" style="--c1:#ff8a7a;--c2:#e0392c" href="#">
+          <span class="tile-ic"><span class="smi smi-integracao-expansao" aria-hidden="true"></span><span class="tile-badges"><span class="tbadge">1517</span></span></span>
+          <span class="tl"><span class="tl-full">Integração Expansão</span><span class="tl-curto">Integração</span></span>
+        </a>
+
+        <a class="tile extra" style="--c1:#9db0d6;--c2:#6a82b0" href="#">
+          <span class="tile-ic"><span class="smi smi-cofre-de-senhas" aria-hidden="true"></span></span>
+          <span class="tl"><span class="tl-full">Cofre de Senhas</span><span class="tl-curto">Senhas</span></span>
+        </a>
+
+        </div>
+
+        <div class="apps-empty" id="appsEmpty" hidden>
+          <i class="fa-regular fa-face-frown"></i> Nenhum módulo encontrado
+        </div>
+        <div class="apps-expand">
+          <button id="appsToggle" title="Ver mais aplicativos"><span id="appsToggleLbl">Ver mais módulos</span> <i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+      </section>
+
+      <!-- ========== EM DESTAQUE: Shorts ========== -->
+      <section class="stories-section" id="homeShorts">
+        <div class="section-title-row">
+          <h2 class="section-title">Shorts</h2>
+          <a href="#" class="see-all demo-filled" id="reelsSeeAll">Ver todos os shorts <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="stories-wrap">
+          <button class="st-arrow left" id="stLeft" hidden><i class="fa-solid fa-chevron-left"></i></button>
+          <div class="shorts" id="storiesRow"></div>
+          <button class="st-arrow right" id="stRight" hidden><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </section>
+
+      <!-- ========== FEED (estilo LinkedIn) ========== -->
+      <div class="section-title-row" id="homeFeedTitle">
+        <h2 class="section-title">Feed</h2>
+        <a href="#" class="see-all demo-filled" id="homeSeeAllPubs">Ver todas as publicações <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="nvf-composer" style="margin-bottom:8px">
+        <div class="nvf-composer-top">
+          <span class="avatar av-rc"></span>
+          <button class="nvf-start" id="homeStart">Comece uma publicação</button>
+        </div>
+        <div class="nvf-quick">
+          <button class="nvf-qbtn img" id="homeQImg"><i class="fa-solid fa-image"></i> Imagem</button>
+          <button class="nvf-qbtn color" id="homeQColor"><i class="fa-solid fa-palette"></i> Colorida</button>
+          <button class="nvf-qbtn video" id="homeQVideo"><i class="fa-solid fa-video"></i> Vídeo</button>
+          <button class="nvf-qbtn news" id="homeQArt"><i class="fa-solid fa-newspaper"></i> Artigo</button>
+        </div>
+      </div>
+      <section class="feed demo-filled">
+
+        <!-- Post 0: Artigo fixado (Casa do Construtor) -->
+        <article class="card post nvf-artcard" id="homeArtCard">
+          <div class="post-head">
+            <span class="avatar av-brand"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
+            <div class="post-id">
+              <div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i><span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span></div>
+              <div class="post-sub">Histórias de sucesso · SULTS</div>
+              <div class="post-meta">22/07/2026 às 09:14 · <i class="fa-solid fa-earth-americas"></i></div>
+            </div>
+            <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
+          </div>
+          <div class="nvf-arthero" id="homeArtOpen"><img src="uploads/news/casa-construtor.jpg" alt=""><span class="art-badge">Histórias de sucesso · Case</span></div>
+          <div class="nvf-artbody">
+            <div class="nvf-artkicker">Histórias de sucesso</div>
+            <div class="nvf-arttitle" id="homeArtOpen2">Como a Casa do Construtor centraliza a gestão de mais de 780 lojas em 4 países com a SULTS</div>
+            <div class="nvf-artlead">Informações estratégicas centralizadas, economia em licenciamento de plataformas e tomada de decisão orientada por dados para toda a rede de franqueados.</div>
+            <div class="nvf-artread" id="homeArtOpen3">Ler matéria completa <i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+          <div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span><span class="rx-count">342</span><span class="right">Ver 57 comentários</span></div>
+          <div class="post-actions"><button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button><button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button></div>
+        </article>
+
+        <!-- Post 1: SULTS oficial -->
+        <article class="card post">
+          <div class="post-head">
+            <span class="avatar av-brand"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
+            <div class="post-id">
+              <div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i></div>
+              <div class="post-sub">Comunicados oficiais · SULTS</div>
+              <div class="post-meta">22/07/2026 às 07:02 · <i class="fa-solid fa-earth-americas"></i></div>
+            </div>
+            <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
+          </div>
+          <div class="post-img">
+            <div class="banner">
+              <svg class="logo-mark" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#fff" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#fff" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
+              <h4>Bem-vindos, Boatlux e Constance!</h4>
+              <p>+1.647 marcas · +92.000 unidades · +600.000 usuários</p>
+            </div>
+          </div>
+          <div class="post-stats">
+            <span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span>
+            <span class="rx-count">128</span>
+            <span class="right">Ver 24 comentários</span>
+          </div>
+          <div class="post-actions">
+            <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
+            <button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button>
+          </div>
+        </article>
+
+        <!-- Post 2: Head de CS -->
+        <article class="card post">
+          <div class="post-head">
+            <span class="avatar av-lf">LF</span>
+            <div class="post-id">
+              <div class="post-name">Livia Fernandes</div>
+              <div class="post-sub">Head de Customer Success · SULTS</div>
+              <div class="post-meta">21/07/2026 às 16:48 · <i class="fa-solid fa-earth-americas"></i></div>
+            </div>
+            <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
+          </div>
+          <p class="post-text">Fechamos o trimestre com NPS 87 no Customer Success! 🚀 Esse número é resultado de um time que trata cada rede como se fosse a única, todos os dias. <button class="see-more">...ver mais</button><span class="more">
+
+Obrigada a todos que abraçaram as novas rotinas de onboarding e acompanhamento. Cliente feliz é a nossa melhor métrica, e o melhor ainda está por vir. 💙</span></p>
+          <div class="post-stats">
+            <span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span></span>
+            <span class="rx-count">96</span>
+            <span class="right">Ver 18 comentários</span>
+          </div>
+          <div class="post-actions">
+            <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
+            <button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button>
+          </div>
+        </article>
+
+        <!-- Post 3: CTO -->
+        <article class="card post">
+          <div class="post-head">
+            <span class="avatar av-wm">WM</span>
+            <div class="post-id">
+              <div class="post-name">Willer Paim Matayoshi</div>
+              <div class="post-sub">CTO e Co-fundador · SULTS</div>
+              <div class="post-meta">21/07/2026 às 10:25 · <i class="fa-solid fa-earth-americas"></i></div>
+            </div>
+            <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
+          </div>
+          <p class="post-text">O SULTS Open entrou em beta! 🔓
+
+API completa e MCP server para conectar a plataforma a agentes de IA e a qualquer sistema da sua stack. Quem quiser participar dos primeiros testes de integração, chama o time de Produto.</p>
+          <div class="post-stats">
+            <span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span>
+            <span class="rx-count">154</span>
+            <span class="right">Ver 31 comentários</span>
+          </div>
+          <div class="post-actions">
+            <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
+            <button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button>
+          </div>
+        </article>
+
+        <!-- Post 4: Gente & Cultura -->
+        <article class="card post">
+          <div class="post-head">
+            <span class="avatar av-gc">GC</span>
+            <div class="post-id">
+              <div class="post-name">Gente &amp; Cultura</div>
+              <div class="post-sub">Recursos Humanos · SULTS</div>
+              <div class="post-meta">21/07/2026 às 08:30 · <i class="fa-solid fa-earth-americas"></i></div>
+            </div>
+            <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
+          </div>
+          <div class="post-img">
+            <div class="banner bday">
+              <span class="big-emoji">🎂</span>
+              <h4>Feliz aniversário, Breno!</h4>
+              <p>Deixe sua mensagem no mural</p>
+            </div>
+          </div>
+          <div class="post-stats">
+            <span class="rx"><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span><span class="rxs" data-rx="like"></span></span>
+            <span class="rx-count">210</span>
+            <span class="right">Ver 45 comentários</span>
+          </div>
+          <div class="post-actions">
+            <button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>
+            <button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button>
+          </div>
+        </article>
+      </section>
+      <div class="demo-empty-state" style="margin-top:4px">
+        <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
+        <div class="de-title">Seja o primeiro a publicar</div>
+        <div class="de-sub">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+      </div>
+    </main>
+
+    <!-- ========== Coluna direita ========== -->
+    <aside class="col-right">
+      <div class="card profile-card" id="homeProfileCard" style="cursor:pointer">
+        <div class="profile-banner">
+          <!-- logo híbrida oficial: símbolo verdigris, nominativo branco -->
+          <svg class="profile-logo" viewBox="0 0 294.1 76.6" xmlns="http://www.w3.org/2000/svg" aria-label="SULTS">
+            <g fill="#00ACAC">
+              <path d="M56.2 28.1 25.1 59.2c-.2.2-.6.2-.9 0l-9.8-9.8c-.2-.2-.2-.6 0-.9l31.1-31.1c.2-.2.6-.2.9 0l9.8 9.8c.2.2.2.6 0 .9"/>
+              <path d="M29.8 1.1 3.3 27.6c-2.9 2.9-2.9 7.7 0 10.7l4.9 4.9c.2.2.6.2.9 0L50.3 2c.4-.4.1-1-.4-1H30.2c-.1 0-.3 0-.4.1"/>
+              <path d="M61.5 33.4 20.3 74.6c-.4.4-.1 1 .4 1h19.6c.2 0 .3-.1.4-.2L67.3 49c2.9-2.9 2.9-7.7 0-10.7l-4.9-4.9c-.3-.3-.6-.3-.9 0"/>
+            </g>
+            <g fill="#FFFFFF">
+              <path d="M158.1 12.5c-.3 0-.6.3-.6.6v30.6c0 1.6-.4 3.1-1.1 4.6-1.6 3-4.2 4.5-8 4.5-3.9 0-6.5-1.5-7.9-4.5-.8-1.5-1.2-3-1.2-4.6V13.1c0-.3-.3-.6-.6-.6h-11.1c-.3 0-.6.3-.6.6v30.6c0 3.6.9 7.1 2.7 10.7 3.6 7.2 9.9 10.8 18.7 10.8 8.8 0 15.1-3.6 18.8-10.8 1.7-3.5 2.6-7.1 2.6-10.7V13.1c0-.3-.3-.6-.6-.6h-11.1z"/>
+              <path d="M187.4 51.2V13.1c0-.3-.3-.6-.6-.6h-11.1c-.3 0-.6.3-.6.6v50.4c0 .3.3.6.6.6h34.6c.3 0 .6-.3.6-.6V52.5c0-.3-.3-.6-.6-.6H188c-.3 0-.6-.3-.6-.7"/>
+              <path d="M203.2 13.1v11.1c0 .3.3.6.6.6h14c.3 0 .6.3.6.6v38.2c0 .3.3.6.6.6h11.2c.3 0 .6-.3.6-.6V25.3c0-.3.3-.6.6-.6h14c.3 0 .6-.3.6-.6V13.1c0-.3-.3-.6-.6-.6h-41.7c-.2 0-.5.2-.5.6"/>
+              <path d="M118.1 38.8c-9.2-10.1-19.5-3.5-25-8.9-.7-.7-.8-1.6-.7-2.6.4-2.8 3.5-4.2 9.2-4.2 3.7 0 6.4.7 9.3 2.1.6.3 1.2.6 1.5.8.2.1.5.1.7-.1l7.5-7.5c.3-.3.2-.7 0-.9-8.8-6.8-24.8-8.4-34-2.1-7.3 5.1-9 15.7-2.8 22.2 8.8 10.2 19.2 3.5 24.7 8.9.7.8.9 1.6.9 2.6-.5 3-3.6 4.5-9.3 4.5-4.3 0-7.7-1-10.9-3.1-.2-.2-.5-.1-.7.1l-7.5 7.5c-.3.3-.2.7.1.9 1.3 1 2.9 2 5 3 8.3 4 21.8 4.7 29.2-.9 3.8-2.6 6-6.2 6.5-10.4.5-4.4-.7-8.6-3.7-12"/>
+              <path d="M289.3 38.8c-9.2-10.1-19.5-3.5-25-8.9-.7-.7-.8-1.6-.7-2.6.4-2.8 3.5-4.2 9.2-4.2 3.7 0 6.4.7 9.3 2.1.6.3 1.2.6 1.5.8.2.1.5.1.7-.1l7.5-7.5c.3-.3.2-.7 0-.9-8.8-6.8-24.8-8.4-34-2.1-7.3 5.1-9 15.7-2.8 22.2 8.8 10.2 19.2 3.5 24.7 8.9.7.8.9 1.6.9 2.6-.5 3-3.6 4.5-9.3 4.5-4.3 0-7.7-1-10.9-3.1-.2-.2-.5-.1-.7.1l-7.5 7.5c-.3.3-.2.7.1.9 1.3 1 2.9 2 5 3 8.3 4 21.8 4.7 29.2-.9 3.8-2.6 6-6.2 6.5-10.4.5-4.4-.7-8.6-3.7-12"/>
+            </g>
+          </svg>
+        </div>
+        <span class="avatar av-rc lg">RC</span>
+        <div class="profile-name">Rodrigo Caetano</div>
+        <div class="profile-role">CEO · SULTS</div>
+      </div>
+
+      <!-- Painel de Comunicados -->
+      <div class="card com-panel" id="homeComPanel">
+        <div class="com-head">
+          <h2>Comunicados</h2>
+          <span class="com-count demo-filled">3 novos</span>
+        </div>
+
+        <div class="demo-empty-state com-empty">
+          <img class="de-illu" src="uploads/illustra/comunicados.svg" alt="" width="134" height="123">
+          <div class="de-title">Nenhum comunicado publicado</div>
+          <div class="de-sub">Quando um novo comunicado for enviado para você, ele aparecerá aqui.</div>
+        </div>
+
+        <a href="#" class="com-featured demo-filled">
+          <h4>Convenção SULTS 2026</h4>
+          <p>Encontro geral do time para alinhar a estratégia do ano, com trilhas por área e festa de encerramento.</p>
+          <span class="meta">12/08/2026 09:00</span>
+        </a>
+
+        <div class="com-list demo-filled">
+          <a href="#" class="com-item unread" style="--c1:#66bb6a;--c2:#2e7d32">
+            <span class="com-ico"><i class="fa-solid fa-handshake"></i></span>
+            <div class="com-body">
+              <h4>Novo Cliente C1: Boatlux</h4>
+              <p>Rede de náutica premium chega ao SULTS com +40 unidades no litoral.</p>
+              <span class="com-meta">28/07/2026 10:52</span>
+            </div>
+            <span class="com-dot"></span>
+          </a>
+
+          <a href="#" class="com-item unread" style="--c1:#66bb6a;--c2:#2e7d32">
+            <span class="com-ico"><i class="fa-solid fa-handshake"></i></span>
+            <div class="com-body">
+              <h4>Novo Cliente C2: Constance</h4>
+              <p>Rede de panificação com +25 lojas começa a implantação esta semana.</p>
+              <span class="com-meta">28/07/2026 09:41</span>
+            </div>
+            <span class="com-dot"></span>
+          </a>
+
+          <a href="#" class="com-item unread" style="--c1:#ffb74d;--c2:#ef6c00">
+            <span class="com-ico"><i class="fa-solid fa-cake-candles"></i></span>
+            <div class="com-body">
+              <h4>Aniversário Breno!</h4>
+              <p>Deixe sua mensagem no mural. Bolo às 16h no escritório de Uberaba.</p>
+              <span class="com-meta">28/07/2026 08:15</span>
+            </div>
+            <span class="com-dot"></span>
+          </a>
+
+          <a href="#" class="com-item" style="--c1:#5c6bc0;--c2:#283593">
+            <span class="com-ico"><i class="fa-solid fa-code"></i></span>
+            <div class="com-body">
+              <h4>SULTS Open entra em beta</h4>
+              <p>API completa e MCP server disponíveis para os primeiros testes de integração.</p>
+              <span class="com-meta">28/07/2026 06:30</span>
+            </div>
+          </a>
+
+          <a href="#" class="com-item" style="--c1:#26c6da;--c2:#00838f">
+            <span class="com-ico"><i class="fa-solid fa-graduation-cap"></i></span>
+            <div class="com-body">
+              <h4>Nova trilha: Atendimento 2.0</h4>
+              <p>Disponível na Universidade Corporativa, com certificado ao concluir.</p>
+              <span class="com-meta">27/07/2026 14:20</span>
+            </div>
+          </a>
+
+          <a href="#" class="com-item" style="--c1:#4d96e8;--c2:#1565c0">
+            <span class="com-ico"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+            <div class="com-body">
+              <h4>Atualização da plataforma v10.4</h4>
+              <p>Melhorias de desempenho no Checklist e novos filtros nos Relatórios.</p>
+              <span class="com-meta">26/07/2026 11:05</span>
+            </div>
+          </a>
+        </div>
+
+        <button class="com-more demo-filled">Ver todos os comunicados <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </aside>
+
+  </div><!-- /.content -->
+</div><!-- /.main -->
+
