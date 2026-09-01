@@ -37,11 +37,12 @@
   --line:#e6eaef;
   --red:#e53935;
   --radius:14px;
-  /* Superelipse |x|^3.6 + |y|^3.6 = 1, amostrada em 64 pontos. O canto do
+  /* Superelipse |x|^5 + |y|^5 = 1, amostrada em 96 pontos — o expoente da
+     Apple: o lado sai quase reto e a curva se concentra no canto. O canto do
      border-radius e um arco de circulo: encontra a reta do lado com uma
      quebra de curvatura. Aqui o lado estica e a curva entra continuamente,
      como no icone de app do iOS e do Android. */
-  --squircle: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M100.00,50.00L99.87,63.76L99.46,70.17L98.79,75.15L97.85,79.32L96.63,82.92L95.13,86.07L93.34,88.83L91.24,91.24L88.83,93.34L86.07,95.13L82.92,96.63L79.32,97.85L75.15,98.79L70.17,99.46L63.76,99.87L50.00,100.00L36.24,99.87L29.83,99.46L24.85,98.79L20.68,97.85L17.08,96.63L13.93,95.13L11.17,93.34L8.76,91.24L6.66,88.83L4.87,86.07L3.37,82.92L2.15,79.32L1.21,75.15L0.54,70.17L0.13,63.76L0.00,50.00L0.13,36.24L0.54,29.83L1.21,24.85L2.15,20.68L3.37,17.08L4.87,13.93L6.66,11.17L8.76,8.76L11.17,6.66L13.93,4.87L17.08,3.37L20.68,2.15L24.85,1.21L29.83,0.54L36.24,0.13L50.00,0.00L63.76,0.13L70.17,0.54L75.15,1.21L79.32,2.15L82.92,3.37L86.07,4.87L88.83,6.66L91.24,8.76L93.34,11.17L95.13,13.93L96.63,17.08L97.85,20.68L98.79,24.85L99.46,29.83L99.87,36.24Z' fill='%23000'/></svg>");
+  --squircle: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M100.00,50.00L99.96,66.80L99.83,72.14L99.61,76.01L99.31,79.12L98.92,81.75L98.44,84.05L97.87,86.08L97.20,87.89L96.44,89.52L95.58,91.00L94.61,92.33L93.53,93.53L92.33,94.61L91.00,95.58L89.52,96.44L87.89,97.20L86.08,97.87L84.05,98.44L81.75,98.92L79.12,99.31L76.01,99.61L72.14,99.83L66.80,99.96L50.00,100.00L33.20,99.96L27.86,99.83L23.99,99.61L20.88,99.31L18.25,98.92L15.95,98.44L13.92,97.87L12.11,97.20L10.48,96.44L9.00,95.58L7.67,94.61L6.47,93.53L5.39,92.33L4.42,91.00L3.56,89.52L2.80,87.89L2.13,86.08L1.56,84.05L1.08,81.75L0.69,79.12L0.39,76.01L0.17,72.14L0.04,66.80L0.00,50.00L0.04,33.20L0.17,27.86L0.39,23.99L0.69,20.88L1.08,18.25L1.56,15.95L2.13,13.92L2.80,12.11L3.56,10.48L4.42,9.00L5.39,7.67L6.47,6.47L7.67,5.39L9.00,4.42L10.48,3.56L12.11,2.80L13.92,2.13L15.95,1.56L18.25,1.08L20.88,0.69L23.99,0.39L27.86,0.17L33.20,0.04L50.00,0.00L66.80,0.04L72.14,0.17L76.01,0.39L79.12,0.69L81.75,1.08L84.05,1.56L86.08,2.13L87.89,2.80L89.52,3.56L91.00,4.42L92.33,5.39L93.53,6.47L94.61,7.67L95.58,9.00L96.44,10.48L97.20,12.11L97.87,13.92L98.44,15.95L98.92,18.25L99.31,20.88L99.61,23.99L99.83,27.86L99.96,33.20Z' fill='%23000'/></svg>");
   --shadow:0 1px 2px rgba(16,32,48,.06),0 8px 24px -14px rgba(16,32,48,.22);
 }
 html{scroll-behavior:smooth}
@@ -665,7 +666,7 @@ input,textarea,select{font-size:14px}
   display:flex;align-items:center;justify-content:center;color:#fff;
   /* a sombra mora aqui, e nao no ::before: filter e aplicado antes da
      mascara, entao no elemento mascarado ela seria recortada junto */
-  filter:drop-shadow(0 0 .5px rgba(16,32,48,.14)) drop-shadow(0 1px 2px rgba(16,32,48,.10));
+  filter:drop-shadow(0 0 5px rgba(16,32,48,.07)) drop-shadow(0 2px 3px rgba(16,32,48,.07));
   transition:transform .18s ease,filter .18s ease;
 }
 /* A forma fica num ::before, e nao no proprio .tile-ic, porque a mascara
@@ -673,20 +674,32 @@ input,textarea,select{font-size:14px}
    da caixa (top:-7px;right:-9px) e seriam cortados junto. */
 .tile-ic::before{
   content:'';position:absolute;inset:0;z-index:0;
-  background:linear-gradient(165deg,color-mix(in srgb,var(--c1) 30%,var(--c2)) 0%,var(--c2) 100%);
+  background:
+    /* a luz entra pelo topo numa mancha larga e macia */
+    radial-gradient(125% 62% at 50% -20%, rgba(255,255,255,.34) 0%, rgba(255,255,255,.07) 46%, rgba(255,255,255,0) 70%),
+    /* a base escurece: e o que faz o cartao ler como um bloco com espessura */
+    linear-gradient(180deg, rgba(0,0,0,0) 44%, rgba(0,0,0,.07) 76%, rgba(0,0,0,.16) 100%),
+    /* corpo */
+    linear-gradient(165deg,color-mix(in srgb,var(--c1) 45%,var(--c2)) 0%,var(--c2) 100%);
   -webkit-mask:var(--squircle) center / 100% 100% no-repeat;
   mask:var(--squircle) center / 100% 100% no-repeat;
   /* box-shadow seria recortado pela mascara e border seguiria o retangulo;
      drop-shadow acompanha a silhueta. O primeiro, de raio 0.5px, nao e sombra
      e sim contorno: sem ele os tiles claros dissolvem no fundo da pagina. */
 }
-/* O brilho de cima e um traco de 1.5px, nao uma nevoa: duas copias da mesma
-   mascara, a segunda 3px menor, subtraidas uma da outra. Sobra um anel com a
+/* O brilho de cima e um traco de 1,5px, nao uma nevoa: duas copias da mesma
+   mascara, a segunda 3px menor — 1,5px de cada lado —, subtraidas uma da
+   outra. Sobra um anel com a
    forma exata. O degrade some antes da base porque a luz vem de cima — anel
    fechado leria como contorno em vez de brilho. */
 .tile-ic::after{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.24) 0%,rgba(255,255,255,.10) 26%,rgba(255,255,255,.03) 52%,rgba(255,255,255,0) 72%);
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.72) 0%,
+    rgba(255,255,255,.30) 14%,
+    rgba(255,255,255,.07) 38%,
+    rgba(255,255,255,0)   60%,
+    rgba(255,255,255,.12) 100%);
   -webkit-mask:var(--squircle) center / 100% 100% no-repeat,var(--squircle) center / calc(100% - 3px) calc(100% - 3px) no-repeat;
   -webkit-mask-composite:xor;
   mask:var(--squircle) center / 100% 100% no-repeat,var(--squircle) center / calc(100% - 3px) calc(100% - 3px) no-repeat;
@@ -697,7 +710,8 @@ input,textarea,select{font-size:14px}
 /* Ícones dos módulos (uploads/apps/*.svg, entregues pelo time de design).
    SVG brancos que ficam sobre o gradiente do cartão. Embutidos para o
    arquivo funcionar também aberto direto, sem servidor. */
-.smi{position:relative;z-index:1;width:42px;height:42px;flex:none;background-position:center;background-repeat:no-repeat;background-size:42px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
+.smi{position:relative;z-index:1;width:42px;height:42px;flex:none;background-position:center;background-repeat:no-repeat;background-size:42px;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.18)) drop-shadow(0 2px 6px rgba(0,0,0,.14))}
 .smi-empresa{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAQAAACSoYmJAAAAAmJLR0QA/4ePzL8AAADsSURBVHja7do7DsIwEEXRKEWksPLQ8hHZIKEjNNA+tmDLM2PHurekQEcojEeRh4GIiKi9NOmsTSk9tWhqA70op6UN9JaFftUgnnTXR1btumn2R6+ybvUmj/qZo78aQYc8Hg//Z3rWVbsZ+K1LwB+RiKjCphGzjTgcJd7biMuh7X2wHxJd7fEo20aMN43IbSTSbDf4QFdAR34OGjTontDMadCgQTOnQYMGze4BGjRodg/QoEH3gc64CWZV+Y2yzJtgVpXdKAv+lW1ulKlSoA+KLhlVKd8DGjToXtElQ6q5OQ0aNOiQtx9ERERp/QHJMu++coyn1AAAAABJRU5ErkJggg==")}
 .smi-processo{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAQAAACSoYmJAAAAAmJLR0QA/4ePzL8AAAOfSURBVHgB7cHPbxRlAMfhb3e3ayMcxNIeRGv/AI3GqLEIqXelXgQhEonGNtGTBLV66hsrpoSTCkdvcDEg0WgMWcSTbYkm/PBeKoE2VtqQoIfuYD+Wdss7287sTt+XdGeTeR5lMplMJpN69FFigjnKlJljkj84w1EGeIqc0ok+Fohzix94l06lDeeo5w4lXqeg9GCcZP7kQzYrBkYbiU9Ibpp+8loDA9pI5DlOQHKXeU5VMCySGwx1KRJtdNNOkQJb6KKH/XzGOW4TLWCYoiowLJErDHVoHSiwky+5QZQLbNMiDBVyxyA1ad3IsYsSC6w2Qy+Ge+QDQw1yxA5GWS0gRH4wxJIzWtjLDLHkC0MMeaGDU8SQL3oIiCRvHCIggvzwKNPE0H3ACSLIB0V+I5a8YYgkH3xODfKEIYbc8TwBVsBJqsgLhlhyRZ4rhB2UMITIA4Ya5IoBwr7REgz3yBmGmuSGzUxj/U2nKhikQo4w1CE3fETYHoVgWCInGOqSCwpcwxqjRVUYZJHShb2EbdcaGFC6UML6RZEwShM6CLBeVTPgPazr5NUM+BHrCzUDctzC2qFmwNNYtymoGTCAVVJz4CjWsBqCIsNcYpR9SoYzWPvVEHzNiteUBFewetQAPMh/rPhZSXAN6zE1AF1Yk0qCOayH1ABsxbqpJChjtaoBeABrXkkwj1VUA1DEmlcSzGK1qwFox7qpJJjE6lID8DjWpJKgxIqANjUAL2JdVBL0scCyY2oIDmCdVjLsosQ4H5NXQ3AY64iaA+ex3lEzoJV/sZ5QM+AlrFlyagYcw/pOzYACU1j9agbswQroUJowokj8ivWT0gUwWoNewnYrXbhrRFVoYRTrKgW5oD4jJywzCuENwt6XG+oZkiNWjKiCDv7Cus4muaE2I2dYRoto4VvC3pIrajHyQJiR+ICwi+TkinhGXqh2kgCrzDNyR5wheaKWIfkgmpE34o3RKh9EOaH7gDhTPCI/RAk4JG9EC3hBvohzik55IY6RL+LNsI8WOSOekR/CAlYbZ6ccUYuRD6whephird95k4LWjdpG5I4VRovYxgWiTPEVvRS0DtRj5IplRhW08ikB0f7hPIc5wHa62UIrRR6mmzZFoj4jN9xlVIVnuURydzhOXhsJMFqDHG9zg+QGtZEwisEmDnKVZMaUHuTZzVkC6jmrtGErA3zPLHEWeFnpRI4n6ecIp7nMBHOUKTPHBCVeUSaTyWQyafc/7YQf3cQilrkAAAAASUVORK5CYII=")}
 .smi-rede-social{background-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjQ5MiA4QzEzLjcyMDQgOCAxNC44OTg0IDguNDgxMzIgMTUuNzY3IDkuMzM4MDhDMTYuNjM1NSAxMC4xOTQ4IDE3LjEyMzUgMTEuMzU2OSAxNy4xMjM1IDEyLjU2ODVDMTcuMTIzNSAxMy43ODAxIDE2LjYzNTUgMTQuOTQyMSAxNS43NjcgMTUuNzk4OUMxNC44OTg0IDE2LjY1NTcgMTMuNzIwNCAxNy4xMzcgMTIuNDkyIDE3LjEzN0MxMS4yNjM3IDE3LjEzNyAxMC4wODU2IDE2LjY1NTcgOS4yMTcwNyAxNS43OTg5QzguMzQ4NSAxNC45NDIxIDcuODYwNTQgMTMuNzgwMSA3Ljg2MDU0IDEyLjU2ODVDNy44NjA1NCAxMS4zNTY5IDguMzQ4NSAxMC4xOTQ4IDkuMjE3MDcgOS4zMzgwOEMxMC4wODU2IDguNDgxMzIgMTEuMjYzNyA4IDEyLjQ5MiA4Wk0zNS41NTkgOEMzNi43ODczIDggMzcuOTY1NCA4LjQ4MTMyIDM4LjgzMzkgOS4zMzgwOEMzOS43MDI1IDEwLjE5NDggNDAuMTkwNSAxMS4zNTY5IDQwLjE5MDUgMTIuNTY4NUM0MC4xOTA1IDEzLjc4MDEgMzkuNzAyNSAxNC45NDIxIDM4LjgzMzkgMTUuNzk4OUMzNy45NjU0IDE2LjY1NTcgMzYuNzg3MyAxNy4xMzcgMzUuNTU5IDE3LjEzN0MzNC4zMzA2IDE3LjEzNyAzMy4xNTI2IDE2LjY1NTcgMzIuMjg0IDE1Ljc5ODlDMzEuNDE1NSAxNC45NDIxIDMwLjkyNzUgMTMuNzgwMSAzMC45Mjc1IDEyLjU2ODVDMzAuOTI3NSAxMS4zNTY5IDMxLjQxNTUgMTAuMTk0OCAzMi4yODQgOS4zMzgwOEMzMy4xNTI2IDguNDgxMzIgMzQuMzMwNiA4IDM1LjU1OSA4Wk0zMS40MDU3IDI3LjAxMzNDMzAuOTY3MSAyNy4wMTMzIDMwLjc0MSAyNi40NTQ2IDMxLjAxNzQgMjYuMTE4OEMzMi4xMSAyNC43OTA4IDMyLjc0MjMgMjMuMDk0MiAzMi43NDIzIDIxLjI0NTVDMzIuNzE5NSAyMC44ODkyIDMyLjcwMTIgMjAuNjAzIDMyLjY4NjUgMjAuMzczMkMzMi42NTM0IDE5Ljg1NTIgMzMuMDUxNCAxOS40MTEyIDMzLjU3NzEgMTkuMzg4QzM0LjUxNDYgMTkuMzQ2NiAzNi4wNTg0IDE5LjI5MzYgMzcuODA5NSAxOS4yOTM2QzQwLjkyMTcgMTkuNzYzMiA0My40OTIzIDIxLjQ5MDQgNDMuOTY3NyAyNS4yNjRDNDQuMDY5IDI2LjA2NzkgNDMuOTY3NyAyNy4wMTMzIDQzLjE0NTcgMjcuMDEzM0gzMS40MDU3Wk0xOC4zNjUzIDIxLjE0MjhDMTguMzY1MyAxOS42NDAzIDE4Ljk1OSAxOC4xOTk0IDIwLjAxNTcgMTcuMTM3QzIxLjA3MjQgMTYuMDc0NiAyMi41MDU2IDE1LjQ3NzcgMjQgMTUuNDc3N0MyNS40OTQ0IDE1LjQ3NzcgMjYuOTI3NiAxNi4wNzQ2IDI3Ljk4NDQgMTcuMTM3QzI5LjA0MTEgMTguMTk5NCAyOS42MzQ3IDE5LjY0MDMgMjkuNjM0NyAyMS4xNDI4QzI5LjYzNDcgMjIuNjQ1MiAyOS4wNDExIDI0LjA4NjIgMjcuOTg0NCAyNS4xNDg2QzI2LjkyNzYgMjYuMjExIDI1LjQ5NDQgMjYuODA3OCAyNCAyNi44MDc4QzIyLjUwNTYgMjYuODA3OCAyMS4wNzI0IDI2LjIxMSAyMC4wMTU3IDI1LjE0ODZDMTguOTU5IDI0LjA4NjIgMTguMzY1MyAyMi42NDUyIDE4LjM2NTMgMjEuMTQyOFpNMTIuMTYzNiAzNi45MjYyQzEyLjE2MzYgMzIuNTA0MiAxNS44MDYgMjkuMzg3IDIwLjI4ODkgMjkuMzg3SDI3LjQzMzZDMzEuOTIyNyAyOS4zODcgMzUuNTU5IDMyLjUwNDIgMzUuNTU5IDM2LjkyNjJDMzUuNTU5IDM4LjA2MDcgMzUuNTU5IDM5IDM0LjQwODEgMzlIMTMuMzE0NEMxMi4xNjM1IDM5IDEyLjE2MzYgMzguMDYwNyAxMi4xNjM2IDM2LjkyNjJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTUuMjU3NyAyMS4yOTU5QzE1LjI1NzcgMjMuMTQ0NSAxNS44OSAyNC44NDEyIDE2Ljk4MjYgMjYuMTY5MUMxNy4yNTkgMjYuNTA1IDE3LjAzMjkgMjcuMDYzNyAxNi41OTQzIDI3LjA2MzdINC44NTQzQzQuMDMyMzEgMjcuMDYzNyAzLjkzMTA0IDI2LjExODIgNC4wMzIzMSAyNS4zMTQzQzQuNTA3NzEgMjEuNTQwNyA3LjA3ODI4IDE5LjgxMzYgMTAuMTkwNSAxOS4zNDM5QzExLjk0MTYgMTkuMzQzOSAxMy40ODU0IDE5LjM5NyAxNC40MjI5IDE5LjQzODRDMTQuOTQ4NiAxOS40NjE1IDE1LjM0NjYgMTkuOTA1NiAxNS4zMTM1IDIwLjQyMzVMMTUuMjU3NyAyMS4yOTU5WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==")}
@@ -731,7 +745,7 @@ input,textarea,select{font-size:14px}
 /* o contorno segue no hover: sem ele a borda solta quando o tile levanta */
 .tile:hover .tile-ic{
   transform:scale(1.07);
-  filter:drop-shadow(0 0 .5px rgba(16,32,48,.12)) drop-shadow(0 6px 12px rgba(16,32,48,.16));
+  filter:drop-shadow(0 8px 12px rgba(16,32,48,.22));
 }
 .tile:active .tile-ic{transform:scale(.93);transition-duration:.08s}
 /* Cartões de sugestão da fileira de shorts (aparecem quando não há nenhum) */
@@ -4600,7 +4614,7 @@ body.demo-empty .demo-empty-state{display:flex}
             <div class="nvf-artkicker">Histórias de sucesso</div>
             <div class="nvf-arttitle" id="homeArtOpen2">Como a Casa do Construtor centraliza a gestão de mais de 780 lojas em 4 países com a SULTS</div>
             <div class="nvf-artlead">Informações estratégicas centralizadas, economia em licenciamento de plataformas e tomada de decisão orientada por dados para toda a rede de franqueados.</div>
-            <div class="nvf-artread" id="homeArtOpen3">Ler matéria completa <i class="fa-solid fa-arrow-right"></i></div>
+            <div class="nvf-artread" id="homeArtOpen3">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div>
           </div>
           <div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span><span class="rx-count">342</span><span class="right">Ver 57 comentários</span></div>
           <div class="post-actions"><button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button><button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button></div>
@@ -9912,7 +9926,7 @@ function renderNewsFeed(){
         '<div class="post-head"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div class="post-id"><div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+(n.sub||'')+'</div><div class="post-meta">'+n.date+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"><span class="art-badge">'+n.article.kicker+'</span></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
-        '<div class="nvf-artread" data-act="read">Ler matéria completa <i class="fa-solid fa-arrow-right"></i></div></div>'+
+        '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
         '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
         '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
         '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+

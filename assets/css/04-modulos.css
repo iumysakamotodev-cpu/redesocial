@@ -49,7 +49,7 @@
   display:flex;align-items:center;justify-content:center;color:#fff;
   /* a sombra mora aqui, e nao no ::before: filter e aplicado antes da
      mascara, entao no elemento mascarado ela seria recortada junto */
-  filter:drop-shadow(0 0 .5px rgba(16,32,48,.14)) drop-shadow(0 1px 2px rgba(16,32,48,.10));
+  filter:drop-shadow(0 0 5px rgba(16,32,48,.07)) drop-shadow(0 2px 3px rgba(16,32,48,.07));
   transition:transform .18s ease,filter .18s ease;
 }
 /* A forma fica num ::before, e nao no proprio .tile-ic, porque a mascara
@@ -57,20 +57,32 @@
    da caixa (top:-7px;right:-9px) e seriam cortados junto. */
 .tile-ic::before{
   content:'';position:absolute;inset:0;z-index:0;
-  background:linear-gradient(165deg,color-mix(in srgb,var(--c1) 30%,var(--c2)) 0%,var(--c2) 100%);
+  background:
+    /* a luz entra pelo topo numa mancha larga e macia */
+    radial-gradient(125% 62% at 50% -20%, rgba(255,255,255,.34) 0%, rgba(255,255,255,.07) 46%, rgba(255,255,255,0) 70%),
+    /* a base escurece: e o que faz o cartao ler como um bloco com espessura */
+    linear-gradient(180deg, rgba(0,0,0,0) 44%, rgba(0,0,0,.07) 76%, rgba(0,0,0,.16) 100%),
+    /* corpo */
+    linear-gradient(165deg,color-mix(in srgb,var(--c1) 45%,var(--c2)) 0%,var(--c2) 100%);
   -webkit-mask:var(--squircle) center / 100% 100% no-repeat;
   mask:var(--squircle) center / 100% 100% no-repeat;
   /* box-shadow seria recortado pela mascara e border seguiria o retangulo;
      drop-shadow acompanha a silhueta. O primeiro, de raio 0.5px, nao e sombra
      e sim contorno: sem ele os tiles claros dissolvem no fundo da pagina. */
 }
-/* O brilho de cima e um traco de 1.5px, nao uma nevoa: duas copias da mesma
-   mascara, a segunda 3px menor, subtraidas uma da outra. Sobra um anel com a
+/* O brilho de cima e um traco de 1,5px, nao uma nevoa: duas copias da mesma
+   mascara, a segunda 3px menor — 1,5px de cada lado —, subtraidas uma da
+   outra. Sobra um anel com a
    forma exata. O degrade some antes da base porque a luz vem de cima — anel
    fechado leria como contorno em vez de brilho. */
 .tile-ic::after{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.24) 0%,rgba(255,255,255,.10) 26%,rgba(255,255,255,.03) 52%,rgba(255,255,255,0) 72%);
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.72) 0%,
+    rgba(255,255,255,.30) 14%,
+    rgba(255,255,255,.07) 38%,
+    rgba(255,255,255,0)   60%,
+    rgba(255,255,255,.12) 100%);
   -webkit-mask:var(--squircle) center / 100% 100% no-repeat,var(--squircle) center / calc(100% - 3px) calc(100% - 3px) no-repeat;
   -webkit-mask-composite:xor;
   mask:var(--squircle) center / 100% 100% no-repeat,var(--squircle) center / calc(100% - 3px) calc(100% - 3px) no-repeat;
@@ -81,7 +93,8 @@
 /* Ícones dos módulos (uploads/apps/*.svg, entregues pelo time de design).
    SVG brancos que ficam sobre o gradiente do cartão. Embutidos para o
    arquivo funcionar também aberto direto, sem servidor. */
-.smi{position:relative;z-index:1;width:42px;height:42px;flex:none;background-position:center;background-repeat:no-repeat;background-size:42px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
+.smi{position:relative;z-index:1;width:42px;height:42px;flex:none;background-position:center;background-repeat:no-repeat;background-size:42px;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.18)) drop-shadow(0 2px 6px rgba(0,0,0,.14))}
 .smi-empresa{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAQAAACSoYmJAAAAAmJLR0QA/4ePzL8AAADsSURBVHja7do7DsIwEEXRKEWksPLQ8hHZIKEjNNA+tmDLM2PHurekQEcojEeRh4GIiKi9NOmsTSk9tWhqA70op6UN9JaFftUgnnTXR1btumn2R6+ybvUmj/qZo78aQYc8Hg//Z3rWVbsZ+K1LwB+RiKjCphGzjTgcJd7biMuh7X2wHxJd7fEo20aMN43IbSTSbDf4QFdAR34OGjTontDMadCgQTOnQYMGze4BGjRodg/QoEH3gc64CWZV+Y2yzJtgVpXdKAv+lW1ulKlSoA+KLhlVKd8DGjToXtElQ6q5OQ0aNOiQtx9ERERp/QHJMu++coyn1AAAAABJRU5ErkJggg==")}
 .smi-processo{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAQAAACSoYmJAAAAAmJLR0QA/4ePzL8AAAOfSURBVHgB7cHPbxRlAMfhb3e3ayMcxNIeRGv/AI3GqLEIqXelXgQhEonGNtGTBLV66hsrpoSTCkdvcDEg0WgMWcSTbYkm/PBeKoE2VtqQoIfuYD+Wdss7287sTt+XdGeTeR5lMplMJpN69FFigjnKlJljkj84w1EGeIqc0ok+Fohzix94l06lDeeo5w4lXqeg9GCcZP7kQzYrBkYbiU9Ibpp+8loDA9pI5DlOQHKXeU5VMCySGwx1KRJtdNNOkQJb6KKH/XzGOW4TLWCYoiowLJErDHVoHSiwky+5QZQLbNMiDBVyxyA1ad3IsYsSC6w2Qy+Ge+QDQw1yxA5GWS0gRH4wxJIzWtjLDLHkC0MMeaGDU8SQL3oIiCRvHCIggvzwKNPE0H3ACSLIB0V+I5a8YYgkH3xODfKEIYbc8TwBVsBJqsgLhlhyRZ4rhB2UMITIA4Ya5IoBwr7REgz3yBmGmuSGzUxj/U2nKhikQo4w1CE3fETYHoVgWCInGOqSCwpcwxqjRVUYZJHShb2EbdcaGFC6UML6RZEwShM6CLBeVTPgPazr5NUM+BHrCzUDctzC2qFmwNNYtymoGTCAVVJz4CjWsBqCIsNcYpR9SoYzWPvVEHzNiteUBFewetQAPMh/rPhZSXAN6zE1AF1Yk0qCOayH1ABsxbqpJChjtaoBeABrXkkwj1VUA1DEmlcSzGK1qwFox7qpJJjE6lID8DjWpJKgxIqANjUAL2JdVBL0scCyY2oIDmCdVjLsosQ4H5NXQ3AY64iaA+ex3lEzoJV/sZ5QM+AlrFlyagYcw/pOzYACU1j9agbswQroUJowokj8ivWT0gUwWoNewnYrXbhrRFVoYRTrKgW5oD4jJywzCuENwt6XG+oZkiNWjKiCDv7Cus4muaE2I2dYRoto4VvC3pIrajHyQJiR+ICwi+TkinhGXqh2kgCrzDNyR5wheaKWIfkgmpE34o3RKh9EOaH7gDhTPCI/RAk4JG9EC3hBvohzik55IY6RL+LNsI8WOSOekR/CAlYbZ6ccUYuRD6whephird95k4LWjdpG5I4VRovYxgWiTPEVvRS0DtRj5IplRhW08ikB0f7hPIc5wHa62UIrRR6mmzZFoj4jN9xlVIVnuURydzhOXhsJMFqDHG9zg+QGtZEwisEmDnKVZMaUHuTZzVkC6jmrtGErA3zPLHEWeFnpRI4n6ecIp7nMBHOUKTPHBCVeUSaTyWQyafc/7YQf3cQilrkAAAAASUVORK5CYII=")}
 .smi-rede-social{background-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjQ5MiA4QzEzLjcyMDQgOCAxNC44OTg0IDguNDgxMzIgMTUuNzY3IDkuMzM4MDhDMTYuNjM1NSAxMC4xOTQ4IDE3LjEyMzUgMTEuMzU2OSAxNy4xMjM1IDEyLjU2ODVDMTcuMTIzNSAxMy43ODAxIDE2LjYzNTUgMTQuOTQyMSAxNS43NjcgMTUuNzk4OUMxNC44OTg0IDE2LjY1NTcgMTMuNzIwNCAxNy4xMzcgMTIuNDkyIDE3LjEzN0MxMS4yNjM3IDE3LjEzNyAxMC4wODU2IDE2LjY1NTcgOS4yMTcwNyAxNS43OTg5QzguMzQ4NSAxNC45NDIxIDcuODYwNTQgMTMuNzgwMSA3Ljg2MDU0IDEyLjU2ODVDNy44NjA1NCAxMS4zNTY5IDguMzQ4NSAxMC4xOTQ4IDkuMjE3MDcgOS4zMzgwOEMxMC4wODU2IDguNDgxMzIgMTEuMjYzNyA4IDEyLjQ5MiA4Wk0zNS41NTkgOEMzNi43ODczIDggMzcuOTY1NCA4LjQ4MTMyIDM4LjgzMzkgOS4zMzgwOEMzOS43MDI1IDEwLjE5NDggNDAuMTkwNSAxMS4zNTY5IDQwLjE5MDUgMTIuNTY4NUM0MC4xOTA1IDEzLjc4MDEgMzkuNzAyNSAxNC45NDIxIDM4LjgzMzkgMTUuNzk4OUMzNy45NjU0IDE2LjY1NTcgMzYuNzg3MyAxNy4xMzcgMzUuNTU5IDE3LjEzN0MzNC4zMzA2IDE3LjEzNyAzMy4xNTI2IDE2LjY1NTcgMzIuMjg0IDE1Ljc5ODlDMzEuNDE1NSAxNC45NDIxIDMwLjkyNzUgMTMuNzgwMSAzMC45Mjc1IDEyLjU2ODVDMzAuOTI3NSAxMS4zNTY5IDMxLjQxNTUgMTAuMTk0OCAzMi4yODQgOS4zMzgwOEMzMy4xNTI2IDguNDgxMzIgMzQuMzMwNiA4IDM1LjU1OSA4Wk0zMS40MDU3IDI3LjAxMzNDMzAuOTY3MSAyNy4wMTMzIDMwLjc0MSAyNi40NTQ2IDMxLjAxNzQgMjYuMTE4OEMzMi4xMSAyNC43OTA4IDMyLjc0MjMgMjMuMDk0MiAzMi43NDIzIDIxLjI0NTVDMzIuNzE5NSAyMC44ODkyIDMyLjcwMTIgMjAuNjAzIDMyLjY4NjUgMjAuMzczMkMzMi42NTM0IDE5Ljg1NTIgMzMuMDUxNCAxOS40MTEyIDMzLjU3NzEgMTkuMzg4QzM0LjUxNDYgMTkuMzQ2NiAzNi4wNTg0IDE5LjI5MzYgMzcuODA5NSAxOS4yOTM2QzQwLjkyMTcgMTkuNzYzMiA0My40OTIzIDIxLjQ5MDQgNDMuOTY3NyAyNS4yNjRDNDQuMDY5IDI2LjA2NzkgNDMuOTY3NyAyNy4wMTMzIDQzLjE0NTcgMjcuMDEzM0gzMS40MDU3Wk0xOC4zNjUzIDIxLjE0MjhDMTguMzY1MyAxOS42NDAzIDE4Ljk1OSAxOC4xOTk0IDIwLjAxNTcgMTcuMTM3QzIxLjA3MjQgMTYuMDc0NiAyMi41MDU2IDE1LjQ3NzcgMjQgMTUuNDc3N0MyNS40OTQ0IDE1LjQ3NzcgMjYuOTI3NiAxNi4wNzQ2IDI3Ljk4NDQgMTcuMTM3QzI5LjA0MTEgMTguMTk5NCAyOS42MzQ3IDE5LjY0MDMgMjkuNjM0NyAyMS4xNDI4QzI5LjYzNDcgMjIuNjQ1MiAyOS4wNDExIDI0LjA4NjIgMjcuOTg0NCAyNS4xNDg2QzI2LjkyNzYgMjYuMjExIDI1LjQ5NDQgMjYuODA3OCAyNCAyNi44MDc4QzIyLjUwNTYgMjYuODA3OCAyMS4wNzI0IDI2LjIxMSAyMC4wMTU3IDI1LjE0ODZDMTguOTU5IDI0LjA4NjIgMTguMzY1MyAyMi42NDUyIDE4LjM2NTMgMjEuMTQyOFpNMTIuMTYzNiAzNi45MjYyQzEyLjE2MzYgMzIuNTA0MiAxNS44MDYgMjkuMzg3IDIwLjI4ODkgMjkuMzg3SDI3LjQzMzZDMzEuOTIyNyAyOS4zODcgMzUuNTU5IDMyLjUwNDIgMzUuNTU5IDM2LjkyNjJDMzUuNTU5IDM4LjA2MDcgMzUuNTU5IDM5IDM0LjQwODEgMzlIMTMuMzE0NEMxMi4xNjM1IDM5IDEyLjE2MzYgMzguMDYwNyAxMi4xNjM2IDM2LjkyNjJaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTUuMjU3NyAyMS4yOTU5QzE1LjI1NzcgMjMuMTQ0NSAxNS44OSAyNC44NDEyIDE2Ljk4MjYgMjYuMTY5MUMxNy4yNTkgMjYuNTA1IDE3LjAzMjkgMjcuMDYzNyAxNi41OTQzIDI3LjA2MzdINC44NTQzQzQuMDMyMzEgMjcuMDYzNyAzLjkzMTA0IDI2LjExODIgNC4wMzIzMSAyNS4zMTQzQzQuNTA3NzEgMjEuNTQwNyA3LjA3ODI4IDE5LjgxMzYgMTAuMTkwNSAxOS4zNDM5QzExLjk0MTYgMTkuMzQzOSAxMy40ODU0IDE5LjM5NyAxNC40MjI5IDE5LjQzODRDMTQuOTQ4NiAxOS40NjE1IDE1LjM0NjYgMTkuOTA1NiAxNS4zMTM1IDIwLjQyMzVMMTUuMjU3NyAyMS4yOTU5WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==")}
@@ -115,7 +128,7 @@
 /* o contorno segue no hover: sem ele a borda solta quando o tile levanta */
 .tile:hover .tile-ic{
   transform:scale(1.07);
-  filter:drop-shadow(0 0 .5px rgba(16,32,48,.12)) drop-shadow(0 6px 12px rgba(16,32,48,.16));
+  filter:drop-shadow(0 8px 12px rgba(16,32,48,.22));
 }
 .tile:active .tile-ic{transform:scale(.93);transition-duration:.08s}
 /* Cartões de sugestão da fileira de shorts (aparecem quando não há nenhum) */
