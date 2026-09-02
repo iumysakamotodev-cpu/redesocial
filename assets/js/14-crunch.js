@@ -1,7 +1,7 @@
 /* cenario: funcionario Crunchyroll */
 /* ============ Cenário: funcionário da Crunchyroll (só consome) ============
    Liga e desliga pelo ícone da Google Play no rodapé do menu. Troca a pessoa
-   (Hayao Miyazaki), a marca no cartão, as publicações (matérias da Crunchyroll
+   (Pikachu), a marca no cartão, as publicações (matérias da Crunchyroll
    News) e os shorts (canal oficial no YouTube). A pessoa vê, curte e comenta,
    mas não cria publicação nem short — o CSS esconde compositor, "Criar short"
    e Gerenciar enquanto body.demo-crunch estiver ligado.
@@ -70,7 +70,7 @@ const CRUNCH_SHORT_CATS = [
 const CRUNCH_MATERIAS = [
   { id:9001, sub:'Notícias', date:'02/09/2026', datetime:'02/09/26 11:17', reactions:388, comments:29,
     title:"Harada, popular autora de boys' love, anuncia novo mangá",
-    image:'uploads/crunch/news-harada-manga.webp',
+    image:'uploads/crunch/news-harada-manga.jpg',
     text:"Harada, um dos nomes mais conhecidos do boys' love, tem obra nova a caminho. A matéria reúne o que já se sabe sobre o anúncio. 📚",
     link:'/pt-br/news/latest/2026/9/2/akuen-harada-novo-manga' },
   { id:9002, sub:'Notícias', date:'02/09/2026', datetime:'02/09/26 10:07', reactions:476, comments:33,
@@ -134,7 +134,7 @@ const CRUNCH_MATERIAS = [
 const CRUNCH_POSTS_PESSOAS = [
   crunchPessoa('naruto', { id:9101, date:'02/09/2026', datetime:'02/09/26 12:05', reactions:212, comments:0,
     text:'Achei o Sasuke... 👀 Ele disse que estava "em reunião externa".',
-    image:'uploads/crunch/sasuke-cosplay.jpg',
+    images:['uploads/crunch/sasuke-1.webp', 'uploads/crunch/sasuke-2.webp'],
     cmts:[ crunchComent('sasuke', 'Para de me seguir.', '02/09/2026 às 12:20'),
            crunchComent('luffy', 'Ele tá com cara de quem comeu o último onigiri da copa. 🍙', '02/09/2026 às 12:34') ] }),
   crunchPessoa('levi', { id:9102, date:'02/09/2026', datetime:'02/09/26 09:30', reactions:64, comments:9,
@@ -222,9 +222,9 @@ const CRUNCH_REELS = CRUNCH_SHORTS.map(function(s, i){
 /* ---------- liga / desliga ---------- */
 let CRUNCH_BK = null;
 const CRUNCH_TEXTOS = [
-  ['.profile-name', 'Hayao Miyazaki'], ['.profile-role', 'Funcionário · Crunchyroll'],
-  ['.nvf-pname', 'Hayao Miyazaki'],    ['.nvf-prole', 'Funcionário · Crunchyroll'],
-  ['#topUserChip .uname', 'Hayao']
+  ['.profile-name', 'Pikachu'], ['.profile-role', 'Funcionário · Crunchyroll'],
+  ['.nvf-pname', 'Pikachu'],    ['.nvf-prole', 'Funcionário · Crunchyroll'],
+  ['#topUserChip .uname', 'Pikachu']
 ];
 function crunchTextos(ligar){
   CRUNCH_TEXTOS.forEach(function(par){
@@ -287,11 +287,17 @@ function crunchDesligar(){
   crunchRedesenha();
   if (typeof fgToast === 'function') fgToast('Cenário: de volta ao SULTS');
 }
+function crunchAlternar(){
+  if (document.body.classList.contains('demo-crunch')) crunchDesligar(); else crunchLigar();
+}
 (function(){
   const ic = document.querySelector('.hm-store--googleplay');
-  if (!ic) return;
-  ic.addEventListener('click', function(e){
-    e.preventDefault();
-    if (document.body.classList.contains('demo-crunch')) crunchDesligar(); else crunchLigar();
+  if (ic) ic.addEventListener('click', function(e){ e.preventDefault(); crunchAlternar(); });
+  /* no mobile o rodapé do menu não aparece: o Comunicados da barra de baixo
+     liga e desliga o cenário, e a rolagem até o painel segue acontecendo */
+  const mnav = document.getElementById('mnav');
+  if (mnav) mnav.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-t="comunicados"]');
+    if (b) crunchAlternar();
   });
 })();

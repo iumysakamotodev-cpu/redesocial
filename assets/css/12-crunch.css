@@ -4,7 +4,9 @@
    curte e comenta, mas não cria publicação nem short — e não tem Gerenciar. */
 .av-crunch{background:#fff url("../../uploads/crunch/icone.png") center/72% no-repeat;
   color:transparent;text-shadow:none;box-shadow:inset 0 0 0 1px var(--line)}
-body.demo-crunch .av-rc{background:url("../../uploads/crunch/miyazaki.jpg") center 20%/cover}
+/* a arte oficial tem fundo transparente: o cinza claro fica por baixo */
+/* zoom leve para o rosto encher o circulo; some so a ponta das orelhas e os pes */
+body.demo-crunch .av-rc{background:#e9eaed url("../../uploads/crunch/p-pikachu.webp") center 32%/135% auto no-repeat}
 body.demo-crunch .profile-banner,
 body.demo-crunch .nvf-pcover{background:#23252B}
 /* com dois seletores para ganhar do .profile-banner .profile-logo{display:block} da base */
