@@ -84,48 +84,40 @@ document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.tar
   const limpar=()=>{
     nvSearchQuery='';
     if(typeof sbQuery!=='undefined'){ sbQuery=''; sbShown=12; const si=$('#sbSearch'); if(si) si.value=''; }
-    const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
     if(typeof renderNewsFeed==='function') renderNewsFeed();
     if(typeof renderShortsB==='function') renderShortsB();
     if(typeof buildStories==='function') buildStories();
   };
   const go=()=>{
     const q=(($('#nmodSearchIn')||{}).value||'').trim();
+    /* o escopo e a aba aberta, como diz o placeholder do campo: em Shorts a
+       busca age na tela de Shorts, em Publicacoes age no feed — e nunca na
+       fileira de shorts do topo */
+    const emShorts = !!($('#nvShortsBScreen') && $('#nvShortsBScreen').classList.contains('active'));
     if(!q){
       /* campo vazio + Enter desfaz a busca. Antes so avisava, e a unica
          saida era o X do aviso de resultados — apagar o texto e dar Enter
          e o caminho que a pessoa tenta primeiro. */
-      if(nvSearchQuery){ limpar(); fgToast('Busca limpa'); }
+      if(nvSearchQuery || (typeof sbQuery!=='undefined' && sbQuery)){ limpar(); fgToast('Busca limpa'); }
       else fgToast('Digite o que você busca');
       return;
     }
-    newsShow('feed');
-    if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
-    nvSearchQuery=q;
-    if(typeof sbQuery!=='undefined'){ sbQuery=q; sbShown=12; const si=$('#sbSearch'); if(si) si.value=q; }
-    if(typeof renderNewsFeed==='function') renderNewsFeed();
-    if(typeof renderShortsB==='function') renderShortsB();
-    if(typeof buildStories==='function') buildStories();
-    const cw=$('#nvSearchNote');
-    if(cw){ cw.hidden=false; cw.querySelector('b').textContent=q; }
+    if(emShorts){
+      if(typeof sbQuery!=='undefined'){ sbQuery=q; sbShown=12; const si=$('#sbSearch'); if(si) si.value=q; }
+      if(typeof renderShortsB==='function') renderShortsB();
+    } else {
+      /* o termo entra antes do newsShow: e ele que sincroniza o campo com a
+         busca da aba, e leria o valor antigo se viesse primeiro */
+      nvSearchQuery=q;
+      if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
+      newsShow('feed');
+      if(typeof renderNewsFeed==='function') renderNewsFeed();
+    }
     fgToast('Resultados para "'+q+'"');
   };
   $('#nmodSearchBtn') && $('#nmodSearchBtn').addEventListener('click', go);
   $('#nmodSearchIn') && $('#nmodSearchIn').addEventListener('keydown', e=>{ if(e.key==='Enter') go(); });
 })();
-$('#sbSearchClear') && $('#sbSearchClear').addEventListener('click', ()=>{
-  sbQuery=''; const si=$('#sbSearch'); if(si) si.value='';
-  nvSearchQuery=''; const i2=$('#nmodSearchIn'); if(i2) i2.value='';
-  const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
-  renderShortsB(); if(typeof renderNewsFeed==='function') renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
-});
-$('#nvSearchClear') && $('#nvSearchClear').addEventListener('click', ()=>{
-  nvSearchQuery=''; const i=$('#nmodSearchIn'); if(i) i.value='';
-  if(typeof sbQuery!=='undefined'){ sbQuery=''; const si=$('#sbSearch'); if(si) si.value=''; if(typeof renderShortsB==='function') renderShortsB(); }
-  $('#nvSearchNote').hidden=true; renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
-});
 $('#topUserChip') && $('#topUserChip').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));
 $('#homeProfileCard') && $('#homeProfileCard').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));
 document.addEventListener('click', e=>{ if(e.target.closest('.nvf-pclick')) openPersonProfile('Rodrigo Caetano Silva','av-rc'); });
@@ -138,19 +130,6 @@ document.addEventListener('click', e=>{
   const mm=$('#ppMoreMenu'); if(mm) mm.hidden=true;
   const map={perfil:'Meu perfil',seguranca:'Segurança',termos:'Meus termos',sair:'Sair'};
   fgToast(map[mi.dataset.ppmenu]||'');
-});
-$('#ppBack') && $('#sbSearchClear') && $('#sbSearchClear').addEventListener('click', ()=>{
-  sbQuery=''; const si=$('#sbSearch'); if(si) si.value='';
-  nvSearchQuery=''; const i2=$('#nmodSearchIn'); if(i2) i2.value='';
-  const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
-  renderShortsB(); if(typeof renderNewsFeed==='function') renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
-});
-$('#nvSearchClear') && $('#nvSearchClear').addEventListener('click', ()=>{
-  nvSearchQuery=''; const i=$('#nmodSearchIn'); if(i) i.value='';
-  if(typeof sbQuery!=='undefined'){ sbQuery=''; const si=$('#sbSearch'); if(si) si.value=''; if(typeof renderShortsB==='function') renderShortsB(); }
-  $('#nvSearchNote').hidden=true; renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
 });
 $('#topUserChip') && $('#topUserChip').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));
 $('#homeProfileCard') && $('#homeProfileCard').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));

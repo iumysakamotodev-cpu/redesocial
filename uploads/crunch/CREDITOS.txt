@@ -1,0 +1,29 @@
+Material do cenario de demonstracao "usuario Crunchyroll" (prototipo interno, sem uso comercial)
+
+miyazaki.jpg
+  Hayao Miyazaki na Comic-Con de San Diego, julho de 2009.
+  Foto: Natasha Baucas (Flickr: sdnatasha) — licenca CC BY 2.0.
+  Fonte: https://commons.wikimedia.org/wiki/File:HayaoMiyazakiCCJuly09.jpg
+
+logo.webp, icone.png
+  Marca Crunchyroll (c) Crunchyroll, LLC. Uso apenas ilustrativo no prototipo.
+
+news-*.webp
+  Imagens de capa das materias da Crunchyroll News (https://www.crunchyroll.com/pt-br/news),
+  baixadas em 02/09/2026. (c) Crunchyroll e respectivos detentores. Os textos das publicacoes
+  no prototipo sao resumos proprios a partir dos titulos, com link para a materia original.
+
+short-<id>.jpg
+  Capas verticais dos Shorts do canal oficial da Crunchyroll no YouTube
+  (https://www.youtube.com/@Crunchyroll/shorts). O <id> e o id do video no YouTube; o player
+  do prototipo incorpora o video pelo embed oficial (youtube.com/embed), sem copia do arquivo.
+
+sasuke-cosplay.jpg
+  Cosplayer de Sasuke Uchiha na CWT T13 (Taipei, 22/03/2015). Foto: 無尾熊 — licenca CC BY 2.0.
+  Fonte: https://commons.wikimedia.org/wiki/File:Cosplayer_of_Sasuke_Uchiha_at_CWT_T13_20150322a.jpg
+
+p-<personagem>.webp
+  Retratos dos personagens usados como avatar dos "usuarios" do cenario, baixados das
+  paginas dos personagens nas wikis do Fandom em 02/09/2026. (c) respectivos estudios e
+  editoras (Shueisha/Pierrot, Toei, ufotable, MAPPA, WIT/MAPPA, CloverWorks/WIT, Sunrise,
+  Madhouse). Uso apenas ilustrativo no prototipo.

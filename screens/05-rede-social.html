@@ -196,7 +196,6 @@
         <button class="sb-chipclear" id="nvfClear"><span id="nvfClearLbl">Limpar filtros</span></button>
       </div>
       <div class="nvf-fbar" id="nvfFbar" hidden></div>
-      <div class="nvf-clearwrap" id="nvSearchNote" hidden><button class="nvf-clearpill" id="nvSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
       <div id="nvFeed"></div>
       <div class="demo-empty-state" id="nvFeedVazio" hidden>
         <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
@@ -248,7 +247,6 @@
           <div class="sb-pills" id="sbPills"></div>
           <button class="sb-pillarrow right" id="sbPillRight"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
-        <div class="nvf-clearwrap" id="sbSearchNote" hidden><button class="nvf-clearpill" id="sbSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
         <div class="sb-chipsbar" id="sbChipsBar" hidden>
           <span class="sb-chipscount" id="sbChipsCount">Resultados para</span>
           <div class="sb-chips" id="sbChips"></div>
@@ -256,7 +254,12 @@
         </div>
         <div class="sb-grid" id="sbGrid"></div>
         <div class="sb-more" id="sbMore" hidden><span class="sb-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando</span></div>
-        <div class="sb-empty" id="sbEmpty" hidden><i class="fa-solid fa-clapperboard"></i><b>Nenhum short encontrado</b><span>Ajuste os filtros para ver outros resultados.</span></div>
+        <div class="demo-empty-state de-resultado" id="sbEmpty" hidden>
+          <img class="de-illu" src="uploads/illustra/nao-encontrado.gif" alt="" width="350" height="250">
+          <div class="de-title">Nenhum short encontrado</div>
+          <div class="de-sub">Não encontramos shorts para a sua busca. Tente outros termos ou veja todos os shorts.</div>
+          <button type="button" class="de-btn" data-sbvertodos>Ver todos os shorts</button>
+        </div>
         <div class="demo-empty-state" id="sbSemPermissao">
           <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
           <div class="de-title">Nenhum short por aqui</div>

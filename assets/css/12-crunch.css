@@ -1,0 +1,41 @@
+/* cenario: funcionario Crunchyroll */
+/* ============ Cenário: funcionário da Crunchyroll (só consome) ============ */
+/* Liga e desliga pelo ícone da Google Play no rodapé do menu. A pessoa vê,
+   curte e comenta, mas não cria publicação nem short — e não tem Gerenciar. */
+.av-crunch{background:#fff url("../../uploads/crunch/icone.png") center/72% no-repeat;
+  color:transparent;text-shadow:none;box-shadow:inset 0 0 0 1px var(--line)}
+body.demo-crunch .av-rc{background:url("../../uploads/crunch/miyazaki.jpg") center 20%/cover}
+body.demo-crunch .profile-banner,
+body.demo-crunch .nvf-pcover{background:#23252B}
+/* com dois seletores para ganhar do .profile-banner .profile-logo{display:block} da base */
+.profile-banner .profile-logo--crunch{display:none}
+body.demo-crunch .profile-banner svg{display:none}
+body.demo-crunch .profile-banner .profile-logo--crunch{display:block}
+/* sem permissão de criar: somem o compositor, o "Criar short" e o Gerenciar */
+body.demo-crunch .nvf-composer,
+body.demo-crunch .reel-create,
+body.demo-crunch #sbNew,
+body.demo-crunch #nmodEnvSwitch,
+body.demo-crunch #nvManageBtn{display:none !important}
+/* os posts do SULTS ficam no lugar, só escondidos, para voltarem intactos */
+body.demo-crunch .col-main > .feed > .post[data-sults]{display:none}
+/* short vindo do YouTube: o embed ocupa o card inteiro */
+.rv-card iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000}
+
+/* comunicados: só a lista corrida, sem o bloco em destaque */
+body.demo-crunch #homeComPanel .com-featured{display:none}
+
+/* Avatares dos personagens. As artes de corpo inteiro (Fandom) precisam de
+   zoom na cabeça: tamanho maior que a caixa e ancoradas no topo; as de rosto
+   ficam em cover simples. Fundo claro por baixo, porque várias têm transparência. */
+[class*="av-cr-"]{color:transparent;text-shadow:none;background-color:#e9eaed;background-repeat:no-repeat}
+.av-cr-naruto {background-image:url("../../uploads/crunch/p-naruto.webp");background-size:cover;background-position:center}
+.av-cr-sasuke {background-image:url("../../uploads/crunch/p-sasuke.webp");background-size:cover;background-position:center}
+.av-cr-levi   {background-image:url("../../uploads/crunch/p-levi.webp");background-size:cover;background-position:center}
+.av-cr-spike  {background-image:url("../../uploads/crunch/p-spike.webp");background-size:cover;background-position:center 30%}
+.av-cr-saitama{background-image:url("../../uploads/crunch/p-saitama.webp");background-size:cover;background-position:center 20%}
+.av-cr-tanjiro{background-image:url("../../uploads/crunch/p-tanjiro.webp");background-size:140% auto;background-position:center top}
+.av-cr-luffy  {background-image:url("../../uploads/crunch/p-luffy.webp");background-size:160% auto;background-position:center top}
+.av-cr-anya   {background-image:url("../../uploads/crunch/p-anya.webp");background-size:160% auto;background-position:center top}
+.av-cr-frieren{background-image:url("../../uploads/crunch/p-frieren.webp");background-size:170% auto;background-position:center top}
+.av-cr-gojo   {background-image:url("../../uploads/crunch/p-gojo.webp");background-size:200% auto;background-position:center top}

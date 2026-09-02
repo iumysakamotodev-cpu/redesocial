@@ -198,6 +198,7 @@ let CATEGORIES = [
 const SB_UNIDADES = ['Unidade Shopping','Unidade Centro','Unidade Vila Nova',
                      'Unidade Litoral','Unidade Barra','Unidade Savassi'];
 function sbUnidade(post){
+  if (post && post.unit) return post.unit;   /* quem declara a unidade nao entra no sorteio */
   const nome = String((post && post.name) || '');
   if (!nome) return SB_UNIDADES[0];
   let h = 0;
@@ -222,14 +223,10 @@ var newsSeen = new Set();
    assim: como ela mostra só os 10 primeiros, empurrar os já vistos para o fim
    tirava do ar justamente os destaques escolhidos. No módulo de Shorts, que
    lista tudo, o comportamento de "não vistos primeiro" continua. */
+/* a fileira nao filtra por busca: quem pesquisa em Publicacoes esta buscando
+   publicacoes, e a busca de Shorts age na tela de Shorts */
 function orderedShorts(vistosNoFim){
-  const q = (typeof nvSearchQuery!=='undefined' && nvSearchQuery) ? rxNorm(nvSearchQuery) : '';
-  const lista = REELS_DATA.filter(function(r){
-    if(r.removido) return false;
-    if(!q) return true;
-    const p=(typeof POSTS!=='undefined'?POSTS[r.p]:null)||{};
-    return rxNorm([p.title||'',p.alt||'',p.caption||'',p.name||'',r.cap||''].join(' ')).includes(q);
-  });
+  const lista = REELS_DATA.filter(function(r){ return !r.removido; });
   if (vistosNoFim === false) return lista;
   return lista.sort((a,b) => (isSeen(a.p)?1:0) - (isSeen(b.p)?1:0));
 }
@@ -257,7 +254,8 @@ function reelSlideHTML(r, idx, total){
   const post = POSTS[r.p];
   const timer = '<div class="rv-timer'+(post.video?' isvid':'')+'"><span></span></div>';
   return '<div class="rv-reel"><div class="rv-card">' +
-    (post.video ? '<video data-src="' + post.video + '"' + ((post.img||post.poster) ? ' poster="' + (post.img||post.poster) + '"' : '') + ' preload="none" muted loop playsinline></video>'
+    (post.embed ? '<iframe data-src="https://www.youtube.com/embed/' + post.embed + '?autoplay=1&mute=1&loop=1&playlist=' + post.embed + '&controls=0&rel=0&playsinline=1&modestbranding=1" title="' + post.alt + '" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
+     : post.video ? '<video data-src="' + post.video + '"' + ((post.img||post.poster) ? ' poster="' + (post.img||post.poster) + '"' : '') + ' preload="none" muted loop playsinline></video>'
                 : '<img src="' + post.img + '" alt="' + post.alt + '">') +
     timer + (post.video ? '<div class="rv-audio" data-rvaudio><button class="rv-mute" data-rvmute title="Ativar som"><i class="fa-solid fa-volume-xmark"></i></button><input class="rv-vol" type="range" min="0" max="100" step="1" value="70" data-rvvol aria-label="Volume"></div>' : '') +
     '<div class="rv-tap"></div><div class="rv-pauseic"><i class="fa-solid fa-play"></i></div>' +
@@ -683,6 +681,10 @@ function rvArmTimer(){
   const slides=rvFeed.querySelectorAll('.rv-reel');
   slides.forEach((s,k)=>{ s.classList.toggle('playing', k===i); s.classList.remove('paused'); });
   const cur=slides[i];
+  /* embed do YouTube segue a mesma regra do video: so o short em tela carrega */
+  slides.forEach((s,k)=>{ const f=s.querySelector('iframe[data-src]'); if(!f) return;
+    if(k===i){ if(!f.getAttribute('src')) f.setAttribute('src', f.getAttribute('data-src')); }
+    else if(f.getAttribute('src')) f.removeAttribute('src'); });
   const vid=cur&&cur.querySelector('video');
   if(vid){ rvCarregaVideo(vid); try{ vid.currentTime=0; const p=vid.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} }
   if(typeof rvSyncAudio==='function') rvSyncAudio();

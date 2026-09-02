@@ -164,6 +164,7 @@ const SB_ROTULO_TIPO      = { video:'Vídeo', imagem:'Imagem' };
 const SB_ROTULO_PERIODO   = { '0':'Hoje', '7':'Últimos 7 dias', '30':'Últimos 30 dias' };
 function sbFiltrosAtivos(){
   const f = [];
+  if (sbQuery)        f.push({ chave:'query',  rotulo:'Pesquisa',  valor:sbQuery });
   if (sbTab !== 'todos'){
     const aba = sbTabs().find(t => t.id === sbTab);
     f.push({ chave:'tab', rotulo:'Categoria', valor:(aba ? aba.label : sbTab) });
@@ -172,7 +173,6 @@ function sbFiltrosAtivos(){
   if (sbFmt)          f.push({ chave:'fmt',    rotulo:'Tipo',      valor:SB_ROTULO_TIPO[sbFmt] || sbFmt });
   if (sbAuthor)       f.push({ chave:'author', rotulo:'Autor',     valor:sbAuthor });
   if (sbPeriod !== '')f.push({ chave:'period', rotulo:'Período',   valor:SB_ROTULO_PERIODO[sbPeriod] || sbPeriod });
-  if (sbQuery)        f.push({ chave:'query',  rotulo:'Busca',     valor:sbQuery });
   return f;
 }
 function sbLimparFiltro(chave){
@@ -181,7 +181,10 @@ function sbLimparFiltro(chave){
   if (chave === 'fmt')    sbFmt = '';
   if (chave === 'author'){ sbAuthor = ''; sbAuthorQuery = ''; sbAuthorPage = 1; }
   if (chave === 'period'){ sbPeriod = ''; const p = $('#sbPeriodSel'); if (p) p.value = ''; }
-  if (chave === 'query'){ sbQuery = ''; const s = $('#sbSearch'); if (s) s.value = ''; }
+  if (chave === 'query'){ sbQuery = ''; const s = $('#sbSearch'); if (s) s.value = '';
+    nvSearchQuery = ''; const h = $('#nmodSearchIn'); if (h) h.value = '';
+    if (typeof renderNewsFeed === 'function') renderNewsFeed();
+    if (typeof buildStories === 'function') buildStories(); }
   sbShown = 12;
   renderShortsB();
 }
@@ -199,6 +202,10 @@ function sbClearAll(){
   sbTab='todos'; sbAct=''; sbFmt=''; sbAuthor=''; sbQuery=''; sbAuthorQuery=''; sbAuthorPage=1; sbShown=12; sbPeriod='';
   const pe=$('#sbPeriodSel'); if(pe) pe.value='';
   const s=$('#sbSearch'); if(s) s.value='';
+  /* a busca vem do header e vale para os dois feeds */
+  nvSearchQuery=''; const hh=$('#nmodSearchIn'); if(hh) hh.value='';
+  if(typeof renderNewsFeed==='function') renderNewsFeed();
+  if(typeof buildStories==='function') buildStories();
   const a=$('#sbAuthorSearch'); if(a) a.value='';
   renderShortsB();
 }
@@ -209,8 +216,6 @@ $('#sbChips') && $('#sbChips').addEventListener('click', function(e){
 });
 $('#sbPeriodSel') && $('#sbPeriodSel').addEventListener('change', function(e){ sbPeriod=e.target.value; sbShown=12; renderShortsB(); });
 function renderShortsB(){
-  const sn=$('#sbSearchNote');
-  if(sn){ const on=!!(typeof sbQuery!=='undefined'&&sbQuery); sn.hidden=!on; if(on) sn.querySelector('b').textContent=sbQuery; }
   /* as duas listas da coluna se sincronizam com o estado a cada desenho. A de
      atividade nao fazia isso: so o clique marcava o botao, entao limpar o
      filtro por outro caminho — a ficha ou o "Limpar filtros" — deixava a
@@ -900,7 +905,13 @@ function newsShow(screen){
   if (screen==='shorts') screen='shortsb';
   /* o campo diz onde a busca vai agir, e o escopo e sempre a aba aberta */
   const campoBusca = $('#nmodSearchIn');
-  if (campoBusca) campoBusca.placeholder = screen==='shortsb' ? 'Pesquisar em shorts' : 'Pesquisar em publicações';
+  if (campoBusca){
+    campoBusca.placeholder = screen==='shortsb' ? 'Pesquisar em shorts' : 'Pesquisar em publicações';
+    /* cada aba tem a sua busca: o campo mostra a da aba que abriu, para nao
+       ficar com um termo escrito que nao esta filtrando nada ali */
+    if (screen==='shortsb' || screen==='feed') campoBusca.value =
+      screen==='shortsb' ? (typeof sbQuery!=='undefined' ? sbQuery : '') : nvSearchQuery;
+  }
   /* a fileira de shorts so tem largura depois que a tela aparece: e aqui
      que da para saber se ha o que rolar */
   if (typeof updNvfArrows==='function') requestAnimationFrame(updNvfArrows);
@@ -958,6 +969,9 @@ const NVF_ROTULO_ORDEM   = { curtidas:'Mais curtidas', comentadas:'Mais comentad
 const NVF_ROTULO_PERIODO = { '0':'Hoje', '1':'Hoje', '7':'Últimos 7 dias', '30':'Últimos 30 dias' };
 function nvfFiltrosAtivos(){
   const f = [];
+  /* a busca do header entra como ficha junto das outras, em vez do aviso
+     solto de "Limpar busca" que existia embaixo dos filtros */
+  if (nvSearchQuery)                         f.push({ chave:'pesquisa', rotulo:'Pesquisa', valor:nvSearchQuery });
   if (nvFeedType && nvFeedType !== 'todos') f.push({ chave:'tipo',    rotulo:'Tipo',      valor:NVF_ROTULO_TIPO[nvFeedType] || nvFeedType });
   if (nvFeedMine)                            f.push({ chave:'mine',    rotulo:'Atividade', valor:NVF_ROTULO_MINHA[nvFeedMine] || nvFeedMine });
   if (nvFeedCat)                             f.push({ chave:'cat',     rotulo:'Categoria', valor:nvFeedCat });
@@ -975,6 +989,30 @@ function nvfLimparFiltro(chave){
   if (chave === 'periodo'){ nvFeedPeriod = ''; const p = document.getElementById('nvfPeriod'); if (p) p.value = ''; }
   if (chave === 'ordem')   nvFeedSort = 'recentes';
   if (chave === 'texto'){  nvFeedText = ''; const t = document.getElementById('nvfTextSearch'); if (t) t.value = ''; }
+  if (chave === 'pesquisa') nvfLimparPesquisa();
+  renderNewsFeed();
+}
+/* a busca do header alimenta os dois feeds ao mesmo tempo, entao limpar de um
+   lado tem de limpar do outro */
+function nvfLimparPesquisa(){
+  nvSearchQuery = '';
+  const i = document.getElementById('nmodSearchIn'); if (i) i.value = '';
+  if (typeof sbQuery !== 'undefined'){
+    sbQuery = ''; sbShown = 12;
+    const s = document.getElementById('sbSearch'); if (s) s.value = '';
+    if (typeof renderShortsB === 'function') renderShortsB();
+  }
+  if (typeof buildStories === 'function') buildStories();
+}
+/* "Limpar filtros" e o botao do estado vazio zeram tudo, busca inclusive */
+function nvfLimparTudo(){
+  nvFeedType='todos'; nvFeedCat=''; nvFeedAuthor=''; nvfAuthorQuery=''; nvFeedPeriod='';
+  nvFeedReach=''; nvFeedSort='recentes'; nvFeedMine=''; nvFeedText='';
+  const ts=$('#nvfTextSearch'); if(ts) ts.value='';
+  const hh=$('#nvfSearchHint'); if(hh) hh.hidden=true;
+  const s=$('#nvfAuthorSearch'); if(s) s.value='';
+  const p=$('#nvfPeriod'); if(p) p.value='';
+  nvfLimparPesquisa();
   renderNewsFeed();
 }
 function nvfClearVis(){
@@ -1106,7 +1144,16 @@ function renderNewsFeed(){
     return (b.pinned?1:0)-(a.pinned?1:0);
   });
   renderNvfFilters();
-  if (!list.length){ el.innerHTML = '<div class="nvf-empty">Nenhuma publicação encontrada com esses filtros.</div>'; return; }
+  if (!list.length){
+    el.innerHTML =
+      '<div class="demo-empty-state de-resultado">' +
+        '<img class="de-illu" src="uploads/illustra/nao-encontrado.gif" alt="" width="350" height="250">' +
+        '<div class="de-title">Nenhuma publicação encontrada</div>' +
+        '<div class="de-sub">Não encontramos publicações para a sua busca. Tente outros termos ou veja todas as publicações.</div>' +
+        '<button type="button" class="de-btn" data-nvfvertodas>Ver todas as publicações</button>' +
+      '</div>';
+    return;
+  }
   el.innerHTML = list.map(n => {
     const liked = newsLiked.has(n.id); const rc = n.reactions + (liked?1:0);
     const cc = n.comments + ((n.cmts&&n.cmts.length)||0);
@@ -1447,7 +1494,11 @@ $('#nmodNew') && $('#nmodNew').addEventListener('click', () => newsShow('feed'))
 $('#nvNewBtn') && $('#nvNewBtn').addEventListener('click', () => qpOpen());
 (function(){ const c=$('#nvFCat'); if(c) c.innerHTML='<option value="">Todas as categorias</option>'+NEWS_CATS.map(x=>'<option>'+x.name+'</option>').join(''); const a=$('#nvFAutor'); if(a){ const autores=[...new Set(NEWS.map(n=>n.autorNome||'Rodrigo Caetano'))]; a.innerHTML='<option value="">Todos os autores</option>'+autores.map(x=>'<option>'+x+'</option>').join(''); } ['nvFStatus','nvFCat','nvFReach','nvFAutor'].forEach(id=>{ const el=$('#'+id); if(el) el.addEventListener('change', renderNewsList); }); const cl=$('#nvFClear'); if(cl) cl.addEventListener('click', ()=>{ ['nvFStatus','nvFCat','nvFReach','nvFAutor'].forEach(id=>{const el=$('#'+id); if(el)el.value='';}); renderNewsList(); }); const ap=$('#nvFApply'); if(ap) ap.addEventListener('click', renderNewsList); })();
 $('#nvfStart') && $('#nvfStart').addEventListener('click', () => qpOpen());
-$('#nvfClear') && $('#nvfClear').addEventListener('click', ()=>{ nvFeedType='todos'; nvFeedCat=''; nvFeedAuthor=''; nvfAuthorQuery=''; nvFeedPeriod=''; nvFeedReach=''; nvFeedSort='recentes'; nvFeedMine=''; nvFeedText=''; var ts=$('#nvfTextSearch'); if(ts)ts.value=''; var hh=$('#nvfSearchHint'); if(hh)hh.hidden=true; var s=$('#nvfAuthorSearch'); if(s)s.value=''; var p=$('#nvfPeriod'); if(p)p.value=''; renderNewsFeed(); });
+$('#nvfClear') && $('#nvfClear').addEventListener('click', nvfLimparTudo);
+document.addEventListener('click', function(e){
+  if(e.target.closest('[data-nvfvertodas]')) nvfLimparTudo();
+  if(e.target.closest('[data-sbvertodos]')){ nvfLimparPesquisa(); sbClearAll(); }
+});
 $('.nvf-layout') && $('.nvf-layout').addEventListener('click', function(e){
   var fi=e.target.closest('.nvf-fitem'); if(fi && fi.dataset.cat===undefined && fi.dataset.fq!==undefined){ nvFeedType=fi.dataset.fq; renderNewsFeed(); return; }
   var rc=e.target.closest('.nvf-reach'); if(rc){ nvFeedReach=rc.dataset.reach||''; renderNewsFeed(); return; }

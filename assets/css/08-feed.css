@@ -243,6 +243,21 @@ body.demo-empty .demo-empty-state{display:flex}
 }
 @keyframes deSpin{to{transform:rotate(360deg)}}
 .demo-empty-state .de-title{font-size:16px;font-weight:700;color:var(--ink);margin-top:22px;letter-spacing:-.2px;position:relative}
+/* Busca ou filtro sem resultado: o mesmo bloco do estado sem conteudo, mas
+   visivel por conta propria — os outros dependem dos cenarios de demonstracao.
+   O [hidden] precisa vir depois, senao o display:flex ganha da regra do UA. */
+/* fundo branco chapado neste: a arte ja vem com fundo branco, e o gradiente
+   com pontinhos do bloco padrao aparecia por tras dela */
+.demo-empty-state.de-resultado{display:flex;background:#fff;border-color:var(--line)}
+.de-resultado::before{display:none}
+/* a arte tem folga branca em cima e embaixo: o clip corta 20px de cada lado
+   e as margens negativas fazem o resto do bloco acompanhar o corte */
+.de-resultado .de-illu{clip-path:inset(20px 0);margin:-20px 0}
+.demo-empty-state[hidden]{display:none}
+.demo-empty-state .de-btn{position:relative;margin-top:20px;height:36px;padding:0 16px;border:0;
+  border-radius:6px;background:var(--teal);color:#fff;font:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:background .15s}
+.demo-empty-state .de-btn:hover{background:var(--teal-dark)}
 .demo-empty-state .de-sub{font-size:13px;color:var(--muted);margin-top:7px;max-width:340px;line-height:1.55;position:relative}
 .com-empty.demo-empty-state{margin:0;padding:20px;border-radius:8px}
 .com-empty .de-ic{width:60px;height:60px;font-size:24px;border-radius:18px}

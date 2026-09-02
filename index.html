@@ -3017,6 +3017,21 @@ body.demo-empty .demo-empty-state{display:flex}
 }
 @keyframes deSpin{to{transform:rotate(360deg)}}
 .demo-empty-state .de-title{font-size:16px;font-weight:700;color:var(--ink);margin-top:22px;letter-spacing:-.2px;position:relative}
+/* Busca ou filtro sem resultado: o mesmo bloco do estado sem conteudo, mas
+   visivel por conta propria — os outros dependem dos cenarios de demonstracao.
+   O [hidden] precisa vir depois, senao o display:flex ganha da regra do UA. */
+/* fundo branco chapado neste: a arte ja vem com fundo branco, e o gradiente
+   com pontinhos do bloco padrao aparecia por tras dela */
+.demo-empty-state.de-resultado{display:flex;background:#fff;border-color:var(--line)}
+.de-resultado::before{display:none}
+/* a arte tem folga branca em cima e embaixo: o clip corta 20px de cada lado
+   e as margens negativas fazem o resto do bloco acompanhar o corte */
+.de-resultado .de-illu{clip-path:inset(20px 0);margin:-20px 0}
+.demo-empty-state[hidden]{display:none}
+.demo-empty-state .de-btn{position:relative;margin-top:20px;height:36px;padding:0 16px;border:0;
+  border-radius:6px;background:var(--teal);color:#fff;font:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:background .15s}
+.demo-empty-state .de-btn:hover{background:var(--teal-dark)}
 .demo-empty-state .de-sub{font-size:13px;color:var(--muted);margin-top:7px;max-width:340px;line-height:1.55;position:relative}
 .com-empty.demo-empty-state{margin:0;padding:20px;border-radius:8px}
 .com-empty .de-ic{width:60px;height:60px;font-size:24px;border-radius:18px}
@@ -4444,6 +4459,48 @@ body.demo-empty .demo-empty-state{display:flex}
   .mnav--modulo [data-t="mod-shorts"]{display:flex;order:3}
 }
 
+
+/* cenario: funcionario Crunchyroll */
+/* ============ Cenário: funcionário da Crunchyroll (só consome) ============ */
+/* Liga e desliga pelo ícone da Google Play no rodapé do menu. A pessoa vê,
+   curte e comenta, mas não cria publicação nem short — e não tem Gerenciar. */
+.av-crunch{background:#fff url("uploads/crunch/icone.png") center/72% no-repeat;
+  color:transparent;text-shadow:none;box-shadow:inset 0 0 0 1px var(--line)}
+body.demo-crunch .av-rc{background:url("uploads/crunch/miyazaki.jpg") center 20%/cover}
+body.demo-crunch .profile-banner,
+body.demo-crunch .nvf-pcover{background:#23252B}
+/* com dois seletores para ganhar do .profile-banner .profile-logo{display:block} da base */
+.profile-banner .profile-logo--crunch{display:none}
+body.demo-crunch .profile-banner svg{display:none}
+body.demo-crunch .profile-banner .profile-logo--crunch{display:block}
+/* sem permissão de criar: somem o compositor, o "Criar short" e o Gerenciar */
+body.demo-crunch .nvf-composer,
+body.demo-crunch .reel-create,
+body.demo-crunch #sbNew,
+body.demo-crunch #nmodEnvSwitch,
+body.demo-crunch #nvManageBtn{display:none !important}
+/* os posts do SULTS ficam no lugar, só escondidos, para voltarem intactos */
+body.demo-crunch .col-main > .feed > .post[data-sults]{display:none}
+/* short vindo do YouTube: o embed ocupa o card inteiro */
+.rv-card iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000}
+
+/* comunicados: só a lista corrida, sem o bloco em destaque */
+body.demo-crunch #homeComPanel .com-featured{display:none}
+
+/* Avatares dos personagens. As artes de corpo inteiro (Fandom) precisam de
+   zoom na cabeça: tamanho maior que a caixa e ancoradas no topo; as de rosto
+   ficam em cover simples. Fundo claro por baixo, porque várias têm transparência. */
+[class*="av-cr-"]{color:transparent;text-shadow:none;background-color:#e9eaed;background-repeat:no-repeat}
+.av-cr-naruto {background-image:url("uploads/crunch/p-naruto.webp");background-size:cover;background-position:center}
+.av-cr-sasuke {background-image:url("uploads/crunch/p-sasuke.webp");background-size:cover;background-position:center}
+.av-cr-levi   {background-image:url("uploads/crunch/p-levi.webp");background-size:cover;background-position:center}
+.av-cr-spike  {background-image:url("uploads/crunch/p-spike.webp");background-size:cover;background-position:center 30%}
+.av-cr-saitama{background-image:url("uploads/crunch/p-saitama.webp");background-size:cover;background-position:center 20%}
+.av-cr-tanjiro{background-image:url("uploads/crunch/p-tanjiro.webp");background-size:140% auto;background-position:center top}
+.av-cr-luffy  {background-image:url("uploads/crunch/p-luffy.webp");background-size:160% auto;background-position:center top}
+.av-cr-anya   {background-image:url("uploads/crunch/p-anya.webp");background-size:160% auto;background-position:center top}
+.av-cr-frieren{background-image:url("uploads/crunch/p-frieren.webp");background-size:170% auto;background-position:center top}
+.av-cr-gojo   {background-image:url("uploads/crunch/p-gojo.webp");background-size:200% auto;background-position:center top}
 </style>
 </head>
 <body>
@@ -5016,6 +5073,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
               <path d="M289.3 38.8c-9.2-10.1-19.5-3.5-25-8.9-.7-.7-.8-1.6-.7-2.6.4-2.8 3.5-4.2 9.2-4.2 3.7 0 6.4.7 9.3 2.1.6.3 1.2.6 1.5.8.2.1.5.1.7-.1l7.5-7.5c.3-.3.2-.7 0-.9-8.8-6.8-24.8-8.4-34-2.1-7.3 5.1-9 15.7-2.8 22.2 8.8 10.2 19.2 3.5 24.7 8.9.7.8.9 1.6.9 2.6-.5 3-3.6 4.5-9.3 4.5-4.3 0-7.7-1-10.9-3.1-.2-.2-.5-.1-.7.1l-7.5 7.5c-.3.3-.2.7.1.9 1.3 1 2.9 2 5 3 8.3 4 21.8 4.7 29.2-.9 3.8-2.6 6-6.2 6.5-10.4.5-4.4-.7-8.6-3.7-12"/>
             </g>
           </svg>
+          <img class="profile-logo profile-logo--crunch" src="uploads/crunch/logo.webp" alt="Crunchyroll">
         </div>
         <span class="avatar av-rc lg">RC</span>
         <div class="profile-name">Rodrigo Caetano</div>
@@ -5451,7 +5509,6 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
         <button class="sb-chipclear" id="nvfClear"><span id="nvfClearLbl">Limpar filtros</span></button>
       </div>
       <div class="nvf-fbar" id="nvfFbar" hidden></div>
-      <div class="nvf-clearwrap" id="nvSearchNote" hidden><button class="nvf-clearpill" id="nvSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
       <div id="nvFeed"></div>
       <div class="demo-empty-state" id="nvFeedVazio" hidden>
         <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
@@ -5503,7 +5560,6 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           <div class="sb-pills" id="sbPills"></div>
           <button class="sb-pillarrow right" id="sbPillRight"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
-        <div class="nvf-clearwrap" id="sbSearchNote" hidden><button class="nvf-clearpill" id="sbSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
         <div class="sb-chipsbar" id="sbChipsBar" hidden>
           <span class="sb-chipscount" id="sbChipsCount">Resultados para</span>
           <div class="sb-chips" id="sbChips"></div>
@@ -5511,7 +5567,12 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
         </div>
         <div class="sb-grid" id="sbGrid"></div>
         <div class="sb-more" id="sbMore" hidden><span class="sb-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando</span></div>
-        <div class="sb-empty" id="sbEmpty" hidden><i class="fa-solid fa-clapperboard"></i><b>Nenhum short encontrado</b><span>Ajuste os filtros para ver outros resultados.</span></div>
+        <div class="demo-empty-state de-resultado" id="sbEmpty" hidden>
+          <img class="de-illu" src="uploads/illustra/nao-encontrado.gif" alt="" width="350" height="250">
+          <div class="de-title">Nenhum short encontrado</div>
+          <div class="de-sub">Não encontramos shorts para a sua busca. Tente outros termos ou veja todos os shorts.</div>
+          <button type="button" class="de-btn" data-sbvertodos>Ver todos os shorts</button>
+        </div>
         <div class="demo-empty-state" id="sbSemPermissao">
           <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
           <div class="de-title">Nenhum short por aqui</div>
@@ -6609,6 +6670,7 @@ let CATEGORIES = [
 const SB_UNIDADES = ['Unidade Shopping','Unidade Centro','Unidade Vila Nova',
                      'Unidade Litoral','Unidade Barra','Unidade Savassi'];
 function sbUnidade(post){
+  if (post && post.unit) return post.unit;   /* quem declara a unidade nao entra no sorteio */
   const nome = String((post && post.name) || '');
   if (!nome) return SB_UNIDADES[0];
   let h = 0;
@@ -6633,14 +6695,10 @@ var newsSeen = new Set();
    assim: como ela mostra só os 10 primeiros, empurrar os já vistos para o fim
    tirava do ar justamente os destaques escolhidos. No módulo de Shorts, que
    lista tudo, o comportamento de "não vistos primeiro" continua. */
+/* a fileira nao filtra por busca: quem pesquisa em Publicacoes esta buscando
+   publicacoes, e a busca de Shorts age na tela de Shorts */
 function orderedShorts(vistosNoFim){
-  const q = (typeof nvSearchQuery!=='undefined' && nvSearchQuery) ? rxNorm(nvSearchQuery) : '';
-  const lista = REELS_DATA.filter(function(r){
-    if(r.removido) return false;
-    if(!q) return true;
-    const p=(typeof POSTS!=='undefined'?POSTS[r.p]:null)||{};
-    return rxNorm([p.title||'',p.alt||'',p.caption||'',p.name||'',r.cap||''].join(' ')).includes(q);
-  });
+  const lista = REELS_DATA.filter(function(r){ return !r.removido; });
   if (vistosNoFim === false) return lista;
   return lista.sort((a,b) => (isSeen(a.p)?1:0) - (isSeen(b.p)?1:0));
 }
@@ -6668,7 +6726,8 @@ function reelSlideHTML(r, idx, total){
   const post = POSTS[r.p];
   const timer = '<div class="rv-timer'+(post.video?' isvid':'')+'"><span></span></div>';
   return '<div class="rv-reel"><div class="rv-card">' +
-    (post.video ? '<video data-src="' + post.video + '"' + ((post.img||post.poster) ? ' poster="' + (post.img||post.poster) + '"' : '') + ' preload="none" muted loop playsinline></video>'
+    (post.embed ? '<iframe data-src="https://www.youtube.com/embed/' + post.embed + '?autoplay=1&mute=1&loop=1&playlist=' + post.embed + '&controls=0&rel=0&playsinline=1&modestbranding=1" title="' + post.alt + '" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
+     : post.video ? '<video data-src="' + post.video + '"' + ((post.img||post.poster) ? ' poster="' + (post.img||post.poster) + '"' : '') + ' preload="none" muted loop playsinline></video>'
                 : '<img src="' + post.img + '" alt="' + post.alt + '">') +
     timer + (post.video ? '<div class="rv-audio" data-rvaudio><button class="rv-mute" data-rvmute title="Ativar som"><i class="fa-solid fa-volume-xmark"></i></button><input class="rv-vol" type="range" min="0" max="100" step="1" value="70" data-rvvol aria-label="Volume"></div>' : '') +
     '<div class="rv-tap"></div><div class="rv-pauseic"><i class="fa-solid fa-play"></i></div>' +
@@ -7094,6 +7153,10 @@ function rvArmTimer(){
   const slides=rvFeed.querySelectorAll('.rv-reel');
   slides.forEach((s,k)=>{ s.classList.toggle('playing', k===i); s.classList.remove('paused'); });
   const cur=slides[i];
+  /* embed do YouTube segue a mesma regra do video: so o short em tela carrega */
+  slides.forEach((s,k)=>{ const f=s.querySelector('iframe[data-src]'); if(!f) return;
+    if(k===i){ if(!f.getAttribute('src')) f.setAttribute('src', f.getAttribute('data-src')); }
+    else if(f.getAttribute('src')) f.removeAttribute('src'); });
   const vid=cur&&cur.querySelector('video');
   if(vid){ rvCarregaVideo(vid); try{ vid.currentTime=0; const p=vid.play(); if(p&&p.catch) p.catch(()=>{}); }catch(e){} }
   if(typeof rvSyncAudio==='function') rvSyncAudio();
@@ -7451,48 +7514,40 @@ document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.tar
   const limpar=()=>{
     nvSearchQuery='';
     if(typeof sbQuery!=='undefined'){ sbQuery=''; sbShown=12; const si=$('#sbSearch'); if(si) si.value=''; }
-    const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
     if(typeof renderNewsFeed==='function') renderNewsFeed();
     if(typeof renderShortsB==='function') renderShortsB();
     if(typeof buildStories==='function') buildStories();
   };
   const go=()=>{
     const q=(($('#nmodSearchIn')||{}).value||'').trim();
+    /* o escopo e a aba aberta, como diz o placeholder do campo: em Shorts a
+       busca age na tela de Shorts, em Publicacoes age no feed — e nunca na
+       fileira de shorts do topo */
+    const emShorts = !!($('#nvShortsBScreen') && $('#nvShortsBScreen').classList.contains('active'));
     if(!q){
       /* campo vazio + Enter desfaz a busca. Antes so avisava, e a unica
          saida era o X do aviso de resultados — apagar o texto e dar Enter
          e o caminho que a pessoa tenta primeiro. */
-      if(nvSearchQuery){ limpar(); fgToast('Busca limpa'); }
+      if(nvSearchQuery || (typeof sbQuery!=='undefined' && sbQuery)){ limpar(); fgToast('Busca limpa'); }
       else fgToast('Digite o que você busca');
       return;
     }
-    newsShow('feed');
-    if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
-    nvSearchQuery=q;
-    if(typeof sbQuery!=='undefined'){ sbQuery=q; sbShown=12; const si=$('#sbSearch'); if(si) si.value=q; }
-    if(typeof renderNewsFeed==='function') renderNewsFeed();
-    if(typeof renderShortsB==='function') renderShortsB();
-    if(typeof buildStories==='function') buildStories();
-    const cw=$('#nvSearchNote');
-    if(cw){ cw.hidden=false; cw.querySelector('b').textContent=q; }
+    if(emShorts){
+      if(typeof sbQuery!=='undefined'){ sbQuery=q; sbShown=12; const si=$('#sbSearch'); if(si) si.value=q; }
+      if(typeof renderShortsB==='function') renderShortsB();
+    } else {
+      /* o termo entra antes do newsShow: e ele que sincroniza o campo com a
+         busca da aba, e leria o valor antigo se viesse primeiro */
+      nvSearchQuery=q;
+      if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
+      newsShow('feed');
+      if(typeof renderNewsFeed==='function') renderNewsFeed();
+    }
     fgToast('Resultados para "'+q+'"');
   };
   $('#nmodSearchBtn') && $('#nmodSearchBtn').addEventListener('click', go);
   $('#nmodSearchIn') && $('#nmodSearchIn').addEventListener('keydown', e=>{ if(e.key==='Enter') go(); });
 })();
-$('#sbSearchClear') && $('#sbSearchClear').addEventListener('click', ()=>{
-  sbQuery=''; const si=$('#sbSearch'); if(si) si.value='';
-  nvSearchQuery=''; const i2=$('#nmodSearchIn'); if(i2) i2.value='';
-  const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
-  renderShortsB(); if(typeof renderNewsFeed==='function') renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
-});
-$('#nvSearchClear') && $('#nvSearchClear').addEventListener('click', ()=>{
-  nvSearchQuery=''; const i=$('#nmodSearchIn'); if(i) i.value='';
-  if(typeof sbQuery!=='undefined'){ sbQuery=''; const si=$('#sbSearch'); if(si) si.value=''; if(typeof renderShortsB==='function') renderShortsB(); }
-  $('#nvSearchNote').hidden=true; renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
-});
 $('#topUserChip') && $('#topUserChip').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));
 $('#homeProfileCard') && $('#homeProfileCard').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));
 document.addEventListener('click', e=>{ if(e.target.closest('.nvf-pclick')) openPersonProfile('Rodrigo Caetano Silva','av-rc'); });
@@ -7505,19 +7560,6 @@ document.addEventListener('click', e=>{
   const mm=$('#ppMoreMenu'); if(mm) mm.hidden=true;
   const map={perfil:'Meu perfil',seguranca:'Segurança',termos:'Meus termos',sair:'Sair'};
   fgToast(map[mi.dataset.ppmenu]||'');
-});
-$('#ppBack') && $('#sbSearchClear') && $('#sbSearchClear').addEventListener('click', ()=>{
-  sbQuery=''; const si=$('#sbSearch'); if(si) si.value='';
-  nvSearchQuery=''; const i2=$('#nmodSearchIn'); if(i2) i2.value='';
-  const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
-  renderShortsB(); if(typeof renderNewsFeed==='function') renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
-});
-$('#nvSearchClear') && $('#nvSearchClear').addEventListener('click', ()=>{
-  nvSearchQuery=''; const i=$('#nmodSearchIn'); if(i) i.value='';
-  if(typeof sbQuery!=='undefined'){ sbQuery=''; const si=$('#sbSearch'); if(si) si.value=''; if(typeof renderShortsB==='function') renderShortsB(); }
-  $('#nvSearchNote').hidden=true; renderNewsFeed();
-  if(typeof buildStories==='function') buildStories();
 });
 $('#topUserChip') && $('#topUserChip').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));
 $('#homeProfileCard') && $('#homeProfileCard').addEventListener('click', ()=>openPersonProfile('Rodrigo Caetano Silva','av-rc'));
@@ -9492,6 +9534,7 @@ const SB_ROTULO_TIPO      = { video:'Vídeo', imagem:'Imagem' };
 const SB_ROTULO_PERIODO   = { '0':'Hoje', '7':'Últimos 7 dias', '30':'Últimos 30 dias' };
 function sbFiltrosAtivos(){
   const f = [];
+  if (sbQuery)        f.push({ chave:'query',  rotulo:'Pesquisa',  valor:sbQuery });
   if (sbTab !== 'todos'){
     const aba = sbTabs().find(t => t.id === sbTab);
     f.push({ chave:'tab', rotulo:'Categoria', valor:(aba ? aba.label : sbTab) });
@@ -9500,7 +9543,6 @@ function sbFiltrosAtivos(){
   if (sbFmt)          f.push({ chave:'fmt',    rotulo:'Tipo',      valor:SB_ROTULO_TIPO[sbFmt] || sbFmt });
   if (sbAuthor)       f.push({ chave:'author', rotulo:'Autor',     valor:sbAuthor });
   if (sbPeriod !== '')f.push({ chave:'period', rotulo:'Período',   valor:SB_ROTULO_PERIODO[sbPeriod] || sbPeriod });
-  if (sbQuery)        f.push({ chave:'query',  rotulo:'Busca',     valor:sbQuery });
   return f;
 }
 function sbLimparFiltro(chave){
@@ -9509,7 +9551,10 @@ function sbLimparFiltro(chave){
   if (chave === 'fmt')    sbFmt = '';
   if (chave === 'author'){ sbAuthor = ''; sbAuthorQuery = ''; sbAuthorPage = 1; }
   if (chave === 'period'){ sbPeriod = ''; const p = $('#sbPeriodSel'); if (p) p.value = ''; }
-  if (chave === 'query'){ sbQuery = ''; const s = $('#sbSearch'); if (s) s.value = ''; }
+  if (chave === 'query'){ sbQuery = ''; const s = $('#sbSearch'); if (s) s.value = '';
+    nvSearchQuery = ''; const h = $('#nmodSearchIn'); if (h) h.value = '';
+    if (typeof renderNewsFeed === 'function') renderNewsFeed();
+    if (typeof buildStories === 'function') buildStories(); }
   sbShown = 12;
   renderShortsB();
 }
@@ -9527,6 +9572,10 @@ function sbClearAll(){
   sbTab='todos'; sbAct=''; sbFmt=''; sbAuthor=''; sbQuery=''; sbAuthorQuery=''; sbAuthorPage=1; sbShown=12; sbPeriod='';
   const pe=$('#sbPeriodSel'); if(pe) pe.value='';
   const s=$('#sbSearch'); if(s) s.value='';
+  /* a busca vem do header e vale para os dois feeds */
+  nvSearchQuery=''; const hh=$('#nmodSearchIn'); if(hh) hh.value='';
+  if(typeof renderNewsFeed==='function') renderNewsFeed();
+  if(typeof buildStories==='function') buildStories();
   const a=$('#sbAuthorSearch'); if(a) a.value='';
   renderShortsB();
 }
@@ -9537,8 +9586,6 @@ $('#sbChips') && $('#sbChips').addEventListener('click', function(e){
 });
 $('#sbPeriodSel') && $('#sbPeriodSel').addEventListener('change', function(e){ sbPeriod=e.target.value; sbShown=12; renderShortsB(); });
 function renderShortsB(){
-  const sn=$('#sbSearchNote');
-  if(sn){ const on=!!(typeof sbQuery!=='undefined'&&sbQuery); sn.hidden=!on; if(on) sn.querySelector('b').textContent=sbQuery; }
   /* as duas listas da coluna se sincronizam com o estado a cada desenho. A de
      atividade nao fazia isso: so o clique marcava o botao, entao limpar o
      filtro por outro caminho — a ficha ou o "Limpar filtros" — deixava a
@@ -10228,7 +10275,13 @@ function newsShow(screen){
   if (screen==='shorts') screen='shortsb';
   /* o campo diz onde a busca vai agir, e o escopo e sempre a aba aberta */
   const campoBusca = $('#nmodSearchIn');
-  if (campoBusca) campoBusca.placeholder = screen==='shortsb' ? 'Pesquisar em shorts' : 'Pesquisar em publicações';
+  if (campoBusca){
+    campoBusca.placeholder = screen==='shortsb' ? 'Pesquisar em shorts' : 'Pesquisar em publicações';
+    /* cada aba tem a sua busca: o campo mostra a da aba que abriu, para nao
+       ficar com um termo escrito que nao esta filtrando nada ali */
+    if (screen==='shortsb' || screen==='feed') campoBusca.value =
+      screen==='shortsb' ? (typeof sbQuery!=='undefined' ? sbQuery : '') : nvSearchQuery;
+  }
   /* a fileira de shorts so tem largura depois que a tela aparece: e aqui
      que da para saber se ha o que rolar */
   if (typeof updNvfArrows==='function') requestAnimationFrame(updNvfArrows);
@@ -10286,6 +10339,9 @@ const NVF_ROTULO_ORDEM   = { curtidas:'Mais curtidas', comentadas:'Mais comentad
 const NVF_ROTULO_PERIODO = { '0':'Hoje', '1':'Hoje', '7':'Últimos 7 dias', '30':'Últimos 30 dias' };
 function nvfFiltrosAtivos(){
   const f = [];
+  /* a busca do header entra como ficha junto das outras, em vez do aviso
+     solto de "Limpar busca" que existia embaixo dos filtros */
+  if (nvSearchQuery)                         f.push({ chave:'pesquisa', rotulo:'Pesquisa', valor:nvSearchQuery });
   if (nvFeedType && nvFeedType !== 'todos') f.push({ chave:'tipo',    rotulo:'Tipo',      valor:NVF_ROTULO_TIPO[nvFeedType] || nvFeedType });
   if (nvFeedMine)                            f.push({ chave:'mine',    rotulo:'Atividade', valor:NVF_ROTULO_MINHA[nvFeedMine] || nvFeedMine });
   if (nvFeedCat)                             f.push({ chave:'cat',     rotulo:'Categoria', valor:nvFeedCat });
@@ -10303,6 +10359,30 @@ function nvfLimparFiltro(chave){
   if (chave === 'periodo'){ nvFeedPeriod = ''; const p = document.getElementById('nvfPeriod'); if (p) p.value = ''; }
   if (chave === 'ordem')   nvFeedSort = 'recentes';
   if (chave === 'texto'){  nvFeedText = ''; const t = document.getElementById('nvfTextSearch'); if (t) t.value = ''; }
+  if (chave === 'pesquisa') nvfLimparPesquisa();
+  renderNewsFeed();
+}
+/* a busca do header alimenta os dois feeds ao mesmo tempo, entao limpar de um
+   lado tem de limpar do outro */
+function nvfLimparPesquisa(){
+  nvSearchQuery = '';
+  const i = document.getElementById('nmodSearchIn'); if (i) i.value = '';
+  if (typeof sbQuery !== 'undefined'){
+    sbQuery = ''; sbShown = 12;
+    const s = document.getElementById('sbSearch'); if (s) s.value = '';
+    if (typeof renderShortsB === 'function') renderShortsB();
+  }
+  if (typeof buildStories === 'function') buildStories();
+}
+/* "Limpar filtros" e o botao do estado vazio zeram tudo, busca inclusive */
+function nvfLimparTudo(){
+  nvFeedType='todos'; nvFeedCat=''; nvFeedAuthor=''; nvfAuthorQuery=''; nvFeedPeriod='';
+  nvFeedReach=''; nvFeedSort='recentes'; nvFeedMine=''; nvFeedText='';
+  const ts=$('#nvfTextSearch'); if(ts) ts.value='';
+  const hh=$('#nvfSearchHint'); if(hh) hh.hidden=true;
+  const s=$('#nvfAuthorSearch'); if(s) s.value='';
+  const p=$('#nvfPeriod'); if(p) p.value='';
+  nvfLimparPesquisa();
   renderNewsFeed();
 }
 function nvfClearVis(){
@@ -10434,7 +10514,16 @@ function renderNewsFeed(){
     return (b.pinned?1:0)-(a.pinned?1:0);
   });
   renderNvfFilters();
-  if (!list.length){ el.innerHTML = '<div class="nvf-empty">Nenhuma publicação encontrada com esses filtros.</div>'; return; }
+  if (!list.length){
+    el.innerHTML =
+      '<div class="demo-empty-state de-resultado">' +
+        '<img class="de-illu" src="uploads/illustra/nao-encontrado.gif" alt="" width="350" height="250">' +
+        '<div class="de-title">Nenhuma publicação encontrada</div>' +
+        '<div class="de-sub">Não encontramos publicações para a sua busca. Tente outros termos ou veja todas as publicações.</div>' +
+        '<button type="button" class="de-btn" data-nvfvertodas>Ver todas as publicações</button>' +
+      '</div>';
+    return;
+  }
   el.innerHTML = list.map(n => {
     const liked = newsLiked.has(n.id); const rc = n.reactions + (liked?1:0);
     const cc = n.comments + ((n.cmts&&n.cmts.length)||0);
@@ -10775,7 +10864,11 @@ $('#nmodNew') && $('#nmodNew').addEventListener('click', () => newsShow('feed'))
 $('#nvNewBtn') && $('#nvNewBtn').addEventListener('click', () => qpOpen());
 (function(){ const c=$('#nvFCat'); if(c) c.innerHTML='<option value="">Todas as categorias</option>'+NEWS_CATS.map(x=>'<option>'+x.name+'</option>').join(''); const a=$('#nvFAutor'); if(a){ const autores=[...new Set(NEWS.map(n=>n.autorNome||'Rodrigo Caetano'))]; a.innerHTML='<option value="">Todos os autores</option>'+autores.map(x=>'<option>'+x+'</option>').join(''); } ['nvFStatus','nvFCat','nvFReach','nvFAutor'].forEach(id=>{ const el=$('#'+id); if(el) el.addEventListener('change', renderNewsList); }); const cl=$('#nvFClear'); if(cl) cl.addEventListener('click', ()=>{ ['nvFStatus','nvFCat','nvFReach','nvFAutor'].forEach(id=>{const el=$('#'+id); if(el)el.value='';}); renderNewsList(); }); const ap=$('#nvFApply'); if(ap) ap.addEventListener('click', renderNewsList); })();
 $('#nvfStart') && $('#nvfStart').addEventListener('click', () => qpOpen());
-$('#nvfClear') && $('#nvfClear').addEventListener('click', ()=>{ nvFeedType='todos'; nvFeedCat=''; nvFeedAuthor=''; nvfAuthorQuery=''; nvFeedPeriod=''; nvFeedReach=''; nvFeedSort='recentes'; nvFeedMine=''; nvFeedText=''; var ts=$('#nvfTextSearch'); if(ts)ts.value=''; var hh=$('#nvfSearchHint'); if(hh)hh.hidden=true; var s=$('#nvfAuthorSearch'); if(s)s.value=''; var p=$('#nvfPeriod'); if(p)p.value=''; renderNewsFeed(); });
+$('#nvfClear') && $('#nvfClear').addEventListener('click', nvfLimparTudo);
+document.addEventListener('click', function(e){
+  if(e.target.closest('[data-nvfvertodas]')) nvfLimparTudo();
+  if(e.target.closest('[data-sbvertodos]')){ nvfLimparPesquisa(); sbClearAll(); }
+});
 $('.nvf-layout') && $('.nvf-layout').addEventListener('click', function(e){
   var fi=e.target.closest('.nvf-fitem'); if(fi && fi.dataset.cat===undefined && fi.dataset.fq!==undefined){ nvFeedType=fi.dataset.fq; renderNewsFeed(); return; }
   var rc=e.target.closest('.nvf-reach'); if(rc){ nvFeedReach=rc.dataset.reach||''; renderNewsFeed(); return; }
@@ -12206,6 +12299,305 @@ document.addEventListener('click', function(e){
     newsShow(tela || 'shorts');
   };
   window.abrirShorts = function () { window.abrirModuloSocial('shorts'); };
+})();
+
+/* ===================== assets/js/14-crunch.js ===================== */
+/* cenario: funcionario Crunchyroll */
+/* ============ Cenário: funcionário da Crunchyroll (só consome) ============
+   Liga e desliga pelo ícone da Google Play no rodapé do menu. Troca a pessoa
+   (Hayao Miyazaki), a marca no cartão, as publicações (matérias da Crunchyroll
+   News) e os shorts (canal oficial no YouTube). A pessoa vê, curte e comenta,
+   mas não cria publicação nem short — o CSS esconde compositor, "Criar short"
+   e Gerenciar enquanto body.demo-crunch estiver ligado.
+
+   Os dados originais ficam guardados e voltam inteiros ao desligar: NEWS,
+   NEWS_CATS e CATEGORIES são reatribuídos (são let); POSTS e REELS_DATA são
+   const, então trocam o conteúdo no lugar. Textos vêm em resumo próprio a
+   partir dos títulos, com link para a matéria — nada do corpo é copiado. */
+
+const CRUNCH_URL = 'https://www.crunchyroll.com';
+function crunchLink(caminho){
+  return '\n\n<a href="' + CRUNCH_URL + caminho + '" target="_blank" rel="noopener">Ler na Crunchyroll News →</a>';
+}
+function crunchPost(n){
+  return Object.assign({
+    author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
+    unit:'Crunchyroll', reach:'rede', status:'pub'
+  }, n, { text: n.text + crunchLink(n.link) });
+}
+
+const CRUNCH_CATS = [
+  { id:'anuncios', name:'Anúncios',         color:'#F47521', icon:'fa-bullhorn',        active:true },
+  { id:'noticias', name:'Notícias',         color:'#0088FF', icon:'fa-newspaper',       active:true },
+  { id:'artigos',  name:'Artigos',          color:'#8161d8', icon:'fa-pen-nib',         active:true },
+  { id:'quizzes',  name:'Quizzes e testes', color:'#27a689', icon:'fa-circle-question', active:true },
+  { id:'animes',   name:'Animes',           color:'#a93438', icon:'fa-tv',              active:true },
+  { id:'time',     name:'Time Crunchyroll',  color:'#F47521', icon:'fa-users',           active:true }
+];
+
+/* As pessoas da rede são personagens: nome real do personagem, retrato como
+   foto e a "unidade" é de onde ele vem. */
+const CRUNCH_PESSOAS = {
+  naruto:  { nome:'Naruto Uzumaki',  ini:'NU', unidade:'Konoha' },
+  sasuke:  { nome:'Sasuke Uchiha',   ini:'SU', unidade:'Konoha' },
+  luffy:   { nome:'Monkey D. Luffy', ini:'ML', unidade:'Grand Line' },
+  tanjiro: { nome:'Tanjiro Kamado',  ini:'TK', unidade:'Corpo de Caçadores' },
+  gojo:    { nome:'Satoru Gojo',     ini:'SG', unidade:'Escola Jujutsu de Tóquio' },
+  levi:    { nome:'Levi Ackerman',   ini:'LA', unidade:'Tropa de Exploração' },
+  anya:    { nome:'Anya Forger',     ini:'AF', unidade:'Academia Eden' },
+  spike:   { nome:'Spike Spiegel',   ini:'SS', unidade:'Bebop' },
+  frieren: { nome:'Frieren',         ini:'F',  unidade:'Reino Central' },
+  saitama: { nome:'Saitama',         ini:'S',  unidade:'Cidade Z' }
+};
+function crunchPessoa(chave, n){
+  const q = CRUNCH_PESSOAS[chave];
+  return Object.assign({ author:q.nome, av:'av-cr-'+chave, ini:q.ini, autorNome:q.nome, autorAv:'av-cr-'+chave,
+    unit:q.unidade, sub:'Time Crunchyroll', reach:'rede', status:'pub' }, n);
+}
+function crunchComent(chave, texto, quando){
+  const q = CRUNCH_PESSOAS[chave];
+  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.unidade, text:texto, time:quando };
+}
+/* ordena por data e hora, da mais nova para a mais antiga; o fixado vai na frente */
+function crunchTs(s){
+  const d = s.split(' ')[0].split('/'), h = s.split(' ')[1].split(':');
+  return new Date(2000 + +d[2], +d[1] - 1, +d[0], +h[0], +h[1]).getTime();
+}
+function crunchOrdena(lista){
+  return lista.slice().sort(function(a, b){ return (b.pinned?1:0) - (a.pinned?1:0) || crunchTs(b.datetime) - crunchTs(a.datetime); });
+}
+const CRUNCH_SHORT_CATS = [
+  { id:'animes', name:'Animes', color:'#F47521', icon:'fa-tv', active:true }
+];
+
+/* Matérias da Crunchyroll News (pt-BR), lidas em 02/09/2026 */
+const CRUNCH_MATERIAS = [
+  { id:9001, sub:'Notícias', date:'02/09/2026', datetime:'02/09/26 11:17', reactions:388, comments:29,
+    title:"Harada, popular autora de boys' love, anuncia novo mangá",
+    image:'uploads/crunch/news-harada-manga.webp',
+    text:"Harada, um dos nomes mais conhecidos do boys' love, tem obra nova a caminho. A matéria reúne o que já se sabe sobre o anúncio. 📚",
+    link:'/pt-br/news/latest/2026/9/2/akuen-harada-novo-manga' },
+  { id:9002, sub:'Notícias', date:'02/09/2026', datetime:'02/09/26 10:07', reactions:476, comments:33,
+    title:'Anime de From Far Away ganha trailer com prévias das músicas-tema',
+    image:'uploads/crunch/news-from-far-away.webp',
+    text:'Saiu um novo trailer do anime de From Far Away, com trechos das músicas de abertura e encerramento. Vale assistir com o som ligado. 🎶',
+    link:'/pt-br/news/latest/2026/9/2/from-far-away-trailer-abertura-encerramento' },
+  { id:9003, sub:'Notícias', date:'01/09/2026', datetime:'01/09/26 15:20', reactions:421, comments:26,
+    title:'Anime de Sirotan ganha data de lançamento e arte promocional',
+    image:'uploads/crunch/news-sirotan.webp',
+    text:'O anime de Sirotan já tem data de estreia e ganhou uma nova arte promocional. Os detalhes estão na matéria completa. 🦭',
+    link:'/pt-br/news/latest/2026/9/1/anime-sirotan-estreia-3-de-outubro-arte' },
+  { id:9004, sub:'Notícias', date:'01/09/2026', datetime:'01/09/26 14:56', reactions:297, comments:18,
+    title:'Code Vein II ganha vídeo preparando os jogadores para seu DLC pago e atualização gratuita',
+    image:'uploads/crunch/news-code-vein-2.webp',
+    text:'A equipe de Code Vein II publicou um vídeo apresentando o que vem por aí: um DLC pago e uma atualização gratuita. Confira o resumo do que muda no jogo. 🗡️',
+    link:'/pt-br/news/latest/2026/9/1/code-vein-2-mensagem-desenvolvedores-dlc-atualizacao' },
+  { id:9005, sub:'Quizzes e testes', date:'28/08/2026', datetime:'28/08/26 13:00', reactions:869, comments:121,
+    title:'Qual nação de That Time I Got Reincarnated as a Slime você governaria?',
+    image:'uploads/crunch/news-quiz-slime.webp',
+    text:'Quiz da semana: responda algumas perguntas e descubra qual nação do mundo de Tensura você governaria. Compartilhe o resultado com o time! 🧪',
+    link:'/pt-br/news/quizzes/2026/8/28/that-time-i-got-reincarnated-as-a-slime-nacoes-quiz' },
+  { id:9006, sub:'Anúncios', date:'24/08/2026', datetime:'24/08/26 13:30', reactions:1284, comments:96, pinned:true,
+    title:'Dublagem brasileira de ONE PIECE HEROINES chega à Crunchyroll em breve',
+    image:'uploads/crunch/news-one-piece-heroines.webp',
+    text:'A versão dublada em português de ONE PIECE HEROINES foi confirmada para o catálogo. Quem prefere acompanhar as heroínas do bando do Chapéu de Palha em PT-BR já pode se preparar. 🏴‍☠️',
+    link:'/pt-br/news/announcements/2026/8/24/one-piece-heroines-dublagem-brasileira-data-lancamento' },
+  { id:9007, sub:'Anúncios', date:'21/08/2026', datetime:'21/08/26 12:30', reactions:932, comments:71,
+    title:'Dublagem de Kaguya-sama: Love Is War -Stairway to Adulthood- está disponível na Crunchyroll',
+    image:'uploads/crunch/news-kaguya-sama.webp',
+    text:'A dublagem de Kaguya-sama: Love Is War -Stairway to Adulthood- já está no ar. Boa hora para rever a guerra de orgulho entre Kaguya e Miyuki com as vozes brasileiras. 💘',
+    link:'/pt-br/news/announcements/2026/8/21/dublagem-kaguya-sama-love-is-war-stairway-to-adulthood-disponivel-crunchyroll' },
+  { id:9008, sub:'Anúncios', date:'15/08/2026', datetime:'15/08/26 13:02', reactions:743, comments:58,
+    title:'Conheça os dubladores brasileiros de Jaadugar: A Witch in Mongolia',
+    image:'uploads/crunch/news-jaadugar-dubladores.webp',
+    text:'O elenco brasileiro de Jaadugar: A Witch in Mongolia foi revelado. A matéria apresenta quem dá voz a cada personagem na versão em português. 🎙️',
+    link:'/pt-br/news/announcements/2026/8/15/dubladores-jaadugar-a-witch-in-mongolia' },
+  { id:9009, sub:'Artigos', date:'14/08/2026', datetime:'14/08/26 13:00', reactions:654, comments:42,
+    title:'10 animes sobre fazer uma pausa',
+    image:'uploads/crunch/news-animes-pausa.webp',
+    text:'Nem todo anime precisa de batalha épica. Nesta lista, dez séries que celebram o descanso, a rotina e o prazer de não fazer nada — perfeitas para um fim de semana tranquilo. ☕',
+    link:'/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa' },
+  { id:9010, sub:'Anúncios', date:'11/08/2026', datetime:'11/08/26 20:00', reactions:2107, comments:188,
+    title:'Crunchyroll e Sony Pictures Entertainment se juntam para distribuir o novo filme de Makoto Shinkai',
+    image:'uploads/crunch/news-shinkai-sony.webp',
+    text:'Parceria fechada: Crunchyroll e Sony Pictures Entertainment vão distribuir o próximo longa de Makoto Shinkai, diretor de Your Name e Suzume. Mais um grande lançamento de cinema no nosso radar. 🎬',
+    link:'/pt-br/news/announcements/2026/8/11/makoto-shinkai-novo-filme-crunchyroll-sony-pictures-entertainment' },
+  { id:9011, sub:'Anúncios', date:'10/08/2026', datetime:'10/08/26 16:00', reactions:615, comments:44,
+    title:"Young Ladies Don't Play Fighting Games, Goodbye, Lara e mais músicas de anime chegam à Crunchyroll",
+    image:'uploads/crunch/news-musicas-anime.webp',
+    text:"Novos videoclipes e músicas de anime entraram no catálogo, incluindo temas de Young Ladies Don't Play Fighting Games e Goodbye, Lara. Playlist atualizada para o expediente. 🎧",
+    link:'/pt-br/news/announcements/2026/8/10/young-ladies-dont-play-fighting-games-goodbye-lara-anime-videos-musicais-crunchyroll' },
+  { id:9012, sub:'Artigos', date:'06/08/2026', datetime:'06/08/26 12:00', reactions:512, comments:37,
+    title:'Descubra qual anime assistir baseado no seu time em MARVEL Tokon: Fighting Souls',
+    image:'uploads/crunch/news-marvel-tokon.webp',
+    text:'Montou seu time em MARVEL Tokon: Fighting Souls? A matéria cruza o estilo de cada equipe com um anime que combina com ela. Um guia divertido para a próxima maratona. 🎮',
+    link:'/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls' }
+].map(crunchPost);
+
+/* Posts das pessoas: um de imagem (o Naruto achou o Sasuke) e o resto só texto */
+const CRUNCH_POSTS_PESSOAS = [
+  crunchPessoa('naruto', { id:9101, date:'02/09/2026', datetime:'02/09/26 12:05', reactions:212, comments:0,
+    text:'Achei o Sasuke... 👀 Ele disse que estava "em reunião externa".',
+    image:'uploads/crunch/sasuke-cosplay.jpg',
+    cmts:[ crunchComent('sasuke', 'Para de me seguir.', '02/09/2026 às 12:20'),
+           crunchComent('luffy', 'Ele tá com cara de quem comeu o último onigiri da copa. 🍙', '02/09/2026 às 12:34') ] }),
+  crunchPessoa('levi', { id:9102, date:'02/09/2026', datetime:'02/09/26 09:30', reactions:64, comments:9,
+    text:'A copa do 3º andar está imunda. Faxina geral hoje às 18h. Sem exceções.' }),
+  crunchPessoa('anya', { id:9103, date:'01/09/2026', datetime:'01/09/26 16:40', reactions:181, comments:23,
+    text:'waku waku! hoje tem amendoim na cantina 🥜' }),
+  crunchPessoa('gojo', { id:9104, date:'01/09/2026', datetime:'01/09/26 11:10', reactions:97, comments:12,
+    text:'Lembrete: alinhamento do trimestre às 14h. Vou de venda nos olhos mesmo assim, não estranhem. 🕶️' }),
+  crunchPessoa('luffy', { id:9105, date:'31/08/2026', datetime:'31/08/26 13:15', reactions:143, comments:31,
+    text:'Alguém viu meu chapéu? Última vez foi no refeitório, perto da churrasqueira. 🍖 Recompensa: um pedaço de carne.' }),
+  crunchPessoa('tanjiro', { id:9106, date:'28/08/2026', datetime:'28/08/26 08:50', reactions:58, comments:7,
+    text:'Bom dia, time! Alguém do Suporte consegue me ajudar com o acesso ao Wi-Fi do 2º andar? Obrigado desde já 🙏' }),
+  crunchPessoa('frieren', { id:9107, date:'26/08/2026', datetime:'26/08/26 15:00', reactions:120, comments:14,
+    text:'Só passei para avisar que o projeto está indo bem. Voltamos a falar em 2036.' }),
+  crunchPessoa('saitama', { id:9108, date:'22/08/2026', datetime:'22/08/26 07:45', reactions:76, comments:11,
+    text:'Promoção no mercado da esquina: 3 kg de repolho por 10 reais. Corram, acaba antes do almoço. 🥬' }),
+  crunchPessoa('spike', { id:9109, date:'18/08/2026', datetime:'18/08/26 19:20', reactions:44, comments:6,
+    text:'Alguém tem um isqueiro? Perguntando por um amigo. Também aceito dica de onde almoçar com 3 woolongs.' }),
+  crunchPessoa('sasuke', { id:9110, date:'12/08/2026', datetime:'12/08/26 10:00', reactions:88, comments:19,
+    text:'Não estou desaparecido. Estou em home office.' })
+];
+const CRUNCH_NEWS = crunchOrdena(CRUNCH_MATERIAS.concat(CRUNCH_POSTS_PESSOAS));
+
+/* Comunicados do cenário: só a lista corrida; o destaque some via CSS */
+const CRUNCH_COMUNICADOS = [
+  { c1:'#ff8a65', c2:'#d84315', ic:'fa-film',           t:'Maratona Frieren no auditório',             d:'Sexta, episódios 1 a 6 a partir das 18h. Pipoca por conta do RH; traga a manta.', q:'01/09/2026 10:00', novo:true },
+  { c1:'#ba68c8', c2:'#6a1b9a', ic:'fa-mask',           t:'Cosplay Day 2026: inscrições abertas',      d:'Concurso interno dia 25/09. Vale traje de qualquer anime do catálogo.',            q:'31/08/2026 14:20', novo:true },
+  { c1:'#4fc3f7', c2:'#0277bd', ic:'fa-store',          t:'Anime Friends: voluntários para o estande', d:'Precisamos de 12 pessoas no fim de semana. Inscreva-se até sexta.',                q:'29/08/2026 09:15', novo:true },
+  { c1:'#ffb74d', c2:'#ef6c00', ic:'fa-comment-slash',  t:'Nova política de spoilers no chat',         d:'Use a tag #spoiler e respeite 24h após o lançamento do episódio.',                  q:'27/08/2026 11:40' },
+  { c1:'#66bb6a', c2:'#2e7d32', ic:'fa-calendar-check', t:'Recesso de fim de ano definido',            d:'De 24/12 a 02/01. As escalas de plantão saem na próxima semana.',                   q:'25/08/2026 16:05' }
+];
+function crunchComunicadosHTML(){
+  return CRUNCH_COMUNICADOS.map(function(c){
+    return '<a href="#" class="com-item' + (c.novo ? ' unread' : '') + '" style="--c1:' + c.c1 + ';--c2:' + c.c2 + '">' +
+      '<span class="com-ico"><i class="fa-solid ' + c.ic + '"></i></span>' +
+      '<div class="com-body"><h4>' + c.t + '</h4><p>' + c.d + '</p><span class="com-meta">' + c.q + '</span></div>' +
+      (c.novo ? '<span class="com-dot"></span>' : '') + '</a>';
+  }).join('');
+}
+function crunchComunicados(ligar){
+  const lista = document.querySelector('#homeComPanel .com-list');
+  const cont  = document.querySelector('#homeComPanel .com-count');
+  if (!lista) return;
+  if (ligar){
+    if (lista.dataset.sults == null) lista.dataset.sults = lista.innerHTML;
+    lista.innerHTML = crunchComunicadosHTML();
+    if (cont){
+      if (cont.dataset.sults == null) cont.dataset.sults = cont.textContent;
+      cont.textContent = CRUNCH_COMUNICADOS.filter(function(c){ return c.novo; }).length + ' novos';
+    }
+  } else {
+    if (lista.dataset.sults != null){ lista.innerHTML = lista.dataset.sults; delete lista.dataset.sults; }
+    if (cont && cont.dataset.sults != null){ cont.textContent = cont.dataset.sults; delete cont.dataset.sults; }
+  }
+}
+
+/* Shorts do canal oficial da Crunchyroll no YouTube. A capa é a miniatura
+   vertical salva em uploads/crunch; o player incorpora o vídeo pelo embed. */
+const CRUNCH_SHORTS = [
+  { id:'kawz_WnPek8', t:'Left and Right Funny Moments',                  s:'Daemons do Reino das Sombras',      views:'20 mil',  likes:'1,4 mil', c:96, time:'Há 2 h' },
+  { id:'jR-Wc8ms2iw', t:"Shu's Philosophy Is Quite Dangerous",          s:'Though I Am an Inept Villainess',   views:'18 mil',  likes:'1,2 mil', c:74, time:'Há 5 h' },
+  { id:'IY4-CMhrVKM', t:'Ito Better Prepare Herself',                   s:'Please Excuse My Younger Brothers', views:'15 mil',  likes:'980',     c:61, time:'Há 9 h' },
+  { id:'DzcjuHsmIL4', t:'Enjoy Your Last Full Moon!',                   s:'Daemons do Reino das Sombras',      views:'15 mil',  likes:'1,0 mil', c:58, time:'Há 1 d' },
+  { id:'VZdScKk9B2o', t:"She's Healthy For The First Time In Her Life", s:'Though I Am an Inept Villainess',   views:'13 mil',  likes:'870',     c:49, time:'Há 1 d' },
+  { id:'3TiILZh82fE', t:'She Met Leelee For The First Time',            s:'Though I Am an Inept Villainess',   views:'13 mil',  likes:'840',     c:45, time:'Há 2 d' },
+  { id:'WHEcI4p_6I0', t:'Asa Is EXTREMELY Powerful',                    s:'Daemons do Reino das Sombras',      views:'12 mil',  likes:'790',     c:52, time:'Há 2 d' },
+  { id:'fdMsXys1i14', t:'This Is A Warning, Keigetsu!',                 s:'Though I Am an Inept Villainess',   views:'12 mil',  likes:'760',     c:38, time:'Há 3 d' },
+  { id:'WbwiAZuCuus', t:'Reirin Is Living THE BEST Life',               s:'Though I Am an Inept Villainess',   views:'11 mil',  likes:'720',     c:41, time:'Há 3 d' },
+  { id:'vGa0JXkCHbM', t:'Kou Was THIS Sick In Secret?',                 s:'Though I Am an Inept Villainess',   views:'11 mil',  likes:'690',     c:35, time:'Há 4 d' },
+  { id:'iAHM5D2gni8', t:'Is Syu Going to Accept the Friend Request?',   s:'Please Excuse My Younger Brothers', views:'9,5 mil', likes:'610',     c:29, time:'Há 5 d' },
+  { id:'YthGOCKyBQU', t:'Reiya Better Not Know About This',             s:"The Ogre's Bride",                  views:'8,1 mil', likes:'530',     c:24, time:'Há 6 d' },
+  { id:'N-F97hw0tCw', t:'A Great Mishoki Plan!',                        s:'The Elusive Samurai',               views:'5,8 mil', likes:'390',     c:17, time:'Há 7 d' },
+  { id:'K6VTrfJkefg', t:'Ayako Vs. Kojiro',                             s:'The Elusive Samurai',               views:'5,4 mil', likes:'350',     c:15, time:'Há 8 d' }
+];
+const CRUNCH_POSTS = CRUNCH_SHORTS.map(function(s){
+  return { name:'Crunchyroll', label:'Crunchyroll', role:'Canal oficial · YouTube', unit:'Canal oficial · YouTube',
+    av:'av-crunch', initials:'', img:'uploads/crunch/short-' + s.id + '.jpg',
+    alt:s.t + ' · ' + s.s, title:s.t, time:s.time, embed:s.id };
+});
+const CRUNCH_REELS = CRUNCH_SHORTS.map(function(s, i){
+  return { p:i, format:'video', cat:'animes', cap:s.t + ' 🎬 ' + s.s, likes:s.likes, comments:s.c,
+    views:s.views, rec:i < 6, music:'Crunchyroll · YouTube Shorts' };
+});
+
+/* ---------- liga / desliga ---------- */
+let CRUNCH_BK = null;
+const CRUNCH_TEXTOS = [
+  ['.profile-name', 'Hayao Miyazaki'], ['.profile-role', 'Funcionário · Crunchyroll'],
+  ['.nvf-pname', 'Hayao Miyazaki'],    ['.nvf-prole', 'Funcionário · Crunchyroll'],
+  ['#topUserChip .uname', 'Hayao']
+];
+function crunchTextos(ligar){
+  CRUNCH_TEXTOS.forEach(function(par){
+    document.querySelectorAll(par[0]).forEach(function(el){
+      if (ligar){ if (el.dataset.sults == null) el.dataset.sults = el.textContent; el.textContent = par[1]; }
+      else if (el.dataset.sults != null){ el.textContent = el.dataset.sults; delete el.dataset.sults; }
+    });
+  });
+}
+function crunchRedesenha(){
+  /* limpar filtros e busca: uma categoria da outra empresa deixaria o feed vazio */
+  if (typeof nvfLimparTudo === 'function') nvfLimparTudo();
+  if (typeof sbClearAll === 'function') sbClearAll();
+  if (typeof buildStories === 'function') buildStories();
+  if (typeof renderNewsFeed === 'function') renderNewsFeed();
+  if (typeof renderShortsB === 'function') renderShortsB();
+}
+function crunchLigar(){
+  if (document.body.classList.contains('demo-crunch')) return;
+  /* os cenários não se somam */
+  document.body.classList.remove('demo-suporte');
+  if (document.body.classList.contains('demo-empty') && typeof demoToggle !== 'undefined') demoToggle.click();
+
+  CRUNCH_BK = { news:NEWS, cats:NEWS_CATS, scats:CATEGORIES, posts:POSTS.slice(), reels:REELS_DATA.slice() };
+  NEWS = CRUNCH_NEWS; NEWS_CATS = CRUNCH_CATS; CATEGORIES = CRUNCH_SHORT_CATS;
+  POSTS.splice(0, POSTS.length); CRUNCH_POSTS.forEach(function(p){ POSTS.push(p); });
+  REELS_DATA.splice(0, REELS_DATA.length); CRUNCH_REELS.forEach(function(r){ REELS_DATA.push(r); });
+  SB_CAT_ALIAS.animes = 'animes';
+
+  document.body.classList.add('demo-crunch');
+  crunchTextos(true);
+  crunchComunicados(true);
+
+  /* feed da home: os posts do SULTS ficam escondidos e as matérias entram no fim */
+  const feed = document.querySelector('.col-main > .feed');
+  if (feed && typeof addHomePost === 'function'){
+    feed.querySelectorAll(':scope > .post').forEach(function(p){ p.setAttribute('data-sults', ''); });
+    CRUNCH_NEWS.forEach(function(n){
+      addHomePost(n, true);
+      const novo = feed.lastElementChild;
+      if (novo && !novo.hasAttribute('data-sults')) novo.setAttribute('data-crunch', '');
+    });
+  }
+  crunchRedesenha();
+  if (typeof fgToast === 'function') fgToast('Cenário: funcionário da Crunchyroll (só consome)');
+}
+function crunchDesligar(){
+  if (!document.body.classList.contains('demo-crunch') || !CRUNCH_BK) return;
+  NEWS = CRUNCH_BK.news; NEWS_CATS = CRUNCH_BK.cats; CATEGORIES = CRUNCH_BK.scats;
+  POSTS.splice(0, POSTS.length); CRUNCH_BK.posts.forEach(function(p){ POSTS.push(p); });
+  REELS_DATA.splice(0, REELS_DATA.length); CRUNCH_BK.reels.forEach(function(r){ REELS_DATA.push(r); });
+  delete SB_CAT_ALIAS.animes;
+  CRUNCH_BK = null;
+
+  document.body.classList.remove('demo-crunch');
+  crunchTextos(false);
+  crunchComunicados(false);
+  document.querySelectorAll('.col-main > .feed > .post[data-crunch]').forEach(function(p){ p.remove(); });
+  document.querySelectorAll('.col-main > .feed > .post[data-sults]').forEach(function(p){ p.removeAttribute('data-sults'); });
+  crunchRedesenha();
+  if (typeof fgToast === 'function') fgToast('Cenário: de volta ao SULTS');
+}
+(function(){
+  const ic = document.querySelector('.hm-store--googleplay');
+  if (!ic) return;
+  ic.addEventListener('click', function(e){
+    e.preventDefault();
+    if (document.body.classList.contains('demo-crunch')) crunchDesligar(); else crunchLigar();
+  });
 })();
 </script>
 </body>
