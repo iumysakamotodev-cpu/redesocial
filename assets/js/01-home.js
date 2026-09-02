@@ -263,7 +263,7 @@ function reelSlideHTML(r, idx, total){
     '<div class="rv-tap"></div><div class="rv-pauseic"><i class="fa-solid fa-play"></i></div>' +
   '</div>' +
     '<div class="rv-rail">' +
-      '<div class="rv-act share" data-rvshare><button title="Compartilhar" aria-label="Compartilhar"><i class="fa-solid fa-share"></i></button><span>Enviar</span></div>' +
+      '<div class="rv-act share" data-rvshare><button title="Compartilhar" aria-label="Compartilhar"><i class="fa-solid fa-paper-plane"></i></button><span>Enviar</span></div>' +
       '<div class="rv-act like' + (isLiked(r.p) ? ' on' : '') + '" data-p="' + r.p + '"><button><i class="fa-solid fa-heart"></i></button><span>' + likeDisplay(r) + '</span></div>' +
     '</div>' +
     '<div class="rv-footer">' +
