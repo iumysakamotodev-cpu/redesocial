@@ -2694,13 +2694,13 @@ input,textarea,select{font-size:14px}
 .rv-rail{align-self:flex-end;width:0;padding:0;overflow:visible;z-index:5;
   display:flex;flex-direction:column;align-items:flex-start;gap:18px;
   margin-bottom:32px;transform:translateX(20px)}
-.rv-act{display:flex;flex-direction:column;align-items:center;gap:5px}
+.rv-act{width:88px;display:flex;flex-direction:column;align-items:center;gap:5px}
 .rv-act button{width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;
   background:rgba(255,255,255,.12);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;
   transition:transform .12s,background .15s}
 .rv-act button:hover{background:rgba(255,255,255,.22)}
 .rv-act button:active{transform:scale(.88)}
-.rv-act span{font-size:12px;font-weight:600;color:#fff}
+.rv-act span{font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
 .rv-act.like.on button{color:#ff3040}
 .rv-act.save.on button{color:#ffd76a}
 /* A informacao sai de cima do video e vai para o canto inferior esquerdo
@@ -2948,9 +2948,24 @@ input,textarea,select{font-size:14px}
    campo de publicar; o Feed fica só com o estado vazio, e os comunicados
    seguem visíveis no seu próprio estado vazio. */
 body.demo-suporte #homeShorts,
+body.demo-suporte #homeSeeAllPubs,
 body.demo-suporte .col-main > .nvf-composer,
 body.demo-suporte .col-main > .feed{display:none !important}
 body.demo-suporte .col-main > .feed ~ .demo-empty-state{display:flex !important}
+
+/* O mesmo cenario dentro do modulo: no feed de Publicacoes somem os shorts,
+   o campo de publicar e a lista, e fica so o estado vazio. Na tela de Shorts,
+   some a grade e o que a alimenta, e entra o estado vazio proprio dela. */
+body.demo-suporte .nvf-stories,
+body.demo-suporte .nvf-wrap > .nvf-composer,
+body.demo-suporte #nvFeed{display:none !important}
+body.demo-suporte #nvFeedVazio{display:flex !important}
+body.demo-suporte .sb-pillrow,
+body.demo-suporte #sbNew,
+body.demo-suporte #sbGrid,
+body.demo-suporte #sbMore{display:none !important}
+#sbSemPermissao{display:none}
+body.demo-suporte #sbSemPermissao{display:flex}
 /* os comunicados aparecem vazios, como no cenário "Vazio" */
 body.demo-suporte #homeComPanel .demo-filled{display:none !important}
 body.demo-suporte #homeComPanel .com-empty{display:flex !important}
@@ -5369,7 +5384,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
       <section class="stories-section nvf-stories">
         <div class="section-title-row">
           <h2 class="section-title" style="font-size:20px;margin:0">Shorts</h2>
-          <a href="#" class="see-all" id="nvfStoriesAll">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="see-all demo-filled" id="nvfStoriesAll">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
         </div>
         <div class="stories-wrap">
           <button class="st-arrow left" id="nvfStLeft" hidden><i class="fa-solid fa-chevron-left"></i></button>
@@ -5395,8 +5410,10 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
       <div id="nvFeed"></div>
       <div class="demo-empty-state" id="nvFeedVazio" hidden>
         <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
-        <div class="de-title">Seja o primeiro a publicar</div>
-        <div class="de-sub">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+        <div class="de-title de-quando-vazio">Seja o primeiro a publicar</div>
+        <div class="de-sub de-quando-vazio">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+        <div class="de-title de-quando-sem-permissao">Nenhuma publicação por aqui</div>
+        <div class="de-sub de-quando-sem-permissao">Quando alguém da sua rede publicar, a publicação aparece aqui.</div>
       </div>
     </div></div></div>
   </div>
@@ -5446,6 +5463,11 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
         <div class="sb-grid" id="sbGrid"></div>
         <div class="sb-more" id="sbMore" hidden><span class="sb-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando</span></div>
         <div class="sb-empty" id="sbEmpty" hidden><i class="fa-solid fa-clapperboard"></i><b>Nenhum short encontrado</b><span>Ajuste os filtros para ver outros resultados.</span></div>
+        <div class="demo-empty-state" id="sbSemPermissao">
+          <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
+          <div class="de-title">Nenhum short por aqui</div>
+          <div class="de-sub">Quando alguém da sua rede publicar um short, ele aparece aqui.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -6603,7 +6625,7 @@ function reelSlideHTML(r, idx, total){
     '<div class="rv-tap"></div><div class="rv-pauseic"><i class="fa-solid fa-play"></i></div>' +
   '</div>' +
     '<div class="rv-rail">' +
-      '<div class="rv-act share" data-rvshare><button title="Compartilhar" aria-label="Compartilhar"><i class="fa-solid fa-paper-plane"></i></button><span>Enviar</span></div>' +
+      '<div class="rv-act share" data-rvshare><button title="Compartilhar" aria-label="Compartilhar"><i class="fa-solid fa-paper-plane"></i></button><span>Compartilhar</span></div>' +
       '<div class="rv-act like' + (isLiked(r.p) ? ' on' : '') + '" data-p="' + r.p + '"><button><i class="fa-solid fa-heart"></i></button><span>' + likeDisplay(r) + '</span></div>' +
     '</div>' +
     '<div class="rv-footer">' +

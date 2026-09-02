@@ -197,9 +197,24 @@
    campo de publicar; o Feed fica só com o estado vazio, e os comunicados
    seguem visíveis no seu próprio estado vazio. */
 body.demo-suporte #homeShorts,
+body.demo-suporte #homeSeeAllPubs,
 body.demo-suporte .col-main > .nvf-composer,
 body.demo-suporte .col-main > .feed{display:none !important}
 body.demo-suporte .col-main > .feed ~ .demo-empty-state{display:flex !important}
+
+/* O mesmo cenario dentro do modulo: no feed de Publicacoes somem os shorts,
+   o campo de publicar e a lista, e fica so o estado vazio. Na tela de Shorts,
+   some a grade e o que a alimenta, e entra o estado vazio proprio dela. */
+body.demo-suporte .nvf-stories,
+body.demo-suporte .nvf-wrap > .nvf-composer,
+body.demo-suporte #nvFeed{display:none !important}
+body.demo-suporte #nvFeedVazio{display:flex !important}
+body.demo-suporte .sb-pillrow,
+body.demo-suporte #sbNew,
+body.demo-suporte #sbGrid,
+body.demo-suporte #sbMore{display:none !important}
+#sbSemPermissao{display:none}
+body.demo-suporte #sbSemPermissao{display:flex}
 /* os comunicados aparecem vazios, como no cenário "Vazio" */
 body.demo-suporte #homeComPanel .demo-filled{display:none !important}
 body.demo-suporte #homeComPanel .com-empty{display:flex !important}

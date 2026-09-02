@@ -170,7 +170,7 @@
       <section class="stories-section nvf-stories">
         <div class="section-title-row">
           <h2 class="section-title" style="font-size:20px;margin:0">Shorts</h2>
-          <a href="#" class="see-all" id="nvfStoriesAll">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="see-all demo-filled" id="nvfStoriesAll">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
         </div>
         <div class="stories-wrap">
           <button class="st-arrow left" id="nvfStLeft" hidden><i class="fa-solid fa-chevron-left"></i></button>
@@ -196,8 +196,10 @@
       <div id="nvFeed"></div>
       <div class="demo-empty-state" id="nvFeedVazio" hidden>
         <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
-        <div class="de-title">Seja o primeiro a publicar</div>
-        <div class="de-sub">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+        <div class="de-title de-quando-vazio">Seja o primeiro a publicar</div>
+        <div class="de-sub de-quando-vazio">Ainda não há publicações por aqui. Use o campo acima para criar a primeira publicação da sua rede.</div>
+        <div class="de-title de-quando-sem-permissao">Nenhuma publicação por aqui</div>
+        <div class="de-sub de-quando-sem-permissao">Quando alguém da sua rede publicar, a publicação aparece aqui.</div>
       </div>
     </div></div></div>
   </div>
@@ -247,6 +249,11 @@
         <div class="sb-grid" id="sbGrid"></div>
         <div class="sb-more" id="sbMore" hidden><span class="sb-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando</span></div>
         <div class="sb-empty" id="sbEmpty" hidden><i class="fa-solid fa-clapperboard"></i><b>Nenhum short encontrado</b><span>Ajuste os filtros para ver outros resultados.</span></div>
+        <div class="demo-empty-state" id="sbSemPermissao">
+          <img class="de-illu" src="uploads/illustra/feed.svg" alt="" width="323" height="200">
+          <div class="de-title">Nenhum short por aqui</div>
+          <div class="de-sub">Quando alguém da sua rede publicar um short, ele aparece aqui.</div>
+        </div>
       </div>
     </div>
   </div>
