@@ -191,6 +191,19 @@ let CATEGORIES = [
   { id:'depoimentos', name:'Depoimentos', color:'#27a689', icon:'fa-comment-dots', active:true },
   { id:'produtos', name:'Produtos', color:'#8161d8', icon:'fa-box', active:true }
 ];
+/* Rotulo de unidade, estavel por autor: o mesmo nome cai sempre na mesma.
+   Nao uso o sufixo do cargo porque ali a unidade vem como "SULTS" ou como
+   nome de rede ("Pit Stop Barra"), e a faixa do card quer dizer a unidade de
+   onde a pessoa publicou. */
+const SB_UNIDADES = ['Unidade Shopping','Unidade Centro','Unidade Vila Nova',
+                     'Unidade Litoral','Unidade Barra','Unidade Savassi'];
+function sbUnidade(post){
+  const nome = String((post && post.name) || '');
+  if (!nome) return SB_UNIDADES[0];
+  let h = 0;
+  for (let k = 0; k < nome.length; k++) h += nome.charCodeAt(k);
+  return SB_UNIDADES[h % SB_UNIDADES.length];
+}
 function catById(id){ return CATEGORIES.find(c => c.id === id) || null; }
 function rFormat(r){ return r.format || ((POSTS[r.p] && POSTS[r.p].video) ? 'video' : 'imagem'); }
 function rxSchedDT(d){ const dd=new Date(d), p=x=>String(x).padStart(2,'0'); return p(dd.getDate())+'/'+p(dd.getMonth()+1)+'/'+dd.getFullYear()+' '+p(dd.getHours())+':'+p(dd.getMinutes()); }
@@ -248,16 +261,21 @@ function reelSlideHTML(r, idx, total){
                 : '<img src="' + post.img + '" alt="' + post.alt + '">') +
     timer + (post.video ? '<div class="rv-audio" data-rvaudio><button class="rv-mute" data-rvmute title="Ativar som"><i class="fa-solid fa-volume-xmark"></i></button><input class="rv-vol" type="range" min="0" max="100" step="1" value="70" data-rvvol aria-label="Volume"></div>' : '') +
     '<div class="rv-tap"></div><div class="rv-pauseic"><i class="fa-solid fa-play"></i></div>' +
+  '</div>' +
     '<div class="rv-rail">' +
+      '<div class="rv-act share" data-rvshare><button title="Compartilhar" aria-label="Compartilhar"><i class="fa-solid fa-share"></i></button><span>Enviar</span></div>' +
       '<div class="rv-act like' + (isLiked(r.p) ? ' on' : '') + '" data-p="' + r.p + '"><button><i class="fa-solid fa-heart"></i></button><span>' + likeDisplay(r) + '</span></div>' +
     '</div>' +
-    '<div class="rv-info">' +
+    '<div class="rv-footer">' +
       '<div class="rv-author"><span class="avatar ' + post.av + '">' + post.initials + '</span>' +
-        '<span class="rv-name">' + post.name + '</span>' +
-        '</div>' +
+        '<div class="rv-authorinfo">' +
+          '<span class="rv-name">' + post.name + '</span>' +
+          '<span class="rv-unit">' + sbUnidade(post) + '</span>' +
+        '</div></div>' +
       '<div class="rv-caption" data-rvcap>' + r.cap + '</div>' +
+      '<div class="rv-date">' + fmtQuando(post) + '</div>' +
     '</div>' +
-  '</div></div>';
+  '</div>';
 }
 
 function matchReel(r){

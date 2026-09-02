@@ -128,6 +128,11 @@ function cmDT(c){
 /* Data de publicacao em um formato so: DD/MM/AAAA as HH:MM. O feed de
    Publicacoes vinha com "2 h", "ontem", "1 d" e "22/07/2026" — quatro formas
    diferentes e nenhuma com hora — e na home sobrava um datetime de ano curto. */
+/* O prototipo tem uma data fixa como "agora": os dados sao de julho de 2026.
+   Estava repetida em tres lugares, e o filtro de periodo comparava com
+   Date.now() — hoje 41 dias a frente — o que fazia "Hoje", "7 dias" e
+   "30 dias" devolverem todos a mesma lista. */
+function agoraProto(){ return new Date(2026, 6, 23, 13, 40); }
 function fmtQuando(n){
   const p = x => ('0'+x).slice(-2);
   /* Sem expressao regular de proposito: separo por barra e espaco. A primeira
@@ -142,10 +147,13 @@ function fmtQuando(n){
       return data[0] + '/' + data[1] + '/' + ano + (partes[1] ? ' às ' + partes[1] : '');
     }
   }
-  /* o prototipo tem uma data de referencia fixa, a mesma do nvFmtDateTime */
-  const agora = new Date(2026, 6, 23, 13, 40);
+  const agora = agoraProto();
   let d = new Date(agora);
-  const s = String(n.date || '').trim().toLowerCase();
+  /* Os posts dos shorts guardam a forma relativa em `time` e com prefixo:
+     "Há 5 h", "Há 3 d". Sem tirar o "há" o parseInt falha e tudo resolvia
+     para hoje, o que zerava o filtro de periodo. */
+  let s = String(n.date || n.time || '').trim().toLowerCase();
+  if (s.indexOf('há ') === 0 || s.indexOf('ha ') === 0) s = s.slice(3).trim();
   const num = parseInt(s, 10);
   if (s.indexOf('/') > 0){
     const q = s.split('/');

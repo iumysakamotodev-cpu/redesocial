@@ -117,23 +117,38 @@ $('#sbNew') && $('#sbNew').addEventListener('click', ()=>{ if(typeof crOpen==='f
 [3,9].forEach(function(i){ const r=REELS_DATA[i]; if(r&&POSTS[r.p]){ POSTS[r.p].name='Rodrigo Caetano'; POSTS[r.p].av='av-rc'; } });
 [1,5].forEach(function(i){ if(REELS_DATA[i]) REELS_DATA[i].proc=true; });
 [7,12].forEach(function(i){ if(REELS_DATA[i]) REELS_DATA[i].removido=true; });
-let sbFmt='', sbAuthorPage=1, sbTab='todos', sbQuery='', sbAct='', sbAuthor='', sbAuthorQuery='', sbShown=12;
+let sbFmt='', sbAuthorPage=1, sbTab='todos', sbQuery='', sbAct='', sbAuthor='', sbAuthorQuery='', sbShown=12, sbPeriod='';
 function sbTabs(){
-  const t=[['todos','Todos os shorts'],['sucesso','Histórias de sucesso']];
-  CATEGORIES.filter(c=>c.active!==false).forEach(c=>t.push(['cat:'+c.id, c.name]));
+  /* {id, label, icon, cor}. A cor pinta o selo do icone; com a aba aberta o
+     fundo e o texto sao sempre verdigris. A lista sai do NEWS_CATS, que e a
+     mesma que se gerencia em Categorias e que o feed de publicacoes usa —
+     antes o tab tinha uma lista propria de tres itens. A aba fixa
+     "Histórias de sucesso" saiu porque agora ela e uma categoria de verdade. */
+  const t = [{ id:'todos', label:'Todos os shorts', icon:'fa-layer-group', cor:'#00ACAC' }];
+  const lista = (typeof NEWS_CATS !== 'undefined') ? NEWS_CATS : CATEGORIES;
+  lista.forEach(function(c){
+    t.push({ id:'cat:'+c.id, label:c.name, icon:c.icon || 'fa-tag', cor:c.color });
+  });
   return t;
 }
+/* Os shorts foram cadastrados com a lista antiga (depoimentos/eventos/
+   produtos) e o tab agora usa a de publicacoes. Este mapa liga uma na outra:
+   sem ele so "Eventos" casaria e as demais abas viriam vazias sem motivo.
+   As categorias sem short nenhum ficam vazias de verdade, e o estado vazio
+   da tela cobre isso. */
+const SB_CAT_ALIAS = { depoimentos:'sucesso', eventos:'eventos', produtos:'produto' };
+function sbCatDe(r){ return SB_CAT_ALIAS[r.cat] || r.cat || ''; }
 function sbList(){
   return REELS_DATA.filter(function(r){
     const p=POSTS[r.p]||{};
     if(r.removido) return false;
     if(sbFmt && rFormat(r)!==sbFmt) return false;
     if(sbAct==='naovistos' && isSeen(r.p)) return false;
-    if(sbTab==='sucesso' && !/hist[óo]ria/i.test((p.title||p.alt||''))) return false;
-    if(sbTab.indexOf('cat:')===0 && r.cat!==sbTab.slice(4)) return false;
+    if(sbTab.indexOf('cat:')===0 && sbCatDe(r)!==sbTab.slice(4)) return false;
     if(sbAct==='curti' && !isLiked(r.p)) return false;
     if(sbAct==='meus' && p.name!=='Rodrigo Caetano') return false;
     if(sbAuthor && p.name!==sbAuthor) return false;
+    if(sbPeriod!=='' && nvFeedDaysAgo(p.datetime||p.date||p.time) > +sbPeriod) return false;
     if(sbQuery){
       const q=rxNorm(sbQuery);
       const hay=rxNorm((p.title||'')+' '+(p.alt||'')+' '+(p.caption||'')+' '+(p.name||''));
@@ -149,15 +164,18 @@ function sbActiveCount(){
   if(sbAct) n++;
   if(sbAuthor) n++;
   if(sbQuery) n++;
+  if(sbPeriod!=='') n++;
   return n;
 }
 function sbClearAll(){
-  sbTab='todos'; sbAct=''; sbFmt=''; sbAuthor=''; sbQuery=''; sbAuthorQuery=''; sbAuthorPage=1; sbShown=12;
+  sbTab='todos'; sbAct=''; sbFmt=''; sbAuthor=''; sbQuery=''; sbAuthorQuery=''; sbAuthorPage=1; sbShown=12; sbPeriod='';
+  const pe=$('#sbPeriodSel'); if(pe) pe.value='';
   const s=$('#sbSearch'); if(s) s.value='';
   const a=$('#sbAuthorSearch'); if(a) a.value='';
   renderShortsB();
 }
 $('#sbClear') && $('#sbClear').addEventListener('click', sbClearAll);
+$('#sbPeriodSel') && $('#sbPeriodSel').addEventListener('change', function(e){ sbPeriod=e.target.value; sbShown=12; renderShortsB(); });
 function renderShortsB(){
   const sn=$('#sbSearchNote');
   if(sn){ const on=!!(typeof sbQuery!=='undefined'&&sbQuery); sn.hidden=!on; if(on) sn.querySelector('b').textContent=sbQuery; }
@@ -165,7 +183,15 @@ function renderShortsB(){
   const n=sbActiveCount(), cw=$('#sbClearWrap');
   if(cw){ cw.hidden = n===0; const lb=$('#sbClearLbl'); if(lb) lb.textContent='Limpar filtros'+(n?' ('+n+')':''); }
   const pills=$('#sbPills');
-  if(pills){ pills.innerHTML = sbTabs().map(t=>'<button class="sb-pill'+(sbTab===t[0]?' on':'')+'" data-sbtab="'+t[0]+'">'+t[1]+'</button>').join(''); requestAnimationFrame(sbArrows); }
+  if(pills){
+    pills.innerHTML = sbTabs().map(function(t){
+      const selo = t.cor
+        ? '<span class="sb-pill-ic" style="background:'+t.cor+'"><i class="fa-solid '+t.icon+'"></i></span>'
+        : '<i class="fa-solid '+t.icon+'"></i>';
+      return '<button class="sb-pill'+(sbTab===t.id?' on':'')+'" data-sbtab="'+t.id+'">'+selo+t.label+'</button>';
+    }).join('');
+    requestAnimationFrame(sbArrows);
+  }
   const sbl=$('#sbAuthorBtnLbl'); if(sbl) sbl.textContent = sbAuthor || 'Todos os autores';
   const ab=$('#sbAuthors');
   if(ab){
@@ -204,7 +230,9 @@ function renderShortsB(){
         '<span class="sb-likes"><i class="fa-solid fa-heart"></i> '+likeDisplay(r)+'</span>'+
         '<h3 class="sb-title">'+(post.title||post.alt||'Short')+'</h3>'+
       '</div>'+
-      '<div class="sb-author"><span class="avatar '+(post.av||'av-brand')+'"></span><b>'+(post.name||'SULTS')+'</b></div>'+
+      '<div class="sb-author"><span class="avatar '+(post.av||'av-brand')+'"></span>'+
+        '<div class="sb-auid"><b>'+(post.name||'SULTS')+'</b>'+
+        '<span class="sb-auunit">'+sbUnidade(post)+'</span></div></div>'+
     '</article>';
   }).join('');
   if(typeof ajustaFundoEm==='function') ajustaFundoEm(el, '.sb-media img,.sb-media video');
@@ -225,7 +253,24 @@ function sbObserve(){
   sbIO.disconnect();
   if(!mw.hidden) sbIO.observe(mw);
 }
-$('#sbPills') && $('#sbPills').addEventListener('click', function(e){ const b=e.target.closest('[data-sbtab]'); if(!b) return; sbTab=b.dataset.sbtab; sbShown=12; renderShortsB(); });
+/* Traz a pill inteira para a vista rolando SO a faixa. O scrollIntoView nao
+   serve aqui: ele rola tambem o ancestral vertical, jogando a pagina, e
+   encosta a pill na borda — bem embaixo da bolinha e do esmaecido. A folga
+   de 52px cobre a bolinha (34px + 8 de recuo) e o que sobra do degrade. */
+function sbTrazPill(el){
+  const faixa=$('#sbPills'); if(!faixa || !el) return;
+  const folga=52;
+  const r=el.getBoundingClientRect(), f=faixa.getBoundingClientRect();
+  let d=0;
+  if(r.right > f.right - folga)     d = r.right - (f.right - folga);
+  else if(r.left < f.left + folga)  d = r.left - (f.left + folga);
+  if(d) faixa.scrollTo({ left: faixa.scrollLeft + d, behavior:'smooth' });
+}
+$('#sbPills') && $('#sbPills').addEventListener('click', function(e){
+  const b=e.target.closest('[data-sbtab]'); if(!b) return;
+  sbTab=b.dataset.sbtab; sbShown=12; renderShortsB();
+  sbTrazPill($('#sbPills [data-sbtab="'+sbTab+'"]'));
+});
 $('#sbPillLeft') && $('#sbPillLeft').addEventListener('click', ()=>{ $('#sbPills').scrollLeft -= 320; });
 $('#sbPillRight') && $('#sbPillRight').addEventListener('click', ()=>{ $('#sbPills').scrollLeft += 320; });
 function sbArrows(){
@@ -844,11 +889,18 @@ $('#aprCardPub') && $('#aprCardPub').addEventListener('click', ()=>{ pubFilter='
 let nvfAuthorPage=1, nvFeedType='todos', nvFeedCat='', nvFeedAuthor='', nvfAuthorQuery='', nvFeedPeriod='', nvFeedReach='', nvFeedSort='recentes', nvFeedMine='', nvFeedText='';
 function nvFeedDaysAgo(dstr){
   if(!dstr) return 0;
-  var m=String(dstr).match(/(\d{2})\/(\d{2})\/(\d{2,4})/);
-  if(!m) return 0;
-  var yr=m[3].length===2?('20'+m[3]):m[3];
-  var d=new Date(+yr, +m[2]-1, +m[1]);
-  return Math.floor((Date.now()-d.getTime())/86400000);
+  /* Passa pelo fmtQuando, que resolve tanto "2 h" e "ontem" quanto 22/07/2026
+     — antes as formas relativas nao casavam com a expressao e caiam no
+     return 0, passando por qualquer janela. E compara com o agora do
+     prototipo, nao com Date.now(), que hoje esta 41 dias a frente dos dados:
+     era isso que fazia "Hoje", "7 dias" e "30 dias" devolverem a mesma lista. */
+  var s = (typeof fmtQuando === 'function') ? fmtQuando({ date: dstr }) : String(dstr);
+  var q = s.split(' ')[0].split('/');
+  if (q.length !== 3) return 0;
+  var d = new Date(+q[2], +q[1] - 1, +q[0]);
+  var a = (typeof agoraProto === 'function') ? agoraProto() : new Date();
+  var hoje = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+  return Math.round((hoje - d) / 86400000);
 }
 function nvfClearVis(){
   const w=document.getElementById('nvfClearWrap'); if(!w) return;
