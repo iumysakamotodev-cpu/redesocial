@@ -24,12 +24,12 @@
 .comment{display:flex;gap:10px;align-items:flex-start}
 .comment .avatar{width:38px;height:38px;font-size:13px}
 .comment-main{flex:1;min-width:0}
-.comment-bubble{background:#f0f3f6;border-radius:3px 14px 14px 14px;padding:9px 14px 11px}
+.comment-bubble{background:#f0f3f6;border-radius:4px 12px 12px 12px;padding:12px 12px 12px 14px}
 .comment-top{display:flex;align-items:baseline;gap:10px}
 .comment-name{font-weight:700;color:var(--ink);font-size:15px}
 .comment-time{margin-left:auto;font-size:12px;color:var(--muted);flex-shrink:0}
 .comment-menu{position:relative;flex-shrink:0}
-.comment-dots{border:0;background:none;color:var(--muted);cursor:pointer;font-size:15px;padding:0 2px;line-height:1}
+.comment-dots{border:0;background:none;color:#5b6672;cursor:pointer;font-size:15px;padding:0 2px;line-height:1}
 .comment-dots:hover{color:var(--ink)}
 .comment-drop{position:absolute;top:22px;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px -12px rgba(16,32,48,.4);padding:5px;z-index:30;min-width:150px}
 .comment-drop button{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;padding:9px 11px;border-radius:7px;font:inherit;font-size:13px;font-weight:600;color:#c0392f;cursor:pointer;text-align:left}
@@ -48,15 +48,26 @@
 .comment-likes i{color:#2d8cff;font-size:11px}
 @keyframes commentIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .comment.fresh{animation:commentIn .25s ease}
-.comment.pending .comment-bubble{background:#fff8e6;border:1px solid #f4d98a}
-.comment-pend{margin-top:6px;font-size:12px;font-weight:700;color:#9a6d00;display:flex;align-items:center;gap:6px}
-.comment-pend i{font-size:11px}
-.comment-mod{display:flex;gap:8px;margin-top:8px}
-.comment-mod button{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:8px;padding:7px 13px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
-.comment-mod .cmod-ok{background:var(--teal);color:#fff}
-.comment-mod .cmod-ok:hover{background:var(--teal-dark)}
-.comment-mod .cmod-no{background:#f0f3f6;color:#5b6672}
-.comment-mod .cmod-no:hover{background:#fdecea;color:#c62828}
+/* box-shadow e nao border: um filete de 2px entraria na caixa da bolha e
+   deslocaria o texto so nos comentarios pendentes */
+.comment.pending .comment-bubble{background:#fff8e6;box-shadow:inset 0 0 0 2px #f4d98a}
+/* O aviso e os botoes na mesma linha, com um divisor separando do texto do
+   comentario — o mesmo arranjo da barra de aprovacao da publicacao. */
+.comment-modbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:11px;padding-top:11px;border-top:1px solid #f0e0b8}
+.comment-pend{flex:1;margin:0;font-size:14px;line-height:20px;font-weight:700;color:#8A6A00;
+  display:flex;align-items:center;gap:7px;white-space:nowrap}
+.comment-pend i{font-size:15px}
+.comment-mod{display:flex;gap:8px;margin:0}
+.comment-mod button{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  height:36px;padding:0 16px;border:0;border-radius:6px;
+  font:inherit;font-size:14px;line-height:20px;font-weight:700;cursor:pointer}
+.comment-mod .cmod-ok{background:#1E8E3E;color:#fff}
+.comment-mod .cmod-ok:hover{background:#17722F}
+.comment-mod .cmod-no{--vermelho:#B3261E;background:#fff;color:var(--vermelho);
+  box-shadow:inset 0 0 0 1px var(--vermelho)}
+.comment-mod .cmod-no:hover{background:#fff;--vermelho:var(--red);
+  color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .comment-replies{display:flex;flex-direction:column;gap:12px;margin-top:12px}
 .comment-replies:empty{margin-top:0}
 .comment-replies .comment>.avatar{width:30px;height:30px;font-size:11px}

@@ -190,7 +190,11 @@
           <button class="nvf-qbtn news" id="nvqArt"><i class="fa-solid fa-newspaper"></i> Artigo</button>
         </div>
       </div>
-      <div class="nvf-clearwrap" id="nvfClearWrap" hidden><button class="nvf-clearpill" id="nvfClear"><span id="nvfClearLbl">Limpar filtros</span> <i class="fa-solid fa-xmark"></i></button></div>
+      <div class="sb-chipsbar" id="nvfChipsBar" hidden>
+        <span class="sb-chipscount">Resultados para</span>
+        <div class="sb-chips" id="nvfChips"></div>
+        <button class="sb-chipclear" id="nvfClear"><span id="nvfClearLbl">Limpar filtros</span></button>
+      </div>
       <div class="nvf-fbar" id="nvfFbar" hidden></div>
       <div class="nvf-clearwrap" id="nvSearchNote" hidden><button class="nvf-clearpill" id="nvSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
       <div id="nvFeed"></div>
@@ -245,7 +249,11 @@
           <button class="sb-pillarrow right" id="sbPillRight"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
         <div class="nvf-clearwrap" id="sbSearchNote" hidden><button class="nvf-clearpill" id="sbSearchClear"><span>Limpar busca: <b></b></span> <i class="fa-solid fa-xmark"></i></button></div>
-        <div class="nvf-clearwrap" id="sbClearWrap" hidden><button class="nvf-clearpill" id="sbClear"><span id="sbClearLbl">Limpar filtros</span> <i class="fa-solid fa-xmark"></i></button></div>
+        <div class="sb-chipsbar" id="sbChipsBar" hidden>
+          <span class="sb-chipscount" id="sbChipsCount">Resultados para</span>
+          <div class="sb-chips" id="sbChips"></div>
+          <button class="sb-chipclear" id="sbClear"><span id="sbClearLbl">Limpar filtros</span></button>
+        </div>
         <div class="sb-grid" id="sbGrid"></div>
         <div class="sb-more" id="sbMore" hidden><span class="sb-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Carregando</span></div>
         <div class="sb-empty" id="sbEmpty" hidden><i class="fa-solid fa-clapperboard"></i><b>Nenhum short encontrado</b><span>Ajuste os filtros para ver outros resultados.</span></div>

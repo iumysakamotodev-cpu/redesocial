@@ -179,9 +179,13 @@ function buildComment(c, fresh, pending){
         '<div class="comment-menu"><button class="comment-dots" title="Opções"><i class="fa-solid fa-ellipsis"></i></button><div class="comment-drop" hidden><button class="comment-del"><i class="fa-solid fa-trash-can"></i> Excluir</button></div></div></div>' +
         '<div class="comment-role">' + c.role + '</div>' +
         '<div class="comment-text"></div>' +
-        (pending ? '<div class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</div>' : '') +
+        (pending ? '<div class="comment-modbar">' +
+          '<span class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span>' +
+          '<div class="comment-mod">' +
+            '<button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button>' +
+            '<button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button>' +
+          '</div></div>' : '') +
       '</div>' +
-      (pending ? '<div class="comment-mod"><button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button><button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button></div>' : '') +
       '<div class="comment-actions"'+(pending?' style="display:none"':'')+'>' +
         '<button class="comment-act clike"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>' +
         '<span class="comment-sep"></span>' +

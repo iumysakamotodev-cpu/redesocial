@@ -54,7 +54,7 @@
 .news-view:not(.env-social) .nmod-search{display:none}
 @media(max-width:1180px){ .nmod-search{flex-basis:300px} }
 @media(max-width:900px){ .nmod-search{display:none} }
-.nmod-switch{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:4px;height:36px;padding:0 16px;
+.nmod-switch{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:6px;height:36px;padding:0 16px;
   font:inherit;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.3px;cursor:pointer;flex-shrink:0;
   background:#00ACAC;color:#fff;transition:background 120ms cubic-bezier(.4,0,.2,1),box-shadow 120ms cubic-bezier(.4,0,.2,1)}
 .nmod-switch i{font-size:16px}
@@ -319,6 +319,25 @@
 .sb-card:hover .sb-title{opacity:1;transform:none}
 .sb-card:hover .sb-media video{}
 .sb-card:hover .sb-media::after{height:65%;background:linear-gradient(transparent,rgba(12,31,56,.5) 45%,rgba(12,31,56,.9))}
+/* Barra de filtros ativos, alinhada a esquerda acima da grade. Cada ficha
+   diz o que esta filtrando — rotulo em cinza, valor em tinta — e o X
+   remove so aquele filtro. */
+.sb-chipsbar[hidden]{display:none}
+.sb-chipsbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.sb-chipscount{font-size:14px;line-height:20px;font-weight:700;color:var(--ink);white-space:nowrap}
+.sb-chips{display:flex;flex-wrap:wrap;gap:8px}
+.sb-chip{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 6px 0 12px;
+  border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);
+  font:inherit;font-size:14px;line-height:20px;color:var(--muted);white-space:nowrap}
+.sb-chip b{font-weight:700;color:var(--ink)}
+.sb-chipx{width:24px;height:24px;flex-shrink:0;border:0;border-radius:50%;background:none;
+  color:var(--muted);font-size:13px;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.sb-chipx:hover{background:rgba(28,28,30,.08);color:var(--ink)}
+.sb-chipx i{display:block;line-height:1}
+.sb-chipclear{border:0;background:none;padding:0 4px;font:inherit;font-size:14px;line-height:20px;
+  font-weight:700;color:#0c7d7d;cursor:pointer;white-space:nowrap}
+.sb-chipclear:hover{text-decoration:underline}
 .sb-more{display:flex;justify-content:center;margin:22px 0 0}
 .sb-morebtn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border:1px solid #E9EAED;border-radius:8px;background:#fff;color:#48484A;font:inherit;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.3px;cursor:pointer;transition:background 120ms cubic-bezier(.4,0,.2,1),color 120ms cubic-bezier(.4,0,.2,1)}
 .sb-morebtn:hover{background:linear-gradient(rgba(28,28,30,.08),rgba(28,28,30,.08)),#fff;color:#1C1C1E}
@@ -690,6 +709,7 @@
 .nvf-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0}
 .nvf-wrap > .nvf-stories{margin-bottom:20px}
 .nvf-wrap > .nvf-composer{margin-bottom:8px}
+.nvf-wrap:has(> #nvfChipsBar:not([hidden])) > .nvf-composer{margin-bottom:20px}
 /* e 8px de uma publicacao para a outra, como no feed da home */
 .nvf-wrap #nvFeed{display:flex;flex-direction:column;gap:8px}
 .nvf-composer{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
@@ -961,9 +981,17 @@
 .nvf-cm{border-top:1px solid var(--line);padding:14px 2px 8px;margin-top:2px}
 .nvf-cm-box{display:flex;gap:10px;align-items:center}
 .nvf-cm-box .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}
-.nvf-cm-in{flex:1;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 16px;font:inherit;font-size:13px;outline:none}
-.nvf-cm-in:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.14)}
-.nvf-cm-send{border:0;background:var(--teal);color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;flex-shrink:0;font-size:14px}
+/* A pilula e o involucro, nao o input: assim o botao de enviar fica dentro
+   dela. Antes o contorno era do proprio input e o botao sobrava do lado. */
+.nvf-cm-field{flex:1;min-width:0;display:flex;align-items:center;gap:6px;
+  background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:5px 5px 5px 16px;transition:border-color .15s,box-shadow .15s}
+.nvf-cm-field:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.14)}
+.nvf-cm-in{flex:1;min-width:0;border:0;background:none;padding:0;font:inherit;font-size:14px;outline:none;color:var(--ink)}
+.nvf-cm-send{border:0;background:var(--teal);color:#fff;width:34px;height:34px;border-radius:50%;
+  cursor:pointer;flex-shrink:0;font-size:14px;
+  display:flex;align-items:center;justify-content:center;transition:background .15s,opacity .15s}
+.nvf-cm-send:not(:disabled):hover{background:var(--teal-dark)}
 .nvf-cm-send:disabled{background:#c4ccd4;cursor:default}
 .nvf-cm-item.pending .nvf-cm-bub{background:#fff8e6;border:1px solid #f4d98a}
 .nvf-pendtag{display:inline-flex;align-items:center;gap:5px;margin-left:8px;background:rgba(255,204,0,.18);color:#8A6A00;font-size:11px;font-weight:600;letter-spacing:.3px;border-radius:32px;padding:2px 9px}
@@ -977,14 +1005,7 @@
    pesava igual ao Aprovar, e recusar nao e a acao esperada. */
 .nvf-modbar .nvf-modtx{font-size:14px;line-height:20px}
 .nvf-modbar .nvf-modtx i{font-size:15px}
-.nvf-modbar .comment-mod button{height:36px;padding:0 16px;border-radius:4px;font-size:14px;line-height:20px}
-.nvf-modbar .comment-mod .cmod-ok{background:#1E8E3E;color:#fff}
-.nvf-modbar .comment-mod .cmod-ok:hover{background:#17722F}
-.nvf-modbar .comment-mod .cmod-no{--vermelho:#B3261E;
-  background:#fff;color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
-.nvf-modbar .comment-mod .cmod-no:hover{background:#fff;
-  --vermelho:var(--red);
-  color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
+/* os botoes vem do padrao em 09-comentarios: aqui nao ha mais nada a dizer */
 .nvf-cm-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .nvf-cm-item{display:flex;gap:10px}
 .nvf-cm-item .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}

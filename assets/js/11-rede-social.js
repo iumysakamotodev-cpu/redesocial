@@ -157,6 +157,34 @@ function sbList(){
     return true;
   });
 }
+/* Rotulos legiveis dos filtros. Sem isto a ficha mostraria o valor cru que o
+   estado guarda — "meus", "0", "cat:sucesso" — em vez do que a pessoa clicou. */
+const SB_ROTULO_ATIVIDADE = { meus:'Publicados por mim', curti:'Que eu curti', naovistos:'Não vistos' };
+const SB_ROTULO_TIPO      = { video:'Vídeo', imagem:'Imagem' };
+const SB_ROTULO_PERIODO   = { '0':'Hoje', '7':'Últimos 7 dias', '30':'Últimos 30 dias' };
+function sbFiltrosAtivos(){
+  const f = [];
+  if (sbTab !== 'todos'){
+    const aba = sbTabs().find(t => t.id === sbTab);
+    f.push({ chave:'tab', rotulo:'Categoria', valor:(aba ? aba.label : sbTab) });
+  }
+  if (sbAct)          f.push({ chave:'act',    rotulo:'Atividade', valor:SB_ROTULO_ATIVIDADE[sbAct] || sbAct });
+  if (sbFmt)          f.push({ chave:'fmt',    rotulo:'Tipo',      valor:SB_ROTULO_TIPO[sbFmt] || sbFmt });
+  if (sbAuthor)       f.push({ chave:'author', rotulo:'Autor',     valor:sbAuthor });
+  if (sbPeriod !== '')f.push({ chave:'period', rotulo:'Período',   valor:SB_ROTULO_PERIODO[sbPeriod] || sbPeriod });
+  if (sbQuery)        f.push({ chave:'query',  rotulo:'Busca',     valor:sbQuery });
+  return f;
+}
+function sbLimparFiltro(chave){
+  if (chave === 'tab')    sbTab = 'todos';
+  if (chave === 'act')    sbAct = '';
+  if (chave === 'fmt')    sbFmt = '';
+  if (chave === 'author'){ sbAuthor = ''; sbAuthorQuery = ''; sbAuthorPage = 1; }
+  if (chave === 'period'){ sbPeriod = ''; const p = $('#sbPeriodSel'); if (p) p.value = ''; }
+  if (chave === 'query'){ sbQuery = ''; const s = $('#sbSearch'); if (s) s.value = ''; }
+  sbShown = 12;
+  renderShortsB();
+}
 function sbActiveCount(){
   let n=0;
   if(sbTab!=='todos') n++;
@@ -175,13 +203,32 @@ function sbClearAll(){
   renderShortsB();
 }
 $('#sbClear') && $('#sbClear').addEventListener('click', sbClearAll);
+$('#sbChips') && $('#sbChips').addEventListener('click', function(e){
+  const b=e.target.closest('[data-sbchip]'); if(!b) return;
+  sbLimparFiltro(b.dataset.sbchip);
+});
 $('#sbPeriodSel') && $('#sbPeriodSel').addEventListener('change', function(e){ sbPeriod=e.target.value; sbShown=12; renderShortsB(); });
 function renderShortsB(){
   const sn=$('#sbSearchNote');
   if(sn){ const on=!!(typeof sbQuery!=='undefined'&&sbQuery); sn.hidden=!on; if(on) sn.querySelector('b').textContent=sbQuery; }
+  /* as duas listas da coluna se sincronizam com o estado a cada desenho. A de
+     atividade nao fazia isso: so o clique marcava o botao, entao limpar o
+     filtro por outro caminho — a ficha ou o "Limpar filtros" — deixava a
+     opcao antiga acesa na coluna. */
   $$('.sb-fmt').forEach(b=>b.classList.toggle('active', (b.dataset.sbfmt||'')===sbFmt));
-  const n=sbActiveCount(), cw=$('#sbClearWrap');
-  if(cw){ cw.hidden = n===0; const lb=$('#sbClearLbl'); if(lb) lb.textContent='Limpar filtros'+(n?' ('+n+')':''); }
+  $$('.sb-act').forEach(b=>b.classList.toggle('active', (b.dataset.sbact||'')===sbAct));
+  const filtros=sbFiltrosAtivos(), barra=$('#sbChipsBar');
+  if(barra){
+    barra.hidden = filtros.length===0;
+    const lb=$('#sbClearLbl');
+    if(lb) lb.textContent = 'Limpar filtros ('+filtros.length+')';
+    const cx=$('#sbChips');
+    if(cx) cx.innerHTML = filtros.map(function(f){
+      return '<span class="sb-chip">'+f.rotulo+': <b>'+f.valor+'</b>'+
+        '<button type="button" class="sb-chipx" data-sbchip="'+f.chave+'" aria-label="Remover filtro '+f.rotulo+'">'+
+        '<i class="fa-solid fa-xmark"></i></button></span>';
+    }).join('');
+  }
   const pills=$('#sbPills');
   if(pills){
     pills.innerHTML = sbTabs().map(function(t){
@@ -489,7 +536,7 @@ function focusPublication(newsId){
     MOD_QUEUE.filter(e=>e.newsId===newsId).forEach(e=>{
       if(list.querySelector('[data-mid="'+e.mid+'"]')) return;
       const it=document.createElement('div'); it.className='nvf-cm-item pending'; it.dataset.mid=e.mid;
-      it.innerHTML='<span class="avatar '+(e.av||'av-rc')+'"></span><div><div class="nvf-cm-bub"><b>'+e.author+'</b><span>'+e.text.replace(/</g,'&lt;')+'</span></div><div class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</div><div class="comment-mod"><button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button><button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button></div></div>';
+      it.innerHTML='<span class="avatar '+(e.av||'av-rc')+'"></span><div><div class="nvf-cm-bub"><b>'+e.author+'</b><span>'+e.text.replace(/</g,'&lt;')+'</span></div><div class="comment-modbar"><span class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><div class="comment-mod"><button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button></div></div></div>';
       list.insertBefore(it, list.firstChild);
       it.querySelector('.cmod-ok').addEventListener('click',()=>{ it.classList.remove('pending'); const pe=it.querySelector('.comment-pend'); if(pe)pe.remove(); const me=it.querySelector('.comment-mod'); if(me)me.remove(); (n.cmts=n.cmts||[]).push({author:e.author,av:e.av,text:e.text}); modRemove(e.mid); fgToast('Comentário aprovado'); });
       it.querySelector('.cmod-no').addEventListener('click',()=>{ askReject(function(motivo){ e.motivo=motivo; it.remove(); modRemove(e.mid); fgToast('Comentário recusado'); }); });
@@ -902,21 +949,51 @@ function nvFeedDaysAgo(dstr){
   var hoje = new Date(a.getFullYear(), a.getMonth(), a.getDate());
   return Math.round((hoje - d) / 86400000);
 }
-function nvfClearVis(){
-  const w=document.getElementById('nvfClearWrap'); if(!w) return;
-  let n=0;
-  if(nvFeedType&&nvFeedType!=='todos') n++;
-  if(nvFeedCat) n++;
-  if(nvFeedAuthor) n++;
-  if(nvfAuthorQuery) n++;
-  if(nvFeedPeriod) n++;
-  if(nvFeedReach) n++;
-  if(nvFeedMine) n++;
-  if(nvFeedSort&&nvFeedSort!=='recentes') n++;
-  if(typeof nvFeedQuery!=='undefined'&&nvFeedQuery) n++;
-  const lb=document.getElementById('nvfClearLbl'); if(lb) lb.textContent='Limpar filtros ('+n+')';
-  w.hidden = n===0;
+/* Rotulos legiveis dos filtros do feed, como no Shorts: o estado guarda
+   "minhas", "artigo", "7", e a ficha precisa mostrar o que a pessoa clicou. */
+const NVF_ROTULO_TIPO    = { artigo:'Artigos', post:'Posts', midia:'Com mídia', enquete:'Enquetes' };
+const NVF_ROTULO_MINHA   = { minhas:'Publicados por mim', curti:'Que eu curti',
+                             comentei:'Que eu comentei', naovistos:'Não vistos' };
+const NVF_ROTULO_ORDEM   = { curtidas:'Mais curtidas', comentadas:'Mais comentadas' };
+const NVF_ROTULO_PERIODO = { '0':'Hoje', '1':'Hoje', '7':'Últimos 7 dias', '30':'Últimos 30 dias' };
+function nvfFiltrosAtivos(){
+  const f = [];
+  if (nvFeedType && nvFeedType !== 'todos') f.push({ chave:'tipo',    rotulo:'Tipo',      valor:NVF_ROTULO_TIPO[nvFeedType] || nvFeedType });
+  if (nvFeedMine)                            f.push({ chave:'mine',    rotulo:'Atividade', valor:NVF_ROTULO_MINHA[nvFeedMine] || nvFeedMine });
+  if (nvFeedCat)                             f.push({ chave:'cat',     rotulo:'Categoria', valor:nvFeedCat });
+  if (nvFeedAuthor)                          f.push({ chave:'autor',   rotulo:'Autor',     valor:nvFeedAuthor });
+  if (nvFeedPeriod)                          f.push({ chave:'periodo', rotulo:'Período',   valor:NVF_ROTULO_PERIODO[nvFeedPeriod] || nvFeedPeriod });
+  if (nvFeedSort && nvFeedSort !== 'recentes') f.push({ chave:'ordem', rotulo:'Ordem',     valor:NVF_ROTULO_ORDEM[nvFeedSort] || nvFeedSort });
+  if (nvFeedText)                            f.push({ chave:'texto',   rotulo:'Busca',     valor:nvFeedText });
+  return f;
 }
+function nvfLimparFiltro(chave){
+  if (chave === 'tipo')    nvFeedType = 'todos';
+  if (chave === 'mine')    nvFeedMine = '';
+  if (chave === 'cat')     nvFeedCat = '';
+  if (chave === 'autor'){  nvFeedAuthor = ''; nvfAuthorQuery = ''; }
+  if (chave === 'periodo'){ nvFeedPeriod = ''; const p = document.getElementById('nvfPeriod'); if (p) p.value = ''; }
+  if (chave === 'ordem')   nvFeedSort = 'recentes';
+  if (chave === 'texto'){  nvFeedText = ''; const t = document.getElementById('nvfTextSearch'); if (t) t.value = ''; }
+  renderNewsFeed();
+}
+function nvfClearVis(){
+  const barra = document.getElementById('nvfChipsBar'); if (!barra) return;
+  const filtros = nvfFiltrosAtivos();
+  barra.hidden = filtros.length === 0;
+  const lb = document.getElementById('nvfClearLbl');
+  if (lb) lb.textContent = 'Limpar filtros (' + filtros.length + ')';
+  const cx = document.getElementById('nvfChips');
+  if (cx) cx.innerHTML = filtros.map(function(f){
+    return '<span class="sb-chip">' + f.rotulo + ': <b>' + f.valor + '</b>' +
+      '<button type="button" class="sb-chipx" data-nvfchip="' + f.chave + '" aria-label="Remover filtro ' + f.rotulo + '">' +
+      '<i class="fa-solid fa-xmark"></i></button></span>';
+  }).join('');
+}
+document.addEventListener('click', function(e){
+  const b = e.target.closest('[data-nvfchip]'); if (!b) return;
+  nvfLimparFiltro(b.dataset.nvfchip);
+});
 function renderNvfFilters(){
   var pub=NEWS.filter(n=>n.status==='pub');
   var mine=NEWS.filter(n=>n.status==='pub' && ((n.author||'SULTS')==='SULTS' || n.article));
@@ -981,9 +1058,13 @@ function feedCmList(n){
           '<div class="comment-menu"><button class="comment-dots" title="Opções"><i class="fa-solid fa-ellipsis"></i></button><div class="comment-drop" hidden><button class="comment-del" data-cmdel="'+ci+'"><i class="fa-solid fa-trash-can"></i> Excluir</button></div></div></div>'+
           '<div class="comment-role">'+(c.role||'SULTS')+'</div>'+
           '<div class="comment-text">'+String(c.text||'').replace(/</g,'&lt;')+'</div>'+
-          (c.pend?'<div class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</div>':'')+
+          (c.pend?'<div class="comment-modbar">'+
+            '<span class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span>'+
+            '<div class="comment-mod">'+
+              '<button class="cmod-no" data-cmrej="'+ci+'"><i class="fa-solid fa-xmark"></i> Recusar</button>'+
+              '<button class="cmod-ok" data-cmapr="'+ci+'"><i class="fa-solid fa-check"></i> Aprovar</button>'+
+            '</div></div>':'')+
         '</div>'+
-        (c.pend?'<div class="comment-mod"><button class="cmod-ok" data-cmapr="'+ci+'"><i class="fa-solid fa-check"></i> Aprovar</button><button class="cmod-no" data-cmrej="'+ci+'"><i class="fa-solid fa-xmark"></i> Recusar</button></div>':'')+
         '<div class="comment-actions"'+(c.pend?' style="display:none"':'')+'>'+
           '<button class="comment-act clike'+(c.liked?' liked':'')+'" data-cmlike="'+ci+'"><i class="fa-'+(c.liked?'solid':'regular')+' fa-thumbs-up"></i> '+(c.liked?'Curtido':'Gostei')+'</button>'+
           '<span class="comment-sep"></span>'+
@@ -1040,7 +1121,7 @@ function renderNewsFeed(){
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
         '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
         '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
+        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
       '</article>';
     }
     const av = n.av ? '<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
@@ -1060,14 +1141,14 @@ function renderNewsFeed(){
     const bodyTxt = n.colorBg ? '' : txt;
     const cmList = feedCmList(n);
     const menu = '<div class="nvf-menu" hidden><button data-menu="edit"><i class="fa-solid fa-pen"></i> Editar publicação</button><button data-menu="pin"><i class="fa-solid fa-thumbtack"></i> '+(n.pinned?'Desafixar':'Fixar no topo')+'</button><button data-menu="copy"><i class="fa-solid fa-link"></i> Copiar link</button><button class="danger" data-menu="del"><i class="fa-solid fa-trash"></i> Excluir</button></div>';
-    const pendBar = n.pendAppr ? '<div class="nvf-modbar"><span class="nvf-modtx"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><span style="flex:1"></span><div class="comment-mod" style="margin-top:0"><button class="cmod-no" data-act="pubrej"><i class="fa-solid fa-xmark"></i> Reprovar</button><button class="cmod-ok" data-act="pubapr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>' : '';
+    const pendBar = n.pendAppr ? '<div class="nvf-modbar"><span class="nvf-modtx"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><span style="flex:1"></span><div class="comment-mod"><button class="cmod-no" data-act="pubrej"><i class="fa-solid fa-xmark"></i> Reprovar</button><button class="cmod-ok" data-act="pubapr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>' : '';
     return '<article class="card post'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
       pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
       (bodyTxt?'<p class="post-text nvf-postlink" data-act="open">'+bodyTxt+'</p>':'') + colored + banner + image + event + poll +
       (n.pendAppr ? '' :
       '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
       '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-      '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div><div class="nvf-cm-list">'+cmList+'</div></div>') +
+      '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div></div><div class="nvf-cm-list">'+cmList+'</div></div>') +
     '</article>';
   }).join('');
 }
@@ -1523,7 +1604,7 @@ $('#nvFeed').addEventListener('click', e => {
   if (act==='open'){ openArticle(n); return; }
   if (act==='like'){ e.stopPropagation(); nvRxPicker(b, art, n, true); }
   else if (act==='comment'){ const cm=art.querySelector('.nvf-cm'); cm.hidden=!cm.hidden; if(!cm.hidden) cm.querySelector('.nvf-cm-in').focus(); }
-  else if (act==='cmsend'){ const inp=art.querySelector('.nvf-cm-in'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); const list=art.querySelector('.nvf-cm-list'); if(pend){ const it=document.createElement('div'); it.className='nvf-cm-item pending'; it.innerHTML='<span class="avatar av-rc"></span><div><div class="nvf-cm-bub"><b>Rodrigo Caetano</b><span>'+v+'</span></div><div class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</div><div class="comment-mod"><button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button><button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button></div></div>'; list.appendChild(it); it.querySelector('.cmod-ok').addEventListener('click',()=>{ it.classList.remove('pending'); it.querySelector('.comment-pend').remove(); it.querySelector('.comment-mod').remove(); (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; modRemove(mq.mid); fgToast('Comentário aprovado'); }); it.querySelector('.cmod-no').addEventListener('click',()=>{ it.remove(); modRemove(mq.mid); fgToast('Comentário recusado'); }); const mq={author:'Rodrigo Caetano',av:'av-rc',text:v,post:(n.title||'Publicação'),approve:()=>{ it.classList.remove('pending'); const pe=it.querySelector('.comment-pend'); if(pe)pe.remove(); const me=it.querySelector('.comment-mod'); if(me)me.remove(); (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; },reject:()=>it.remove()}; modAdd(mq); fgToast('Comentário enviado para aprovação'); } else { (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); list.insertAdjacentHTML('beforeend','<div class="nvf-cm-item"><span class="avatar av-rc"></span><div class="nvf-cm-bub"><b>Rodrigo Caetano</b><span>'+v+'</span></div></div>'); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; } inp.value=''; b.disabled=true; }
+  else if (act==='cmsend'){ const inp=art.querySelector('.nvf-cm-in'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); const list=art.querySelector('.nvf-cm-list'); if(pend){ const it=document.createElement('div'); it.className='nvf-cm-item pending'; it.innerHTML='<span class="avatar av-rc"></span><div><div class="nvf-cm-bub"><b>Rodrigo Caetano</b><span>'+v+'</span></div><div class="comment-modbar"><span class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><div class="comment-mod"><button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button></div></div></div>'; list.appendChild(it); it.querySelector('.cmod-ok').addEventListener('click',()=>{ it.classList.remove('pending'); it.querySelector('.comment-pend').remove(); it.querySelector('.comment-mod').remove(); (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; modRemove(mq.mid); fgToast('Comentário aprovado'); }); it.querySelector('.cmod-no').addEventListener('click',()=>{ it.remove(); modRemove(mq.mid); fgToast('Comentário recusado'); }); const mq={author:'Rodrigo Caetano',av:'av-rc',text:v,post:(n.title||'Publicação'),approve:()=>{ it.classList.remove('pending'); const pe=it.querySelector('.comment-pend'); if(pe)pe.remove(); const me=it.querySelector('.comment-mod'); if(me)me.remove(); (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; },reject:()=>it.remove()}; modAdd(mq); fgToast('Comentário enviado para aprovação'); } else { (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); list.insertAdjacentHTML('beforeend','<div class="nvf-cm-item"><span class="avatar av-rc"></span><div class="nvf-cm-bub"><b>Rodrigo Caetano</b><span>'+v+'</span></div></div>'); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; } inp.value=''; b.disabled=true; }
   else if (act==='more'){ const m=art.querySelector('.nvf-menu'); const wasHidden=m.hidden; $$('#nvFeed .nvf-menu').forEach(x=>x.hidden=true); m.hidden=!wasHidden; }
 });
 $('#nvFeed').addEventListener('input', e => { const inp=e.target.closest('.nvf-cm-in'); if(!inp) return; inp.parentNode.querySelector('.nvf-cm-send').disabled=!inp.value.trim(); });
