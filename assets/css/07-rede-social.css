@@ -296,7 +296,7 @@
 .sb-pillarrow.left{left:8px}
 .sb-pillarrow.right{right:8px}
 .sb-pillarrow[hidden]{display:none}
-.sb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:20px 16px}
+.sb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;}
 .sb-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
   padding:0;cursor:pointer;transition:box-shadow .15s,border-color .15s}
 .sb-card:hover{border-color:#d5dbe2;box-shadow:0 1px 2px rgba(16,32,48,.06),0 8px 20px -14px rgba(16,32,48,.22)}

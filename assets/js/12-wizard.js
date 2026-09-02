@@ -690,7 +690,6 @@ $('#crShare').addEventListener('click', () => {
   POSTS.push({ name:'Rodrigo Caetano', label:'Rodrigo', role:'CEO · SULTS', av:'av-rc', initials:'RC', img:(crIsVideo?crCoverURL:crURL), video:(crIsVideo?crURL:null), alt:titulo, title:(titulo.length>34?titulo.slice(0,34)+'…':titulo), time:'agora' });
   REELS_DATA.unshift({ p:POSTS.length-1, cat:cat, cap:cap, format:(crIsVideo?'video':'imagem'), likes:'0', comments:0, views:'0', rec:false, music:'Rodrigo Caetano · Áudio original' });
   seenShorts.delete(POSTS.length-1);
-  localStorage.setItem(SEEN_KEY, JSON.stringify([...seenShorts]));
   crShowLoading('Enviando seu short…','Isso leva alguns minutos. Não feche esta janela.');
   $('#crTitle').textContent='Enviando short';
   setTimeout(function(){

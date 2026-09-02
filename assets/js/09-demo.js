@@ -8,7 +8,6 @@ demoToggle.addEventListener('click', () => {
   demoState.textContent = empty ? 'Vazio' : 'Preenchido';
   /* Reinicia os shorts: tudo volta a não visto */
   seenShorts.clear();
-  localStorage.setItem(SEEN_KEY, '[]');
   buildStories();
   if (reelsView.classList.contains('open')) renderGrid();
 });

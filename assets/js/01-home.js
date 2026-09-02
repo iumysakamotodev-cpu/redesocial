@@ -130,7 +130,6 @@ updArrows();
 
 /* ---------- Tela de Shorts · Explorar + Player ---------- */
 const REELS_DATA = [
-  { p:6, cat:'depoimentos', cap:'Casa do Construtor: toda informação do negócio centralizada no SULTS. 💬', likes:'1,9 mil', comments:97, views:'31,7 mil', rec:true, music:'Casa do Construtor · Depoimento' },
   { p:0, cat:'eventos',     cap:'4º dia de ABF Franchising Expo 2026! Bora conhecer o SULTS no estande. 🚀', likes:'3,1 mil', comments:212, views:'62,4 mil', rec:true, music:'SULTS · ABF 2026' },
   { p:25, format:'imagem', cat:'depoimentos', cap:'Casa do Construtor: 780 lojas em 4 países com a gestão centralizada no SULTS. 🏗️', likes:'2,6 mil', comments:129, views:'47,3 mil', rec:true, music:'Casa do Construtor · Case' },
   { p:10, cat:'eventos',    cap:'ABF Expo 2026 · 2º dia. O time SULTS no meio de tudo. 💙', likes:'2,2 mil', comments:118, views:'44,9 mil', rec:false, music:'SULTS · ABF 2026' },
@@ -156,7 +155,7 @@ const REELS_DATA = [
   { p:22, cat:'depoimentos', cap:'Mormaii: o SULTS atende 100% do gerenciamento da rede de franquias.', likes:'920', comments:39, views:'17,5 mil', rec:false, music:'Mormaii · Depoimento' },
   { p:23, cat:'depoimentos', cap:'PitStop: controle efetivo de tudo que é feito dentro da rede.', likes:'560', comments:19, views:'10,1 mil', rec:false, music:'PitStop · Depoimento' },
   { p:24, cat:'depoimentos', cap:'Start: o SULTS centraliza e simplifica o acesso às informações.', likes:'640', comments:24, views:'11,8 mil', rec:true,  music:'Start · Depoimento' },
-  { p:25, cat:'depoimentos', cap:'Bibi: mais informações para os franqueados. 🧡', likes:'720', comments:28, views:'13,2 mil', rec:false, music:'Bibi · Depoimento' }
+  { p:26, cat:'depoimentos', cap:'Bibi: mais informações para os franqueados. 🧡', likes:'720', comments:28, views:'13,2 mil', rec:false, music:'Bibi · Depoimento' }
 ];
 
 const reelsView   = $('#reelsView');
@@ -165,11 +164,14 @@ const rvFeed      = $('#rvFeed');
 const rxGrid      = $('#rxGrid');
 let curFilter = 'todos', curQuery = '';
 
-/* Vistos / não vistos (persistente) */
+/* Vistos / não vistos: vale só enquanto a página está aberta. Um refresh
+   devolve todos os shorts a não vistos — a chave antiga do localStorage sai
+   para não sobrar estado de versões anteriores. */
 const SEEN_KEY = 'sults_seen_stories';
-let seenShorts = new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || '[]'));
+localStorage.removeItem(SEEN_KEY);
+let seenShorts = new Set();
 function isSeen(p){ return seenShorts.has(p); }
-function markReelSeen(p){ if(!seenShorts.has(p)){ seenShorts.add(p); localStorage.setItem(SEEN_KEY, JSON.stringify([...seenShorts])); if(typeof updateShortsNavBadge==='function') updateShortsNavBadge(); } }
+function markReelSeen(p){ if(!seenShorts.has(p)){ seenShorts.add(p); if(typeof updateShortsNavBadge==='function') updateShortsNavBadge(); } }
 /* Curtidas (persistente) */
 const LIKED_KEY = 'sults_liked_stories';
 let likedShorts = new Set(JSON.parse(localStorage.getItem(LIKED_KEY) || '[]'));
@@ -219,16 +221,18 @@ let authorQueryRaw = '', authorShown = AUTH_PAGE, catQueryRaw = '', catShown = C
 function rxNorm(s){ return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
 var nvSearchQuery='';
 var newsSeen = new Set();
-/* vistosNoFim=false mantém a ordem curada em REELS_DATA. A fileira da home usa
-   assim: como ela mostra só os 10 primeiros, empurrar os já vistos para o fim
-   tirava do ar justamente os destaques escolhidos. No módulo de Shorts, que
-   lista tudo, o comportamento de "não vistos primeiro" continua. */
+/* Como no Instagram: quem ainda não foi visto fica na frente, na ordem curada
+   de REELS_DATA; os já vistos vão para o fim, na ordem em que foram assistidos
+   (o Set seenShorts guarda a ordem de inserção). vistosNoFim=false devolve a
+   ordem curada pura, para quem precisa dela. */
 /* a fileira nao filtra por busca: quem pesquisa em Publicacoes esta buscando
    publicacoes, e a busca de Shorts age na tela de Shorts */
 function orderedShorts(vistosNoFim){
   const lista = REELS_DATA.filter(function(r){ return !r.removido; });
   if (vistosNoFim === false) return lista;
-  return lista.sort((a,b) => (isSeen(a.p)?1:0) - (isSeen(b.p)?1:0));
+  const vistos = [...seenShorts];
+  const posicao = r => isSeen(r.p) ? 1 + vistos.indexOf(r.p) : 0;
+  return lista.sort((a,b) => posicao(a) - posicao(b));
 }
 let playerList = [];
 

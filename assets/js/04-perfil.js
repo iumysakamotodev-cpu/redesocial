@@ -397,7 +397,11 @@ function renderShortsInto(row){
     });
     return;
   }
-  const list = orderedShorts(false).slice(0, 10);
+  /* Como no Instagram: até 10 não vistos na frente, na ordem curada, e os já
+     assistidos no fim da fila, na ordem em que foram vistos. O visto não some:
+     desce para o fim e o próximo não visto entra no lugar dele. */
+  const ordem = orderedShorts(true);
+  const list = ordem.filter(r => !isSeen(r.p)).slice(0, 10).concat(ordem.filter(r => isSeen(r.p)));
   list.forEach((r, i) => {
     const post = POSTS[r.p];
     const b = document.createElement('button');
