@@ -2505,13 +2505,13 @@ input,textarea,select{font-size:14px}
 .nvf-menu button.danger{color:#c62828}.nvf-menu button.danger:hover{background:#fdecea}
 .nvf-menu i{width:16px;text-align:center;color:#8a94a0}.nvf-menu button.danger i{color:#c62828}
 .nvf-pinchip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#0c7d7d;background:rgba(0,172,172,.12);padding:2px 9px;border-radius:999px;margin-left:8px}
-.nvf-cm{border-top:1px solid var(--line);padding:14px 2px 8px;margin-top:2px}
+.nvf-cm{border-top:1px solid var(--line);padding:10px 2px 8px;margin-top:10px}
 .nvf-cm-box{display:flex;gap:10px;align-items:center}
 .nvf-cm-box .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}
 /* A pilula e o involucro, nao o input: assim o botao de enviar fica dentro
    dela. Antes o contorno era do proprio input e o botao sobrava do lado. */
 .nvf-cm-field{flex:1;min-width:0;display:flex;align-items:center;gap:6px;
-  background:#fff;border:1px solid var(--line);border-radius:999px;
+  background:#fff;border:1px solid var(--linha-campo);border-radius:999px;
   padding:5px 5px 5px 16px;transition:border-color .15s,box-shadow .15s}
 .nvf-cm-field:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.14)}
 .nvf-cm-in{flex:1;min-width:0;border:0;background:none;padding:0;font:inherit;font-size:14px;outline:none;color:var(--ink)}
@@ -3372,13 +3372,15 @@ body.demo-empty .demo-empty-state{display:flex}
 /* comentarios */
 /* ============ Comentários (estilo LinkedIn) ============ */
 .post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:10px 0 0}
-.comments{display:none;flex-direction:column;gap:14px;padding:8px 4px 16px;border-top:1px solid var(--line);margin-top:2px}
+/* o divider de baixo fica a 10px dos botoes e o campo a 10px do divider,
+   os mesmos 10px que o .post-actions usa em cima */
+.comments{display:none;flex-direction:column;gap:14px;padding:10px 4px 16px;border-top:1px solid var(--line);margin-top:10px}
 .comments.open{display:flex}
-.comment-composer{display:flex;gap:10px;align-items:center;padding-top:6px}
+.comment-composer{display:flex;gap:10px;align-items:center}
 .comment-composer .avatar{width:38px;height:38px;font-size:13px}
 .cc-field{
   flex:1;display:flex;align-items:center;gap:6px;
-  background:#fff;border:1px solid var(--line);border-radius:22px;
+  background:#fff;border:1px solid var(--linha-campo);border-radius:22px;
   padding:6px 8px 6px 16px;transition:border-color .15s,box-shadow .15s;
 }
 .cc-field:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.12)}
@@ -3410,13 +3412,18 @@ body.demo-empty .demo-empty-state{display:flex}
 .nv-author-txt>span{cursor:pointer}
 .comment-text{font-size:15px;line-height:1.55;color:#333e49;margin-top:6px;white-space:pre-line;word-break:break-word}
 .comment-actions{display:flex;align-items:center;gap:12px;padding:5px 14px 0}
-.comment-act{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--muted);transition:color .15s}
+.comment-act{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);transition:color .15s}
 .comment-act i{font-size:13px}
 .comment-act:hover{color:#0088FF}
 .comment-act.liked{color:#0088FF}
-.comment-sep{width:3px;height:3px;border-radius:50%;background:#c4ccd4}
-.comment-likes{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
-.comment-likes i{color:#2d8cff;font-size:11px}
+/* as margens automaticas jogam a contagem na direita e deixam o ponto
+   no meio do vao que sobra */
+.comment-sep{width:3px;height:3px;border-radius:50%;background:#c4ccd4;margin:0 auto}
+.comment-likes{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
+/* o <b> herdaria os 700 da regra base */
+.comment-likes b{font-weight:inherit}
+.comment-likes .rxs{width:18px;height:18px;border-radius:50%;background-size:cover;
+  background-image:url(uploads/reactions/Like.svg)}
 @keyframes commentIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .comment.fresh{animation:commentIn .25s ease}
 /* box-shadow e nao border: um filete de 2px entraria na caixa da bolha e
@@ -3426,7 +3433,7 @@ body.demo-empty .demo-empty-state{display:flex}
    comentario — o mesmo arranjo da barra de aprovacao da publicacao. */
 .comment-modbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
   margin-top:11px;padding-top:11px;border-top:1px solid #f0e0b8}
-.comment-pend{flex:1;margin:0;font-size:14px;line-height:20px;font-weight:700;color:#8A6A00;
+.comment-pend{flex:1;margin:0;font-size:14px;line-height:20px;font-weight:600;color:#8A6A00;
   display:flex;align-items:center;gap:7px;white-space:nowrap}
 .comment-pend i{font-size:15px}
 .comment-mod{display:flex;gap:8px;margin:0}
@@ -7993,7 +8000,7 @@ function makeComposer(placeholder, onSend, compact){
     '<span class="avatar av-rc">RC</span>' +
     '<div class="cc-field">' +
       '<input type="text" autocomplete="off">' +
-      '<button class="cc-send" title="Publicar" disabled><i class="fa-solid fa-paper-plane"></i></button>' +
+      '<button class="cc-send" title="Publicar" disabled><i class="mdi mdi-send"></i></button>' +
     '</div>';
   const input = composer.querySelector('input');
   const send  = composer.querySelector('.cc-send');
@@ -8082,9 +8089,9 @@ function buildComment(c, fresh, pending){
           '</div></div>' : '') +
       '</div>' +
       '<div class="comment-actions"'+(pending?' style="display:none"':'')+'>' +
-        '<button class="comment-act clike"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>' +
-        '<span class="comment-sep"></span>' +
-        '<span class="comment-likes"' + (c.likes ? '' : ' style="display:none"') + '><i class="fa-solid fa-thumbs-up"></i> <b>' + (c.likes || 0) + '</b></span>' +
+        '<button class="comment-act clike">Gostei</button>' +
+        '<span class="comment-sep"' + (c.likes ? '' : ' style="display:none"') + '></span>' +
+        '<span class="comment-likes"' + (c.likes ? '' : ' style="display:none"') + '><span class="rxs" data-rx="like"></span><b>' + (c.likes || 0) + '</b></span>' +
       '</div>' +
       '<div class="comment-replies"></div>' +
     '</div>';
@@ -8095,12 +8102,13 @@ function buildComment(c, fresh, pending){
   const likesWrap = el.querySelector('.comment-likes');
   const likesEl  = el.querySelector('.comment-likes b');
   const base = c.likes || 0;
+  const sepEl = el.querySelector('.comment-sep');
   likeBtn.addEventListener('click', () => {
     const on = likeBtn.classList.toggle('liked');
-    likeBtn.innerHTML = '<i class="fa-'+(on?'solid':'regular')+' fa-thumbs-up"></i> '+(on?'Curtido':'Gostei');
     const val = on ? base + 1 : base;
     likesEl.textContent = val;
     likesWrap.style.display = val ? '' : 'none';
+    sepEl.style.display = val ? '' : 'none';
   });
   likesWrap.style.cursor='pointer';
   likesWrap.addEventListener('click', ()=>{ const val=parseInt(likesEl.textContent,10)||0; openCmLikes(val); });
@@ -8129,13 +8137,10 @@ function initComments(post, comments){
   (comments || []).forEach(c => box.appendChild(buildComment(c, false)));
   post.appendChild(box);
   const toggle = post.querySelector('.comment-toggle');
-  const openBox = () => { if(!box.classList.contains('open')){ box.classList.add('open'); made.input.focus(); } };
-  toggle.addEventListener('click', () => {
-    const open = box.classList.toggle('open');
-    if (open) made.input.focus();
-  });
+  const alterna = () => { if (box.classList.toggle('open')) made.input.focus(); };
+  toggle.addEventListener('click', alterna);
   const cc = post.querySelector('.post-stats .right');
-  if (cc) cc.addEventListener('click', openBox);
+  if (cc) cc.addEventListener('click', alterna);
 }
 $$('.feed .post').forEach((post, idx) => initComments(post, COMMENTS[idx]));
 
@@ -10389,9 +10394,9 @@ function feedCmList(n){
             '</div></div>':'')+
         '</div>'+
         '<div class="comment-actions"'+(c.pend?' style="display:none"':'')+'>'+
-          '<button class="comment-act clike'+(c.liked?' liked':'')+'" data-cmlike="'+ci+'"><i class="fa-'+(c.liked?'solid':'regular')+' fa-thumbs-up"></i> '+(c.liked?'Curtido':'Gostei')+'</button>'+
-          '<span class="comment-sep"></span>'+
-          '<span class="comment-likes"'+(c.likes?'':' style="display:none"')+'><i class="fa-solid fa-thumbs-up"></i> <b>'+(c.likes||0)+'</b></span>'+
+          '<button class="comment-act clike'+(c.liked?' liked':'')+'" data-cmlike="'+ci+'">Gostei</button>'+
+          '<span class="comment-sep"'+(c.likes?'':' style="display:none"')+'></span>'+
+          '<span class="comment-likes"'+(c.likes?'':' style="display:none"')+'><span class="rxs" data-rx="like"></span><b>'+(c.likes||0)+'</b></span>'+
         '</div>'+
       '</div></div>').join('');
 }
@@ -10444,7 +10449,7 @@ function renderNewsFeed(){
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
         '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
         '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
+        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
       '</article>';
     }
     const av = n.av ? '<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
@@ -10471,7 +10476,7 @@ function renderNewsFeed(){
       (n.pendAppr ? '' :
       '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
       '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-      '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div></div><div class="nvf-cm-list">'+cmList+'</div></div>') +
+      '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list">'+cmList+'</div></div>') +
     '</article>';
   }).join('');
 }
@@ -10894,9 +10899,10 @@ $('#nvFeed').addEventListener('click', e => {
     const c=(n.cmts||[])[+cl.dataset.cmlike]; if(!c) return;
     c.liked=!c.liked; c.likes=(c.likes||0)+(c.liked?1:-1); if(c.likes<0) c.likes=0;
     cl.classList.toggle('liked', !!c.liked);
-    cl.innerHTML='<i class="fa-'+(c.liked?'solid':'regular')+' fa-thumbs-up"></i> '+(c.liked?'Curtido':'Gostei');
     const lw=cl.parentElement.querySelector('.comment-likes');
+    const sp=cl.parentElement.querySelector('.comment-sep');
     if(lw){ lw.querySelector('b').textContent=c.likes||0; lw.style.display=c.likes?'':'none'; }
+    if(sp) sp.style.display=c.likes?'':'none';
     return;
   }
   const ca = e.target.closest('[data-cmapr],[data-cmrej]');
@@ -10917,7 +10923,7 @@ $('#nvFeed').addEventListener('click', e => {
   const mi = e.target.closest('[data-menu]');
   if (mi){ const a=mi.dataset.menu; art.querySelector('.nvf-menu').hidden=true; if(a==='edit') nvEdit(id); else if(a==='del'){ NEWS=NEWS.filter(x=>x.id!==id); renderNewsFeed(); fgToast('Publicação excluída'); } else if(a==='pin'){ n.pinned=!n.pinned; renderNewsFeed(); fgToast(n.pinned?'Fixada no topo':'Desafixada'); } else fgToast('Link copiado'); return; }
   const cc = e.target.closest('.post-stats .right');
-  if(cc){ e.stopPropagation(); const cm=art.querySelector('.nvf-cm'); if(cm){ cm.hidden=false; const inp=cm.querySelector('.nvf-cm-in'); if(inp) inp.focus(); } return; }
+  if(cc){ e.stopPropagation(); const cm=art.querySelector('.nvf-cm'); if(cm){ cm.hidden=!cm.hidden; if(!cm.hidden){ const inp=cm.querySelector('.nvf-cm-in'); if(inp) inp.focus(); } } return; }
   const rs = e.target.closest('.post-stats');
   if(rs && !e.target.closest('.post-stats .right')){ e.stopPropagation(); openReactions(nvRxIndex(id)); return; }
   const pollOpt = e.target.closest('[data-poll]');
@@ -11165,7 +11171,7 @@ function renderNpComments(n){
     for(var i=0;i<qt;i++){ var p=PEOPLE[(i+(n.id||1))%PEOPLE.length]; n.cmts.push({author:p.name,av:p.av,role:p.role,text:texts[(i+(n.id||0))%texts.length],time:(i+1)*17+' min',likes:(i*3)%7}); }
     n.comments=Math.max(0,(n.comments||0)-qt);
   }
-  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="fa-solid fa-paper-plane"></i></button></div><div class="comments open" id="npCmList" style="max-height:none"></div>';
+  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="mdi mdi-send"></i></button></div><div class="comments open" id="npCmList" style="max-height:none"></div>';
   const list=$('#npCmList');
   (n.cmts||[]).forEach(c=>list.appendChild(buildComment({av:c.av||'av-rc',ini:c.ini||'',name:c.author||c.name,role:c.role||n.sub||'SULTS',text:c.text,dt:c.dt,time:c.time,likes:c.likes||0,replies:c.replies},false)));
 }

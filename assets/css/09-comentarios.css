@@ -1,13 +1,15 @@
 /* comentarios */
 /* ============ Comentários (estilo LinkedIn) ============ */
 .post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:10px 0 0}
-.comments{display:none;flex-direction:column;gap:14px;padding:8px 4px 16px;border-top:1px solid var(--line);margin-top:2px}
+/* o divider de baixo fica a 10px dos botoes e o campo a 10px do divider,
+   os mesmos 10px que o .post-actions usa em cima */
+.comments{display:none;flex-direction:column;gap:14px;padding:10px 4px 16px;border-top:1px solid var(--line);margin-top:10px}
 .comments.open{display:flex}
-.comment-composer{display:flex;gap:10px;align-items:center;padding-top:6px}
+.comment-composer{display:flex;gap:10px;align-items:center}
 .comment-composer .avatar{width:38px;height:38px;font-size:13px}
 .cc-field{
   flex:1;display:flex;align-items:center;gap:6px;
-  background:#fff;border:1px solid var(--line);border-radius:22px;
+  background:#fff;border:1px solid var(--linha-campo);border-radius:22px;
   padding:6px 8px 6px 16px;transition:border-color .15s,box-shadow .15s;
 }
 .cc-field:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.12)}
@@ -39,13 +41,18 @@
 .nv-author-txt>span{cursor:pointer}
 .comment-text{font-size:15px;line-height:1.55;color:#333e49;margin-top:6px;white-space:pre-line;word-break:break-word}
 .comment-actions{display:flex;align-items:center;gap:12px;padding:5px 14px 0}
-.comment-act{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--muted);transition:color .15s}
+.comment-act{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);transition:color .15s}
 .comment-act i{font-size:13px}
 .comment-act:hover{color:#0088FF}
 .comment-act.liked{color:#0088FF}
-.comment-sep{width:3px;height:3px;border-radius:50%;background:#c4ccd4}
-.comment-likes{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
-.comment-likes i{color:#2d8cff;font-size:11px}
+/* as margens automaticas jogam a contagem na direita e deixam o ponto
+   no meio do vao que sobra */
+.comment-sep{width:3px;height:3px;border-radius:50%;background:#c4ccd4;margin:0 auto}
+.comment-likes{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
+/* o <b> herdaria os 700 da regra base */
+.comment-likes b{font-weight:inherit}
+.comment-likes .rxs{width:18px;height:18px;border-radius:50%;background-size:cover;
+  background-image:url(../../uploads/reactions/Like.svg)}
 @keyframes commentIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .comment.fresh{animation:commentIn .25s ease}
 /* box-shadow e nao border: um filete de 2px entraria na caixa da bolha e
@@ -55,7 +62,7 @@
    comentario — o mesmo arranjo da barra de aprovacao da publicacao. */
 .comment-modbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
   margin-top:11px;padding-top:11px;border-top:1px solid #f0e0b8}
-.comment-pend{flex:1;margin:0;font-size:14px;line-height:20px;font-weight:700;color:#8A6A00;
+.comment-pend{flex:1;margin:0;font-size:14px;line-height:20px;font-weight:600;color:#8A6A00;
   display:flex;align-items:center;gap:7px;white-space:nowrap}
 .comment-pend i{font-size:15px}
 .comment-mod{display:flex;gap:8px;margin:0}

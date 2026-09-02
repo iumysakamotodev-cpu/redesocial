@@ -978,13 +978,13 @@
 .nvf-menu button.danger{color:#c62828}.nvf-menu button.danger:hover{background:#fdecea}
 .nvf-menu i{width:16px;text-align:center;color:#8a94a0}.nvf-menu button.danger i{color:#c62828}
 .nvf-pinchip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#0c7d7d;background:rgba(0,172,172,.12);padding:2px 9px;border-radius:999px;margin-left:8px}
-.nvf-cm{border-top:1px solid var(--line);padding:14px 2px 8px;margin-top:2px}
+.nvf-cm{border-top:1px solid var(--line);padding:10px 2px 8px;margin-top:10px}
 .nvf-cm-box{display:flex;gap:10px;align-items:center}
 .nvf-cm-box .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}
 /* A pilula e o involucro, nao o input: assim o botao de enviar fica dentro
    dela. Antes o contorno era do proprio input e o botao sobrava do lado. */
 .nvf-cm-field{flex:1;min-width:0;display:flex;align-items:center;gap:6px;
-  background:#fff;border:1px solid var(--line);border-radius:999px;
+  background:#fff;border:1px solid var(--linha-campo);border-radius:999px;
   padding:5px 5px 5px 16px;transition:border-color .15s,box-shadow .15s}
 .nvf-cm-field:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,172,172,.14)}
 .nvf-cm-in{flex:1;min-width:0;border:0;background:none;padding:0;font:inherit;font-size:14px;outline:none;color:var(--ink)}

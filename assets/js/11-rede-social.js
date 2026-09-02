@@ -1066,9 +1066,9 @@ function feedCmList(n){
             '</div></div>':'')+
         '</div>'+
         '<div class="comment-actions"'+(c.pend?' style="display:none"':'')+'>'+
-          '<button class="comment-act clike'+(c.liked?' liked':'')+'" data-cmlike="'+ci+'"><i class="fa-'+(c.liked?'solid':'regular')+' fa-thumbs-up"></i> '+(c.liked?'Curtido':'Gostei')+'</button>'+
-          '<span class="comment-sep"></span>'+
-          '<span class="comment-likes"'+(c.likes?'':' style="display:none"')+'><i class="fa-solid fa-thumbs-up"></i> <b>'+(c.likes||0)+'</b></span>'+
+          '<button class="comment-act clike'+(c.liked?' liked':'')+'" data-cmlike="'+ci+'">Gostei</button>'+
+          '<span class="comment-sep"'+(c.likes?'':' style="display:none"')+'></span>'+
+          '<span class="comment-likes"'+(c.likes?'':' style="display:none"')+'><span class="rxs" data-rx="like"></span><b>'+(c.likes||0)+'</b></span>'+
         '</div>'+
       '</div></div>').join('');
 }
@@ -1121,7 +1121,7 @@ function renderNewsFeed(){
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
         '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
         '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
+        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
       '</article>';
     }
     const av = n.av ? '<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
@@ -1148,7 +1148,7 @@ function renderNewsFeed(){
       (n.pendAppr ? '' :
       '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
       '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-      '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="fa-solid fa-paper-plane"></i></button></div></div><div class="nvf-cm-list">'+cmList+'</div></div>') +
+      '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list">'+cmList+'</div></div>') +
     '</article>';
   }).join('');
 }
@@ -1571,9 +1571,10 @@ $('#nvFeed').addEventListener('click', e => {
     const c=(n.cmts||[])[+cl.dataset.cmlike]; if(!c) return;
     c.liked=!c.liked; c.likes=(c.likes||0)+(c.liked?1:-1); if(c.likes<0) c.likes=0;
     cl.classList.toggle('liked', !!c.liked);
-    cl.innerHTML='<i class="fa-'+(c.liked?'solid':'regular')+' fa-thumbs-up"></i> '+(c.liked?'Curtido':'Gostei');
     const lw=cl.parentElement.querySelector('.comment-likes');
+    const sp=cl.parentElement.querySelector('.comment-sep');
     if(lw){ lw.querySelector('b').textContent=c.likes||0; lw.style.display=c.likes?'':'none'; }
+    if(sp) sp.style.display=c.likes?'':'none';
     return;
   }
   const ca = e.target.closest('[data-cmapr],[data-cmrej]');
@@ -1594,7 +1595,7 @@ $('#nvFeed').addEventListener('click', e => {
   const mi = e.target.closest('[data-menu]');
   if (mi){ const a=mi.dataset.menu; art.querySelector('.nvf-menu').hidden=true; if(a==='edit') nvEdit(id); else if(a==='del'){ NEWS=NEWS.filter(x=>x.id!==id); renderNewsFeed(); fgToast('Publicação excluída'); } else if(a==='pin'){ n.pinned=!n.pinned; renderNewsFeed(); fgToast(n.pinned?'Fixada no topo':'Desafixada'); } else fgToast('Link copiado'); return; }
   const cc = e.target.closest('.post-stats .right');
-  if(cc){ e.stopPropagation(); const cm=art.querySelector('.nvf-cm'); if(cm){ cm.hidden=false; const inp=cm.querySelector('.nvf-cm-in'); if(inp) inp.focus(); } return; }
+  if(cc){ e.stopPropagation(); const cm=art.querySelector('.nvf-cm'); if(cm){ cm.hidden=!cm.hidden; if(!cm.hidden){ const inp=cm.querySelector('.nvf-cm-in'); if(inp) inp.focus(); } } return; }
   const rs = e.target.closest('.post-stats');
   if(rs && !e.target.closest('.post-stats .right')){ e.stopPropagation(); openReactions(nvRxIndex(id)); return; }
   const pollOpt = e.target.closest('[data-poll]');

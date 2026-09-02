@@ -98,7 +98,7 @@ function makeComposer(placeholder, onSend, compact){
     '<span class="avatar av-rc">RC</span>' +
     '<div class="cc-field">' +
       '<input type="text" autocomplete="off">' +
-      '<button class="cc-send" title="Publicar" disabled><i class="fa-solid fa-paper-plane"></i></button>' +
+      '<button class="cc-send" title="Publicar" disabled><i class="mdi mdi-send"></i></button>' +
     '</div>';
   const input = composer.querySelector('input');
   const send  = composer.querySelector('.cc-send');
@@ -187,9 +187,9 @@ function buildComment(c, fresh, pending){
           '</div></div>' : '') +
       '</div>' +
       '<div class="comment-actions"'+(pending?' style="display:none"':'')+'>' +
-        '<button class="comment-act clike"><i class="fa-regular fa-thumbs-up"></i> Gostei</button>' +
-        '<span class="comment-sep"></span>' +
-        '<span class="comment-likes"' + (c.likes ? '' : ' style="display:none"') + '><i class="fa-solid fa-thumbs-up"></i> <b>' + (c.likes || 0) + '</b></span>' +
+        '<button class="comment-act clike">Gostei</button>' +
+        '<span class="comment-sep"' + (c.likes ? '' : ' style="display:none"') + '></span>' +
+        '<span class="comment-likes"' + (c.likes ? '' : ' style="display:none"') + '><span class="rxs" data-rx="like"></span><b>' + (c.likes || 0) + '</b></span>' +
       '</div>' +
       '<div class="comment-replies"></div>' +
     '</div>';
@@ -200,12 +200,13 @@ function buildComment(c, fresh, pending){
   const likesWrap = el.querySelector('.comment-likes');
   const likesEl  = el.querySelector('.comment-likes b');
   const base = c.likes || 0;
+  const sepEl = el.querySelector('.comment-sep');
   likeBtn.addEventListener('click', () => {
     const on = likeBtn.classList.toggle('liked');
-    likeBtn.innerHTML = '<i class="fa-'+(on?'solid':'regular')+' fa-thumbs-up"></i> '+(on?'Curtido':'Gostei');
     const val = on ? base + 1 : base;
     likesEl.textContent = val;
     likesWrap.style.display = val ? '' : 'none';
+    sepEl.style.display = val ? '' : 'none';
   });
   likesWrap.style.cursor='pointer';
   likesWrap.addEventListener('click', ()=>{ const val=parseInt(likesEl.textContent,10)||0; openCmLikes(val); });
@@ -234,13 +235,10 @@ function initComments(post, comments){
   (comments || []).forEach(c => box.appendChild(buildComment(c, false)));
   post.appendChild(box);
   const toggle = post.querySelector('.comment-toggle');
-  const openBox = () => { if(!box.classList.contains('open')){ box.classList.add('open'); made.input.focus(); } };
-  toggle.addEventListener('click', () => {
-    const open = box.classList.toggle('open');
-    if (open) made.input.focus();
-  });
+  const alterna = () => { if (box.classList.toggle('open')) made.input.focus(); };
+  toggle.addEventListener('click', alterna);
   const cc = post.querySelector('.post-stats .right');
-  if (cc) cc.addEventListener('click', openBox);
+  if (cc) cc.addEventListener('click', alterna);
 }
 $$('.feed .post').forEach((post, idx) => initComments(post, COMMENTS[idx]));
 

@@ -227,7 +227,7 @@ function renderNpComments(n){
     for(var i=0;i<qt;i++){ var p=PEOPLE[(i+(n.id||1))%PEOPLE.length]; n.cmts.push({author:p.name,av:p.av,role:p.role,text:texts[(i+(n.id||0))%texts.length],time:(i+1)*17+' min',likes:(i*3)%7}); }
     n.comments=Math.max(0,(n.comments||0)-qt);
   }
-  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="fa-solid fa-paper-plane"></i></button></div><div class="comments open" id="npCmList" style="max-height:none"></div>';
+  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="mdi mdi-send"></i></button></div><div class="comments open" id="npCmList" style="max-height:none"></div>';
   const list=$('#npCmList');
   (n.cmts||[]).forEach(c=>list.appendChild(buildComment({av:c.av||'av-rc',ini:c.ini||'',name:c.author||c.name,role:c.role||n.sub||'SULTS',text:c.text,dt:c.dt,time:c.time,likes:c.likes||0,replies:c.replies},false)));
 }
