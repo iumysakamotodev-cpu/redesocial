@@ -35,6 +35,10 @@
   --body:#474747;
   --muted:#8a94a0;
   --line:#e6eaef;
+  /* traco dos campos: o --line puxado para a tinta, um passo mais escuro
+     que as bordas de cartao, e o tom forte para o hover */
+  --linha-campo:color-mix(in srgb, var(--line) 88%, var(--ink));
+  --linha-campo-forte:#8e8e93;
   --red:#e53935;
   --radius:14px;
   /* Superelipse |x|^5 + |y|^5 = 1, amostrada em 96 pontos — o expoente da
@@ -894,7 +898,7 @@ input,textarea,select{font-size:14px}
 /* Blocos da home a 20px um do outro. No Shorts a margem de baixo e 4 e nao
    12: o scroller compensa a folga da sombra com -8 de margem e +16 de
    padding, entao os cartoes ja nascem 8px abaixo do topo dele — 4 + 8 = 12. */
-#homeShorts .section-title-row{margin:20px 0 4px}
+#homeShorts .section-title-row{margin:24px 0 0}
 #homeFeedTitle{margin:20px 0 12px}
 .section-title-row .section-title{margin:0}
 .see-all{font-size:13px;font-weight:700;color:#0c7d7d;display:flex;align-items:center;gap:6px}
@@ -1533,7 +1537,11 @@ input,textarea,select{font-size:14px}
   font-family:var(--fonte);background:#0C334A;color:#fff;
   box-shadow:inset 0 -1px 0 rgba(255,255,255,.08)}
 .news-view.mod-mode .nmod-top{display:flex}
-.nmod-top-logo{width:32px;height:32px;color:#00ACAC;flex-shrink:0}
+.nmod-top-logo{width:32px;height:32px;color:#00ACAC;flex-shrink:0;display:block}
+.nmod-logobtn{display:flex;align-items:center;flex:none;padding:0;border:0;background:none;
+  cursor:pointer;border-radius:8px;transition:opacity .15s}
+.nmod-logobtn:hover{opacity:.75}
+.nmod-logobtn:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
 .nmod-top-title{font-size:17px;font-weight:700;margin-right:8px}
 .nmod-envname{display:none}
 .nmod-envdiv{display:none}
@@ -1553,17 +1561,23 @@ input,textarea,select{font-size:14px}
 .nmod-tab:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 .nmod-tab.active{background:#00ACAC;color:#fff}
 .nmod-tab.active:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#00ACAC;color:#fff}
-.nmod-search{display:flex;align-items:center;gap:0;flex:0 1 460px;min-width:0;height:44px;padding:4px;
-  background:#F4F5F6;border-radius:32px;box-shadow:inset 0 0 0 1px var(--line)}
+/* mesmo campo do "Buscar acoes na plataforma": a lupa vem primeiro e nao
+   ha botao — quem dispara a busca e o Enter, que o listener ja tratava */
+/* Tres estados: parado e so o filete de 1px; no hover entra o cinza; no
+   foco o filete engrossa para 2px em tom de tinta. O anel teal saiu — com
+   o contorno escuro seriam dois sinais para a mesma coisa. */
+.nmod-search{display:flex;align-items:center;gap:10px;flex:0 1 380px;min-width:0;height:44px;
+  --texto:color-mix(in srgb, var(--muted) 80%, var(--ink));
+  padding:0 18px;color:var(--texto);
+  background:none;border-radius:32px;box-shadow:inset 0 0 0 1px var(--linha-campo);
+  transition:background .15s,box-shadow .15s}
+.nmod-search:hover,
+.nmod-search:focus-within{background:#F1F3F5}
+.nmod-search:focus-within{box-shadow:inset 0 0 0 2px var(--ink)}
+.nmod-search i{font-size:14px;flex:none}
 .nmod-search input{flex:1;min-width:0;border:0;background:none;outline:none;font:inherit;font-size:14px;
-  letter-spacing:.3px;color:var(--ink);padding:0 8px 0 16px}
-.nmod-search input::placeholder{color:var(--muted)}
-.nmod-search button{flex-shrink:0;height:36px;padding:0 22px;border:0;border-radius:32px;background:var(--teal);color:#fff;
-  font:inherit;font-size:14px;line-height:20px;font-weight:700;letter-spacing:.3px;cursor:pointer;
-  transition:background 120ms cubic-bezier(.4,0,.2,1)}
-.nmod-search button:hover{background:var(--teal-dark)}
-.nmod-search button:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,172,172,.24)}
-.news-view.env-social .nmod-search{background:#F4F5F6}
+  letter-spacing:.3px;color:var(--ink);padding:0}
+.nmod-search input::placeholder{color:var(--texto)}
 .news-view:not(.env-social) .nmod-search{display:none}
 @media(max-width:1180px){ .nmod-search{flex-basis:300px} }
 @media(max-width:900px){ .nmod-search{display:none} }
@@ -1571,16 +1585,50 @@ input,textarea,select{font-size:14px}
   font:inherit;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.3px;cursor:pointer;flex-shrink:0;
   background:#00ACAC;color:#fff;transition:background 120ms cubic-bezier(.4,0,.2,1),box-shadow 120ms cubic-bezier(.4,0,.2,1)}
 .nmod-switch i{font-size:16px}
+/* a foto fecha o lado direito da barra, no ambiente social */
+.news-view.env-social .nmod-topav{display:block;width:40px;height:40px;cursor:pointer}
+/* Modulos segue o hover das abas do meio: so escurece, sem preenchimento.
+   Ele nao esta dentro do #nmodGrpSocial, entao caia na regra generica que
+   ainda pinta o fundo. */
+.news-view.env-social #nmtApps:hover{background:none;color:var(--ink)}
 .nmod-switch:hover{background:linear-gradient(rgba(28,28,30,.08),rgba(28,28,30,.08)),#00ACAC}
 .news-view.env-social .nmod-switch{background:#0C334A;color:#fff}
 .news-view.env-social .nmod-switch:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#0C334A}
 .nmod-switch:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 /* Ambiente Social, fundo claro */
-.news-view.env-social .nmod-top{background:#fff;color:#1C1C1E;box-shadow:inset 0 -1px 0 #E9EAED}
+/* O recuo acompanha os blocos do corpo: a barra sangra de ponta a ponta,
+   mas o conteudo dela para onde a coluna de 1400px para. O both-edges no
+   corpo reserva a barra de rolagem dos dois lados, senao ela empurraria
+   os blocos meia-barra para a esquerda e o alinhamento se perderia. */
+.news-view.env-social .nmod-top{
+  background:#fff;color:#1C1C1E;box-shadow:inset 0 -1px 0 #E9EAED;
+  padding-inline:max(20px, calc((100% - 1400px) / 2));
+}
 .news-view.env-social .nmod-envname{color:#8E8E93}
 .news-view.env-social .nmod-envdiv{background:#E9EAED}
 .news-view.env-social .nmod-tab{color:#8E8E93}
 .news-view.env-social .nmod-tab:hover{background:rgba(28,28,30,.08);color:#1C1C1E}
+
+/* As abas ficam no meio da barra — fora do fluxo, para que o centro delas
+   seja o centro da barra e nao o meio da sobra entre a busca e o lado
+   direito, que sao blocos de larguras bem diferentes. */
+.news-view.env-social .nmod-top{position:relative}
+.news-view.env-social #nmodGrpSocial{
+  position:absolute;left:50%;transform:translateX(-50%);
+  top:0;height:100%;align-items:stretch;gap:0;
+}
+/* Marcacao do LinkedIn: a aba aberta nao ganha fundo, ganha um traco
+   escuro na base da barra. A aba ocupa a altura toda porque o traco
+   precisa cair na aresta de baixo, e nao a 48px dela. */
+.news-view.env-social #nmodGrpSocial .nmod-tab{height:100%;border-radius:0;padding:0 20px}
+.news-view.env-social #nmodGrpSocial .nmod-tab:hover{background:none;color:var(--ink)}
+.news-view.env-social #nmodGrpSocial .nmod-tab.active,
+.news-view.env-social #nmodGrpSocial .nmod-tab.active:hover{background:none;color:var(--ink)}
+/* o peso do texto e o mesmo nas duas abas de proposito: engrossar so a
+   aberta alargaria o botao e faria o traco pular a cada troca */
+.news-view.env-social #nmodGrpSocial .nmod-tab.active::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--ink);
+}
 .news-view.env-social .nmod-tab.active{background:#00ACAC;color:#fff}
 .news-view.env-social .nmod-tab.active:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#00ACAC;color:#fff}
 .nv-reelsbanner{display:none;align-items:center;gap:8px;padding:12px 24px;margin:0;background:#E0F1FF;
@@ -2122,13 +2170,19 @@ input,textarea,select{font-size:14px}
 .nv-advfoot{display:flex;align-items:center;gap:10px;padding:14px 20px;box-shadow:inset 0 1px 0 #E9EAED;flex-shrink:0}
 .nv-advover .cr-advbody{flex:1;min-height:0;overflow-y:auto;padding:8px 24px 20px}
 .nv-advover .nv-def-wrap{max-width:none;margin:0}
-.nvf-body{flex:1;overflow-y:auto;padding:24px 20px 60px}
-.nvf-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-.nvf-wrap #nvFeed{display:flex;flex-direction:column;gap:16px}
+.nvf-body{flex:1;overflow-y:auto;scrollbar-gutter:stable both-edges;padding:24px 20px 60px}
+.nvf-wrap .section-title-row{margin:0}
+/* shorts -> comecar publicacao: 20px; dali para as publicacoes: 8px, o
+   mesmo valor que separa uma publicacao da outra */
+.nvf-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+.nvf-wrap > .nvf-stories{margin-bottom:20px}
+.nvf-wrap > .nvf-composer{margin-bottom:8px}
+/* e 8px de uma publicacao para a outra, como no feed da home */
+.nvf-wrap #nvFeed{display:flex;flex-direction:column;gap:8px}
 .nvf-composer{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .nvf-composer-top{display:flex;align-items:center;gap:12px}
 .nvf-composer-top .avatar{width:48px;height:48px;font-size:0;flex-shrink:0}
-.nvf-start{flex:1;text-align:left;border:1px solid var(--line);background:#fff;border-radius:999px;padding:13px 20px;font:inherit;font-size:14px;color:var(--muted);font-weight:600;cursor:pointer;transition:background .15s}
+.nvf-start{flex:1;text-align:left;border:1px solid var(--linha-campo);background:#fff;border-radius:999px;padding:13px 20px;font:inherit;font-size:14px;color:var(--muted);font-weight:600;cursor:pointer;transition:background .15s}
 .nvf-start:hover{background:#f3f6f9}
 .nvf-quick{display:flex;gap:6px;margin-top:12px}
 .nvf-qbtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;background:none;border-radius:8px;padding:9px;font:inherit;font-size:13px;font-weight:700;color:#5b6672;cursor:pointer;transition:background .15s}
@@ -2401,10 +2455,21 @@ input,textarea,select{font-size:14px}
 .nvf-cm-item.pending .nvf-cm-bub{background:#fff8e6;border:1px solid #f4d98a}
 .nvf-pendtag{display:inline-flex;align-items:center;gap:5px;margin-left:8px;background:rgba(255,204,0,.18);color:#8A6A00;font-size:11px;font-weight:600;letter-spacing:.3px;border-radius:32px;padding:2px 9px}
 .nvf-pendtag i{font-size:10px}
-.post.is-pend{box-shadow:inset 0 0 0 1px #f4d98a}
-.nvf-modbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:10px 12px;background:#fff8e6;border-radius:8px}
+.post.is-pend{box-shadow:inset 0 0 0 2px #f4d98a}
+.nvf-modbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:8px 8px 8px 16px;background:#fff8e6;border-radius:8px}
 .nvf-modtx{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.3px;color:#8A6A00;display:flex;align-items:center;gap:7px}
 .nvf-modtx i{font-size:12px}
+/* Barra de aprovacao do card: texto na escala do corpo do post (14px) e
+   botoes de 36px. O Reprovar em contorno vermelho — preenchido de cinza ele
+   pesava igual ao Aprovar, e recusar nao e a acao esperada. */
+.nvf-modbar .nvf-modtx{font-size:14px;line-height:20px}
+.nvf-modbar .nvf-modtx i{font-size:15px}
+.nvf-modbar .comment-mod button{height:36px;padding:0 16px;font-size:14px;line-height:20px}
+.nvf-modbar .comment-mod .cmod-no{--vermelho:#B3261E;
+  background:#fff;color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
+.nvf-modbar .comment-mod .cmod-no:hover{background:#fff;
+  --vermelho:color-mix(in srgb, #B3261E 60%, #fff);
+  color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .nvf-cm-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .nvf-cm-item{display:flex;gap:10px}
 .nvf-cm-item .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}
@@ -2722,16 +2787,18 @@ input,textarea,select{font-size:14px}
 }
 
 /* ============ Em destaque (posts estilo shorts) ============ */
-.stories-wrap{position:relative;display:flow-root}
+.stories-wrap{position:relative;display:flow-root;--reel-h:198px}
 .shorts{
   display:flex;gap:12px;overflow-x:auto;cursor:grab;-webkit-user-drag:none;
-  /* padding = folga para a sombra; margem negativa devolve a posicao original */
-  padding:16px 8px 26px;margin:-8px 0 -14px;
+  /* O padding e folga para a sombra do hover, que o overflow-x recortaria;
+     as margens negativas devolvem essa folga ao layout. Resultado: 12px
+     acima dos cards, 8px abaixo, 0 nas laterais. */
+  padding:24px 0 24px;margin:-12px 0 -16px;
   scroll-behavior:smooth;scrollbar-width:none;
 }
 .shorts::-webkit-scrollbar{display:none}
 .reel{
-  position:relative;flex-shrink:0;width:120px;height:198px;border-radius:14px;
+  position:relative;flex-shrink:0;width:120px;height:var(--reel-h);border-radius:14px;
   overflow:hidden;text-align:left;color:#fff;background:#dfe4ea;
   box-shadow:0 8px 18px -8px rgba(16,32,48,.35);
   transition:transform .18s ease,box-shadow .18s ease;
@@ -2782,7 +2849,9 @@ input,textarea,select{font-size:14px}
 }
 .reel-meta{font-size:10px;font-weight:600;opacity:.9;text-shadow:0 1px 5px rgba(0,0,0,.5)}
 .st-arrow{
-  position:absolute;top:87px;width:40px;height:40px;border-radius:50%;
+  /* centro do card: 12px do topo da .stories-wrap ate o card (24 de padding
+     menos os 12 da margem negativa), mais meia altura, menos meia seta */
+  position:absolute;top:calc(12px + var(--reel-h) / 2 - 20px);width:40px;height:40px;border-radius:50%;
   background:#fff;box-shadow:var(--shadow);color:#44505c;z-index:2;
   display:flex;align-items:center;justify-content:center;font-size:15px;
   transition:transform .15s;
@@ -3533,17 +3602,19 @@ body.demo-empty .demo-empty-state{display:flex}
 .itbl-pg:disabled{opacity:.4;cursor:default}.itbl-newfilter .seg-n{background:#e0392c;color:#fff}
 .apr-seg button.itbl-newfilter.on{background:var(--teal);color:#fff}
 .apr-seg button.itbl-newfilter.on .seg-n{background:rgba(255,255,255,.25)}
-.nvf-layout{display:flex;gap:18px;max-width:1400px;margin:0 auto;align-items:flex-start}
+.nvf-layout{display:flex;gap:40px;max-width:1400px;margin:0 auto;align-items:flex-start}
 .nvf-profile{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;order:1}
 .nvf-layout .nvf-wrap{order:2}
 .nvf-side{order:3}
-.nvf-pcard{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:visible}
-.nvf-pcover{height:56px;background:linear-gradient(120deg,#0f5a63,#1aa0a0);position:relative;border-radius:12px 12px 0 0}
+.nvf-pcard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:visible}
+/* mesma capa do cartao da home: 120px no azul da marca. O raio acompanha
+   o do cartao porque aqui ele nao recorta o conteudo (overflow visivel) */
+.nvf-pcover{height:54px;background:var(--navy);position:relative;border-radius:14px 14px 0 0}
 .nvf-ppremium{position:absolute;top:8px;right:10px;color:#fff;font-size:12px;font-weight:700;opacity:.9}
-.nvf-pbody{padding:0 16px 16px;text-align:left}
-.nvf-pav{width:76px;height:76px;font-size:0;border:3px solid #fff;margin-top:-38px;display:block;position:relative;z-index:2;background-color:#fff}
-.nvf-pname{font-size:17px;font-weight:700;color:var(--ink);margin-top:10px;display:flex;align-items:center;gap:7px}
-.nvf-prole{font-size:13px;color:#465364;line-height:1.4;margin-top:5px}
+.nvf-pbody{padding:0 16px 20px;text-align:center}
+.nvf-pav{width:68px;height:68px;font-size:0;border:2px solid #fff;margin:-34px auto 10px;display:block;position:relative;z-index:2;background-color:#fff}
+.nvf-pname{font-size:18px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:7px}
+.nvf-prole{font-size:14px;color:var(--muted);line-height:1.4;margin-top:3px}
 .nvf-ploc{font-size:12px;color:var(--muted);margin-top:6px}
 .nvf-porg{display:flex;align-items:center;gap:9px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ink)}
 .nvf-porg-ic{width:26px;height:26px;border-radius:7px;background:var(--teal);padding:5px;flex-shrink:0}
@@ -3575,14 +3646,14 @@ body.demo-empty .demo-empty-state{display:flex}
 @media(max-width:1240px){ .nvf-profile{display:none} }
 @media(max-width:940px){ .nvf-side{display:none} }
 .nvf-side{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
-.nvf-side-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.nvf-side-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
 .nvf-side-hd{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0 2px}
-.nvf-fitem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:11px;padding:11px 13px;font:inherit;font-size:14px;font-weight:600;color:#465364;cursor:pointer;white-space:nowrap;text-align:left;transition:background .12s}
+.nvf-fitem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:8px;padding:8px 12px;font:inherit;font-size:14px;font-weight:600;color:#465364;cursor:pointer;white-space:nowrap;text-align:left;transition:background .12s}
 .nvf-fitem i{width:18px;text-align:center;color:#8a94a0;font-size:15px}
 .nvf-fitem:hover{background:#f2f5f7}
 .nvf-fitem.active{background:rgba(0,172,172,.1);color:#0c7d7d}
 .nvf-fitem.active i{color:var(--teal)}
-.nvf-fn{margin-left:auto;font-size:12px;font-weight:700;color:#98a2ac;background:#eef1f4;border-radius:999px;padding:1px 9px}
+.nvf-fn{display:none;margin-left:auto;font-size:12px;font-weight:700;color:#98a2ac;background:#eef1f4;border-radius:999px;padding:1px 9px}
 .nvf-fitem.active .nvf-fn{background:rgba(0,172,172,.18);color:#0c7d7d}
 .nvf-cchip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:12px;font-weight:600;color:#465364;cursor:pointer;margin:0 6px 6px 0;transition:all .12s}
 .nvf-cchip:hover{border-color:var(--teal)}
@@ -3593,11 +3664,11 @@ body.demo-empty .demo-empty-state{display:flex}
 .nvf-fsearch i{font-size:12px;color:var(--muted)}
 .nvf-fsearch input{border:0;background:none;outline:none;flex:1;min-width:0;font:inherit;font-size:13px;color:var(--ink)}
 .nvf-side .nvf-fclear{margin:0}
-.nvf-selbtn{display:flex;align-items:center;gap:10px;width:100%;height:42px;padding:0 12px;border:0;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px #D1D1D6;font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
-.nvf-selbtn>i:first-child{font-size:14px;color:#1667B8;flex-shrink:0}
+.nvf-selbtn{display:flex;align-items:center;gap:10px;width:100%;height:42px;padding:0 12px;border:0;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
+.nvf-selbtn>i:first-child{font-size:14px;color:#8E8E93;flex-shrink:0}
 .nvf-selbtn span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nvf-selmag{font-size:13px;color:#8E8E93;flex-shrink:0}
-.nvf-selbtn:hover{box-shadow:inset 0 0 0 1px var(--teal)}
+.nvf-selbtn:hover{box-shadow:inset 0 0 0 1px var(--linha-campo-forte)}
 .nvf-selbtn:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #0088FF,0 0 0 2px rgba(0,136,255,.16)}
 .nvf-picklist{max-height:340px;overflow-y:auto;display:flex;flex-direction:column}
 .nvf-pickrow{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;padding:10px 12px;font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;border-radius:4px}
@@ -3619,8 +3690,16 @@ body.demo-empty .demo-empty-state{display:flex}
 .nvf-aitem:hover{background:#f2f5f7}
 .nvf-aitem.on{background:rgba(0,172,172,.1);color:#0c7d7d}
 .nvf-fnone{font-size:12px;color:var(--muted);padding:6px 8px}
-.nvf-fsel{width:100%;font:inherit;font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 11px;cursor:pointer;outline:none}
-.nvf-fsel:focus{border-color:var(--teal)}
+/* A seta vinha do navegador: colada na borda, no tamanho e na cor do
+   sistema. Com appearance:none ela sai e desenhamos a nossa, a 12px da
+   direita e centrada — a mesma posicao da lupa do botao de Autor logo
+   acima. O padding a direita abre espaco para ela. */
+.nvf-fsel{width:100%;height:42px;font:inherit;font-size:14px;letter-spacing:.3px;color:var(--ink);
+  -webkit-appearance:none;appearance:none;
+  background:#fff url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238E8E93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center;background-size:12px 8px;
+  border:1px solid var(--linha-campo);border-radius:9px;padding:0 32px 0 11px;cursor:pointer;outline:none}
+.nvf-fsel:hover,
+.nvf-fsel:focus{border-color:var(--linha-campo-forte)}
 .nvf-minegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .nvf-minetile{border:1px solid var(--line);background:#fff;border-radius:12px;padding:14px 10px;cursor:pointer;font:inherit;text-align:center;transition:all .14s}
 .nvf-minetile:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 8px 18px -12px rgba(16,32,48,.4)}
@@ -3744,16 +3823,18 @@ body.demo-empty .demo-empty-state{display:flex}
 .rx-filters.rx-advmode{width:400px}
 #rxGrid{width:100%;max-width:100%;box-sizing:border-box}
 .rxr-card:hover .reel-body,.rxr-card:hover .rx-author,.rxr-card:hover .rx-cap{opacity:0;transition:opacity .15s}
-.nvf-stories .shorts{gap:10px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
-.nvf-stories .stories-wrap{position:relative;display:flow-root}
-.nvf-stories .st-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;
-  background:#fff;box-shadow:none;color:var(--ink);z-index:5;border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .15s}
-.nvf-stories .st-arrow:hover{background:var(--teal);border-color:var(--teal);color:#fff}
-.nvf-stories .st-arrow.left{left:-8px}
-.nvf-stories .st-arrow.right{right:-8px}
+/* A fileira herda o layout da home — gap, folga para a sombra, setas de
+   40px por dentro com sombra. O que estava aqui era um segundo desenho:
+   setas de 42px com borda, por fora da faixa, e gap menor.
+
+   O card e um pouco maior que o da home (126 contra 120) porque a coluna
+   aqui tem 780px e a da home 752: com 120px cabiam seis inteiros e o
+   corte ficava em 8px, o que le como fileira completa, nao como carrossel.
+   Em 126x208 a proporcao do card e a mesma (1:1,65) e o sexto aparece
+   cortado em 82px — o mesmo pedaco que sobra na home. */
+.nvf-stories .stories-wrap{--reel-h:208px}
+.nvf-stories .reel{width:126px}
 .nvf-stories .st-arrow[hidden]{display:none}
-.nvf-stories .shorts::-webkit-scrollbar{display:none}
 .nvf-reels{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 .crc-stage{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#3b444d;padding:20px}
 .crc-frame{position:relative;width:min(292px,calc((100% - 60px) * 0.5625));height:min(520px,100%);aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#11161a;box-shadow:0 0 0 3px var(--teal),0 0 0 6px rgba(0,172,172,.25),0 18px 44px rgba(0,0,0,.55);cursor:grab}
@@ -4304,7 +4385,7 @@ body.demo-empty .demo-empty-state{display:flex}
   <button data-t="comunicados" title="Comunicados"><span class="mnav__ic hm-ic--comunicados" aria-hidden="true"></span>Comunicados</button>
   <!-- só aparecem dentro do módulo (classe mnav--modulo): trocam a navegação da
        home pelas duas abas do módulo, mantendo o "+" no meio -->
-  <button data-t="mod-pub" title="Publicações"><i class="fa-solid fa-newspaper"></i>Publicações</button>
+  <button data-t="mod-pub" title="Publicações"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
   <button data-t="mod-shorts" title="Shorts"><i class="mdi mdi-play-box-multiple"></i>Shorts</button>
 </nav>
 
@@ -5059,7 +5140,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
 <!-- modulo Rede Social e telas de configuracao -->
 <aside class="rmod-side" id="nmodSide">
   <svg class="rmod-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
-  <button class="rmod-item active" id="nmodPub"><i class="fa-solid fa-newspaper"></i>Publicações</button>
+  <button class="rmod-item active" id="nmodPub"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
   <button class="rmod-item" id="nmodCats"><i class="fa-solid fa-tags"></i>Categorias</button>
   <button class="rmod-item" id="nmodPerm"><i class="fa-solid fa-user-shield"></i>Permissões</button>
   <span class="rmod-sp"></span>
@@ -5069,11 +5150,15 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
 
 <div class="news-view env-social" id="newsView">
   <div class="nmod-top" id="nmodTop">
-    <svg class="nmod-top-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
+    <button class="nmod-logobtn" id="nmodLogo" title="Ir para a home" aria-label="Ir para a home"><svg class="nmod-top-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></button>
     <span class="nmod-envname" id="nmodEnvName">Social</span>
     <span class="nmod-envdiv"></span>
+    <div class="nmod-search" id="nmodSearchWrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="nmodSearchIn" placeholder="Pesquisar em publicações" autocomplete="off">
+    </div>
     <div class="nmod-top-tabs nmod-grp" id="nmodGrpManage">
-      <button class="nmod-tab" id="nmtPub"><i class="fa-solid fa-newspaper"></i> Publicações</button>
+      <button class="nmod-tab" id="nmtPub"><i class="fa-solid fa-rectangle-list"></i> Publicações</button>
       <button class="nmod-tab" id="nmtMgShorts"><i class="fa-solid fa-clapperboard"></i> Shorts</button>
       <button class="nmod-tab" id="nmtApr"><span class="nmt-ic"><i class="fa-solid fa-circle-check"></i><span class="tab-badge" id="aprTabBadge" hidden></span></span> Aprovações</button>
       <button class="nmod-tab" id="nmtInter"><span class="nmt-ic"><i class="fa-solid fa-heart"></i><span class="tab-badge" id="interTabBadge" hidden></span></span> Reações</button>
@@ -5081,18 +5166,13 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
       <button class="nmod-tab" id="nmtCfg"><i class="fa-solid fa-gear"></i> Configurações</button>
     </div>
     <div class="nmod-top-tabs nmod-grp on" id="nmodGrpSocial">
-      <button class="nmod-tab active" id="nmtFeed"><i class="fa-solid fa-newspaper"></i> Publicações</button>
+      <button class="nmod-tab active" id="nmtFeed"><i class="fa-solid fa-rectangle-list"></i> Publicações</button>
       <button class="nmod-tab" id="nmtStories"><i class="fa-solid fa-clapperboard"></i> Shorts</button>
-    </div>
-    <span style="flex:1"></span>
-    <div class="nmod-search" id="nmodSearchWrap">
-      <input type="text" id="nmodSearchIn" placeholder="Buscar shorts e publicações" autocomplete="off">
-      <button type="button" id="nmodSearchBtn">Pesquisar</button>
     </div>
     <span style="flex:1"></span>
     <button class="nmod-switch" id="nmodEnvSwitch"><i class="fa-solid fa-gear"></i><span class="lbl">Gerenciar</span></button>
     <button class="nmod-tab" id="nmtApps"><i class="fa-solid fa-grip"></i> Módulos</button>
-    <span class="avatar av-rc nmod-topav" id="nmodTopAv" title="Rodrigo Caetano"></span>
+    <span class="avatar av-rc nmod-topav nvf-pclick" id="nmodTopAv" title="Rodrigo Caetano"></span>
   </div>
   <aside class="nv-cfgside" id="nvCfgSide">
     <div class="nv-cfgside-hd"></div>
@@ -5127,9 +5207,9 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
       <aside class="nvf-profile">
         <div class="nvf-pcard nvf-pclick" style="cursor:pointer">
           <div class="nvf-pcover"></div>
-          <div class="nvf-pbody" style="text-align:center">
-            <span class="avatar av-rc nvf-pav" style="margin:-38px auto 0"></span>
-            <div class="nvf-pname" style="justify-content:center">Rodrigo Caetano</div>
+          <div class="nvf-pbody">
+            <span class="avatar av-rc nvf-pav"></span>
+            <div class="nvf-pname">Rodrigo Caetano</div>
             <div class="nvf-prole">CEO · SULTS</div>
           </div>
         </div>
@@ -5170,7 +5250,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           <button class="nvf-fitem nvf-mine active" data-mine=""><i class="fa-solid fa-list"></i> Tudo</button>
           <button class="nvf-fitem nvf-mine" data-mine="minhas"><i class="fa-solid fa-user-pen"></i> Publicados por mim <span class="nvf-fn" id="nvfnMinhas3"></span></button>
           <button class="nvf-fitem nvf-mine" data-mine="curti"><i class="fa-solid fa-heart"></i> Que eu curti <span class="nvf-fn" id="nvfnCurti"></span></button>
-          <button class="nvf-fitem nvf-mine" data-mine="comentei"><i class="fa-solid fa-reply"></i> Que eu comentei <span class="nvf-fn" id="nvfnComentei"></span></button>
+          <button class="nvf-fitem nvf-mine" data-mine="comentei"><i class="fa-solid fa-comment-dots"></i> Que eu comentei <span class="nvf-fn" id="nvfnComentei"></span></button>
           <button class="nvf-fitem nvf-mine" data-mine="naovistos"><i class="fa-solid fa-circle-play"></i> Não vistos <span class="nvf-fn" id="nvfnNaovistos"></span></button>
         </div>
         <div class="nvf-side-card">
@@ -5197,11 +5277,6 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
         </div>
       </aside>
       <aside class="nvf-side">
-        <div class="nvf-side-card">
-          <div class="nvf-side-hd">Localizar</div>
-          <div class="nvf-fsearch"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvfTextSearch" placeholder="Pesquisar no feed" autocomplete="off"></div>
-          <div class="nvf-searchhint" id="nvfSearchHint" hidden></div>
-        </div>
         <div class="nvf-side-card">
           <div class="nvf-side-hd">Ordenar por</div>
           <button class="nvf-fitem nvf-sort active" data-sort="recentes"><i class="fa-solid fa-clock"></i> Mais recentes</button>
@@ -5231,8 +5306,8 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
         </div>
       </aside>
       <div class="nvf-wrap">
-      <section class="stories-section nvf-stories" style="margin:0 0 16px">
-        <div class="section-title-row" style="margin-bottom:10px">
+      <section class="stories-section nvf-stories">
+        <div class="section-title-row">
           <h2 class="section-title" style="font-size:20px;margin:0">Shorts</h2>
           <a href="#" class="see-all" id="nvfStoriesAll">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
         </div>
@@ -5271,9 +5346,9 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
       <aside class="sb-side">
         <div class="nvf-pcard nvf-pclick" style="cursor:pointer">
           <div class="nvf-pcover"></div>
-          <div class="nvf-pbody" style="text-align:center">
-            <span class="avatar av-rc nvf-pav" style="margin:-38px auto 0"></span>
-            <div class="nvf-pname" style="justify-content:center">Rodrigo Caetano</div>
+          <div class="nvf-pbody">
+            <span class="avatar av-rc nvf-pav"></span>
+            <div class="nvf-pname">Rodrigo Caetano</div>
             <div class="nvf-prole">CEO · SULTS</div>
           </div>
         </div>
@@ -5317,7 +5392,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
   <!-- LISTA (Publicadas) -->
   <div class="nv-screen" id="nvListScreen">
     <div class="cat-head">
-      <div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Publicações</h2></div>
+      <div class="rx-title"><i class="fa-solid fa-rectangle-list"></i><h2>Publicações</h2></div>
       <button class="fl-toggle" data-fltoggle><i class="fa-solid fa-filter"></i> <span>Esconder filtros</span> <i class="fa-solid fa-chevron-up fl-carat"></i></button>
       <span style="flex:1"></span>
     </div>
@@ -7222,9 +7297,26 @@ $('#ppAvRemove') && $('#ppAvRemove').addEventListener('click', ()=>{
 $('#ppMore') && $('#ppMore').addEventListener('click', e=>{ e.stopPropagation(); const m=$('#ppMoreMenu'); m.hidden=!m.hidden; });
 document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.target.closest('.pp-morewrap')) m.hidden=true; });
 (function(){
+  /* desfaz a busca sem mexer na aba aberta: o go() forca newsShow('feed'),
+     e limpar estando em Shorts nao deveria jogar a pessoa para Publicacoes */
+  const limpar=()=>{
+    nvSearchQuery='';
+    if(typeof sbQuery!=='undefined'){ sbQuery=''; sbShown=12; const si=$('#sbSearch'); if(si) si.value=''; }
+    const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
+    if(typeof renderNewsFeed==='function') renderNewsFeed();
+    if(typeof renderShortsB==='function') renderShortsB();
+    if(typeof buildStories==='function') buildStories();
+  };
   const go=()=>{
     const q=(($('#nmodSearchIn')||{}).value||'').trim();
-    if(!q){ fgToast('Digite o que você busca'); return; }
+    if(!q){
+      /* campo vazio + Enter desfaz a busca. Antes so avisava, e a unica
+         saida era o X do aviso de resultados — apagar o texto e dar Enter
+         e o caminho que a pessoa tenta primeiro. */
+      if(nvSearchQuery){ limpar(); fgToast('Busca limpa'); }
+      else fgToast('Digite o que você busca');
+      return;
+    }
     newsShow('feed');
     if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
     nvSearchQuery=q;
@@ -7565,9 +7657,13 @@ function updNvfArrows(){
   const r = document.getElementById('nvfStoriesRow'); if(!r) return;
   const l = document.getElementById('nvfStLeft'), rt = document.getElementById('nvfStRight');
   if(!l||!rt) return;
+  /* Com a tela fechada a fileira mede 0x0, entao scrollWidth e clientWidth
+     empatam e a seta da direita se escondia — e nada refazia a conta quando
+     a tela abria. O mesmo teste de transbordo que a home usa resolve. */
+  const transborda = r.scrollWidth > r.clientWidth + 4;
   const max = r.scrollWidth - r.clientWidth - 2;
-  l.hidden = r.scrollLeft <= 2;
-  rt.hidden = r.scrollLeft >= max;
+  l.hidden  = !transborda || r.scrollLeft <= 2;
+  rt.hidden = !transborda || r.scrollLeft >= max;
 }
 function updateShortsNavBadge(){
   const b = document.getElementById('navStoriesBadge'); if(!b) return;
@@ -9656,6 +9752,9 @@ function reviewDecide(ok){ const n=reviewingPub; if(!n) return; PUB_APPR=PUB_APP
 })();
 $('#pmSave') && $('#pmSave').addEventListener('click', ()=>fgToast('Parâmetros salvos'));
 $('#nmtApps') && $('#nmtApps').addEventListener('click', ()=>{ closeNewsModule(); setNav($('#navHome')); });
+/* a logo leva para a home, como em qualquer site: e o gesto que se tenta
+   antes de procurar o botao de Modulos */
+$('#nmodLogo') && $('#nmodLogo').addEventListener('click', ()=>{ closeNewsModule(); setNav($('#navHome')); });
 $('#nmtInter') && $('#nmtInter').addEventListener('click', ()=>{ newsView.classList.add('open'); interFilter='reacao'; newsShow('inter'); setTimeout(function(){ INTERACTIONS.forEach(function(x){ interSeen.add(x.id); }); var tb=document.getElementById('interTabBadge'); if(tb) tb.hidden=true; var nn=document.getElementById('interNewN'); if(nn) nn.textContent='0'; },1200); });
 $('#nmtCmts') && $('#nmtCmts').addEventListener('click', function(){ newsView.classList.add('open'); interFilter='comentario'; interPage=1; interReact=''; var s=$('#interFReact'); if(s) s.value=''; newsShow('inter'); });
 function interSetBadge(){ if(!INTERACTIONS.length) buildInteractions(); var tb=document.getElementById('interTabBadge'); var un=INTERACTIONS.filter(function(z){return !interSeen.has(z.id);}).length; if(tb){ tb.textContent=un; tb.hidden=!un; } }
@@ -9842,6 +9941,12 @@ function newsShow(screen){
   newsView.classList.toggle('reelsmode', screen==='shorts');
   if (screen!=='compose' && screen!=='article') nvSetEnv((screen==='shorts'||screen==='shortsb'||screen==='feed'||!screen) ? 'social' : 'gerenciar');
   if (screen==='shorts') screen='shortsb';
+  /* o campo diz onde a busca vai agir, e o escopo e sempre a aba aberta */
+  const campoBusca = $('#nmodSearchIn');
+  if (campoBusca) campoBusca.placeholder = screen==='shortsb' ? 'Pesquisar em shorts' : 'Pesquisar em publicações';
+  /* a fileira de shorts so tem largura depois que a tela aparece: e aqui
+     que da para saber se ha o que rolar */
+  if (typeof updNvfArrows==='function') requestAnimationFrame(updNvfArrows);
   if (screen==='shortsb'){
     newsView.classList.remove('catmode','cfg','apr','aprhome','intermode');
     reelsView.classList.remove('open','in-social','in-cfg','in-module');

@@ -10,7 +10,11 @@
   font-family:var(--fonte);background:#0C334A;color:#fff;
   box-shadow:inset 0 -1px 0 rgba(255,255,255,.08)}
 .news-view.mod-mode .nmod-top{display:flex}
-.nmod-top-logo{width:32px;height:32px;color:#00ACAC;flex-shrink:0}
+.nmod-top-logo{width:32px;height:32px;color:#00ACAC;flex-shrink:0;display:block}
+.nmod-logobtn{display:flex;align-items:center;flex:none;padding:0;border:0;background:none;
+  cursor:pointer;border-radius:8px;transition:opacity .15s}
+.nmod-logobtn:hover{opacity:.75}
+.nmod-logobtn:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
 .nmod-top-title{font-size:17px;font-weight:700;margin-right:8px}
 .nmod-envname{display:none}
 .nmod-envdiv{display:none}
@@ -30,17 +34,23 @@
 .nmod-tab:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 .nmod-tab.active{background:#00ACAC;color:#fff}
 .nmod-tab.active:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#00ACAC;color:#fff}
-.nmod-search{display:flex;align-items:center;gap:0;flex:0 1 460px;min-width:0;height:44px;padding:4px;
-  background:#F4F5F6;border-radius:32px;box-shadow:inset 0 0 0 1px var(--line)}
+/* mesmo campo do "Buscar acoes na plataforma": a lupa vem primeiro e nao
+   ha botao — quem dispara a busca e o Enter, que o listener ja tratava */
+/* Tres estados: parado e so o filete de 1px; no hover entra o cinza; no
+   foco o filete engrossa para 2px em tom de tinta. O anel teal saiu — com
+   o contorno escuro seriam dois sinais para a mesma coisa. */
+.nmod-search{display:flex;align-items:center;gap:10px;flex:0 1 380px;min-width:0;height:44px;
+  --texto:color-mix(in srgb, var(--muted) 80%, var(--ink));
+  padding:0 18px;color:var(--texto);
+  background:none;border-radius:32px;box-shadow:inset 0 0 0 1px var(--linha-campo);
+  transition:background .15s,box-shadow .15s}
+.nmod-search:hover,
+.nmod-search:focus-within{background:#F1F3F5}
+.nmod-search:focus-within{box-shadow:inset 0 0 0 2px var(--ink)}
+.nmod-search i{font-size:14px;flex:none}
 .nmod-search input{flex:1;min-width:0;border:0;background:none;outline:none;font:inherit;font-size:14px;
-  letter-spacing:.3px;color:var(--ink);padding:0 8px 0 16px}
-.nmod-search input::placeholder{color:var(--muted)}
-.nmod-search button{flex-shrink:0;height:36px;padding:0 22px;border:0;border-radius:32px;background:var(--teal);color:#fff;
-  font:inherit;font-size:14px;line-height:20px;font-weight:700;letter-spacing:.3px;cursor:pointer;
-  transition:background 120ms cubic-bezier(.4,0,.2,1)}
-.nmod-search button:hover{background:var(--teal-dark)}
-.nmod-search button:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,172,172,.24)}
-.news-view.env-social .nmod-search{background:#F4F5F6}
+  letter-spacing:.3px;color:var(--ink);padding:0}
+.nmod-search input::placeholder{color:var(--texto)}
 .news-view:not(.env-social) .nmod-search{display:none}
 @media(max-width:1180px){ .nmod-search{flex-basis:300px} }
 @media(max-width:900px){ .nmod-search{display:none} }
@@ -48,16 +58,50 @@
   font:inherit;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.3px;cursor:pointer;flex-shrink:0;
   background:#00ACAC;color:#fff;transition:background 120ms cubic-bezier(.4,0,.2,1),box-shadow 120ms cubic-bezier(.4,0,.2,1)}
 .nmod-switch i{font-size:16px}
+/* a foto fecha o lado direito da barra, no ambiente social */
+.news-view.env-social .nmod-topav{display:block;width:40px;height:40px;cursor:pointer}
+/* Modulos segue o hover das abas do meio: so escurece, sem preenchimento.
+   Ele nao esta dentro do #nmodGrpSocial, entao caia na regra generica que
+   ainda pinta o fundo. */
+.news-view.env-social #nmtApps:hover{background:none;color:var(--ink)}
 .nmod-switch:hover{background:linear-gradient(rgba(28,28,30,.08),rgba(28,28,30,.08)),#00ACAC}
 .news-view.env-social .nmod-switch{background:#0C334A;color:#fff}
 .news-view.env-social .nmod-switch:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#0C334A}
 .nmod-switch:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 /* Ambiente Social, fundo claro */
-.news-view.env-social .nmod-top{background:#fff;color:#1C1C1E;box-shadow:inset 0 -1px 0 #E9EAED}
+/* O recuo acompanha os blocos do corpo: a barra sangra de ponta a ponta,
+   mas o conteudo dela para onde a coluna de 1400px para. O both-edges no
+   corpo reserva a barra de rolagem dos dois lados, senao ela empurraria
+   os blocos meia-barra para a esquerda e o alinhamento se perderia. */
+.news-view.env-social .nmod-top{
+  background:#fff;color:#1C1C1E;box-shadow:inset 0 -1px 0 #E9EAED;
+  padding-inline:max(20px, calc((100% - 1400px) / 2));
+}
 .news-view.env-social .nmod-envname{color:#8E8E93}
 .news-view.env-social .nmod-envdiv{background:#E9EAED}
 .news-view.env-social .nmod-tab{color:#8E8E93}
 .news-view.env-social .nmod-tab:hover{background:rgba(28,28,30,.08);color:#1C1C1E}
+
+/* As abas ficam no meio da barra — fora do fluxo, para que o centro delas
+   seja o centro da barra e nao o meio da sobra entre a busca e o lado
+   direito, que sao blocos de larguras bem diferentes. */
+.news-view.env-social .nmod-top{position:relative}
+.news-view.env-social #nmodGrpSocial{
+  position:absolute;left:50%;transform:translateX(-50%);
+  top:0;height:100%;align-items:stretch;gap:0;
+}
+/* Marcacao do LinkedIn: a aba aberta nao ganha fundo, ganha um traco
+   escuro na base da barra. A aba ocupa a altura toda porque o traco
+   precisa cair na aresta de baixo, e nao a 48px dela. */
+.news-view.env-social #nmodGrpSocial .nmod-tab{height:100%;border-radius:0;padding:0 20px}
+.news-view.env-social #nmodGrpSocial .nmod-tab:hover{background:none;color:var(--ink)}
+.news-view.env-social #nmodGrpSocial .nmod-tab.active,
+.news-view.env-social #nmodGrpSocial .nmod-tab.active:hover{background:none;color:var(--ink)}
+/* o peso do texto e o mesmo nas duas abas de proposito: engrossar so a
+   aberta alargaria o botao e faria o traco pular a cada troca */
+.news-view.env-social #nmodGrpSocial .nmod-tab.active::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--ink);
+}
 .news-view.env-social .nmod-tab.active{background:#00ACAC;color:#fff}
 .news-view.env-social .nmod-tab.active:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#00ACAC;color:#fff}
 .nv-reelsbanner{display:none;align-items:center;gap:8px;padding:12px 24px;margin:0;background:#E0F1FF;
@@ -599,13 +643,19 @@
 .nv-advfoot{display:flex;align-items:center;gap:10px;padding:14px 20px;box-shadow:inset 0 1px 0 #E9EAED;flex-shrink:0}
 .nv-advover .cr-advbody{flex:1;min-height:0;overflow-y:auto;padding:8px 24px 20px}
 .nv-advover .nv-def-wrap{max-width:none;margin:0}
-.nvf-body{flex:1;overflow-y:auto;padding:24px 20px 60px}
-.nvf-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
-.nvf-wrap #nvFeed{display:flex;flex-direction:column;gap:16px}
+.nvf-body{flex:1;overflow-y:auto;scrollbar-gutter:stable both-edges;padding:24px 20px 60px}
+.nvf-wrap .section-title-row{margin:0}
+/* shorts -> comecar publicacao: 20px; dali para as publicacoes: 8px, o
+   mesmo valor que separa uma publicacao da outra */
+.nvf-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+.nvf-wrap > .nvf-stories{margin-bottom:20px}
+.nvf-wrap > .nvf-composer{margin-bottom:8px}
+/* e 8px de uma publicacao para a outra, como no feed da home */
+.nvf-wrap #nvFeed{display:flex;flex-direction:column;gap:8px}
 .nvf-composer{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .nvf-composer-top{display:flex;align-items:center;gap:12px}
 .nvf-composer-top .avatar{width:48px;height:48px;font-size:0;flex-shrink:0}
-.nvf-start{flex:1;text-align:left;border:1px solid var(--line);background:#fff;border-radius:999px;padding:13px 20px;font:inherit;font-size:14px;color:var(--muted);font-weight:600;cursor:pointer;transition:background .15s}
+.nvf-start{flex:1;text-align:left;border:1px solid var(--linha-campo);background:#fff;border-radius:999px;padding:13px 20px;font:inherit;font-size:14px;color:var(--muted);font-weight:600;cursor:pointer;transition:background .15s}
 .nvf-start:hover{background:#f3f6f9}
 .nvf-quick{display:flex;gap:6px;margin-top:12px}
 .nvf-qbtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;background:none;border-radius:8px;padding:9px;font:inherit;font-size:13px;font-weight:700;color:#5b6672;cursor:pointer;transition:background .15s}
@@ -878,10 +928,21 @@
 .nvf-cm-item.pending .nvf-cm-bub{background:#fff8e6;border:1px solid #f4d98a}
 .nvf-pendtag{display:inline-flex;align-items:center;gap:5px;margin-left:8px;background:rgba(255,204,0,.18);color:#8A6A00;font-size:11px;font-weight:600;letter-spacing:.3px;border-radius:32px;padding:2px 9px}
 .nvf-pendtag i{font-size:10px}
-.post.is-pend{box-shadow:inset 0 0 0 1px #f4d98a}
-.nvf-modbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:10px 12px;background:#fff8e6;border-radius:8px}
+.post.is-pend{box-shadow:inset 0 0 0 2px #f4d98a}
+.nvf-modbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:8px 8px 8px 16px;background:#fff8e6;border-radius:8px}
 .nvf-modtx{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.3px;color:#8A6A00;display:flex;align-items:center;gap:7px}
 .nvf-modtx i{font-size:12px}
+/* Barra de aprovacao do card: texto na escala do corpo do post (14px) e
+   botoes de 36px. O Reprovar em contorno vermelho — preenchido de cinza ele
+   pesava igual ao Aprovar, e recusar nao e a acao esperada. */
+.nvf-modbar .nvf-modtx{font-size:14px;line-height:20px}
+.nvf-modbar .nvf-modtx i{font-size:15px}
+.nvf-modbar .comment-mod button{height:36px;padding:0 16px;font-size:14px;line-height:20px}
+.nvf-modbar .comment-mod .cmod-no{--vermelho:#B3261E;
+  background:#fff;color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
+.nvf-modbar .comment-mod .cmod-no:hover{background:#fff;
+  --vermelho:color-mix(in srgb, #B3261E 60%, #fff);
+  color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .nvf-cm-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .nvf-cm-item{display:flex;gap:10px}
 .nvf-cm-item .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}

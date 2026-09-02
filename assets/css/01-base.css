@@ -13,6 +13,10 @@
   --body:#474747;
   --muted:#8a94a0;
   --line:#e6eaef;
+  /* traco dos campos: o --line puxado para a tinta, um passo mais escuro
+     que as bordas de cartao, e o tom forte para o hover */
+  --linha-campo:color-mix(in srgb, var(--line) 88%, var(--ink));
+  --linha-campo-forte:#8e8e93;
   --red:#e53935;
   --radius:14px;
   /* Superelipse |x|^5 + |y|^5 = 1, amostrada em 96 pontos — o expoente da

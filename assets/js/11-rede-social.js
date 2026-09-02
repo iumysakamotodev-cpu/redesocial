@@ -617,6 +617,9 @@ function reviewDecide(ok){ const n=reviewingPub; if(!n) return; PUB_APPR=PUB_APP
 })();
 $('#pmSave') && $('#pmSave').addEventListener('click', ()=>fgToast('Parâmetros salvos'));
 $('#nmtApps') && $('#nmtApps').addEventListener('click', ()=>{ closeNewsModule(); setNav($('#navHome')); });
+/* a logo leva para a home, como em qualquer site: e o gesto que se tenta
+   antes de procurar o botao de Modulos */
+$('#nmodLogo') && $('#nmodLogo').addEventListener('click', ()=>{ closeNewsModule(); setNav($('#navHome')); });
 $('#nmtInter') && $('#nmtInter').addEventListener('click', ()=>{ newsView.classList.add('open'); interFilter='reacao'; newsShow('inter'); setTimeout(function(){ INTERACTIONS.forEach(function(x){ interSeen.add(x.id); }); var tb=document.getElementById('interTabBadge'); if(tb) tb.hidden=true; var nn=document.getElementById('interNewN'); if(nn) nn.textContent='0'; },1200); });
 $('#nmtCmts') && $('#nmtCmts').addEventListener('click', function(){ newsView.classList.add('open'); interFilter='comentario'; interPage=1; interReact=''; var s=$('#interFReact'); if(s) s.value=''; newsShow('inter'); });
 function interSetBadge(){ if(!INTERACTIONS.length) buildInteractions(); var tb=document.getElementById('interTabBadge'); var un=INTERACTIONS.filter(function(z){return !interSeen.has(z.id);}).length; if(tb){ tb.textContent=un; tb.hidden=!un; } }
@@ -803,6 +806,12 @@ function newsShow(screen){
   newsView.classList.toggle('reelsmode', screen==='shorts');
   if (screen!=='compose' && screen!=='article') nvSetEnv((screen==='shorts'||screen==='shortsb'||screen==='feed'||!screen) ? 'social' : 'gerenciar');
   if (screen==='shorts') screen='shortsb';
+  /* o campo diz onde a busca vai agir, e o escopo e sempre a aba aberta */
+  const campoBusca = $('#nmodSearchIn');
+  if (campoBusca) campoBusca.placeholder = screen==='shortsb' ? 'Pesquisar em shorts' : 'Pesquisar em publicações';
+  /* a fileira de shorts so tem largura depois que a tela aparece: e aqui
+     que da para saber se ha o que rolar */
+  if (typeof updNvfArrows==='function') requestAnimationFrame(updNvfArrows);
   if (screen==='shortsb'){
     newsView.classList.remove('catmode','cfg','apr','aprhome','intermode');
     reelsView.classList.remove('open','in-social','in-cfg','in-module');

@@ -258,17 +258,19 @@
 .itbl-pg:disabled{opacity:.4;cursor:default}.itbl-newfilter .seg-n{background:#e0392c;color:#fff}
 .apr-seg button.itbl-newfilter.on{background:var(--teal);color:#fff}
 .apr-seg button.itbl-newfilter.on .seg-n{background:rgba(255,255,255,.25)}
-.nvf-layout{display:flex;gap:18px;max-width:1400px;margin:0 auto;align-items:flex-start}
+.nvf-layout{display:flex;gap:40px;max-width:1400px;margin:0 auto;align-items:flex-start}
 .nvf-profile{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;order:1}
 .nvf-layout .nvf-wrap{order:2}
 .nvf-side{order:3}
-.nvf-pcard{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:visible}
-.nvf-pcover{height:56px;background:linear-gradient(120deg,#0f5a63,#1aa0a0);position:relative;border-radius:12px 12px 0 0}
+.nvf-pcard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:visible}
+/* mesma capa do cartao da home: 120px no azul da marca. O raio acompanha
+   o do cartao porque aqui ele nao recorta o conteudo (overflow visivel) */
+.nvf-pcover{height:54px;background:var(--navy);position:relative;border-radius:14px 14px 0 0}
 .nvf-ppremium{position:absolute;top:8px;right:10px;color:#fff;font-size:12px;font-weight:700;opacity:.9}
-.nvf-pbody{padding:0 16px 16px;text-align:left}
-.nvf-pav{width:76px;height:76px;font-size:0;border:3px solid #fff;margin-top:-38px;display:block;position:relative;z-index:2;background-color:#fff}
-.nvf-pname{font-size:17px;font-weight:700;color:var(--ink);margin-top:10px;display:flex;align-items:center;gap:7px}
-.nvf-prole{font-size:13px;color:#465364;line-height:1.4;margin-top:5px}
+.nvf-pbody{padding:0 16px 20px;text-align:center}
+.nvf-pav{width:68px;height:68px;font-size:0;border:2px solid #fff;margin:-34px auto 10px;display:block;position:relative;z-index:2;background-color:#fff}
+.nvf-pname{font-size:18px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:7px}
+.nvf-prole{font-size:14px;color:var(--muted);line-height:1.4;margin-top:3px}
 .nvf-ploc{font-size:12px;color:var(--muted);margin-top:6px}
 .nvf-porg{display:flex;align-items:center;gap:9px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ink)}
 .nvf-porg-ic{width:26px;height:26px;border-radius:7px;background:var(--teal);padding:5px;flex-shrink:0}
@@ -300,14 +302,14 @@
 @media(max-width:1240px){ .nvf-profile{display:none} }
 @media(max-width:940px){ .nvf-side{display:none} }
 .nvf-side{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
-.nvf-side-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.nvf-side-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
 .nvf-side-hd{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0 2px}
-.nvf-fitem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:11px;padding:11px 13px;font:inherit;font-size:14px;font-weight:600;color:#465364;cursor:pointer;white-space:nowrap;text-align:left;transition:background .12s}
+.nvf-fitem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:8px;padding:8px 12px;font:inherit;font-size:14px;font-weight:600;color:#465364;cursor:pointer;white-space:nowrap;text-align:left;transition:background .12s}
 .nvf-fitem i{width:18px;text-align:center;color:#8a94a0;font-size:15px}
 .nvf-fitem:hover{background:#f2f5f7}
 .nvf-fitem.active{background:rgba(0,172,172,.1);color:#0c7d7d}
 .nvf-fitem.active i{color:var(--teal)}
-.nvf-fn{margin-left:auto;font-size:12px;font-weight:700;color:#98a2ac;background:#eef1f4;border-radius:999px;padding:1px 9px}
+.nvf-fn{display:none;margin-left:auto;font-size:12px;font-weight:700;color:#98a2ac;background:#eef1f4;border-radius:999px;padding:1px 9px}
 .nvf-fitem.active .nvf-fn{background:rgba(0,172,172,.18);color:#0c7d7d}
 .nvf-cchip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:12px;font-weight:600;color:#465364;cursor:pointer;margin:0 6px 6px 0;transition:all .12s}
 .nvf-cchip:hover{border-color:var(--teal)}
@@ -318,11 +320,11 @@
 .nvf-fsearch i{font-size:12px;color:var(--muted)}
 .nvf-fsearch input{border:0;background:none;outline:none;flex:1;min-width:0;font:inherit;font-size:13px;color:var(--ink)}
 .nvf-side .nvf-fclear{margin:0}
-.nvf-selbtn{display:flex;align-items:center;gap:10px;width:100%;height:42px;padding:0 12px;border:0;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px #D1D1D6;font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
-.nvf-selbtn>i:first-child{font-size:14px;color:#1667B8;flex-shrink:0}
+.nvf-selbtn{display:flex;align-items:center;gap:10px;width:100%;height:42px;padding:0 12px;border:0;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
+.nvf-selbtn>i:first-child{font-size:14px;color:#8E8E93;flex-shrink:0}
 .nvf-selbtn span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nvf-selmag{font-size:13px;color:#8E8E93;flex-shrink:0}
-.nvf-selbtn:hover{box-shadow:inset 0 0 0 1px var(--teal)}
+.nvf-selbtn:hover{box-shadow:inset 0 0 0 1px var(--linha-campo-forte)}
 .nvf-selbtn:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #0088FF,0 0 0 2px rgba(0,136,255,.16)}
 .nvf-picklist{max-height:340px;overflow-y:auto;display:flex;flex-direction:column}
 .nvf-pickrow{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;padding:10px 12px;font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;border-radius:4px}
@@ -344,8 +346,16 @@
 .nvf-aitem:hover{background:#f2f5f7}
 .nvf-aitem.on{background:rgba(0,172,172,.1);color:#0c7d7d}
 .nvf-fnone{font-size:12px;color:var(--muted);padding:6px 8px}
-.nvf-fsel{width:100%;font:inherit;font-size:13px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 11px;cursor:pointer;outline:none}
-.nvf-fsel:focus{border-color:var(--teal)}
+/* A seta vinha do navegador: colada na borda, no tamanho e na cor do
+   sistema. Com appearance:none ela sai e desenhamos a nossa, a 12px da
+   direita e centrada — a mesma posicao da lupa do botao de Autor logo
+   acima. O padding a direita abre espaco para ela. */
+.nvf-fsel{width:100%;height:42px;font:inherit;font-size:14px;letter-spacing:.3px;color:var(--ink);
+  -webkit-appearance:none;appearance:none;
+  background:#fff url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238E8E93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center;background-size:12px 8px;
+  border:1px solid var(--linha-campo);border-radius:9px;padding:0 32px 0 11px;cursor:pointer;outline:none}
+.nvf-fsel:hover,
+.nvf-fsel:focus{border-color:var(--linha-campo-forte)}
 .nvf-minegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .nvf-minetile{border:1px solid var(--line);background:#fff;border-radius:12px;padding:14px 10px;cursor:pointer;font:inherit;text-align:center;transition:all .14s}
 .nvf-minetile:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 8px 18px -12px rgba(16,32,48,.4)}
@@ -469,16 +479,18 @@
 .rx-filters.rx-advmode{width:400px}
 #rxGrid{width:100%;max-width:100%;box-sizing:border-box}
 .rxr-card:hover .reel-body,.rxr-card:hover .rx-author,.rxr-card:hover .rx-cap{opacity:0;transition:opacity .15s}
-.nvf-stories .shorts{gap:10px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}
-.nvf-stories .stories-wrap{position:relative;display:flow-root}
-.nvf-stories .st-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;
-  background:#fff;box-shadow:none;color:var(--ink);z-index:5;border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .15s}
-.nvf-stories .st-arrow:hover{background:var(--teal);border-color:var(--teal);color:#fff}
-.nvf-stories .st-arrow.left{left:-8px}
-.nvf-stories .st-arrow.right{right:-8px}
+/* A fileira herda o layout da home — gap, folga para a sombra, setas de
+   40px por dentro com sombra. O que estava aqui era um segundo desenho:
+   setas de 42px com borda, por fora da faixa, e gap menor.
+
+   O card e um pouco maior que o da home (126 contra 120) porque a coluna
+   aqui tem 780px e a da home 752: com 120px cabiam seis inteiros e o
+   corte ficava em 8px, o que le como fileira completa, nao como carrossel.
+   Em 126x208 a proporcao do card e a mesma (1:1,65) e o sexto aparece
+   cortado em 82px — o mesmo pedaco que sobra na home. */
+.nvf-stories .stories-wrap{--reel-h:208px}
+.nvf-stories .reel{width:126px}
 .nvf-stories .st-arrow[hidden]{display:none}
-.nvf-stories .shorts::-webkit-scrollbar{display:none}
 .nvf-reels{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 .crc-stage{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#3b444d;padding:20px}
 .crc-frame{position:relative;width:min(292px,calc((100% - 60px) * 0.5625));height:min(520px,100%);aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#11161a;box-shadow:0 0 0 3px var(--teal),0 0 0 6px rgba(0,172,172,.25),0 18px 44px rgba(0,0,0,.55);cursor:grab}

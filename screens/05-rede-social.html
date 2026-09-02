@@ -1,7 +1,7 @@
 <!-- modulo Rede Social e telas de configuracao -->
 <aside class="rmod-side" id="nmodSide">
   <svg class="rmod-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
-  <button class="rmod-item active" id="nmodPub"><i class="fa-solid fa-newspaper"></i>Publicações</button>
+  <button class="rmod-item active" id="nmodPub"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
   <button class="rmod-item" id="nmodCats"><i class="fa-solid fa-tags"></i>Categorias</button>
   <button class="rmod-item" id="nmodPerm"><i class="fa-solid fa-user-shield"></i>Permissões</button>
   <span class="rmod-sp"></span>
@@ -11,11 +11,15 @@
 
 <div class="news-view env-social" id="newsView">
   <div class="nmod-top" id="nmodTop">
-    <svg class="nmod-top-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>
+    <button class="nmod-logobtn" id="nmodLogo" title="Ir para a home" aria-label="Ir para a home"><svg class="nmod-top-logo" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></button>
     <span class="nmod-envname" id="nmodEnvName">Social</span>
     <span class="nmod-envdiv"></span>
+    <div class="nmod-search" id="nmodSearchWrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="nmodSearchIn" placeholder="Pesquisar em publicações" autocomplete="off">
+    </div>
     <div class="nmod-top-tabs nmod-grp" id="nmodGrpManage">
-      <button class="nmod-tab" id="nmtPub"><i class="fa-solid fa-newspaper"></i> Publicações</button>
+      <button class="nmod-tab" id="nmtPub"><i class="fa-solid fa-rectangle-list"></i> Publicações</button>
       <button class="nmod-tab" id="nmtMgShorts"><i class="fa-solid fa-clapperboard"></i> Shorts</button>
       <button class="nmod-tab" id="nmtApr"><span class="nmt-ic"><i class="fa-solid fa-circle-check"></i><span class="tab-badge" id="aprTabBadge" hidden></span></span> Aprovações</button>
       <button class="nmod-tab" id="nmtInter"><span class="nmt-ic"><i class="fa-solid fa-heart"></i><span class="tab-badge" id="interTabBadge" hidden></span></span> Reações</button>
@@ -23,18 +27,13 @@
       <button class="nmod-tab" id="nmtCfg"><i class="fa-solid fa-gear"></i> Configurações</button>
     </div>
     <div class="nmod-top-tabs nmod-grp on" id="nmodGrpSocial">
-      <button class="nmod-tab active" id="nmtFeed"><i class="fa-solid fa-newspaper"></i> Publicações</button>
+      <button class="nmod-tab active" id="nmtFeed"><i class="fa-solid fa-rectangle-list"></i> Publicações</button>
       <button class="nmod-tab" id="nmtStories"><i class="fa-solid fa-clapperboard"></i> Shorts</button>
-    </div>
-    <span style="flex:1"></span>
-    <div class="nmod-search" id="nmodSearchWrap">
-      <input type="text" id="nmodSearchIn" placeholder="Buscar shorts e publicações" autocomplete="off">
-      <button type="button" id="nmodSearchBtn">Pesquisar</button>
     </div>
     <span style="flex:1"></span>
     <button class="nmod-switch" id="nmodEnvSwitch"><i class="fa-solid fa-gear"></i><span class="lbl">Gerenciar</span></button>
     <button class="nmod-tab" id="nmtApps"><i class="fa-solid fa-grip"></i> Módulos</button>
-    <span class="avatar av-rc nmod-topav" id="nmodTopAv" title="Rodrigo Caetano"></span>
+    <span class="avatar av-rc nmod-topav nvf-pclick" id="nmodTopAv" title="Rodrigo Caetano"></span>
   </div>
   <aside class="nv-cfgside" id="nvCfgSide">
     <div class="nv-cfgside-hd"></div>
@@ -69,9 +68,9 @@
       <aside class="nvf-profile">
         <div class="nvf-pcard nvf-pclick" style="cursor:pointer">
           <div class="nvf-pcover"></div>
-          <div class="nvf-pbody" style="text-align:center">
-            <span class="avatar av-rc nvf-pav" style="margin:-38px auto 0"></span>
-            <div class="nvf-pname" style="justify-content:center">Rodrigo Caetano</div>
+          <div class="nvf-pbody">
+            <span class="avatar av-rc nvf-pav"></span>
+            <div class="nvf-pname">Rodrigo Caetano</div>
             <div class="nvf-prole">CEO · SULTS</div>
           </div>
         </div>
@@ -112,7 +111,7 @@
           <button class="nvf-fitem nvf-mine active" data-mine=""><i class="fa-solid fa-list"></i> Tudo</button>
           <button class="nvf-fitem nvf-mine" data-mine="minhas"><i class="fa-solid fa-user-pen"></i> Publicados por mim <span class="nvf-fn" id="nvfnMinhas3"></span></button>
           <button class="nvf-fitem nvf-mine" data-mine="curti"><i class="fa-solid fa-heart"></i> Que eu curti <span class="nvf-fn" id="nvfnCurti"></span></button>
-          <button class="nvf-fitem nvf-mine" data-mine="comentei"><i class="fa-solid fa-reply"></i> Que eu comentei <span class="nvf-fn" id="nvfnComentei"></span></button>
+          <button class="nvf-fitem nvf-mine" data-mine="comentei"><i class="fa-solid fa-comment-dots"></i> Que eu comentei <span class="nvf-fn" id="nvfnComentei"></span></button>
           <button class="nvf-fitem nvf-mine" data-mine="naovistos"><i class="fa-solid fa-circle-play"></i> Não vistos <span class="nvf-fn" id="nvfnNaovistos"></span></button>
         </div>
         <div class="nvf-side-card">
@@ -139,11 +138,6 @@
         </div>
       </aside>
       <aside class="nvf-side">
-        <div class="nvf-side-card">
-          <div class="nvf-side-hd">Localizar</div>
-          <div class="nvf-fsearch"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvfTextSearch" placeholder="Pesquisar no feed" autocomplete="off"></div>
-          <div class="nvf-searchhint" id="nvfSearchHint" hidden></div>
-        </div>
         <div class="nvf-side-card">
           <div class="nvf-side-hd">Ordenar por</div>
           <button class="nvf-fitem nvf-sort active" data-sort="recentes"><i class="fa-solid fa-clock"></i> Mais recentes</button>
@@ -173,8 +167,8 @@
         </div>
       </aside>
       <div class="nvf-wrap">
-      <section class="stories-section nvf-stories" style="margin:0 0 16px">
-        <div class="section-title-row" style="margin-bottom:10px">
+      <section class="stories-section nvf-stories">
+        <div class="section-title-row">
           <h2 class="section-title" style="font-size:20px;margin:0">Shorts</h2>
           <a href="#" class="see-all" id="nvfStoriesAll">Ver todos <i class="fa-solid fa-arrow-right"></i></a>
         </div>
@@ -213,9 +207,9 @@
       <aside class="sb-side">
         <div class="nvf-pcard nvf-pclick" style="cursor:pointer">
           <div class="nvf-pcover"></div>
-          <div class="nvf-pbody" style="text-align:center">
-            <span class="avatar av-rc nvf-pav" style="margin:-38px auto 0"></span>
-            <div class="nvf-pname" style="justify-content:center">Rodrigo Caetano</div>
+          <div class="nvf-pbody">
+            <span class="avatar av-rc nvf-pav"></span>
+            <div class="nvf-pname">Rodrigo Caetano</div>
             <div class="nvf-prole">CEO · SULTS</div>
           </div>
         </div>
@@ -259,7 +253,7 @@
   <!-- LISTA (Publicadas) -->
   <div class="nv-screen" id="nvListScreen">
     <div class="cat-head">
-      <div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Publicações</h2></div>
+      <div class="rx-title"><i class="fa-solid fa-rectangle-list"></i><h2>Publicações</h2></div>
       <button class="fl-toggle" data-fltoggle><i class="fa-solid fa-filter"></i> <span>Esconder filtros</span> <i class="fa-solid fa-chevron-up fl-carat"></i></button>
       <span style="flex:1"></span>
     </div>

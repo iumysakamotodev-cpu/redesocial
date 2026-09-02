@@ -79,9 +79,26 @@ $('#ppAvRemove') && $('#ppAvRemove').addEventListener('click', ()=>{
 $('#ppMore') && $('#ppMore').addEventListener('click', e=>{ e.stopPropagation(); const m=$('#ppMoreMenu'); m.hidden=!m.hidden; });
 document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.target.closest('.pp-morewrap')) m.hidden=true; });
 (function(){
+  /* desfaz a busca sem mexer na aba aberta: o go() forca newsShow('feed'),
+     e limpar estando em Shorts nao deveria jogar a pessoa para Publicacoes */
+  const limpar=()=>{
+    nvSearchQuery='';
+    if(typeof sbQuery!=='undefined'){ sbQuery=''; sbShown=12; const si=$('#sbSearch'); if(si) si.value=''; }
+    const nn=$('#nvSearchNote'); if(nn) nn.hidden=true;
+    if(typeof renderNewsFeed==='function') renderNewsFeed();
+    if(typeof renderShortsB==='function') renderShortsB();
+    if(typeof buildStories==='function') buildStories();
+  };
   const go=()=>{
     const q=(($('#nmodSearchIn')||{}).value||'').trim();
-    if(!q){ fgToast('Digite o que você busca'); return; }
+    if(!q){
+      /* campo vazio + Enter desfaz a busca. Antes so avisava, e a unica
+         saida era o X do aviso de resultados — apagar o texto e dar Enter
+         e o caminho que a pessoa tenta primeiro. */
+      if(nvSearchQuery){ limpar(); fgToast('Busca limpa'); }
+      else fgToast('Digite o que você busca');
+      return;
+    }
     newsShow('feed');
     if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
     nvSearchQuery=q;
@@ -422,9 +439,13 @@ function updNvfArrows(){
   const r = document.getElementById('nvfStoriesRow'); if(!r) return;
   const l = document.getElementById('nvfStLeft'), rt = document.getElementById('nvfStRight');
   if(!l||!rt) return;
+  /* Com a tela fechada a fileira mede 0x0, entao scrollWidth e clientWidth
+     empatam e a seta da direita se escondia — e nada refazia a conta quando
+     a tela abria. O mesmo teste de transbordo que a home usa resolve. */
+  const transborda = r.scrollWidth > r.clientWidth + 4;
   const max = r.scrollWidth - r.clientWidth - 2;
-  l.hidden = r.scrollLeft <= 2;
-  rt.hidden = r.scrollLeft >= max;
+  l.hidden  = !transborda || r.scrollLeft <= 2;
+  rt.hidden = !transborda || r.scrollLeft >= max;
 }
 function updateShortsNavBadge(){
   const b = document.getElementById('navStoriesBadge'); if(!b) return;
