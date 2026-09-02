@@ -266,10 +266,10 @@
 /* ============ Títulos de seção ============ */
 .section-title{font-size:21px;font-weight:700;color:var(--ink);margin:20px 0 14px}
 .section-title-row{display:flex;align-items:center;justify-content:space-between;margin:20px 0 14px}
-/* Blocos da home a 20px um do outro. No Shorts a margem de baixo e 4 e nao
-   12: o scroller compensa a folga da sombra com -8 de margem e +16 de
-   padding, entao os cartoes ja nascem 8px abaixo do topo dele — 4 + 8 = 12. */
-#homeShorts .section-title-row{margin:24px 0 0}
+/* A margem de baixo e zero: o proprio .shorts abre 12px de padding no topo,
+   e sao esses 12px que separam o titulo dos cartoes. E o padding de 20px
+   embaixo dele que faz o intervalo ate o titulo do Feed. */
+#homeShorts .section-title-row{margin:40px 0 0}
 #homeFeedTitle{margin:20px 0 12px}
 .section-title-row .section-title{margin:0}
 .see-all{font-size:13px;font-weight:700;color:#0c7d7d;display:flex;align-items:center;gap:6px}

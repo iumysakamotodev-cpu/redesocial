@@ -619,10 +619,10 @@ input,textarea,select{font-size:14px}
 .nf-close:hover{background:#f0f3f6}
 .content{
   display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:40px;
-  /* laterais iguais às do header (.topbar) para as bordas coincidirem */
-  padding:30px 30px 40px;align-items:start;
-  /* feed em 752 e comunicados em 320:
-     1172 - 60 (padding) - 40 (gap) - 320 (direita) = 752 no feed */
+  padding:20px 40px;align-items:start;
+  /* feed e comunicados: 1172 - 80 (padding) - 40 (gap) - 320 (direita)
+     = 732 no feed. As laterais nao batem mais com as do .topbar, que
+     tem 30px. */
   max-width:1172px;margin:0 auto;width:100%;
 }
 
@@ -895,10 +895,10 @@ input,textarea,select{font-size:14px}
 /* ============ Títulos de seção ============ */
 .section-title{font-size:21px;font-weight:700;color:var(--ink);margin:20px 0 14px}
 .section-title-row{display:flex;align-items:center;justify-content:space-between;margin:20px 0 14px}
-/* Blocos da home a 20px um do outro. No Shorts a margem de baixo e 4 e nao
-   12: o scroller compensa a folga da sombra com -8 de margem e +16 de
-   padding, entao os cartoes ja nascem 8px abaixo do topo dele — 4 + 8 = 12. */
-#homeShorts .section-title-row{margin:24px 0 0}
+/* A margem de baixo e zero: o proprio .shorts abre 12px de padding no topo,
+   e sao esses 12px que separam o titulo dos cartoes. E o padding de 20px
+   embaixo dele que faz o intervalo ate o titulo do Feed. */
+#homeShorts .section-title-row{margin:40px 0 0}
 #homeFeedTitle{margin:20px 0 12px}
 .section-title-row .section-title{margin:0}
 .see-all{font-size:13px;font-weight:700;color:#0c7d7d;display:flex;align-items:center;gap:6px}
@@ -2846,10 +2846,9 @@ input,textarea,select{font-size:14px}
 .stories-wrap{position:relative;display:flow-root;--reel-h:198px}
 .shorts{
   display:flex;gap:12px;overflow-x:auto;cursor:grab;-webkit-user-drag:none;
-  /* O padding e folga para a sombra do hover, que o overflow-x recortaria;
-     as margens negativas devolvem essa folga ao layout. Resultado: 12px
-     acima dos cards, 8px abaixo, 0 nas laterais. */
-  padding:24px 0 24px;margin:-12px 0 -16px;
+  /* o overflow-x recorta o que sai da caixa: 12px em cima cobrem os ~6px
+     que o hover levanta, e 20px embaixo cobrem os ~15px da sombra */
+  padding:12px 0 20px;margin:0;
   scroll-behavior:smooth;scrollbar-width:none;
 }
 .shorts::-webkit-scrollbar{display:none}
@@ -3670,7 +3669,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .nvf-pbody{padding:0 16px 20px;text-align:center}
 .nvf-pav{width:68px;height:68px;font-size:0;border:2px solid #fff;margin:-34px auto 10px;display:block;position:relative;z-index:2;background-color:#fff}
 .nvf-pname{font-size:18px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:7px}
-.nvf-prole{font-size:14px;color:var(--muted);line-height:1.4;margin-top:3px}
+.nvf-prole{font-size:14px;color:var(--muted);line-height:1.4;margin-top:4px}
 .nvf-ploc{font-size:12px;color:var(--muted);margin-top:6px}
 .nvf-porg{display:flex;align-items:center;gap:9px;margin-top:12px;font-size:13px;font-weight:700;color:var(--ink)}
 .nvf-porg-ic{width:26px;height:26px;border-radius:7px;background:var(--teal);padding:5px;flex-shrink:0}
@@ -3707,6 +3706,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .nvf-fitem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:8px;padding:8px 12px;font:inherit;font-size:14px;font-weight:600;color:#465364;cursor:pointer;white-space:nowrap;text-align:left;transition:background .12s}
 .nvf-fitem i{width:18px;text-align:center;color:#8a94a0;font-size:15px}
 .nvf-fitem + .nvf-fitem{margin-top:2px}
+.nvf-fitem.sb-act{height:36px}
 .nvf-fitem:hover{background:#f2f5f7}
 .nvf-fitem.active{background:rgba(0,172,172,.1);color:#0c7d7d}
 .nvf-fitem.active i{color:var(--teal)}

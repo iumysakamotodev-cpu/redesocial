@@ -433,10 +433,10 @@
 .nf-close:hover{background:#f0f3f6}
 .content{
   display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:40px;
-  /* laterais iguais às do header (.topbar) para as bordas coincidirem */
-  padding:30px 30px 40px;align-items:start;
-  /* feed em 752 e comunicados em 320:
-     1172 - 60 (padding) - 40 (gap) - 320 (direita) = 752 no feed */
+  padding:20px 40px;align-items:start;
+  /* feed e comunicados: 1172 - 80 (padding) - 40 (gap) - 320 (direita)
+     = 732 no feed. As laterais nao batem mais com as do .topbar, que
+     tem 30px. */
   max-width:1172px;margin:0 auto;width:100%;
 }
 
