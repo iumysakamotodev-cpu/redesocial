@@ -941,7 +941,7 @@
 .nvf-modbar .comment-mod .cmod-no{--vermelho:#B3261E;
   background:#fff;color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .nvf-modbar .comment-mod .cmod-no:hover{background:#fff;
-  --vermelho:color-mix(in srgb, #B3261E 60%, #fff);
+  --vermelho:var(--red);
   color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .nvf-cm-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .nvf-cm-item{display:flex;gap:10px}

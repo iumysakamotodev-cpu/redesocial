@@ -2468,7 +2468,7 @@ input,textarea,select{font-size:14px}
 .nvf-modbar .comment-mod .cmod-no{--vermelho:#B3261E;
   background:#fff;color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .nvf-modbar .comment-mod .cmod-no:hover{background:#fff;
-  --vermelho:color-mix(in srgb, #B3261E 60%, #fff);
+  --vermelho:var(--red);
   color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .nvf-cm-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .nvf-cm-item{display:flex;gap:10px}
@@ -3650,6 +3650,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .nvf-side-hd{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding:0 2px}
 .nvf-fitem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:8px;padding:8px 12px;font:inherit;font-size:14px;font-weight:600;color:#465364;cursor:pointer;white-space:nowrap;text-align:left;transition:background .12s}
 .nvf-fitem i{width:18px;text-align:center;color:#8a94a0;font-size:15px}
+.nvf-fitem + .nvf-fitem{margin-top:2px}
 .nvf-fitem:hover{background:#f2f5f7}
 .nvf-fitem.active{background:rgba(0,172,172,.1);color:#0c7d7d}
 .nvf-fitem.active i{color:var(--teal)}
@@ -3708,8 +3709,11 @@ body.demo-empty .demo-empty-state{display:flex}
 .nvf-minetile b{display:block;font-size:22px;font-weight:700;color:var(--ink);line-height:1}
 .nvf-minetile span{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
 .nvf-searchhint{font-size:12px;color:var(--muted);font-weight:600;padding:6px 4px 0}
-.nvf-cico{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
-.nvf-cico i{color:#fff !important}
+.nvf-cico{width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.nvf-cico i{width:auto;font-size:12px;color:#fff !important}
+/* "Todas" abre a lista com um icone solto; iguala a largura do quadrado
+   para os rotulos da lista cairem todos na mesma vertical */
+.nvf-cli > i:first-child{width:26px;font-size:14px}
 .nvf-cli{gap:11px}
 .nvf-cli .nvf-fn{margin-left:auto}
 .nvf-clearwrap[hidden]{display:none}
@@ -7878,6 +7882,40 @@ function cmDT(c){
   const t=new Date(d.getTime()-mins*60000); const p=x=>('0'+x).slice(-2);
   return p(t.getDate())+'/'+p(t.getMonth()+1)+'/'+t.getFullYear()+' '+p(t.getHours())+':'+p(t.getMinutes());
 }
+/* Data de publicacao em um formato so: DD/MM/AAAA as HH:MM. O feed de
+   Publicacoes vinha com "2 h", "ontem", "1 d" e "22/07/2026" — quatro formas
+   diferentes e nenhuma com hora — e na home sobrava um datetime de ano curto. */
+function fmtQuando(n){
+  const p = x => ('0'+x).slice(-2);
+  /* Sem expressao regular de proposito: separo por barra e espaco. A primeira
+     versao usava regex e as barras invertidas nao sobreviveram ao caminho ate
+     o arquivo, deixando o script sem sintaxe valida. */
+  const dt = String(n.datetime || '').trim();
+  if (dt.indexOf('/') > 0){
+    const partes = dt.replace(' às ', ' ').split(' ');
+    const data = partes[0].split('/');
+    if (data.length === 3){
+      const ano = data[2].length === 2 ? '20' + data[2] : data[2];
+      return data[0] + '/' + data[1] + '/' + ano + (partes[1] ? ' às ' + partes[1] : '');
+    }
+  }
+  /* o prototipo tem uma data de referencia fixa, a mesma do nvFmtDateTime */
+  const agora = new Date(2026, 6, 23, 13, 40);
+  let d = new Date(agora);
+  const s = String(n.date || '').trim().toLowerCase();
+  const num = parseInt(s, 10);
+  if (s.indexOf('/') > 0){
+    const q = s.split('/');
+    d = new Date(+q[2], +q[1] - 1, +q[0], 9, 14);
+  }
+  else if (s === 'agora')                            d = agora;
+  else if (s === 'ontem')                            d = new Date(agora - 86400000);
+  else if (!isNaN(num) && s.indexOf('min') > 0)      d = new Date(agora - num * 60000);
+  else if (!isNaN(num) && s.indexOf('h') > 0)        d = new Date(agora - num * 3600000);
+  else if (!isNaN(num) && s.indexOf('d') > 0)        d = new Date(agora - num * 86400000);
+  return p(d.getDate()) + '/' + p(d.getMonth()+1) + '/' + d.getFullYear() +
+         ' às ' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
 function buildComment(c, fresh, pending){
   const el = document.createElement('div');
   el.className = 'comment' + (fresh ? ' fresh' : '') + (pending ? ' pending' : '');
@@ -7970,7 +8008,7 @@ function addHomePost(n, append){
   const bodyTxt = n.colorBg ? '' : txt;
   const avatarHtml = n.autorAv ? '<span class="avatar '+n.autorAv+'"></span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
   const nameHtml = n.autorNome ? n.autorNome : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
-  const metaTxt = n.datetime || n.date || 'agora';
+  const metaTxt = fmtQuando(n);
   const rcount = n.reactions||0, ccount = n.comments||0;
   art.innerHTML =
     '<div class="post-head">'+avatarHtml+
@@ -10117,7 +10155,7 @@ function renderNewsFeed(){
       const pinA = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
       return '<article class="card post nvf-artcard" data-id="'+n.id+'">'+
-        '<div class="post-head"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div class="post-id"><div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+(n.sub||'')+'</div><div class="post-meta">'+n.date+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
+        '<div class="post-head"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div class="post-id"><div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+(n.sub||'')+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"><span class="art-badge">'+n.article.kicker+'</span></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
@@ -10145,7 +10183,7 @@ function renderNewsFeed(){
     const menu = '<div class="nvf-menu" hidden><button data-menu="edit"><i class="fa-solid fa-pen"></i> Editar publicação</button><button data-menu="pin"><i class="fa-solid fa-thumbtack"></i> '+(n.pinned?'Desafixar':'Fixar no topo')+'</button><button data-menu="copy"><i class="fa-solid fa-link"></i> Copiar link</button><button class="danger" data-menu="del"><i class="fa-solid fa-trash"></i> Excluir</button></div>';
     const pendBar = n.pendAppr ? '<div class="nvf-modbar"><span class="nvf-modtx"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><span style="flex:1"></span><div class="comment-mod" style="margin-top:0"><button class="cmod-no" data-act="pubrej"><i class="fa-solid fa-xmark"></i> Reprovar</button><button class="cmod-ok" data-act="pubapr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>' : '';
     return '<article class="card post'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
-      pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+n.date+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
+      pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
       (bodyTxt?'<p class="post-text nvf-postlink" data-act="open">'+bodyTxt+'</p>':'') + colored + banner + image + event + poll +
       (n.pendAppr ? '' :
       '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+

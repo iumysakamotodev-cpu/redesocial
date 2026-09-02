@@ -125,6 +125,40 @@ function cmDT(c){
   const t=new Date(d.getTime()-mins*60000); const p=x=>('0'+x).slice(-2);
   return p(t.getDate())+'/'+p(t.getMonth()+1)+'/'+t.getFullYear()+' '+p(t.getHours())+':'+p(t.getMinutes());
 }
+/* Data de publicacao em um formato so: DD/MM/AAAA as HH:MM. O feed de
+   Publicacoes vinha com "2 h", "ontem", "1 d" e "22/07/2026" — quatro formas
+   diferentes e nenhuma com hora — e na home sobrava um datetime de ano curto. */
+function fmtQuando(n){
+  const p = x => ('0'+x).slice(-2);
+  /* Sem expressao regular de proposito: separo por barra e espaco. A primeira
+     versao usava regex e as barras invertidas nao sobreviveram ao caminho ate
+     o arquivo, deixando o script sem sintaxe valida. */
+  const dt = String(n.datetime || '').trim();
+  if (dt.indexOf('/') > 0){
+    const partes = dt.replace(' às ', ' ').split(' ');
+    const data = partes[0].split('/');
+    if (data.length === 3){
+      const ano = data[2].length === 2 ? '20' + data[2] : data[2];
+      return data[0] + '/' + data[1] + '/' + ano + (partes[1] ? ' às ' + partes[1] : '');
+    }
+  }
+  /* o prototipo tem uma data de referencia fixa, a mesma do nvFmtDateTime */
+  const agora = new Date(2026, 6, 23, 13, 40);
+  let d = new Date(agora);
+  const s = String(n.date || '').trim().toLowerCase();
+  const num = parseInt(s, 10);
+  if (s.indexOf('/') > 0){
+    const q = s.split('/');
+    d = new Date(+q[2], +q[1] - 1, +q[0], 9, 14);
+  }
+  else if (s === 'agora')                            d = agora;
+  else if (s === 'ontem')                            d = new Date(agora - 86400000);
+  else if (!isNaN(num) && s.indexOf('min') > 0)      d = new Date(agora - num * 60000);
+  else if (!isNaN(num) && s.indexOf('h') > 0)        d = new Date(agora - num * 3600000);
+  else if (!isNaN(num) && s.indexOf('d') > 0)        d = new Date(agora - num * 86400000);
+  return p(d.getDate()) + '/' + p(d.getMonth()+1) + '/' + d.getFullYear() +
+         ' às ' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
 function buildComment(c, fresh, pending){
   const el = document.createElement('div');
   el.className = 'comment' + (fresh ? ' fresh' : '') + (pending ? ' pending' : '');
@@ -217,7 +251,7 @@ function addHomePost(n, append){
   const bodyTxt = n.colorBg ? '' : txt;
   const avatarHtml = n.autorAv ? '<span class="avatar '+n.autorAv+'"></span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
   const nameHtml = n.autorNome ? n.autorNome : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
-  const metaTxt = n.datetime || n.date || 'agora';
+  const metaTxt = fmtQuando(n);
   const rcount = n.reactions||0, ccount = n.comments||0;
   art.innerHTML =
     '<div class="post-head">'+avatarHtml+
