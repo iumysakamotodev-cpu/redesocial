@@ -166,7 +166,7 @@ function renderShortsB(){
   if(cw){ cw.hidden = n===0; const lb=$('#sbClearLbl'); if(lb) lb.textContent='Limpar filtros'+(n?' ('+n+')':''); }
   const pills=$('#sbPills');
   if(pills){ pills.innerHTML = sbTabs().map(t=>'<button class="sb-pill'+(sbTab===t[0]?' on':'')+'" data-sbtab="'+t[0]+'">'+t[1]+'</button>').join(''); requestAnimationFrame(sbArrows); }
-  const sbl=$('#sbAuthorBtnLbl'); if(sbl) sbl.textContent = sbAuthor || 'Todas as pessoas';
+  const sbl=$('#sbAuthorBtnLbl'); if(sbl) sbl.textContent = sbAuthor || 'Todos os autores';
   const ab=$('#sbAuthors');
   if(ab){
     const q=rxNorm(sbAuthorQuery);

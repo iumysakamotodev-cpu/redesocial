@@ -1776,12 +1776,13 @@ input,textarea,select{font-size:14px}
 .fl-toggle:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 .nofilters .nv-filters,.nofilters .rx-nav{display:none !important}
 /* ===== Shorts B ===== */
-#nvShortsBScreen{overflow-y:auto;background:#e9eaed}
-.sb-body{display:flex;gap:18px;align-items:flex-start;max-width:1400px;width:100%;margin:0 auto;padding:20px 0 60px}
+#nvShortsBScreen{overflow-y:auto;scrollbar-gutter:stable both-edges;
+  padding:24px 20px 60px;background:#e9eaed}
+.sb-body{display:flex;gap:40px;align-items:flex-start;max-width:1400px;width:100%;margin:0 auto;padding:0}
 .sb-side{width:270px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
 .sb-side .nvf-authors{max-height:240px;overflow-y:auto}
 .sb-main{flex:1;min-width:0}
-.sb-pillrow{position:relative;margin:0 0 18px}
+.sb-pillrow{position:relative;margin:0 0 20px}
 .sb-pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;padding:2px 0}
 .sb-pills::-webkit-scrollbar{display:none}
 .sb-pill{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 18px;border:0;border-radius:32px;background:transparent;color:#48484A;font:inherit;font-size:14px;line-height:20px;font-weight:600;letter-spacing:.3px;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:background 120ms cubic-bezier(.4,0,.2,1),color 120ms cubic-bezier(.4,0,.2,1)}
@@ -5371,12 +5372,8 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           <button class="nvf-fitem sb-fmt" data-sbfmt="imagem"><i class="fa-solid fa-image"></i> Imagem</button>
         </div>
         <div class="nvf-side-card">
-          <div class="nvf-side-hd">Localizar</div>
-          <div class="nvf-fsearch"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="sbSearch" placeholder="Pesquisar shorts" autocomplete="off"></div>
-        </div>
-        <div class="nvf-side-card">
-          <div class="nvf-side-hd">Pessoa</div>
-          <button class="nvf-selbtn" id="sbAuthorBtn"><i class="fa-solid fa-user"></i><span id="sbAuthorBtnLbl">Todas as pessoas</span><i class="fa-solid fa-magnifying-glass nvf-selmag"></i></button>
+          <div class="nvf-side-hd">Autor</div>
+          <button class="nvf-selbtn" id="sbAuthorBtn"><i class="fa-solid fa-user"></i><span id="sbAuthorBtnLbl">Todos os autores</span><i class="fa-solid fa-magnifying-glass nvf-selmag"></i></button>
         </div>
       </aside>
       <div class="sb-main">
@@ -5899,7 +5896,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
 </div>
 <div class="fg-backdrop" id="sbAuthorPickModal">
   <div class="fg-modal" style="width:520px">
-    <div class="fg-head"><h2>Selecionar pessoa</h2><span style="flex:1"></span><button class="fg-close" id="sbAuthorPickClose"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="fg-head"><h2>Selecionar autor</h2><span style="flex:1"></span><button class="fg-close" id="sbAuthorPickClose"><i class="fa-solid fa-xmark"></i></button></div>
     <div class="fg-body">
       <div class="rx-search" style="margin-bottom:12px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="sbAuthorSearch" placeholder="Pesquisar..." autocomplete="off"></div>
       <div id="sbAuthors" class="nvf-picklist"></div>
@@ -9339,7 +9336,7 @@ function renderShortsB(){
   if(cw){ cw.hidden = n===0; const lb=$('#sbClearLbl'); if(lb) lb.textContent='Limpar filtros'+(n?' ('+n+')':''); }
   const pills=$('#sbPills');
   if(pills){ pills.innerHTML = sbTabs().map(t=>'<button class="sb-pill'+(sbTab===t[0]?' on':'')+'" data-sbtab="'+t[0]+'">'+t[1]+'</button>').join(''); requestAnimationFrame(sbArrows); }
-  const sbl=$('#sbAuthorBtnLbl'); if(sbl) sbl.textContent = sbAuthor || 'Todas as pessoas';
+  const sbl=$('#sbAuthorBtnLbl'); if(sbl) sbl.textContent = sbAuthor || 'Todos os autores';
   const ab=$('#sbAuthors');
   if(ab){
     const q=rxNorm(sbAuthorQuery);
