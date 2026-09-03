@@ -412,7 +412,7 @@ function renderShortsInto(row){
                 : '<video class="reel-img" src="' + post.video + '" muted preload="metadata"></video>') +
       '<span class="reel-av"><span class="avatar ' + post.av + '">' + post.initials + '</span></span>' +
       '<span class="reel-body"><span class="reel-title">' + post.title + '</span>' +
-      '<span class="reel-meta">' + post.label + ' · ' + post.time + '</span></span>';
+      '<span class="reel-meta">' + post.label + '</span></span>';
     b.addEventListener('click', () => openPlayer(list, i));
     ajustaFundo(b.querySelector('.reel-img'));
     row.appendChild(b);

@@ -307,7 +307,8 @@
 .nvf-fitem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;border-radius:8px;padding:8px 12px;font:inherit;font-size:14px;font-weight:600;color:#465364;cursor:pointer;white-space:nowrap;text-align:left;transition:background .12s}
 .nvf-fitem i{width:18px;text-align:center;color:#8a94a0;font-size:15px}
 .nvf-fitem + .nvf-fitem{margin-top:2px}
-.nvf-fitem.sb-act{height:36px}
+/* itens de atividade nas duas telas com a mesma altura */
+.nvf-fitem.sb-act,.nvf-fitem.nvf-mine{height:36px}
 .nvf-fitem:hover{background:#f2f5f7}
 .nvf-fitem.active{background:rgba(0,172,172,.1);color:#0c7d7d}
 .nvf-fitem.active i{color:var(--teal)}

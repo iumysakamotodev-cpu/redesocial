@@ -684,7 +684,7 @@ $('#crFile').addEventListener('change', e => {
   crURL = URL.createObjectURL(f);
   $('#crPreview').src = crURL;
   $('#crStep1').style.display='none';
-  crShowLoading(crIsVideo?'Carregando seu vídeo…':'Carregando sua imagem…','Preparando a pré-visualização.');
+  crShowLoading(crIsVideo?'Carregando seu vídeo…':'Carregando sua imagem…', crIsVideo?'Estamos preparando a pré-visualização do seu vídeo.':'Estamos preparando a pré-visualização da sua imagem.');
   setTimeout(function(){ crHideLoading(); crOpenCrop(); }, 2100);
 });
 function crShowLoading(t,s){
