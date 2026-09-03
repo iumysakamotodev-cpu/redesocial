@@ -110,6 +110,20 @@ $('#nvPeoNone').addEventListener('click', () => { NV_PEO.clear(); renderPessoas(
 $('#nvPeoSearch').addEventListener('input', renderPessoas);
 $('#nvPeoList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const id=+tr.dataset.id; if(e.target.checked) NV_PEO.add(id); else NV_PEO.delete(id); $('#nvPeoCount').textContent = NV_PEO.size+(NV_PEO.size===1?' selecionada':' selecionadas'); });
 $('#nvEmpList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const c=tr.dataset.code; if(e.target.checked) NV_EMP.add(c); else NV_EMP.delete(c); $('#nvEmpCount').textContent = NV_EMP.size+(NV_EMP.size===1?' selecionada':' selecionadas'); });
+/* decisao sobre a publicacao pendente aberta no leitor */
+function nvArtDecidir(ok){
+  const n=npCurrent; if(!n) return;
+  n.pendAppr=false;
+  if(ok){ n.apprStatus='aprovado'; }
+  else { n.apprStatus='rejeitado'; n.status='draft'; }
+  const pend=document.getElementById('nvArtPend'); if(pend) pend.hidden=true;
+  if(typeof renderNewsFeed==='function') renderNewsFeed();
+  if(document.body.classList.contains('demo-crunch') && typeof crunchInjetaHome==='function') crunchInjetaHome();
+  fgToast(ok ? 'Publicação aprovada' : 'Publicação reprovada');
+  if(ok) openArticle(n); else newsShow('feed');
+}
+$('#nvArtPendApr') && $('#nvArtPendApr').addEventListener('click', () => nvArtDecidir(true));
+$('#nvArtPendRej') && $('#nvArtPendRej').addEventListener('click', () => nvArtDecidir(false));
 $('#nvArtBack').addEventListener('click', () => {
   /* na visao do funcionario o voltar devolve ao feed; no Gerenciar, a lista */
   if (newsView.classList.contains('env-social')){ newsShow('feed'); return; }
@@ -197,6 +211,14 @@ function artCatPill(kicker){
 function openArticle(n){
   npCurrent=n;
   const tt=document.getElementById('nvArtTitulo'); if(tt) tt.textContent = n.article ? 'Artigo' : 'Publicação';
+  /* pendente e quem le pode aprovar: aviso e botoes no canto direito da barra */
+  const pend=document.getElementById('nvArtPend');
+  if(pend){
+    pend.hidden = !(n.pendAppr && (typeof podeAprovar!=='function' || podeAprovar()));
+    const tx=document.getElementById('nvArtPendTx');
+    const quando=(typeof fmtQuando==='function') ? fmtQuando(n) : (n.date||'');
+    if(tx) tx.textContent = quando ? 'Aguardando aprovação desde '+quando : 'Aguardando aprovação';
+  }
   if (!n.article){
     const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
     const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);

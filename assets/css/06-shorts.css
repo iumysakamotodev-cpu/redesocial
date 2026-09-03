@@ -180,7 +180,7 @@
 .rx-catdot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
 .cat-view{position:fixed;top:0;right:0;bottom:0;left:100px;z-index:125;background:#e9eaed;display:none;flex-direction:column}
 .cat-view.open{display:flex}
-.cat-head{display:flex;align-items:center;gap:14px;height:60px;min-height:60px;box-sizing:border-box;padding:0 28px;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0}
+.cat-head{display:flex;align-items:center;gap:14px;box-sizing:border-box;padding:8px 28px;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0}
 .cat-add{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:0;border-radius:999px;padding:10px 17px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
 .cat-add:hover{background:var(--teal-dark)}
 /* Toolbars: raio padrão (8px) e altura 36px nos controles */
@@ -195,7 +195,7 @@
 #nvModScreen .cat-head,
 #nvPubApprScreen .cat-head,
 #nvReelApprScreen .cat-head,
-#nvInterScreen .cat-head{margin:10px 10px 0;height:60px;min-height:60px;padding:0 18px;border-bottom:0;border-radius:12px;box-shadow:inset 0 0 0 1px #E9EAED;flex-shrink:0}
+#nvInterScreen .cat-head{margin:10px 10px 0;padding:8px 18px;border-bottom:0;border-radius:12px;box-shadow:inset 0 0 0 1px #E9EAED;flex-shrink:0}
 /* toolbar rola junto: a própria tela é o container de scroll */
 #nvPermScreen,#nvAprHomeScreen,#nvModScreen,#nvPubApprScreen,#nvReelApprScreen{display:none;flex-direction:column;min-height:0;overflow-y:auto}
 #nvPermScreen.active,#nvAprHomeScreen.active,#nvModScreen.active,#nvPubApprScreen.active,#nvReelApprScreen.active{display:flex}

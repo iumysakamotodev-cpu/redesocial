@@ -947,6 +947,14 @@
 .art-social{padding:0 32px}
 .art-social .post-stats{padding-top:0}
 .art-social .nvf-cm{padding-bottom:0}
+/* publicacao pendente no leitor: faixa amarela fixa logo abaixo da barra (fora
+   da area que rola), com o conteudo na largura do artigo — aviso a esquerda,
+   botoes a direita; texto do mesmo tamanho da barra do feed */
+.artpend{position:sticky;top:0;z-index:5;background:#fff8e6;border-bottom:1px solid #f4e6bf}
+.artpend[hidden]{display:none}
+.artpend-in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:8px 0}
+.artpend .nvf-modtx{font-size:14px;line-height:20px}
+.artpend .nvf-modtx i{font-size:15px}
 /* barra de cima do artigo alinhada com o header branco */
 .news-view.env-social #nvArticleScreen .cat-head{padding-inline:max(20px, calc((100% - 1400px) / 2))}
 .art-byline .art-share button:hover{background:#e4e9ee;color:var(--ink)}

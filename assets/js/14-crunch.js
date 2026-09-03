@@ -342,6 +342,7 @@ function crunchInjetaHome(){
   feed.querySelectorAll(':scope > .post[data-crunch]').forEach(function(p){ p.remove(); });
   feed.querySelectorAll(':scope > .post').forEach(function(p){ p.setAttribute('data-sults', ''); });
   CRUNCH_NEWS.forEach(function(n){
+    if (n.status && n.status !== 'pub') return;      /* reprovada: fora do ar */
     if (n.pendAppr && !podeAprovar()) return;
     addHomePost(n, true);
     const novo = feed.lastElementChild;

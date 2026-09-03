@@ -717,7 +717,10 @@
   <div class="nv-screen" id="nvArticleScreen">
     <div class="cat-head"><button class="nv-back" id="nvArtBack"><i class="fa-solid fa-arrow-left"></i></button><div class="rx-title"><h2 id="nvArtTitulo">Artigo</h2></div><span style="flex:1"></span></div>
     <div id="nvArtReview" hidden class="artreview"><div class="artreview-in"><span class="artreview-tx"><i class="fa-solid fa-clock"></i> Esta publicação está <b>aguardando aprovação</b></span><span style="flex:1"></span><button class="artreview-no" id="nvArtRej"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="artreview-ok" id="nvArtApr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>
-    <div class="nv-artscroll"><div class="art" id="nvArtBody"></div></div>
+    <div class="nv-artscroll">
+      <div class="artpend" id="nvArtPend" hidden><div class="artpend-in"><span class="nvf-modtx"><i class="fa-solid fa-clock"></i> <span id="nvArtPendTx">Aguardando aprovação</span></span><span style="flex:1"></span><div class="comment-mod"><button class="cmod-no" id="nvArtPendRej"><i class="fa-solid fa-xmark"></i> Reprovar</button><button class="cmod-ok" id="nvArtPendApr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div></div>
+      <div class="art" id="nvArtBody"></div>
+    </div>
   </div>
   <!-- CATEGORIAS -->
   <div class="nv-screen" id="nvCatsScreen">

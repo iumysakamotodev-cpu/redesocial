@@ -1282,7 +1282,7 @@ input,textarea,select{font-size:14px}
 .rx-catdot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
 .cat-view{position:fixed;top:0;right:0;bottom:0;left:100px;z-index:125;background:#e9eaed;display:none;flex-direction:column}
 .cat-view.open{display:flex}
-.cat-head{display:flex;align-items:center;gap:14px;height:60px;min-height:60px;box-sizing:border-box;padding:0 28px;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0}
+.cat-head{display:flex;align-items:center;gap:14px;box-sizing:border-box;padding:8px 28px;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0}
 .cat-add{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:0;border-radius:999px;padding:10px 17px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
 .cat-add:hover{background:var(--teal-dark)}
 /* Toolbars: raio padrão (8px) e altura 36px nos controles */
@@ -1297,7 +1297,7 @@ input,textarea,select{font-size:14px}
 #nvModScreen .cat-head,
 #nvPubApprScreen .cat-head,
 #nvReelApprScreen .cat-head,
-#nvInterScreen .cat-head{margin:10px 10px 0;height:60px;min-height:60px;padding:0 18px;border-bottom:0;border-radius:12px;box-shadow:inset 0 0 0 1px #E9EAED;flex-shrink:0}
+#nvInterScreen .cat-head{margin:10px 10px 0;padding:8px 18px;border-bottom:0;border-radius:12px;box-shadow:inset 0 0 0 1px #E9EAED;flex-shrink:0}
 /* toolbar rola junto: a própria tela é o container de scroll */
 #nvPermScreen,#nvAprHomeScreen,#nvModScreen,#nvPubApprScreen,#nvReelApprScreen{display:none;flex-direction:column;min-height:0;overflow-y:auto}
 #nvPermScreen.active,#nvAprHomeScreen.active,#nvModScreen.active,#nvPubApprScreen.active,#nvReelApprScreen.active{display:flex}
@@ -2474,6 +2474,14 @@ input,textarea,select{font-size:14px}
 .art-social{padding:0 32px}
 .art-social .post-stats{padding-top:0}
 .art-social .nvf-cm{padding-bottom:0}
+/* publicacao pendente no leitor: faixa amarela fixa logo abaixo da barra (fora
+   da area que rola), com o conteudo na largura do artigo — aviso a esquerda,
+   botoes a direita; texto do mesmo tamanho da barra do feed */
+.artpend{position:sticky;top:0;z-index:5;background:#fff8e6;border-bottom:1px solid #f4e6bf}
+.artpend[hidden]{display:none}
+.artpend-in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:8px 0}
+.artpend .nvf-modtx{font-size:14px;line-height:20px}
+.artpend .nvf-modtx i{font-size:15px}
 /* barra de cima do artigo alinhada com o header branco */
 .news-view.env-social #nvArticleScreen .cat-head{padding-inline:max(20px, calc((100% - 1400px) / 2))}
 .art-byline .art-share button:hover{background:#e4e9ee;color:var(--ink)}
@@ -6055,7 +6063,10 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
   <div class="nv-screen" id="nvArticleScreen">
     <div class="cat-head"><button class="nv-back" id="nvArtBack"><i class="fa-solid fa-arrow-left"></i></button><div class="rx-title"><h2 id="nvArtTitulo">Artigo</h2></div><span style="flex:1"></span></div>
     <div id="nvArtReview" hidden class="artreview"><div class="artreview-in"><span class="artreview-tx"><i class="fa-solid fa-clock"></i> Esta publicação está <b>aguardando aprovação</b></span><span style="flex:1"></span><button class="artreview-no" id="nvArtRej"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="artreview-ok" id="nvArtApr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>
-    <div class="nv-artscroll"><div class="art" id="nvArtBody"></div></div>
+    <div class="nv-artscroll">
+      <div class="artpend" id="nvArtPend" hidden><div class="artpend-in"><span class="nvf-modtx"><i class="fa-solid fa-clock"></i> <span id="nvArtPendTx">Aguardando aprovação</span></span><span style="flex:1"></span><div class="comment-mod"><button class="cmod-no" id="nvArtPendRej"><i class="fa-solid fa-xmark"></i> Reprovar</button><button class="cmod-ok" id="nvArtPendApr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div></div>
+      <div class="art" id="nvArtBody"></div>
+    </div>
   </div>
   <!-- CATEGORIAS -->
   <div class="nv-screen" id="nvCatsScreen">
@@ -11232,6 +11243,20 @@ $('#nvPeoNone').addEventListener('click', () => { NV_PEO.clear(); renderPessoas(
 $('#nvPeoSearch').addEventListener('input', renderPessoas);
 $('#nvPeoList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const id=+tr.dataset.id; if(e.target.checked) NV_PEO.add(id); else NV_PEO.delete(id); $('#nvPeoCount').textContent = NV_PEO.size+(NV_PEO.size===1?' selecionada':' selecionadas'); });
 $('#nvEmpList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const c=tr.dataset.code; if(e.target.checked) NV_EMP.add(c); else NV_EMP.delete(c); $('#nvEmpCount').textContent = NV_EMP.size+(NV_EMP.size===1?' selecionada':' selecionadas'); });
+/* decisao sobre a publicacao pendente aberta no leitor */
+function nvArtDecidir(ok){
+  const n=npCurrent; if(!n) return;
+  n.pendAppr=false;
+  if(ok){ n.apprStatus='aprovado'; }
+  else { n.apprStatus='rejeitado'; n.status='draft'; }
+  const pend=document.getElementById('nvArtPend'); if(pend) pend.hidden=true;
+  if(typeof renderNewsFeed==='function') renderNewsFeed();
+  if(document.body.classList.contains('demo-crunch') && typeof crunchInjetaHome==='function') crunchInjetaHome();
+  fgToast(ok ? 'Publicação aprovada' : 'Publicação reprovada');
+  if(ok) openArticle(n); else newsShow('feed');
+}
+$('#nvArtPendApr') && $('#nvArtPendApr').addEventListener('click', () => nvArtDecidir(true));
+$('#nvArtPendRej') && $('#nvArtPendRej').addEventListener('click', () => nvArtDecidir(false));
 $('#nvArtBack').addEventListener('click', () => {
   /* na visao do funcionario o voltar devolve ao feed; no Gerenciar, a lista */
   if (newsView.classList.contains('env-social')){ newsShow('feed'); return; }
@@ -11319,6 +11344,14 @@ function artCatPill(kicker){
 function openArticle(n){
   npCurrent=n;
   const tt=document.getElementById('nvArtTitulo'); if(tt) tt.textContent = n.article ? 'Artigo' : 'Publicação';
+  /* pendente e quem le pode aprovar: aviso e botoes no canto direito da barra */
+  const pend=document.getElementById('nvArtPend');
+  if(pend){
+    pend.hidden = !(n.pendAppr && (typeof podeAprovar!=='function' || podeAprovar()));
+    const tx=document.getElementById('nvArtPendTx');
+    const quando=(typeof fmtQuando==='function') ? fmtQuando(n) : (n.date||'');
+    if(tx) tx.textContent = quando ? 'Aguardando aprovação desde '+quando : 'Aguardando aprovação';
+  }
   if (!n.article){
     const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
     const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
@@ -12822,6 +12855,7 @@ function crunchInjetaHome(){
   feed.querySelectorAll(':scope > .post[data-crunch]').forEach(function(p){ p.remove(); });
   feed.querySelectorAll(':scope > .post').forEach(function(p){ p.setAttribute('data-sults', ''); });
   CRUNCH_NEWS.forEach(function(n){
+    if (n.status && n.status !== 'pub') return;      /* reprovada: fora do ar */
     if (n.pendAppr && !podeAprovar()) return;
     addHomePost(n, true);
     const novo = feed.lastElementChild;
