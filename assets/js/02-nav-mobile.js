@@ -38,9 +38,42 @@
     const mnav = $('#mnav');
     if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
   };
+  /* folha de "Criar nova publicação": as mesmas opções do compositor da home,
+     mais o short, para o "+" da barra virar uma escolha e não um atalho unico */
+  window.novoSheetAbrir = function(){
+    const fundo = $('#novoSheetBack'), corpo = $('#novoSheetBody'); if (!fundo || !corpo) return;
+    const barra = $('#mnav'), fab = $('#mnav .fab');
+    const rb = barra ? barra.getBoundingClientRect() : null;
+    const alturaBarra = rb ? Math.round(rb.height) : 64;
+    const saliencia = (rb && fab) ? Math.max(0, Math.round(rb.top - fab.getBoundingClientRect().top)) : 0;
+    corpo.style.paddingBottom = (alturaBarra + saliencia + 32) + 'px';
+    fundo.hidden = false;
+    document.body.style.overflow = 'hidden';
+  };
+  window.novoSheetFechar = function(){
+    const fundo = $('#novoSheetBack'); if (!fundo) return;
+    fundo.hidden = true; document.body.style.overflow = '';
+    const mnav = $('#mnav');
+    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
+  };
+  $('#novoSheetClose') && $('#novoSheetClose').addEventListener('click', novoSheetFechar);
+  $('#novoSheetBack') && $('#novoSheetBack').addEventListener('click', e => { if (e.target.id === 'novoSheetBack') novoSheetFechar(); });
+  $('#novoSheetBody') && $('#novoSheetBody').addEventListener('click', e => {
+    const b = e.target.closest('[data-novo]'); if (!b) return;
+    const tipo = b.dataset.novo;
+    novoSheetFechar();
+    if (tipo === 'short'){ if (typeof crOpen === 'function') crOpen(); return; }
+    if (tipo === 'art'){ const alvo = $('#homeQArt'); if (alvo) alvo.click(); return; }
+    if (typeof qpOpen !== 'function') return;
+    if (tipo === 'pub') qpOpen(); else qpOpen(tipo);
+  });
   $('#comSheetClose') && $('#comSheetClose').addEventListener('click', comSheetFechar);
   $('#comSheetBack') && $('#comSheetBack').addEventListener('click', e => { if (e.target.id === 'comSheetBack') comSheetFechar(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#comSheetBack').hidden) comSheetFechar(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!$('#comSheetBack').hidden) comSheetFechar();
+    if (!$('#novoSheetBack').hidden) novoSheetFechar();
+  });
   const irPara = sel => {
     const el = sel && $(sel);
     if (!el) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
@@ -53,8 +86,8 @@
     const b = e.target.closest('button');
     if (!b) return;
     const t = b.dataset.t;
-    /* o "+" abre direto o editor de publicação, e não o menu de ações */
-    if (t === 'novo') { if (typeof qpOpen === 'function') qpOpen(); return; }
+    /* o "+" abre a folha de opções, e não direto o editor */
+    if (t === 'novo') { novoSheetAbrir(); return; }
     /* as abas do módulo trocam de tela DENTRO dele: vêm antes de fecharModulos(),
        senão o módulo fecharia e a tela abriria escondida */
     if (t === 'mod-pub') { const alvo = $('#nmtFeed'); if (alvo) alvo.click(); return; }

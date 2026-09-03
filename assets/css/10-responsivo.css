@@ -138,13 +138,15 @@
 .mnav button.on{color:var(--teal)}
 .mnav button.on::before{
   content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--teal);
+  width:40px;height:5px;border-radius:0 0 3px 3px;background:var(--teal);
 }
 .mnav .fab{flex:0 0 62px;margin-bottom:6px}
 .mnav .fab i{
   width:52px;height:52px;margin-top:-26px;border-radius:50%;
   background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;
-  font-size:20px;box-shadow:0 10px 22px -8px rgba(0,172,172,.9),0 0 0 5px #fff;
+  /* a sombra desce e espalha mais, para o circulo aparecer flutuando sobre o
+     conteudo que passa atras da barra */
+  font-size:20px;box-shadow:0 12px 28px -6px rgba(0,172,172,.55),0 6px 18px -6px rgba(16,32,48,.45),0 0 0 5px #fff;
 }
 /* só aparece no celular; vem depois do .mnav{display:none} de propósito */
 @media(max-width:640px){
@@ -153,7 +155,7 @@
     background:#fff;border-top:1px solid var(--line);
     align-items:stretch;gap:2px;
     padding:0 6px calc(8px + env(safe-area-inset-bottom,0px));
-    box-shadow:0 -8px 24px -14px rgba(16,32,48,.4);
+    box-shadow:0 -10px 30px -10px rgba(16,32,48,.55);
   }
 }
 .cml-ic{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px}

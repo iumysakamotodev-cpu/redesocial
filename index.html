@@ -291,6 +291,18 @@ input,textarea,select{font-size:14px}
 .com-sheet-body{overflow-y:auto;padding:0 12px calc(14px + env(safe-area-inset-bottom))}
 /* dentro da folha os blocos ocupam a largura toda */
 .com-sheet-body .com-featured{margin-bottom:10px}
+/* Opcoes de "Criar nova publicacao": mesma folha, lista de escolhas */
+.novo-op{display:flex;align-items:center;gap:14px;width:100%;padding:12px 10px;border:0;background:none;
+  border-radius:12px;text-align:left;font:inherit;cursor:pointer;transition:background .15s}
+.novo-op:hover,.novo-op:active{background:#f2f5f7}
+.novo-ic{flex:none;width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.novo-ic.img{background:rgba(47,111,228,.12);color:#2f6fe4}
+.novo-ic.video{background:rgba(169,52,56,.12);color:#a93438}
+.novo-ic.color{background:rgba(0,172,172,.12);color:#00acac}
+.novo-ic.news{background:rgba(224,138,30,.14);color:#e08a1e}
+.novo-ic.short{background:rgba(129,97,216,.12);color:#8161d8}
+.novo-ic.pub{background:rgba(91,102,114,.12);color:#5b6672}
+.novo-op > b{min-width:0;font-size:15px;font-weight:700;color:var(--ink);line-height:20px}
 .new-search{
   display:flex;align-items:center;gap:8px;padding:8px 10px 12px;margin-bottom:4px;
   border-bottom:1px solid var(--line);color:var(--muted);
@@ -3748,13 +3760,15 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
 .mnav button.on{color:var(--teal)}
 .mnav button.on::before{
   content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--teal);
+  width:40px;height:5px;border-radius:0 0 3px 3px;background:var(--teal);
 }
 .mnav .fab{flex:0 0 62px;margin-bottom:6px}
 .mnav .fab i{
   width:52px;height:52px;margin-top:-26px;border-radius:50%;
   background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;
-  font-size:20px;box-shadow:0 10px 22px -8px rgba(0,172,172,.9),0 0 0 5px #fff;
+  /* a sombra desce e espalha mais, para o circulo aparecer flutuando sobre o
+     conteudo que passa atras da barra */
+  font-size:20px;box-shadow:0 12px 28px -6px rgba(0,172,172,.55),0 6px 18px -6px rgba(16,32,48,.45),0 0 0 5px #fff;
 }
 /* só aparece no celular; vem depois do .mnav{display:none} de propósito */
 @media(max-width:640px){
@@ -3763,7 +3777,7 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
     background:#fff;border-top:1px solid var(--line);
     align-items:stretch;gap:2px;
     padding:0 6px calc(8px + env(safe-area-inset-bottom,0px));
-    box-shadow:0 -8px 24px -14px rgba(16,32,48,.4);
+    box-shadow:0 -10px 30px -10px rgba(16,32,48,.55);
   }
 }
 .cml-ic{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
@@ -4734,6 +4748,41 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
 </nav>
 
 <!-- Comunicados no celular: o painel sai da home e vira uma folha que sobe -->
+<div class="com-sheet-back" id="novoSheetBack" hidden>
+  <div class="com-sheet" id="novoSheet" role="dialog" aria-modal="true" aria-label="Criar nova publicação">
+    <div class="com-sheet-head">
+      <h3>Criar nova publicação</h3>
+      <button class="fg-close" id="novoSheetClose" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="com-sheet-body" id="novoSheetBody">
+      <button type="button" class="novo-op" data-novo="short">
+        <span class="novo-ic short"><i class="fa-solid fa-clapperboard"></i></span>
+        <b>Criar short</b>
+      </button>
+      <button type="button" class="novo-op" data-novo="pub">
+        <span class="novo-ic pub"><i class="fa-solid fa-pen"></i></span>
+        <b>Criar publicação normal</b>
+      </button>
+      <button type="button" class="novo-op" data-novo="img">
+        <span class="novo-ic img"><i class="fa-solid fa-image"></i></span>
+        <b>Criar publicação com imagem</b>
+      </button>
+      <button type="button" class="novo-op" data-novo="color">
+        <span class="novo-ic color"><i class="fa-solid fa-palette"></i></span>
+        <b>Criar publicação colorida</b>
+      </button>
+      <button type="button" class="novo-op" data-novo="video">
+        <span class="novo-ic video"><i class="fa-solid fa-video"></i></span>
+        <b>Criar publicação com vídeo</b>
+      </button>
+      <button type="button" class="novo-op" data-novo="art">
+        <span class="novo-ic news"><i class="fa-solid fa-newspaper"></i></span>
+        <b>Criar publicação de artigo</b>
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="com-sheet-back" id="comSheetBack" hidden>
   <div class="com-sheet" id="comSheet" role="dialog" aria-modal="true" aria-label="Comunicados">
     <div class="com-sheet-head">
@@ -7517,9 +7566,42 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     const mnav = $('#mnav');
     if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
   };
+  /* folha de "Criar nova publicação": as mesmas opções do compositor da home,
+     mais o short, para o "+" da barra virar uma escolha e não um atalho unico */
+  window.novoSheetAbrir = function(){
+    const fundo = $('#novoSheetBack'), corpo = $('#novoSheetBody'); if (!fundo || !corpo) return;
+    const barra = $('#mnav'), fab = $('#mnav .fab');
+    const rb = barra ? barra.getBoundingClientRect() : null;
+    const alturaBarra = rb ? Math.round(rb.height) : 64;
+    const saliencia = (rb && fab) ? Math.max(0, Math.round(rb.top - fab.getBoundingClientRect().top)) : 0;
+    corpo.style.paddingBottom = (alturaBarra + saliencia + 32) + 'px';
+    fundo.hidden = false;
+    document.body.style.overflow = 'hidden';
+  };
+  window.novoSheetFechar = function(){
+    const fundo = $('#novoSheetBack'); if (!fundo) return;
+    fundo.hidden = true; document.body.style.overflow = '';
+    const mnav = $('#mnav');
+    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
+  };
+  $('#novoSheetClose') && $('#novoSheetClose').addEventListener('click', novoSheetFechar);
+  $('#novoSheetBack') && $('#novoSheetBack').addEventListener('click', e => { if (e.target.id === 'novoSheetBack') novoSheetFechar(); });
+  $('#novoSheetBody') && $('#novoSheetBody').addEventListener('click', e => {
+    const b = e.target.closest('[data-novo]'); if (!b) return;
+    const tipo = b.dataset.novo;
+    novoSheetFechar();
+    if (tipo === 'short'){ if (typeof crOpen === 'function') crOpen(); return; }
+    if (tipo === 'art'){ const alvo = $('#homeQArt'); if (alvo) alvo.click(); return; }
+    if (typeof qpOpen !== 'function') return;
+    if (tipo === 'pub') qpOpen(); else qpOpen(tipo);
+  });
   $('#comSheetClose') && $('#comSheetClose').addEventListener('click', comSheetFechar);
   $('#comSheetBack') && $('#comSheetBack').addEventListener('click', e => { if (e.target.id === 'comSheetBack') comSheetFechar(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#comSheetBack').hidden) comSheetFechar(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!$('#comSheetBack').hidden) comSheetFechar();
+    if (!$('#novoSheetBack').hidden) novoSheetFechar();
+  });
   const irPara = sel => {
     const el = sel && $(sel);
     if (!el) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
@@ -7532,8 +7614,8 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     const b = e.target.closest('button');
     if (!b) return;
     const t = b.dataset.t;
-    /* o "+" abre direto o editor de publicação, e não o menu de ações */
-    if (t === 'novo') { if (typeof qpOpen === 'function') qpOpen(); return; }
+    /* o "+" abre a folha de opções, e não direto o editor */
+    if (t === 'novo') { novoSheetAbrir(); return; }
     /* as abas do módulo trocam de tela DENTRO dele: vêm antes de fecharModulos(),
        senão o módulo fecharia e a tela abriria escondida */
     if (t === 'mod-pub') { const alvo = $('#nmtFeed'); if (alvo) alvo.click(); return; }

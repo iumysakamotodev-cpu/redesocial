@@ -105,6 +105,18 @@
 .com-sheet-body{overflow-y:auto;padding:0 12px calc(14px + env(safe-area-inset-bottom))}
 /* dentro da folha os blocos ocupam a largura toda */
 .com-sheet-body .com-featured{margin-bottom:10px}
+/* Opcoes de "Criar nova publicacao": mesma folha, lista de escolhas */
+.novo-op{display:flex;align-items:center;gap:14px;width:100%;padding:12px 10px;border:0;background:none;
+  border-radius:12px;text-align:left;font:inherit;cursor:pointer;transition:background .15s}
+.novo-op:hover,.novo-op:active{background:#f2f5f7}
+.novo-ic{flex:none;width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.novo-ic.img{background:rgba(47,111,228,.12);color:#2f6fe4}
+.novo-ic.video{background:rgba(169,52,56,.12);color:#a93438}
+.novo-ic.color{background:rgba(0,172,172,.12);color:#00acac}
+.novo-ic.news{background:rgba(224,138,30,.14);color:#e08a1e}
+.novo-ic.short{background:rgba(129,97,216,.12);color:#8161d8}
+.novo-ic.pub{background:rgba(91,102,114,.12);color:#5b6672}
+.novo-op > b{min-width:0;font-size:15px;font-weight:700;color:var(--ink);line-height:20px}
 .new-search{
   display:flex;align-items:center;gap:8px;padding:8px 10px 12px;margin-bottom:4px;
   border-bottom:1px solid var(--line);color:var(--muted);
