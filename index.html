@@ -2170,6 +2170,7 @@ input,textarea,select{font-size:14px}
 .nv-dtrow input:focus{outline:none;box-shadow:inset 0 0 0 1px #0088FF,0 0 0 2px rgba(0,136,255,.16)}
 #nvCardArticle .nv-author{display:flex;align-items:center;gap:12px}
 #crShare:disabled{background:#F4F5F6;color:#C7C7CC;cursor:default;box-shadow:none}
+.cr-enviar{justify-content:center;width:150px;padding:0;height:36px;border-radius:999px}
 .cr-audwrap{position:relative;flex-shrink:0}
 .cr-audwrap .qp-aud{margin-top:0;height:36px;padding:0 14px;font-size:13px}
 .cr-audwrap .qp-catmenu{left:auto;right:0;min-width:220px}
@@ -4588,6 +4589,10 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   #crModal .cr-audwrap .qp-aud{width:100%;justify-content:flex-start}
   #crModal .cr-audwrap .qp-aud .fa-chevron-down{margin-left:auto}
   #crModal .qp-audmenu{min-width:0;right:0}
+  /* o Enviar copia o Publicar do editor: mesma pilula, mesma altura de toque */
+  /* o #crModal #crShare de 07-rede-social.css fixa 14px: dois ids para vencer */
+  #crModal #crShare.cr-enviar{width:auto;height:48px;padding:0 26px;border-radius:999px;font-size:15px;gap:10px}
+  #crModal #crShare.cr-enviar i{font-size:15px}
 
   /* ---- editor de publicação: tela cheia, no formato do LinkedIn ----
      Linha 1 do cabeçalho: [X] .......... [Publicar]
@@ -6791,7 +6796,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           <div style="margin-top:auto;display:flex;align-items:center;gap:12px">
             <button class="qp-adv" id="crAdv" type="button"><i class="fa-solid fa-sliders"></i> Avançado</button>
             <span style="flex:1"></span>
-            <button class="fo-btn" id="crShare" style="justify-content:center;width:150px;padding:0;height:36px;border-radius:6px" disabled>Enviar <i class="fa-solid fa-paper-plane"></i></button>
+            <button class="fo-btn cr-enviar" id="crShare" disabled>Enviar <i class="fa-solid fa-paper-plane"></i></button>
           </div>
         </div>
       </div>

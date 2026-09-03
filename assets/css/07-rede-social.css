@@ -602,6 +602,7 @@
 .nv-dtrow input:focus{outline:none;box-shadow:inset 0 0 0 1px #0088FF,0 0 0 2px rgba(0,136,255,.16)}
 #nvCardArticle .nv-author{display:flex;align-items:center;gap:12px}
 #crShare:disabled{background:#F4F5F6;color:#C7C7CC;cursor:default;box-shadow:none}
+.cr-enviar{justify-content:center;width:150px;padding:0;height:36px;border-radius:999px}
 .cr-audwrap{position:relative;flex-shrink:0}
 .cr-audwrap .qp-aud{margin-top:0;height:36px;padding:0 14px;font-size:13px}
 .cr-audwrap .qp-catmenu{left:auto;right:0;min-width:220px}
