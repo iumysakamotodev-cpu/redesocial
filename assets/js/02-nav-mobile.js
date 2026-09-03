@@ -97,7 +97,10 @@
     fecharModulos();
     /* Home, Shorts e Feed rolam ate o bloco correspondente da home; so os
        Comunicados abrem tela propria, a folha que sobe de baixo */
-    if (t === 'comunicados') { comSheetAbrir(); return; }
+    if (t === 'comunicados') {
+      if (document.body.classList.contains('demo-basico')) { irPara('#homeComPanel'); return; }
+      comSheetAbrir(); return;
+    }
     if (t === 'home') {
       document.body.classList.remove('demo-suporte');
       if (document.body.classList.contains('demo-empty') && typeof demoToggle !== 'undefined') demoToggle.click();

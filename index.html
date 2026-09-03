@@ -4725,6 +4725,56 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
 .av-cr-frieren{background-image:url("uploads/crunch/p-frieren.webp");background-size:170% auto;background-position:center top}
 .av-cr-gojo   {background-image:url("uploads/crunch/p-gojo.webp");background-size:200% auto;background-position:center top}
 
+
+/* ============================================================
+   Cenário "sem Shorts e sem Feed" (body.demo-basico)
+   A coluna principal perde tudo que depende dos dois módulos. No desktop a
+   grade de módulos abre inteira para ocupar o espaço e os Comunicados ficam
+   na lateral, como sempre; no celular, onde não há lateral, eles viram o
+   conteúdo da home. Carrega por último de propósito: só sobrescreve.
+   ============================================================ */
+
+/* o que sai da home */
+body.demo-basico #homeShorts,
+body.demo-basico #homeFeedTitle,
+body.demo-basico .col-main > .nvf-composer,
+body.demo-basico .col-main > .feed{display:none}
+
+/* na barra de baixo sobram Home e Comunicados: sem feed nao ha o que publicar */
+body.demo-basico .mnav [data-t="shorts"],
+body.demo-basico .mnav [data-t="feed"],
+body.demo-basico .mnav .fab{display:none}
+
+/* ---- Celular: os comunicados sao o conteudo da home ----
+   Nao ha coluna lateral aqui, entao o painel — que fica escondido no celular —
+   volta a aparecer e assume a largura toda, logo abaixo dos modulos. */
+@media(max-width:640px){
+  body.demo-basico #homeComPanel{display:block}
+
+  /* a faixa cinza atras da barra vinha de duas reservas somadas, o padding do
+     body e o do .content; sem elas o branco do painel corre ate o fim e a
+     altura da barra fica reservada por dentro dele */
+  body.demo-basico{padding-bottom:0}
+  body.demo-basico .content{padding-bottom:0;gap:24px}
+
+  body.demo-basico .col-right > #homeComPanel{
+    margin-left:0;margin-right:0;border-radius:22px 22px 0 0;
+    padding:16px 16px calc(96px + env(safe-area-inset-bottom,0px));
+  }
+
+  /* como conteudo principal ele respira mais que no cartao da lateral */
+  body.demo-basico .com-head h2{font-size:20px}
+  body.demo-basico .com-featured{padding:18px}
+  body.demo-basico .com-featured h4{font-size:18px;margin-top:0}
+  body.demo-basico .com-featured p{font-size:14px;margin-top:8px}
+  body.demo-basico .com-list{margin-top:14px}
+  body.demo-basico .com-item{padding:14px 10px;gap:14px;border-radius:10px}
+  /* a linha nasce so entre dois itens, nunca na borda de cima da lista */
+  body.demo-basico .com-item + .com-item{border-top:1px solid var(--line)}
+  body.demo-basico .com-item h4{font-size:15px}
+  body.demo-basico .com-item p{font-size:13px}
+  body.demo-basico .com-more{margin-top:16px;height:48px}
+}
 </style>
 </head>
 <body>
@@ -7665,7 +7715,10 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     fecharModulos();
     /* Home, Shorts e Feed rolam ate o bloco correspondente da home; so os
        Comunicados abrem tela propria, a folha que sobe de baixo */
-    if (t === 'comunicados') { comSheetAbrir(); return; }
+    if (t === 'comunicados') {
+      if (document.body.classList.contains('demo-basico')) { irPara('#homeComPanel'); return; }
+      comSheetAbrir(); return;
+    }
     if (t === 'home') {
       document.body.classList.remove('demo-suporte');
       if (document.body.classList.contains('demo-empty') && typeof demoToggle !== 'undefined') demoToggle.click();
@@ -13401,6 +13454,80 @@ function crunchAlternar(){
     crunchAdmin(!crunchEhAdmin());
   }, true);
   /* no celular quem entra e sai do cenario e a foto do header, logo acima */
+})();
+
+/* ===================== assets/js/15-basico.js ===================== */
+/* ============================================================
+   Cenário "sem Shorts e sem Feed"
+   Liga e desliga pelo ícone da Apple no rodapé do menu. Simula a empresa que
+   não tem esses dois módulos: a coluna principal perde a fileira de shorts, o
+   compositor e os posts. No desktop a grade de módulos abre inteira para
+   ocupar o espaço; no celular, onde não há lateral, os Comunicados viram o
+   conteúdo da home. O resto está em assets/css/13-basico.css.
+   ============================================================ */
+function basicoLigado(){ return document.body.classList.contains('demo-basico'); }
+
+/* so recolhe no fim quem foi aberto aqui: se o usuario ja tinha expandido a
+   grade antes de entrar no cenario, ela continua como ele deixou */
+let BASICO_ABRIU_GRADE = false;
+
+/* a grade abre pelo mesmo caminho do botao — classe no grid, estado no botao e
+   o rotulo virando "Ver menos" — para continuar dando para recolher */
+function basicoAbrirGrade(){
+  if (window.matchMedia('(max-width:640px)').matches) return;   /* no celular a lista ficaria longa demais */
+  const grade = document.getElementById('appsGrid');
+  if (!grade || grade.classList.contains('expanded')) return;
+  grade.classList.add('expanded');
+  const bt = document.getElementById('appsToggle');
+  if (bt) bt.classList.add('open');
+  const rot = document.getElementById('appsToggleLbl');
+  if (rot) rot.textContent = 'Ver menos';
+  BASICO_ABRIU_GRADE = true;
+}
+function basicoFecharGrade(){
+  if (!BASICO_ABRIU_GRADE) return;
+  BASICO_ABRIU_GRADE = false;
+  const grade = document.getElementById('appsGrid');
+  if (grade) grade.classList.remove('expanded');
+  const bt = document.getElementById('appsToggle');
+  if (bt) bt.classList.remove('open');
+}
+
+function basicoLigar(){
+  if (basicoLigado()) return;
+  /* os dois cenários não convivem: um substitui o outro */
+  if (typeof crunchDesligar === 'function' && document.body.classList.contains('demo-crunch')) crunchDesligar();
+
+  /* o Rede Social e justamente o modulo que traz o feed e os shorts. Sai pelo
+     style inline, e nao por folha de estilo: e assim que a dobra da grade
+     conta quem esta a mostra — escondido pelo CSS ele continuaria ocupando
+     uma das vagas das duas linhas */
+  const tile = document.getElementById('tileSocial');
+  if (tile) tile.style.display = 'none';
+  basicoAbrirGrade();
+  if (typeof applyFold === 'function') applyFold();
+
+  document.body.classList.add('demo-basico');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (typeof fgToast === 'function') fgToast('Cenário: sem Shorts e sem Feed');
+}
+
+function basicoDesligar(){
+  if (!basicoLigado()) return;
+  const tile = document.getElementById('tileSocial');
+  if (tile) tile.style.display = '';
+  basicoFecharGrade();
+  if (typeof applyFold === 'function') applyFold();
+
+  document.body.classList.remove('demo-basico');
+  if (typeof fgToast === 'function') fgToast('Cenário: de volta ao completo');
+}
+
+function basicoAlternar(){ if (basicoLigado()) basicoDesligar(); else basicoLigar(); }
+
+(function(){
+  const ic = document.querySelector('.hm-store--apple');
+  if (ic) ic.addEventListener('click', function(e){ e.preventDefault(); basicoAlternar(); });
 })();
 </script>
 </body>
