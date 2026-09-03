@@ -74,8 +74,9 @@
   /* o compositor vai de ponta a ponta; o topo arredonda como o painel de
      modulos, e o pe fica reto porque os posts vem logo abaixo */
   .col-main > .nvf-composer{border-radius:22px 22px 0 0}
-  /* no celular o nome e o cargo ja aparecem no topo: o cartao do perfil sai */
-  #homeProfileCard{display:none}
+  /* no celular o nome e o cargo ja aparecem no topo: o cartao do perfil sai.
+     Os comunicados tambem saem da home — passam a abrir na folha de baixo. */
+  #homeProfileCard,#homeComPanel{display:none}
   /* o titulo do feed tem margem propria por id: recupera a folga lateral e
      encurta a distancia ate os shorts */
   .col-main > #homeFeedTitle{margin-left:16px;margin-right:16px;margin-top:24px}
@@ -85,6 +86,11 @@
      card precisa de espaco dentro da fita. A margem negativa devolve esse
      espaco ao layout: a sombra aparece inteira sem empurrar o que vem depois. */
   .shorts{margin-bottom:-32px}
+  /* a fita sangra ate as bordas: o primeiro card nasce alinhado ao titulo pelo
+     padding, e a direita nao sobra folga, entao o proximo aparece cortado
+     avisando que ha mais para rolar. Ao rolar, o padding sai junto e os cards
+     encostam de fato na borda esquerda. */
+  #homeShorts .shorts{gap:8px;margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:0}
   /* o painel encosta no cabecalho: so o pe fica arredondado */
   .apps-panel{padding:14px 14px 22px;border-radius:0 0 22px 22px}
   /* os posts tambem vao de ponta a ponta, sem cantos */

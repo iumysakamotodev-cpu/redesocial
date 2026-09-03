@@ -9,6 +9,38 @@
   const fecharModulos = () => {
     ['closeStories', 'closeForum', 'closeNewsModule'].forEach(f => { if (typeof window[f] === 'function') window[f](); });
   };
+  /* a folha copia o que o painel da home mostraria agora: assim ela acompanha
+     o cenario ligado (SULTS, Crunchyroll, vazio) sem duplicar conteudo */
+  window.comSheetAbrir = function(){
+    const painel = $('#homeComPanel'), corpo = $('#comSheetBody'), fundo = $('#comSheetBack');
+    if (!painel || !corpo || !fundo) return;
+    corpo.innerHTML = '';
+    painel.querySelectorAll(':scope > *').forEach(el => {
+      if (el.classList.contains('com-head')) return;
+      if (getComputedStyle(el).display === 'none') return;
+      corpo.appendChild(el.cloneNode(true));
+    });
+    /* a barra de baixo e fixa e fica por cima da folha, e o "+" ainda sobe
+       acima dela. O fim da lista reserva a barra mais essa saliencia, senao o
+       "Ver todos os comunicados" fica escondido atras dos dois. */
+    const barra = $('#mnav'), fab = $('#mnav .fab');
+    const rb = barra ? barra.getBoundingClientRect() : null;
+    const alturaBarra = rb ? Math.round(rb.height) : 64;
+    const saliencia = (rb && fab) ? Math.max(0, Math.round(rb.top - fab.getBoundingClientRect().top)) : 0;
+    corpo.style.paddingBottom = (alturaBarra + saliencia + 32) + 'px';
+    fundo.hidden = false;
+    document.body.style.overflow = 'hidden';
+  };
+  window.comSheetFechar = function(){
+    const fundo = $('#comSheetBack'); if (!fundo) return;
+    fundo.hidden = true;
+    document.body.style.overflow = '';
+    const mnav = $('#mnav');
+    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
+  };
+  $('#comSheetClose') && $('#comSheetClose').addEventListener('click', comSheetFechar);
+  $('#comSheetBack') && $('#comSheetBack').addEventListener('click', e => { if (e.target.id === 'comSheetBack') comSheetFechar(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#comSheetBack').hidden) comSheetFechar(); });
   const irPara = sel => {
     const el = sel && $(sel);
     if (!el) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
@@ -30,9 +62,9 @@
     mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
     b.classList.add('on');
     fecharModulos();
-    /* onde já existe uma tela de verdade, o item leva até ela; onde não existe,
-       ele rola até o bloco correspondente da home. Hoje só Shorts tem tela. */
-    if (t === 'shorts' && typeof abrirShorts === 'function') { abrirShorts(); return; }
+    /* Home, Shorts e Feed rolam ate o bloco correspondente da home; so os
+       Comunicados abrem tela propria, a folha que sobe de baixo */
+    if (t === 'comunicados') { comSheetAbrir(); return; }
     if (t === 'home') {
       document.body.classList.remove('demo-suporte');
       if (document.body.classList.contains('demo-empty') && typeof demoToggle !== 'undefined') demoToggle.click();

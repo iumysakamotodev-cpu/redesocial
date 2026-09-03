@@ -279,6 +279,18 @@ input,textarea,select{font-size:14px}
 @keyframes newIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
 .new-menu{transform-origin:top right}
 @keyframes sheetIn{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
+/* Folha dos comunicados no celular: sobe de baixo, com o topo arredondado */
+.com-sheet-back{position:fixed;inset:0;z-index:70;background:rgba(16,28,40,.55);display:flex;align-items:flex-end}
+.com-sheet-back[hidden]{display:none}
+.com-sheet{width:100%;max-height:78vh;display:flex;flex-direction:column;background:#fff;
+  border-radius:18px 18px 0 0;animation:sheetIn .22s ease;overflow:hidden}
+/* a alcinha de arrastar, como nas outras folhas do celular */
+.com-sheet::before{content:"";flex:none;width:40px;height:4px;border-radius:999px;background:#d6dce2;margin:8px auto 2px}
+.com-sheet-head{display:flex;align-items:center;gap:12px;padding:8px 16px 10px;flex:none}
+.com-sheet-head h3{flex:1;font-size:18px;font-weight:700;color:var(--ink)}
+.com-sheet-body{overflow-y:auto;padding:0 12px calc(14px + env(safe-area-inset-bottom))}
+/* dentro da folha os blocos ocupam a largura toda */
+.com-sheet-body .com-featured{margin-bottom:10px}
 .new-search{
   display:flex;align-items:center;gap:8px;padding:8px 10px 12px;margin-bottom:4px;
   border-bottom:1px solid var(--line);color:var(--muted);
@@ -3672,8 +3684,9 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   /* o compositor vai de ponta a ponta; o topo arredonda como o painel de
      modulos, e o pe fica reto porque os posts vem logo abaixo */
   .col-main > .nvf-composer{border-radius:22px 22px 0 0}
-  /* no celular o nome e o cargo ja aparecem no topo: o cartao do perfil sai */
-  #homeProfileCard{display:none}
+  /* no celular o nome e o cargo ja aparecem no topo: o cartao do perfil sai.
+     Os comunicados tambem saem da home — passam a abrir na folha de baixo. */
+  #homeProfileCard,#homeComPanel{display:none}
   /* o titulo do feed tem margem propria por id: recupera a folga lateral e
      encurta a distancia ate os shorts */
   .col-main > #homeFeedTitle{margin-left:16px;margin-right:16px;margin-top:24px}
@@ -3683,6 +3696,11 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
      card precisa de espaco dentro da fita. A margem negativa devolve esse
      espaco ao layout: a sombra aparece inteira sem empurrar o que vem depois. */
   .shorts{margin-bottom:-32px}
+  /* a fita sangra ate as bordas: o primeiro card nasce alinhado ao titulo pelo
+     padding, e a direita nao sobra folga, entao o proximo aparece cortado
+     avisando que ha mais para rolar. Ao rolar, o padding sai junto e os cards
+     encostam de fato na borda esquerda. */
+  #homeShorts .shorts{gap:8px;margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:0}
   /* o painel encosta no cabecalho: so o pe fica arredondado */
   .apps-panel{padding:14px 14px 22px;border-radius:0 0 22px 22px}
   /* os posts tambem vao de ponta a ponta, sem cantos */
@@ -4686,6 +4704,7 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
       <a href="#" class="hm-navitem" title="Enquetes"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--enquetes" aria-hidden="true"></span><span class="hm-navitem__label">Enquetes</span></a>
       <a href="#" class="hm-navitem" title="Eventos Importantes"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--eventos" aria-hidden="true"></span><span class="hm-navitem__label">Eventos Importantes</span></a>
     </nav>
+
     <div class="hm-side__foot" data-nav-foot>
       <a href="#" class="hm-navitem" id="navNovidades" title="Novidades"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--novidades" aria-hidden="true"></span><span class="hm-navitem__label">Novidades</span><span class="hm-navitem__badge">1</span></a>
       <a class="hm-navitem" href="https://wa.me/5534999999999" id="navSuporte" target="_blank" rel="noopener noreferrer" title="Falar com o suporte"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--suporte" aria-hidden="true"></span><span class="hm-navitem__label">Falar com o suporte</span></a>
@@ -4713,6 +4732,17 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
   <button data-t="mod-pub" title="Publicações"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
   <button data-t="mod-shorts" title="Shorts"><i class="fa-solid fa-clapperboard"></i>Shorts</button>
 </nav>
+
+<!-- Comunicados no celular: o painel sai da home e vira uma folha que sobe -->
+<div class="com-sheet-back" id="comSheetBack" hidden>
+  <div class="com-sheet" id="comSheet" role="dialog" aria-modal="true" aria-label="Comunicados">
+    <div class="com-sheet-head">
+      <h3>Comunicados</h3>
+      <button class="fg-close" id="comSheetClose" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="com-sheet-body" id="comSheetBody"></div>
+  </div>
+</div>
 
 <!-- ==================== ÁREA PRINCIPAL ==================== -->
 
@@ -7458,6 +7488,38 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
   const fecharModulos = () => {
     ['closeStories', 'closeForum', 'closeNewsModule'].forEach(f => { if (typeof window[f] === 'function') window[f](); });
   };
+  /* a folha copia o que o painel da home mostraria agora: assim ela acompanha
+     o cenario ligado (SULTS, Crunchyroll, vazio) sem duplicar conteudo */
+  window.comSheetAbrir = function(){
+    const painel = $('#homeComPanel'), corpo = $('#comSheetBody'), fundo = $('#comSheetBack');
+    if (!painel || !corpo || !fundo) return;
+    corpo.innerHTML = '';
+    painel.querySelectorAll(':scope > *').forEach(el => {
+      if (el.classList.contains('com-head')) return;
+      if (getComputedStyle(el).display === 'none') return;
+      corpo.appendChild(el.cloneNode(true));
+    });
+    /* a barra de baixo e fixa e fica por cima da folha, e o "+" ainda sobe
+       acima dela. O fim da lista reserva a barra mais essa saliencia, senao o
+       "Ver todos os comunicados" fica escondido atras dos dois. */
+    const barra = $('#mnav'), fab = $('#mnav .fab');
+    const rb = barra ? barra.getBoundingClientRect() : null;
+    const alturaBarra = rb ? Math.round(rb.height) : 64;
+    const saliencia = (rb && fab) ? Math.max(0, Math.round(rb.top - fab.getBoundingClientRect().top)) : 0;
+    corpo.style.paddingBottom = (alturaBarra + saliencia + 32) + 'px';
+    fundo.hidden = false;
+    document.body.style.overflow = 'hidden';
+  };
+  window.comSheetFechar = function(){
+    const fundo = $('#comSheetBack'); if (!fundo) return;
+    fundo.hidden = true;
+    document.body.style.overflow = '';
+    const mnav = $('#mnav');
+    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
+  };
+  $('#comSheetClose') && $('#comSheetClose').addEventListener('click', comSheetFechar);
+  $('#comSheetBack') && $('#comSheetBack').addEventListener('click', e => { if (e.target.id === 'comSheetBack') comSheetFechar(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#comSheetBack').hidden) comSheetFechar(); });
   const irPara = sel => {
     const el = sel && $(sel);
     if (!el) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
@@ -7479,9 +7541,9 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
     b.classList.add('on');
     fecharModulos();
-    /* onde já existe uma tela de verdade, o item leva até ela; onde não existe,
-       ele rola até o bloco correspondente da home. Hoje só Shorts tem tela. */
-    if (t === 'shorts' && typeof abrirShorts === 'function') { abrirShorts(); return; }
+    /* Home, Shorts e Feed rolam ate o bloco correspondente da home; so os
+       Comunicados abrem tela propria, a folha que sobe de baixo */
+    if (t === 'comunicados') { comSheetAbrir(); return; }
     if (t === 'home') {
       document.body.classList.remove('demo-suporte');
       if (document.body.classList.contains('demo-empty') && typeof demoToggle !== 'undefined') demoToggle.click();
@@ -13151,15 +13213,20 @@ function crunchAlternar(){
      chip segue abrindo o perfil (captura, para passar na frente desse handler) */
   const chip = document.getElementById('topUserChip');
   if (chip) chip.addEventListener('click', function(e){
-    if (!document.body.classList.contains('demo-crunch')) return;
+    const noCelular = window.matchMedia('(max-width: 640px)').matches;
+    const noCenario = document.body.classList.contains('demo-crunch');
+    /* no celular o icone da Google Play nao aparece, entao a foto do header e
+       que entra e sai do cenario; no desktop ela alterna o papel */
+    if (noCelular){
+      e.preventDefault(); e.stopImmediatePropagation();
+      if (noCenario) crunchDesligar(); else crunchLigar();
+      return;
+    }
+    if (!noCenario) return;
     e.preventDefault(); e.stopImmediatePropagation();
     crunchAdmin(!crunchEhAdmin());
   }, true);
-  const mnav = document.getElementById('mnav');
-  if (mnav) mnav.addEventListener('click', function(e){
-    const b = e.target.closest('button[data-t="comunicados"]');
-    if (b) crunchAlternar();
-  });
+  /* no celular quem entra e sai do cenario e a foto do header, logo acima */
 })();
 </script>
 </body>

@@ -27,6 +27,7 @@
       <a href="#" class="hm-navitem" title="Enquetes"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--enquetes" aria-hidden="true"></span><span class="hm-navitem__label">Enquetes</span></a>
       <a href="#" class="hm-navitem" title="Eventos Importantes"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--eventos" aria-hidden="true"></span><span class="hm-navitem__label">Eventos Importantes</span></a>
     </nav>
+
     <div class="hm-side__foot" data-nav-foot>
       <a href="#" class="hm-navitem" id="navNovidades" title="Novidades"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--novidades" aria-hidden="true"></span><span class="hm-navitem__label">Novidades</span><span class="hm-navitem__badge">1</span></a>
       <a class="hm-navitem" href="https://wa.me/5534999999999" id="navSuporte" target="_blank" rel="noopener noreferrer" title="Falar com o suporte"><span class="hm-navitem__ic hm-navitem__ic--arquivo hm-ic--suporte" aria-hidden="true"></span><span class="hm-navitem__label">Falar com o suporte</span></a>
@@ -54,5 +55,16 @@
   <button data-t="mod-pub" title="Publicações"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
   <button data-t="mod-shorts" title="Shorts"><i class="fa-solid fa-clapperboard"></i>Shorts</button>
 </nav>
+
+<!-- Comunicados no celular: o painel sai da home e vira uma folha que sobe -->
+<div class="com-sheet-back" id="comSheetBack" hidden>
+  <div class="com-sheet" id="comSheet" role="dialog" aria-modal="true" aria-label="Comunicados">
+    <div class="com-sheet-head">
+      <h3>Comunicados</h3>
+      <button class="fg-close" id="comSheetClose" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="com-sheet-body" id="comSheetBody"></div>
+  </div>
+</div>
 
 <!-- ==================== ÁREA PRINCIPAL ==================== -->

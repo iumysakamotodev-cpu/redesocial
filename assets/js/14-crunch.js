@@ -384,13 +384,18 @@ function crunchAlternar(){
      chip segue abrindo o perfil (captura, para passar na frente desse handler) */
   const chip = document.getElementById('topUserChip');
   if (chip) chip.addEventListener('click', function(e){
-    if (!document.body.classList.contains('demo-crunch')) return;
+    const noCelular = window.matchMedia('(max-width: 640px)').matches;
+    const noCenario = document.body.classList.contains('demo-crunch');
+    /* no celular o icone da Google Play nao aparece, entao a foto do header e
+       que entra e sai do cenario; no desktop ela alterna o papel */
+    if (noCelular){
+      e.preventDefault(); e.stopImmediatePropagation();
+      if (noCenario) crunchDesligar(); else crunchLigar();
+      return;
+    }
+    if (!noCenario) return;
     e.preventDefault(); e.stopImmediatePropagation();
     crunchAdmin(!crunchEhAdmin());
   }, true);
-  const mnav = document.getElementById('mnav');
-  if (mnav) mnav.addEventListener('click', function(e){
-    const b = e.target.closest('button[data-t="comunicados"]');
-    if (b) crunchAlternar();
-  });
+  /* no celular quem entra e sai do cenario e a foto do header, logo acima */
 })();
