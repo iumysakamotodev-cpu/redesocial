@@ -2039,7 +2039,7 @@ input,textarea,select{font-size:14px}
 .nv-pv-top .nv-logo{width:44px;height:44px}
 .nv-pv-top .nv-logo svg{width:22px;height:22px}
 .nv-pv-top b{font-size:14px;color:var(--ink);display:flex;align-items:center;gap:6px}
-.nv-pv-top .verified{color:var(--teal);font-size:12px}
+.nv-pv-top .verified{color:var(--teal);font-size:12px;width:13px;height:13px}
 .nv-pv-top small{font-size:12px;color:var(--muted);font-weight:400}
 .nv-pv h4{font-size:15px;color:var(--ink);margin-bottom:6px}
 .nv-pv .pvtext{font-size:13px;color:var(--body);line-height:1.55;white-space:pre-wrap;word-break:break-word}
@@ -3096,6 +3096,8 @@ body.demo-empty .demo-empty-state{display:flex}
 .post-id{flex:1;min-width:0}
 .post-name{font-weight:700;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:8px}
 .verified{color:var(--teal);font-size:14px}
+/* selo de verificado em SVG: preenchido com a cor da marca, sem encolher no flex */
+svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-block;vertical-align:-3px}
 .post-sub{font-size:13px;color:var(--muted);margin-top:1px}
 .post-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px}
 .post-meta i{font-size:11px}
@@ -4924,7 +4926,7 @@ body.demo-crunch #nvArtEdit{display:none}
           <div class="post-head">
             <span class="avatar av-brand"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
             <div class="post-id">
-              <div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i><span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span></div>
+              <div class="post-name">SULTS <svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg><span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span></div>
               <div class="post-sub">Histórias de sucesso · SULTS</div>
               <div class="post-meta">22/07/2026 às 09:14 · <i class="fa-solid fa-earth-americas"></i></div>
             </div>
@@ -4946,7 +4948,7 @@ body.demo-crunch #nvArtEdit{display:none}
           <div class="post-head">
             <span class="avatar av-brand"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
             <div class="post-id">
-              <div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i></div>
+              <div class="post-name">SULTS <svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg></div>
               <div class="post-sub">Comunicados oficiais · SULTS</div>
               <div class="post-meta">22/07/2026 às 07:02 · <i class="fa-solid fa-earth-americas"></i></div>
             </div>
@@ -5796,7 +5798,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
         <div class="nv-pv" id="nvPvStd">
           <div class="nv-pv-top">
             <span class="nv-logo"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="currentColor" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="currentColor" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
-            <div><b>SULTS <i class="fa-solid fa-circle-check verified"></i></b><small>Comunicados oficiais · agora</small></div>
+            <div><b>SULTS <svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg></b><small>Comunicados oficiais · agora</small></div>
           </div>
           <h4 id="pvTitle" style="display:none"></h4>
           <div class="pvtext empty" id="pvText">Sobre o que você quer falar?</div>
@@ -8216,7 +8218,7 @@ function addHomePost(n, append){
   const title = n.title ? '<p class="post-text" style="font-weight:700;margin-bottom:0">'+n.title+'</p>' : '';
   const bodyTxt = n.colorBg ? '' : txt;
   const avatarHtml = n.autorAv ? '<span class="avatar '+n.autorAv+'"></span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
-  const nameHtml = n.autorNome ? n.autorNome : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
+  const nameHtml = nomeComSelo(n);
   const metaTxt = fmtQuando(n);
   const rcount = n.reactions||0, ccount = n.comments||0;
   const cabecalho =
@@ -10572,7 +10574,7 @@ function renderNewsFeed(){
       const pinA = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
       return '<article class="card post nvf-artcard" data-id="'+n.id+'">'+
-        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+(n.author||'SULTS')+' <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
+        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+nomeComSelo(n)+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
@@ -10582,7 +10584,7 @@ function renderNewsFeed(){
       '</article>';
     }
     const av = n.av ? '<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
-    const nm = n.av ? n.author : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
+    const nm = nomeComSelo(n);
     const pin = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
     let banner = '';
     if (n.banner) banner = n.banner.variant==='bday'
@@ -10736,7 +10738,7 @@ function nvUpdateArtPreview(){
   const firstPar = b ? b.split(/\n{2,}/)[0] : '';
   pv.innerHTML =
     (artCover ? '<img class="pv-cover" src="'+artCover+'">' : '') +
-    '<div class="nv-pv-top"><span class="nv-logo">'+SULTS_LOGO+'</span><div><b>SULTS <i class="fa-solid fa-circle-check verified"></i></b><small>Artigo · agora</small></div></div>' +
+    '<div class="nv-pv-top"><span class="nv-logo">'+SULTS_LOGO+'</span><div><b>SULTS <svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg></b><small>Artigo · agora</small></div></div>' +
     '<h4>'+(t||'Título do artigo')+'</h4>' +
     (s ? '<div class="pv-sub">'+s+'</div>' : '') +
     '<div class="pvtext'+(b?'':' empty')+'">'+(firstPar ? firstPar.replace(/</g,'&lt;') : 'O conteúdo do artigo aparece aqui.')+'</div>' +
@@ -11191,6 +11193,19 @@ $('#nvArtBack').addEventListener('click', () => { newsView.classList.remove('use
 $('#nvArtEdit') && $('#nvArtEdit').addEventListener('click', () => { if(npCurrent) nvEdit(npCurrent.id); });
 $('#nvArtApr') && $('#nvArtApr').addEventListener('click', ()=>reviewDecide(true));
 $('#nvArtRej') && $('#nvArtRej').addEventListener('click', ()=>reviewDecide(false));
+/* arranque: posts da home desenhados antes de TEAM existir ganham o selo de
+   administrador (casa pelo avatar do cabecalho) */
+(function(){
+  document.querySelectorAll('.col-main > .feed > .post').forEach(function(p){
+    const nome = p.querySelector('.post-name'); if (!nome || nome.querySelector('.verified')) return;
+    const av = p.querySelector('.post-head .avatar'); const cls = av ? [...av.classList].find(function(c){ return c.indexOf('av-') === 0 && c !== 'av-brand'; }) : '';
+    if (!cls) return;
+    if (ehAdminPost({ autorAv: cls, autorNome: nome.firstChild && nome.firstChild.nodeType === 3 ? nome.firstChild.textContent : nome.textContent })){
+      const chip = nome.querySelector('.nvf-pinchip');
+      if (chip) chip.insertAdjacentHTML('beforebegin', verificadoSVG()); else nome.insertAdjacentHTML('beforeend', verificadoSVG());
+    }
+  });
+})();
 /* arranque: na home, os artigos ja desenhados (o fixo e os do primeiro render,
    que rodou antes de NEWS_CATS existir) trocam o nome da categoria pela pilula */
 (function(){ document.querySelectorAll('.col-main .nvf-artkicker').forEach(k => { if(!k.querySelector('.art-catpill')) k.innerHTML=catPillHTML(k.textContent); }); })();
@@ -11203,6 +11218,34 @@ function catInk(hex){
   let k=0;
   while(ratio()<5 && k++<40){ r=Math.round(r*.9); g=Math.round(g*.9); b=Math.round(b*.9); }
   return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+/* Selo de verificado no desenho do Twitter (dentado, com o check dentro).
+   Vai para a conta oficial e para quem esta na equipe de administradores. */
+function verificadoSVG(){
+  return '<svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg>';
+}
+/* A pessoa que publicou esta em TEAM (administradores da rede)? Casa pelo
+   avatar e, na falta, pelo nome (o post diz "Rodrigo Caetano", a lista diz
+   "Rodrigo Caetano Silva"). TEAM e um let declarado depois do primeiro desenho
+   da home, por isso o try: na zona morta a resposta e "nao", e o arranque
+   abaixo completa os selos. */
+function ehAdminPost(n){
+  let time = null; try { time = TEAM; } catch (e) { return false; }
+  if (!time || typeof PEOPLE === 'undefined') return false;
+  const av = n.autorAv || n.av || '', nome = String(n.autorNome || n.author || '').trim().toLowerCase();
+  return time.some(function(id){
+    const p = PEOPLE.find(function(x){ return x.id === id; }); if (!p) return false;
+    if (av && p.av === av) return true;
+    const pn = p.name.toLowerCase();
+    return !!nome && (pn === nome || pn.indexOf(nome + ' ') === 0);
+  });
+}
+/* nome + selo quando for a conta oficial ou um administrador */
+function nomeComSelo(n){
+  /* conta oficial: a do SULTS (sem avatar de pessoa) ou a marcada como oficial pelo cenario */
+  const oficial = !!n.oficial || !(n.autorAv || n.av);
+  const nome = oficial ? (n.author || 'SULTS') : (n.autorNome || n.author || '');
+  return nome + ((oficial || ehAdminPost(n)) ? ' ' + verificadoSVG() : '');
 }
 /* pilula de categoria (icone redondo + nome); devolve so o nome quando a
    categoria nao existe na lista */
@@ -11227,7 +11270,7 @@ function openArticle(n){
     const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
     const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
     const av=n.av?'<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
-    const nm=n.av?n.author:'SULTS <i class="fa-solid fa-circle-check" style="color:var(--teal);font-size:13px"></i>';
+    const nm=nomeComSelo(n);
     let media='';
     if(n.images&&n.images.length>1) media='<div class="post-img" style="margin:16px 0 0">'+nvImgCollage(n.images,'post-imggrid')+'</div>';
     else if(n.video) media='<div class="post-img" style="margin:16px 0 0"><video src="'+n.video+'" controls style="width:100%;border-radius:12px;max-height:520px;background:#000"></video></div>';
@@ -12387,7 +12430,8 @@ function crunchPost(n){
   };
   return Object.assign({
     author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
-    unit:'Crunchyroll', reach:'rede', status:'pub'
+    /* a linha abaixo do nome e o cargo, nao a categoria: 'Canal oficial · Crunchyroll' */
+    cargo:'Canal oficial', unit:'Crunchyroll', reach:'rede', status:'pub', oficial:true
   }, n, { text: n.text + crunchLink(n.link), article: artigo });
 }
 

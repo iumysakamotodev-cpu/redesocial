@@ -260,7 +260,7 @@ function addHomePost(n, append){
   const title = n.title ? '<p class="post-text" style="font-weight:700;margin-bottom:0">'+n.title+'</p>' : '';
   const bodyTxt = n.colorBg ? '' : txt;
   const avatarHtml = n.autorAv ? '<span class="avatar '+n.autorAv+'"></span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
-  const nameHtml = n.autorNome ? n.autorNome : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
+  const nameHtml = nomeComSelo(n);
   const metaTxt = fmtQuando(n);
   const rcount = n.reactions||0, ccount = n.comments||0;
   const cabecalho =

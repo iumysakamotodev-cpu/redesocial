@@ -114,6 +114,19 @@ $('#nvArtBack').addEventListener('click', () => { newsView.classList.remove('use
 $('#nvArtEdit') && $('#nvArtEdit').addEventListener('click', () => { if(npCurrent) nvEdit(npCurrent.id); });
 $('#nvArtApr') && $('#nvArtApr').addEventListener('click', ()=>reviewDecide(true));
 $('#nvArtRej') && $('#nvArtRej').addEventListener('click', ()=>reviewDecide(false));
+/* arranque: posts da home desenhados antes de TEAM existir ganham o selo de
+   administrador (casa pelo avatar do cabecalho) */
+(function(){
+  document.querySelectorAll('.col-main > .feed > .post').forEach(function(p){
+    const nome = p.querySelector('.post-name'); if (!nome || nome.querySelector('.verified')) return;
+    const av = p.querySelector('.post-head .avatar'); const cls = av ? [...av.classList].find(function(c){ return c.indexOf('av-') === 0 && c !== 'av-brand'; }) : '';
+    if (!cls) return;
+    if (ehAdminPost({ autorAv: cls, autorNome: nome.firstChild && nome.firstChild.nodeType === 3 ? nome.firstChild.textContent : nome.textContent })){
+      const chip = nome.querySelector('.nvf-pinchip');
+      if (chip) chip.insertAdjacentHTML('beforebegin', verificadoSVG()); else nome.insertAdjacentHTML('beforeend', verificadoSVG());
+    }
+  });
+})();
 /* arranque: na home, os artigos ja desenhados (o fixo e os do primeiro render,
    que rodou antes de NEWS_CATS existir) trocam o nome da categoria pela pilula */
 (function(){ document.querySelectorAll('.col-main .nvf-artkicker').forEach(k => { if(!k.querySelector('.art-catpill')) k.innerHTML=catPillHTML(k.textContent); }); })();
@@ -126,6 +139,34 @@ function catInk(hex){
   let k=0;
   while(ratio()<5 && k++<40){ r=Math.round(r*.9); g=Math.round(g*.9); b=Math.round(b*.9); }
   return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+/* Selo de verificado no desenho do Twitter (dentado, com o check dentro).
+   Vai para a conta oficial e para quem esta na equipe de administradores. */
+function verificadoSVG(){
+  return '<svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg>';
+}
+/* A pessoa que publicou esta em TEAM (administradores da rede)? Casa pelo
+   avatar e, na falta, pelo nome (o post diz "Rodrigo Caetano", a lista diz
+   "Rodrigo Caetano Silva"). TEAM e um let declarado depois do primeiro desenho
+   da home, por isso o try: na zona morta a resposta e "nao", e o arranque
+   abaixo completa os selos. */
+function ehAdminPost(n){
+  let time = null; try { time = TEAM; } catch (e) { return false; }
+  if (!time || typeof PEOPLE === 'undefined') return false;
+  const av = n.autorAv || n.av || '', nome = String(n.autorNome || n.author || '').trim().toLowerCase();
+  return time.some(function(id){
+    const p = PEOPLE.find(function(x){ return x.id === id; }); if (!p) return false;
+    if (av && p.av === av) return true;
+    const pn = p.name.toLowerCase();
+    return !!nome && (pn === nome || pn.indexOf(nome + ' ') === 0);
+  });
+}
+/* nome + selo quando for a conta oficial ou um administrador */
+function nomeComSelo(n){
+  /* conta oficial: a do SULTS (sem avatar de pessoa) ou a marcada como oficial pelo cenario */
+  const oficial = !!n.oficial || !(n.autorAv || n.av);
+  const nome = oficial ? (n.author || 'SULTS') : (n.autorNome || n.author || '');
+  return nome + ((oficial || ehAdminPost(n)) ? ' ' + verificadoSVG() : '');
 }
 /* pilula de categoria (icone redondo + nome); devolve so o nome quando a
    categoria nao existe na lista */
@@ -150,7 +191,7 @@ function openArticle(n){
     const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
     const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
     const av=n.av?'<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
-    const nm=n.av?n.author:'SULTS <i class="fa-solid fa-circle-check" style="color:var(--teal);font-size:13px"></i>';
+    const nm=nomeComSelo(n);
     let media='';
     if(n.images&&n.images.length>1) media='<div class="post-img" style="margin:16px 0 0">'+nvImgCollage(n.images,'post-imggrid')+'</div>';
     else if(n.video) media='<div class="post-img" style="margin:16px 0 0"><video src="'+n.video+'" controls style="width:100%;border-radius:12px;max-height:520px;background:#000"></video></div>';

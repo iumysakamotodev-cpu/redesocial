@@ -512,7 +512,7 @@
 .nv-pv-top .nv-logo{width:44px;height:44px}
 .nv-pv-top .nv-logo svg{width:22px;height:22px}
 .nv-pv-top b{font-size:14px;color:var(--ink);display:flex;align-items:center;gap:6px}
-.nv-pv-top .verified{color:var(--teal);font-size:12px}
+.nv-pv-top .verified{color:var(--teal);font-size:12px;width:13px;height:13px}
 .nv-pv-top small{font-size:12px;color:var(--muted);font-weight:400}
 .nv-pv h4{font-size:15px;color:var(--ink);margin-bottom:6px}
 .nv-pv .pvtext{font-size:13px;color:var(--body);line-height:1.55;white-space:pre-wrap;word-break:break-word}

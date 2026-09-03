@@ -1162,7 +1162,7 @@ function renderNewsFeed(){
       const pinA = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
       return '<article class="card post nvf-artcard" data-id="'+n.id+'">'+
-        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+(n.author||'SULTS')+' <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
+        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+nomeComSelo(n)+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
@@ -1172,7 +1172,7 @@ function renderNewsFeed(){
       '</article>';
     }
     const av = n.av ? '<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
-    const nm = n.av ? n.author : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
+    const nm = nomeComSelo(n);
     const pin = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
     let banner = '';
     if (n.banner) banner = n.banner.variant==='bday'
@@ -1326,7 +1326,7 @@ function nvUpdateArtPreview(){
   const firstPar = b ? b.split(/\n{2,}/)[0] : '';
   pv.innerHTML =
     (artCover ? '<img class="pv-cover" src="'+artCover+'">' : '') +
-    '<div class="nv-pv-top"><span class="nv-logo">'+SULTS_LOGO+'</span><div><b>SULTS <i class="fa-solid fa-circle-check verified"></i></b><small>Artigo · agora</small></div></div>' +
+    '<div class="nv-pv-top"><span class="nv-logo">'+SULTS_LOGO+'</span><div><b>SULTS <svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg></b><small>Artigo · agora</small></div></div>' +
     '<h4>'+(t||'Título do artigo')+'</h4>' +
     (s ? '<div class="pv-sub">'+s+'</div>' : '') +
     '<div class="pvtext'+(b?'':' empty')+'">'+(firstPar ? firstPar.replace(/</g,'&lt;') : 'O conteúdo do artigo aparece aqui.')+'</div>' +

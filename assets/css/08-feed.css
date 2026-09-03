@@ -323,6 +323,8 @@ body.demo-empty .demo-empty-state{display:flex}
 .post-id{flex:1;min-width:0}
 .post-name{font-weight:700;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:8px}
 .verified{color:var(--teal);font-size:14px}
+/* selo de verificado em SVG: preenchido com a cor da marca, sem encolher no flex */
+svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-block;vertical-align:-3px}
 .post-sub{font-size:13px;color:var(--muted);margin-top:1px}
 .post-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px}
 .post-meta i{font-size:11px}

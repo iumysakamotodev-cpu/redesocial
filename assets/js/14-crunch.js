@@ -28,7 +28,8 @@ function crunchPost(n){
   };
   return Object.assign({
     author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
-    unit:'Crunchyroll', reach:'rede', status:'pub'
+    /* a linha abaixo do nome e o cargo, nao a categoria: 'Canal oficial · Crunchyroll' */
+    cargo:'Canal oficial', unit:'Crunchyroll', reach:'rede', status:'pub', oficial:true
   }, n, { text: n.text + crunchLink(n.link), article: artigo });
 }
 
