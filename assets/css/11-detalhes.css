@@ -339,7 +339,7 @@
   #crModal .qp-audmenu{min-width:0;right:0}
   /* o Enviar copia o Publicar do editor: mesma pilula, mesma altura de toque */
   /* o #crModal #crShare de 07-rede-social.css fixa 14px: dois ids para vencer */
-  #crModal #crShare.cr-enviar{width:auto;height:48px;padding:0 26px;border-radius:999px;font-size:15px;gap:10px}
+  #crModal #crShare.cr-enviar{width:auto;height:42px;padding:0 26px;border-radius:999px;font-size:15px;gap:10px}
   #crModal #crShare.cr-enviar i{font-size:15px}
 
   /* ---- editor de publicação: tela cheia, no formato do LinkedIn ----
@@ -383,7 +383,7 @@
   .qp-tool i{font-size:19px}
   .qp-foot{padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
   /* alvo de toque maior para a ação principal */
-  .qp-pub{height:48px;padding:0 26px;font-size:15px;gap:10px}
+  .qp-pub{height:42px;padding:0 26px;font-size:15px;gap:10px}
   .qp-pub i{font-size:15px}
   .qp-colors{padding:4px 14px 12px}
   .qp-colorback{padding:0 14px 12px}
