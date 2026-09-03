@@ -302,7 +302,9 @@ input,textarea,select{font-size:14px}
 .novo-ic.news{background:rgba(224,138,30,.14);color:#e08a1e}
 .novo-ic.short{background:rgba(129,97,216,.12);color:#8161d8}
 .novo-ic.pub{background:rgba(91,102,114,.12);color:#5b6672}
-.novo-op > b{min-width:0;font-size:15px;font-weight:700;color:var(--ink);line-height:20px}
+.novo-tx{min-width:0}
+.novo-tx b{display:block;font-size:15px;font-weight:700;color:var(--ink);line-height:20px}
+.novo-tx > span{display:block;font-size:12px;line-height:16px;color:var(--muted)}
 .new-search{
   display:flex;align-items:center;gap:8px;padding:8px 10px 12px;margin-bottom:4px;
   border-bottom:1px solid var(--line);color:var(--muted);
@@ -2904,6 +2906,7 @@ input,textarea,select{font-size:14px}
 
 /* o modal respeita 12px de respiro na tela e rola quando nao cabe */
 #crModal{padding:12px}
+.cr-card{width:760px;max-width:95vw;height:auto;max-height:calc(100vh - 24px);display:flex;flex-direction:column}
 
 /* o X do modal com a mesma bolinha de hover dos tres pontinhos */
 .fg-close{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;transition:background .15s,color .15s}
@@ -4549,6 +4552,18 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   .section-title{font-size:18px}
   .see-all{font-size:13px}
 
+  /* ---- Novo short: tela cheia, como o editor de publicação ----
+     Em 375px o respiro de 12px so encolheria o conteudo, entao o cartao
+     ocupa a tela inteira e perde os cantos. */
+  #crModal{padding:0}
+  .cr-card{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;box-shadow:none}
+  /* video em cima e formulario embaixo: lado a lado nao cabe nessa largura */
+  .cr-corpo{flex-direction:column;gap:16px;padding:16px;align-items:stretch;overflow-y:auto}
+  .cr-medcol{width:auto}
+  .cr-medstage{max-height:46vh}
+  /* a altura util fixa e do desktop; aqui quem manda e a tela */
+  #crStep1,#crStepUp{min-height:0}
+
   /* ---- editor de publicação: tela cheia, no formato do LinkedIn ----
      Linha 1 do cabeçalho: [X] .......... [Publicar]
      Linha 2: avatar, autor e os seletores de alcance/unidade/categoria
@@ -4757,27 +4772,27 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
     <div class="com-sheet-body" id="novoSheetBody">
       <button type="button" class="novo-op" data-novo="short">
         <span class="novo-ic short"><i class="fa-solid fa-clapperboard"></i></span>
-        <b>Criar short</b>
+        <span class="novo-tx"><b>Short</b><span>Foto ou vídeo vertical, em tela cheia</span></span>
       </button>
       <button type="button" class="novo-op" data-novo="pub">
         <span class="novo-ic pub"><i class="fa-solid fa-pen"></i></span>
-        <b>Criar publicação normal</b>
+        <span class="novo-tx"><b>Normal</b><span>Escreva e anexe o que quiser</span></span>
       </button>
       <button type="button" class="novo-op" data-novo="img">
         <span class="novo-ic img"><i class="fa-solid fa-image"></i></span>
-        <b>Criar publicação com imagem</b>
+        <span class="novo-tx"><b>Imagem</b><span>Uma foto ou várias</span></span>
       </button>
       <button type="button" class="novo-op" data-novo="color">
         <span class="novo-ic color"><i class="fa-solid fa-palette"></i></span>
-        <b>Criar publicação colorida</b>
+        <span class="novo-tx"><b>Colorida</b><span>Só texto, sobre um fundo colorido</span></span>
       </button>
       <button type="button" class="novo-op" data-novo="video">
         <span class="novo-ic video"><i class="fa-solid fa-video"></i></span>
-        <b>Criar publicação com vídeo</b>
+        <span class="novo-tx"><b>Vídeo</b><span>Um vídeo direto no feed</span></span>
       </button>
       <button type="button" class="novo-op" data-novo="art">
         <span class="novo-ic news"><i class="fa-solid fa-newspaper"></i></span>
-        <b>Criar publicação de artigo</b>
+        <span class="novo-tx"><b>Artigo</b><span>Texto longo, com capa</span></span>
       </button>
     </div>
   </div>
@@ -6629,7 +6644,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
 
 <!-- Modal Criar reel -->
 <div class="fg-backdrop" id="crModal">
-  <div class="fg-modal" style="width:760px;max-width:95vw;height:auto;max-height:calc(100vh - 24px);display:flex;flex-direction:column">
+  <div class="fg-modal cr-card">
     <div class="fg-head" style="position:relative;justify-content:center">
       <h2 id="crTitle" style="font-size:18px">Novo short</h2>
       <button class="fg-close" id="crClose" style="position:absolute;right:20px"><i class="fa-solid fa-xmark"></i></button>

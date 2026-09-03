@@ -303,6 +303,18 @@
   .section-title{font-size:18px}
   .see-all{font-size:13px}
 
+  /* ---- Novo short: tela cheia, como o editor de publicação ----
+     Em 375px o respiro de 12px so encolheria o conteudo, entao o cartao
+     ocupa a tela inteira e perde os cantos. */
+  #crModal{padding:0}
+  .cr-card{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;box-shadow:none}
+  /* video em cima e formulario embaixo: lado a lado nao cabe nessa largura */
+  .cr-corpo{flex-direction:column;gap:16px;padding:16px;align-items:stretch;overflow-y:auto}
+  .cr-medcol{width:auto}
+  .cr-medstage{max-height:46vh}
+  /* a altura util fixa e do desktop; aqui quem manda e a tela */
+  #crStep1,#crStepUp{min-height:0}
+
   /* ---- editor de publicação: tela cheia, no formato do LinkedIn ----
      Linha 1 do cabeçalho: [X] .......... [Publicar]
      Linha 2: avatar, autor e os seletores de alcance/unidade/categoria

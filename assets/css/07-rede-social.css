@@ -1338,6 +1338,7 @@
 
 /* o modal respeita 12px de respiro na tela e rola quando nao cabe */
 #crModal{padding:12px}
+.cr-card{width:760px;max-width:95vw;height:auto;max-height:calc(100vh - 24px);display:flex;flex-direction:column}
 
 /* o X do modal com a mesma bolinha de hover dos tres pontinhos */
 .fg-close{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;transition:background .15s,color .15s}

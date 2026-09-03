@@ -116,7 +116,9 @@
 .novo-ic.news{background:rgba(224,138,30,.14);color:#e08a1e}
 .novo-ic.short{background:rgba(129,97,216,.12);color:#8161d8}
 .novo-ic.pub{background:rgba(91,102,114,.12);color:#5b6672}
-.novo-op > b{min-width:0;font-size:15px;font-weight:700;color:var(--ink);line-height:20px}
+.novo-tx{min-width:0}
+.novo-tx b{display:block;font-size:15px;font-weight:700;color:var(--ink);line-height:20px}
+.novo-tx > span{display:block;font-size:12px;line-height:16px;color:var(--muted)}
 .new-search{
   display:flex;align-items:center;gap:8px;padding:8px 10px 12px;margin-bottom:4px;
   border-bottom:1px solid var(--line);color:var(--muted);
