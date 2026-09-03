@@ -86,7 +86,7 @@ let composeImg = null, nvEvent = false, composePoll = false, nvType = null;
 const newsLiked = new Set();
 (function(){ NEWS.filter(n=>n.status==='pub').slice(0,3).forEach(n=>newsLiked.add(n.id)); })();
 function postSub(n){
-  const base = n.sub || 'Comunicados oficiais';
+  const base = n.cargo || n.sub || 'Comunicados oficiais';
   const un = n.unit || 'SULTS';
   return base.indexOf('·')>-1 ? base : base+' · '+un;
 }
@@ -1162,8 +1162,8 @@ function renderNewsFeed(){
       const pinA = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
       return '<article class="card post nvf-artcard" data-id="'+n.id+'">'+
-        '<div class="post-head"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div class="post-id"><div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+(n.sub||'')+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
-        '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"><span class="art-badge">'+n.article.kicker+'</span></div>'+
+        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+(n.author||'SULTS')+' <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
+        '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
         '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+

@@ -15,11 +15,21 @@ const CRUNCH_URL = 'https://www.crunchyroll.com';
 function crunchLink(caminho){
   return '\n\n<a href="' + CRUNCH_URL + caminho + '" target="_blank" rel="noopener">Ler na Crunchyroll News →</a>';
 }
+/* o lead segue o padrão dos artigos do SULTS: sem o emoji do fim do resumo */
+function crunchLead(s){ return String(s || '').replace(/\s*[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]+\s*$/u, '').trim(); }
 function crunchPost(n){
+  const artigo = n.article || {
+    kicker: n.sub + ' · Crunchyroll News',
+    lead: crunchLead(n.text),
+    readTime: (2 + (n.id % 3)) + ' min de leitura',
+    html: '<p>' + crunchLead(n.text) + '</p>' +
+          '<p>A matéria completa, com todos os detalhes, imagens e declarações, está na Crunchyroll News.</p>' +
+          '<p><a href="' + CRUNCH_URL + n.link + '" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>'
+  };
   return Object.assign({
     author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
     unit:'Crunchyroll', reach:'rede', status:'pub'
-  }, n, { text: n.text + crunchLink(n.link) });
+  }, n, { text: n.text + crunchLink(n.link), article: artigo });
 }
 
 const CRUNCH_CATS = [
@@ -27,6 +37,10 @@ const CRUNCH_CATS = [
   { id:'noticias', name:'Notícias',         color:'#0088FF', icon:'fa-newspaper',       active:true },
   { id:'artigos',  name:'Artigos',          color:'#8161d8', icon:'fa-pen-nib',         active:true },
   { id:'quizzes',  name:'Quizzes e testes', color:'#27a689', icon:'fa-circle-question', active:true },
+  { id:'dublagem', name:'Dublagem',         color:'#e3444f', icon:'fa-microphone-lines',active:true },
+  { id:'mangas',   name:'Mangás',           color:'#c98a00', icon:'fa-book-open',       active:true },
+  { id:'games',    name:'Games',            color:'#2f6fe4', icon:'fa-gamepad',         active:true },
+  { id:'filmes',   name:'Filmes',           color:'#c2185b', icon:'fa-film',            active:true },
   { id:'animes',   name:'Animes',           color:'#a93438', icon:'fa-tv',              active:true },
   { id:'time',     name:'Time Crunchyroll',  color:'#F47521', icon:'fa-users',           active:true }
 ];
@@ -34,25 +48,27 @@ const CRUNCH_CATS = [
 /* As pessoas da rede são personagens: nome real do personagem, retrato como
    foto e a "unidade" é de onde ele vem. */
 const CRUNCH_PESSOAS = {
-  naruto:  { nome:'Naruto Uzumaki',  ini:'NU', unidade:'Konoha' },
-  sasuke:  { nome:'Sasuke Uchiha',   ini:'SU', unidade:'Konoha' },
-  luffy:   { nome:'Monkey D. Luffy', ini:'ML', unidade:'Grand Line' },
-  tanjiro: { nome:'Tanjiro Kamado',  ini:'TK', unidade:'Corpo de Caçadores' },
-  gojo:    { nome:'Satoru Gojo',     ini:'SG', unidade:'Escola Jujutsu de Tóquio' },
-  levi:    { nome:'Levi Ackerman',   ini:'LA', unidade:'Tropa de Exploração' },
-  anya:    { nome:'Anya Forger',     ini:'AF', unidade:'Academia Eden' },
-  spike:   { nome:'Spike Spiegel',   ini:'SS', unidade:'Bebop' },
-  frieren: { nome:'Frieren',         ini:'F',  unidade:'Reino Central' },
-  saitama: { nome:'Saitama',         ini:'S',  unidade:'Cidade Z' }
+  naruto:  { nome:'Naruto Uzumaki',  ini:'NU', cargo:'Sétimo Hokage',          unidade:'Konoha' },
+  sasuke:  { nome:'Sasuke Uchiha',   ini:'SU', cargo:'Shinobi · Missões externas', unidade:'Konoha' },
+  luffy:   { nome:'Monkey D. Luffy', ini:'ML', cargo:'Capitão',                 unidade:'Bando do Chapéu de Palha' },
+  tanjiro: { nome:'Tanjiro Kamado',  ini:'TK', cargo:'Caçador de Onis',         unidade:'Corpo de Caçadores' },
+  gojo:    { nome:'Satoru Gojo',     ini:'SG', cargo:'Professor',               unidade:'Escola Jujutsu de Tóquio' },
+  levi:    { nome:'Levi Ackerman',   ini:'LA', cargo:'Capitão',                 unidade:'Tropa de Exploração' },
+  anya:    { nome:'Anya Forger',     ini:'AF', cargo:'Estudante',               unidade:'Academia Eden' },
+  spike:   { nome:'Spike Spiegel',   ini:'SS', cargo:'Caçador de recompensas',  unidade:'Bebop' },
+  frieren: { nome:'Frieren',         ini:'F',  cargo:'Maga',                    unidade:'Grupo do Herói Himmel' },
+  saitama: { nome:'Saitama',         ini:'S',  cargo:'Herói · Classe B',        unidade:'Cidade Z' }
 };
+/* a linha abaixo do nome mostra cargo · unidade; a categoria (n.sub) segue
+   "Time Crunchyroll" só para os filtros da coluna */
 function crunchPessoa(chave, n){
   const q = CRUNCH_PESSOAS[chave];
   return Object.assign({ author:q.nome, av:'av-cr-'+chave, ini:q.ini, autorNome:q.nome, autorAv:'av-cr-'+chave,
-    unit:q.unidade, sub:'Time Crunchyroll', reach:'rede', status:'pub' }, n);
+    cargo:q.cargo, unit:q.unidade, sub:'Time Crunchyroll', reach:'rede', status:'pub' }, n);
 }
 function crunchComent(chave, texto, quando){
   const q = CRUNCH_PESSOAS[chave];
-  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.unidade, text:texto, time:quando };
+  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.cargo + ' · ' + q.unidade, text:texto, time:quando };
 }
 /* ordena por data e hora, da mais nova para a mais antiga; o fixado vai na frente */
 function crunchTs(s){
@@ -68,7 +84,7 @@ const CRUNCH_SHORT_CATS = [
 
 /* Matérias da Crunchyroll News (pt-BR), lidas em 02/09/2026 */
 const CRUNCH_MATERIAS = [
-  { id:9001, sub:'Notícias', date:'02/09/2026', datetime:'02/09/26 11:17', reactions:388, comments:29,
+  { id:9001, sub:'Mangás', date:'02/09/2026', datetime:'02/09/26 11:17', reactions:388, comments:29,
     title:"Harada, popular autora de boys' love, anuncia novo mangá",
     image:'uploads/crunch/news-harada-manga.jpg',
     text:"Harada, um dos nomes mais conhecidos do boys' love, tem obra nova a caminho. A matéria reúne o que já se sabe sobre o anúncio. 📚",
@@ -83,7 +99,7 @@ const CRUNCH_MATERIAS = [
     image:'uploads/crunch/news-sirotan.webp',
     text:'O anime de Sirotan já tem data de estreia e ganhou uma nova arte promocional. Os detalhes estão na matéria completa. 🦭',
     link:'/pt-br/news/latest/2026/9/1/anime-sirotan-estreia-3-de-outubro-arte' },
-  { id:9004, sub:'Notícias', date:'01/09/2026', datetime:'01/09/26 14:56', reactions:297, comments:18,
+  { id:9004, sub:'Games', date:'01/09/2026', datetime:'01/09/26 14:56', reactions:297, comments:18,
     title:'Code Vein II ganha vídeo preparando os jogadores para seu DLC pago e atualização gratuita',
     image:'uploads/crunch/news-code-vein-2.webp',
     text:'A equipe de Code Vein II publicou um vídeo apresentando o que vem por aí: um DLC pago e uma atualização gratuita. Confira o resumo do que muda no jogo. 🗡️',
@@ -93,17 +109,17 @@ const CRUNCH_MATERIAS = [
     image:'uploads/crunch/news-quiz-slime.webp',
     text:'Quiz da semana: responda algumas perguntas e descubra qual nação do mundo de Tensura você governaria. Compartilhe o resultado com o time! 🧪',
     link:'/pt-br/news/quizzes/2026/8/28/that-time-i-got-reincarnated-as-a-slime-nacoes-quiz' },
-  { id:9006, sub:'Anúncios', date:'24/08/2026', datetime:'24/08/26 13:30', reactions:1284, comments:96, pinned:true,
+  { id:9006, sub:'Dublagem', date:'24/08/2026', datetime:'24/08/26 13:30', reactions:1284, comments:96, pinned:true,
     title:'Dublagem brasileira de ONE PIECE HEROINES chega à Crunchyroll em breve',
     image:'uploads/crunch/news-one-piece-heroines.webp',
     text:'A versão dublada em português de ONE PIECE HEROINES foi confirmada para o catálogo. Quem prefere acompanhar as heroínas do bando do Chapéu de Palha em PT-BR já pode se preparar. 🏴‍☠️',
     link:'/pt-br/news/announcements/2026/8/24/one-piece-heroines-dublagem-brasileira-data-lancamento' },
-  { id:9007, sub:'Anúncios', date:'21/08/2026', datetime:'21/08/26 12:30', reactions:932, comments:71,
+  { id:9007, sub:'Dublagem', date:'21/08/2026', datetime:'21/08/26 12:30', reactions:932, comments:71,
     title:'Dublagem de Kaguya-sama: Love Is War -Stairway to Adulthood- está disponível na Crunchyroll',
     image:'uploads/crunch/news-kaguya-sama.webp',
     text:'A dublagem de Kaguya-sama: Love Is War -Stairway to Adulthood- já está no ar. Boa hora para rever a guerra de orgulho entre Kaguya e Miyuki com as vozes brasileiras. 💘',
     link:'/pt-br/news/announcements/2026/8/21/dublagem-kaguya-sama-love-is-war-stairway-to-adulthood-disponivel-crunchyroll' },
-  { id:9008, sub:'Anúncios', date:'15/08/2026', datetime:'15/08/26 13:02', reactions:743, comments:58,
+  { id:9008, sub:'Dublagem', date:'15/08/2026', datetime:'15/08/26 13:02', reactions:743, comments:58,
     title:'Conheça os dubladores brasileiros de Jaadugar: A Witch in Mongolia',
     image:'uploads/crunch/news-jaadugar-dubladores.webp',
     text:'O elenco brasileiro de Jaadugar: A Witch in Mongolia foi revelado. A matéria apresenta quem dá voz a cada personagem na versão em português. 🎙️',
@@ -112,8 +128,14 @@ const CRUNCH_MATERIAS = [
     title:'10 animes sobre fazer uma pausa',
     image:'uploads/crunch/news-animes-pausa.webp',
     text:'Nem todo anime precisa de batalha épica. Nesta lista, dez séries que celebram o descanso, a rotina e o prazer de não fazer nada — perfeitas para um fim de semana tranquilo. ☕',
-    link:'/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa' },
-  { id:9010, sub:'Anúncios', date:'11/08/2026', datetime:'11/08/26 20:00', reactions:2107, comments:188,
+    link:'/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa',
+    article:{ kicker:'Artigos · Lista', readTime:'6 min de leitura',
+      lead:'Nem todo anime precisa de batalha épica. Dez séries que celebram o descanso, a rotina e o prazer de não fazer nada — perfeitas para um fim de semana tranquilo.',
+      html:'<p>Há um gênero inteiro de anime dedicado a desacelerar: personagens que cozinham, caminham, cuidam de uma horta ou simplesmente observam o dia passar. A lista da Crunchyroll News reúne dez títulos assim, do slice of life clássico às histórias mais recentes sobre viver devagar.</p>' +
+           '<p>A ideia por trás da seleção é simples: pausar também faz parte da história. São animes que funcionam como companhia para um fim de semana sem compromisso, com episódios curtos e um ritmo que convida a ficar mais um pouco.</p>' +
+           '<p>A matéria completa apresenta cada uma das dez séries, com o que esperar de cada uma e onde assistir.</p>' +
+           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>' } },
+  { id:9010, sub:'Filmes', date:'11/08/2026', datetime:'11/08/26 20:00', reactions:2107, comments:188,
     title:'Crunchyroll e Sony Pictures Entertainment se juntam para distribuir o novo filme de Makoto Shinkai',
     image:'uploads/crunch/news-shinkai-sony.webp',
     text:'Parceria fechada: Crunchyroll e Sony Pictures Entertainment vão distribuir o próximo longa de Makoto Shinkai, diretor de Your Name e Suzume. Mais um grande lançamento de cinema no nosso radar. 🎬',
@@ -127,7 +149,13 @@ const CRUNCH_MATERIAS = [
     title:'Descubra qual anime assistir baseado no seu time em MARVEL Tokon: Fighting Souls',
     image:'uploads/crunch/news-marvel-tokon.webp',
     text:'Montou seu time em MARVEL Tokon: Fighting Souls? A matéria cruza o estilo de cada equipe com um anime que combina com ela. Um guia divertido para a próxima maratona. 🎮',
-    link:'/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls' }
+    link:'/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls',
+    article:{ kicker:'Artigos · Guia', readTime:'5 min de leitura',
+      lead:'Montou seu time em MARVEL Tokon: Fighting Souls? A matéria cruza o estilo de cada equipe com um anime que combina com ela — um guia para a próxima maratona.',
+      html:'<p>MARVEL Tokon: Fighting Souls é o jogo de luta em equipe da Arc System Works com os heróis da Marvel, e cada composição de time diz algo sobre quem joga: tem quem prefira pressão constante, quem aposte em defesa e contra-ataque, quem monte o time só pelo visual.</p>' +
+           '<p>A matéria parte desses perfis e sugere, para cada estilo de equipe, um anime que segue a mesma lógica — de shounen de ação frenética a histórias mais táticas e cerebrais.</p>' +
+           '<p>O texto completo traz as combinações uma a uma, com o porquê de cada escolha.</p>' +
+           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>' } }
 ].map(crunchPost);
 
 /* Posts das pessoas: um de imagem (o Naruto achou o Sasuke) e o resto só texto */

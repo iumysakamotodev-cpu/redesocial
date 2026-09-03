@@ -263,6 +263,35 @@ function addHomePost(n, append){
   const nameHtml = n.autorNome ? n.autorNome : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
   const metaTxt = fmtQuando(n);
   const rcount = n.reactions||0, ccount = n.comments||0;
+  const cabecalho =
+    '<div class="post-head">'+avatarHtml+
+      '<div class="post-id"><div class="post-name">'+nameHtml+(n.pinned?'<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>':'')+'</div>'+
+      '<div class="post-sub">'+postSub(n)+'</div>'+
+      '<div class="post-meta">'+metaTxt+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div>'+
+      '<button class="post-more"><i class="fa-solid fa-ellipsis"></i></button></div>';
+  const rodape =
+    '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span>'+(rcount>=90?'<span class="rxs" data-rx="love"></span>':'')+(rcount>=120?'<span class="rxs" data-rx="celebrate"></span>':'')+'</span><span class="rx-count">'+rcount+'</span><span class="right">'+(ccount?'Ver ':'')+ccount+' comentários</span></div>'+
+    '<div class="post-actions"><button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button><button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button></div>';
+  /* Artigo: o mesmo cartao do artigo fixo da home (capa com selo, titulo, lead e
+     "Ler artigo completo"), abrindo o leitor do modulo. */
+  if (n.article){
+    art.className = 'card post nvf-artcard fresh';
+    art.innerHTML = cabecalho +
+      '<div class="nvf-arthero" data-abre-artigo><img src="'+n.image+'" alt=""></div>'+
+      '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div>'+
+        '<div class="nvf-arttitle" data-abre-artigo>'+n.title+'</div>'+
+        '<div class="nvf-artlead">'+(n.article.lead||'')+'</div>'+
+        '<div class="nvf-artread" data-abre-artigo>Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>' +
+      rodape;
+    art.querySelectorAll('[data-abre-artigo]').forEach(el => el.addEventListener('click', () => {
+      if (typeof openNewsModule === 'function') openNewsModule();
+      if (typeof openArticle === 'function') openArticle(n);
+    }));
+    if (append) feed.appendChild(art); else feed.insertBefore(art, feed.firstChild);
+    initReactions(art.querySelector('.p-act.like'));
+    initComments(art, []);
+    return;
+  }
   art.innerHTML =
     '<div class="post-head">'+avatarHtml+
       '<div class="post-id"><div class="post-name">'+nameHtml+'</div>'+

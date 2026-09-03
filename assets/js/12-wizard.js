@@ -114,6 +114,9 @@ $('#nvArtBack').addEventListener('click', () => { newsView.classList.remove('use
 $('#nvArtEdit') && $('#nvArtEdit').addEventListener('click', () => { if(npCurrent) nvEdit(npCurrent.id); });
 $('#nvArtApr') && $('#nvArtApr').addEventListener('click', ()=>reviewDecide(true));
 $('#nvArtRej') && $('#nvArtRej').addEventListener('click', ()=>reviewDecide(false));
+/* arranque: na home, os artigos ja desenhados (o fixo e os do primeiro render,
+   que rodou antes de NEWS_CATS existir) trocam o nome da categoria pela pilula */
+(function(){ document.querySelectorAll('.col-main .nvf-artkicker').forEach(k => { if(!k.querySelector('.art-catpill')) k.innerHTML=catPillHTML(k.textContent); }); })();
 ['homeArtOpen','homeArtOpen2','homeArtOpen3'].forEach(id => { const el=$('#'+id); if(el) el.addEventListener('click', () => { const n=NEWS.find(x=>x.article); if(!n) return; openNewsModule(); openArticle(n); }); });
 function catInk(hex){
   const m=/^#?([\da-f]{6})$/i.exec(hex||''); if(!m) return '#1C1C1E';
@@ -124,11 +127,22 @@ function catInk(hex){
   while(ratio()<5 && k++<40){ r=Math.round(r*.9); g=Math.round(g*.9); b=Math.round(b*.9); }
   return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
 }
+/* pilula de categoria (icone redondo + nome); devolve so o nome quando a
+   categoria nao existe na lista */
+function catPillHTML(nome){
+  const name=(nome||'').split('·')[0].trim();
+  /* NEWS_CATS e um let declarado mais adiante no script unico; se alguem chamar
+     antes dele existir, ate typeof lanca ReferenceError na zona morta */
+  let cats = null; try { cats = NEWS_CATS; } catch (e) { cats = null; }
+  const c = cats ? cats.find(x=>x.name===name) : null;
+  if(!c) return name;
+  return '<span class="art-catpill" style="background:'+c.color+'1F;color:'+catInk(c.color)+'"><span class="art-catic" style="background:'+c.color+'"><i class="fa-solid '+c.icon+'"></i></span>'+c.name+'</span>';
+}
 function artCatPill(kicker){
   const name=(kicker||'').split('·')[0].trim();
   const c=(typeof NEWS_CATS!=='undefined') ? NEWS_CATS.find(x=>x.name===name) : null;
   if(!c) return '<div class="art-kicker">'+(kicker||'Artigo')+'</div>';
-  return '<div class="art-kicker"><span class="art-catpill" style="background:'+c.color+'1F;color:'+catInk(c.color)+'"><span class="art-catic" style="background:'+c.color+'"><i class="fa-solid '+c.icon+'"></i></span>'+c.name+'</span></div>';
+  return '<div class="art-kicker">'+catPillHTML(name)+'</div>';
 }
 function openArticle(n){
   npCurrent=n;
@@ -146,7 +160,7 @@ function openArticle(n){
     const catChip=cat?'<span class="np-cat" style="background:'+cat.color+'"><i class="fa-solid '+(cat.icon||'fa-tag')+'"></i> '+cat.name+'</span>':'';
     const txt=(n.text||'').replace(/\n/g,'<br>');
     $('#nvArtBody').innerHTML=
-      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+(n.sub||'')+'</div><div class="np-meta">'+(n.date||'agora')+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
+      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+postSub(n)+'</div><div class="np-meta">'+(n.date||'agora')+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
       (n.title&&!n.colorBg?'<h1 class="np-title">'+n.title+'</h1>':'')+
       (txt?'<div class="np-text">'+txt+'</div>':'')+media+
       '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span></span> '+rc+' · '+cc+' comentários</div>'+
@@ -157,11 +171,13 @@ function openArticle(n){
   }
   const a = n.article;
   if (a.paras || a.html){
+    /* o ramo montava o HTML e descartava: faltava a atribuicao */
+    $('#nvArtBody').innerHTML =
       (n.image ? '<div class="art-herowrap"><img src="'+n.image+'" alt=""></div>' : '') +
       artCatPill(a.kicker)+
       '<h1>'+n.title+'</h1>'+
       (a.lead ? '<p class="art-lead">'+a.lead+'</p>' : '')+
-      '<div class="art-byline"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div><b>SULTS</b><span>'+n.date+' · '+(a.readTime||'')+'</span></div>'+
+      '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+(a.readTime||'')+'</span></div>'+
         '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
       '<div class="art-body">'+(a.html ? a.html : a.paras.map(p=>'<p>'+p.replace(/</g,'&lt;')+'</p>').join(''))+'</div>'+
       (function(){ const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0); const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0); return '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span> '+rc+' · '+cc+' comentários</div>'+
@@ -182,7 +198,7 @@ function openArticle(n){
     artCatPill(a.kicker)+
     '<h1>'+n.title+'</h1>'+
     '<p class="art-lead">'+a.lead+'</p>'+
-    '<div class="art-byline"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div><b>SULTS</b><span>'+n.date+' · '+a.readTime+'</span></div>'+
+    '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+a.readTime+'</span></div>'+
       '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
     '<div class="art-stats">'+stats+'</div>'+
     '<div class="art-body">'+

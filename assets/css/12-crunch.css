@@ -41,3 +41,6 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
 .av-cr-anya   {background-image:url("../../uploads/crunch/p-anya.webp");background-size:160% auto;background-position:center top}
 .av-cr-frieren{background-image:url("../../uploads/crunch/p-frieren.webp");background-size:170% auto;background-position:center top}
 .av-cr-gojo   {background-image:url("../../uploads/crunch/p-gojo.webp");background-size:200% auto;background-position:center top}
+
+/* quem so consome nao edita artigo */
+body.demo-crunch #nvArtEdit{display:none}

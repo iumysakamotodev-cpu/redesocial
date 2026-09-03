@@ -905,7 +905,6 @@
 .nvf-arthero{position:relative;margin:10px -16px 0;display:block;cursor:pointer;overflow:hidden}
 .nvf-arthero img{width:100%;display:block;transition:transform .4s ease;max-height:420px;object-fit:cover}
 .nvf-artcard:hover .nvf-arthero img{transform:scale(1.02)}
-.nvf-arthero .art-badge{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(15,20,26,.72);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px)}
 .nvf-artbody{padding:18px 2px 4px}
 .nvf-artkicker{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--teal)}
 .nvf-arttitle{font-size:20px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.2px;margin:9px 0;cursor:pointer;transition:color .15s}
@@ -931,7 +930,7 @@
 .art-herowrap img{width:100%;display:block}
 .art-kicker{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--teal);margin-top:34px}
 .art-catpill{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px 0 6px;border-radius:32px;font-size:12px;font-weight:600;letter-spacing:.3px;text-transform:none}
-.art-catpill .art-catic{width:20px;height:20px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex-shrink:0}
+.art-catpill .art-catic{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex-shrink:0}
 .art h1{font-size:34px;font-weight:700;color:var(--ink);line-height:1.18;letter-spacing:-.4px;margin:12px 0 16px}
 .art-lead{font-size:17px;line-height:1.6;color:#3a4753;font-weight:600}
 .art-byline{display:flex;align-items:center;gap:12px;margin:24px 0 6px;padding:16px 32px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}

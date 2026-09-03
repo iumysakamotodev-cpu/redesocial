@@ -2432,7 +2432,6 @@ input,textarea,select{font-size:14px}
 .nvf-arthero{position:relative;margin:10px -16px 0;display:block;cursor:pointer;overflow:hidden}
 .nvf-arthero img{width:100%;display:block;transition:transform .4s ease;max-height:420px;object-fit:cover}
 .nvf-artcard:hover .nvf-arthero img{transform:scale(1.02)}
-.nvf-arthero .art-badge{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(15,20,26,.72);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px)}
 .nvf-artbody{padding:18px 2px 4px}
 .nvf-artkicker{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--teal)}
 .nvf-arttitle{font-size:20px;font-weight:700;color:var(--ink);line-height:1.3;letter-spacing:-.2px;margin:9px 0;cursor:pointer;transition:color .15s}
@@ -2458,7 +2457,7 @@ input,textarea,select{font-size:14px}
 .art-herowrap img{width:100%;display:block}
 .art-kicker{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--teal);margin-top:34px}
 .art-catpill{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px 0 6px;border-radius:32px;font-size:12px;font-weight:600;letter-spacing:.3px;text-transform:none}
-.art-catpill .art-catic{width:20px;height:20px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex-shrink:0}
+.art-catpill .art-catic{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px;flex-shrink:0}
 .art h1{font-size:34px;font-weight:700;color:var(--ink);line-height:1.18;letter-spacing:-.4px;margin:12px 0 16px}
 .art-lead{font-size:17px;line-height:1.6;color:#3a4753;font-weight:600}
 .art-byline{display:flex;align-items:center;gap:12px;margin:24px 0 6px;padding:16px 32px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -4503,6 +4502,9 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
 .av-cr-anya   {background-image:url("uploads/crunch/p-anya.webp");background-size:160% auto;background-position:center top}
 .av-cr-frieren{background-image:url("uploads/crunch/p-frieren.webp");background-size:170% auto;background-position:center top}
 .av-cr-gojo   {background-image:url("uploads/crunch/p-gojo.webp");background-size:200% auto;background-position:center top}
+
+/* quem so consome nao edita artigo */
+body.demo-crunch #nvArtEdit{display:none}
 </style>
 </head>
 <body>
@@ -4928,7 +4930,7 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
             </div>
             <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
           </div>
-          <div class="nvf-arthero" id="homeArtOpen"><img src="uploads/news/casa-construtor.jpg" alt=""><span class="art-badge">Histórias de sucesso · Case</span></div>
+          <div class="nvf-arthero" id="homeArtOpen"><img src="uploads/news/casa-construtor.jpg" alt=""></div>
           <div class="nvf-artbody">
             <div class="nvf-artkicker">Histórias de sucesso</div>
             <div class="nvf-arttitle" id="homeArtOpen2">Como a Casa do Construtor centraliza a gestão de mais de 780 lojas em 4 países com a SULTS</div>
@@ -8217,6 +8219,35 @@ function addHomePost(n, append){
   const nameHtml = n.autorNome ? n.autorNome : 'SULTS <i class="fa-solid fa-circle-check verified"></i>';
   const metaTxt = fmtQuando(n);
   const rcount = n.reactions||0, ccount = n.comments||0;
+  const cabecalho =
+    '<div class="post-head">'+avatarHtml+
+      '<div class="post-id"><div class="post-name">'+nameHtml+(n.pinned?'<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>':'')+'</div>'+
+      '<div class="post-sub">'+postSub(n)+'</div>'+
+      '<div class="post-meta">'+metaTxt+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div>'+
+      '<button class="post-more"><i class="fa-solid fa-ellipsis"></i></button></div>';
+  const rodape =
+    '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span>'+(rcount>=90?'<span class="rxs" data-rx="love"></span>':'')+(rcount>=120?'<span class="rxs" data-rx="celebrate"></span>':'')+'</span><span class="rx-count">'+rcount+'</span><span class="right">'+(ccount?'Ver ':'')+ccount+' comentários</span></div>'+
+    '<div class="post-actions"><button class="p-act like"><i class="fa-regular fa-thumbs-up"></i> Gostei</button><button class="p-act comment-toggle"><i class="fa-regular fa-comment"></i> Comentar</button></div>';
+  /* Artigo: o mesmo cartao do artigo fixo da home (capa com selo, titulo, lead e
+     "Ler artigo completo"), abrindo o leitor do modulo. */
+  if (n.article){
+    art.className = 'card post nvf-artcard fresh';
+    art.innerHTML = cabecalho +
+      '<div class="nvf-arthero" data-abre-artigo><img src="'+n.image+'" alt=""></div>'+
+      '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div>'+
+        '<div class="nvf-arttitle" data-abre-artigo>'+n.title+'</div>'+
+        '<div class="nvf-artlead">'+(n.article.lead||'')+'</div>'+
+        '<div class="nvf-artread" data-abre-artigo>Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>' +
+      rodape;
+    art.querySelectorAll('[data-abre-artigo]').forEach(el => el.addEventListener('click', () => {
+      if (typeof openNewsModule === 'function') openNewsModule();
+      if (typeof openArticle === 'function') openArticle(n);
+    }));
+    if (append) feed.appendChild(art); else feed.insertBefore(art, feed.firstChild);
+    initReactions(art.querySelector('.p-act.like'));
+    initComments(art, []);
+    return;
+  }
   art.innerHTML =
     '<div class="post-head">'+avatarHtml+
       '<div class="post-id"><div class="post-name">'+nameHtml+'</div>'+
@@ -9465,7 +9496,7 @@ let composeImg = null, nvEvent = false, composePoll = false, nvType = null;
 const newsLiked = new Set();
 (function(){ NEWS.filter(n=>n.status==='pub').slice(0,3).forEach(n=>newsLiked.add(n.id)); })();
 function postSub(n){
-  const base = n.sub || 'Comunicados oficiais';
+  const base = n.cargo || n.sub || 'Comunicados oficiais';
   const un = n.unit || 'SULTS';
   return base.indexOf('·')>-1 ? base : base+' · '+un;
 }
@@ -10541,8 +10572,8 @@ function renderNewsFeed(){
       const pinA = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
       return '<article class="card post nvf-artcard" data-id="'+n.id+'">'+
-        '<div class="post-head"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div class="post-id"><div class="post-name">SULTS <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+(n.sub||'')+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
-        '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"><span class="art-badge">'+n.article.kicker+'</span></div>'+
+        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+(n.author||'SULTS')+' <i class="fa-solid fa-circle-check verified"></i>'+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
+        '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
         '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
@@ -11160,6 +11191,9 @@ $('#nvArtBack').addEventListener('click', () => { newsView.classList.remove('use
 $('#nvArtEdit') && $('#nvArtEdit').addEventListener('click', () => { if(npCurrent) nvEdit(npCurrent.id); });
 $('#nvArtApr') && $('#nvArtApr').addEventListener('click', ()=>reviewDecide(true));
 $('#nvArtRej') && $('#nvArtRej').addEventListener('click', ()=>reviewDecide(false));
+/* arranque: na home, os artigos ja desenhados (o fixo e os do primeiro render,
+   que rodou antes de NEWS_CATS existir) trocam o nome da categoria pela pilula */
+(function(){ document.querySelectorAll('.col-main .nvf-artkicker').forEach(k => { if(!k.querySelector('.art-catpill')) k.innerHTML=catPillHTML(k.textContent); }); })();
 ['homeArtOpen','homeArtOpen2','homeArtOpen3'].forEach(id => { const el=$('#'+id); if(el) el.addEventListener('click', () => { const n=NEWS.find(x=>x.article); if(!n) return; openNewsModule(); openArticle(n); }); });
 function catInk(hex){
   const m=/^#?([\da-f]{6})$/i.exec(hex||''); if(!m) return '#1C1C1E';
@@ -11170,11 +11204,22 @@ function catInk(hex){
   while(ratio()<5 && k++<40){ r=Math.round(r*.9); g=Math.round(g*.9); b=Math.round(b*.9); }
   return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
 }
+/* pilula de categoria (icone redondo + nome); devolve so o nome quando a
+   categoria nao existe na lista */
+function catPillHTML(nome){
+  const name=(nome||'').split('·')[0].trim();
+  /* NEWS_CATS e um let declarado mais adiante no script unico; se alguem chamar
+     antes dele existir, ate typeof lanca ReferenceError na zona morta */
+  let cats = null; try { cats = NEWS_CATS; } catch (e) { cats = null; }
+  const c = cats ? cats.find(x=>x.name===name) : null;
+  if(!c) return name;
+  return '<span class="art-catpill" style="background:'+c.color+'1F;color:'+catInk(c.color)+'"><span class="art-catic" style="background:'+c.color+'"><i class="fa-solid '+c.icon+'"></i></span>'+c.name+'</span>';
+}
 function artCatPill(kicker){
   const name=(kicker||'').split('·')[0].trim();
   const c=(typeof NEWS_CATS!=='undefined') ? NEWS_CATS.find(x=>x.name===name) : null;
   if(!c) return '<div class="art-kicker">'+(kicker||'Artigo')+'</div>';
-  return '<div class="art-kicker"><span class="art-catpill" style="background:'+c.color+'1F;color:'+catInk(c.color)+'"><span class="art-catic" style="background:'+c.color+'"><i class="fa-solid '+c.icon+'"></i></span>'+c.name+'</span></div>';
+  return '<div class="art-kicker">'+catPillHTML(name)+'</div>';
 }
 function openArticle(n){
   npCurrent=n;
@@ -11192,7 +11237,7 @@ function openArticle(n){
     const catChip=cat?'<span class="np-cat" style="background:'+cat.color+'"><i class="fa-solid '+(cat.icon||'fa-tag')+'"></i> '+cat.name+'</span>':'';
     const txt=(n.text||'').replace(/\n/g,'<br>');
     $('#nvArtBody').innerHTML=
-      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+(n.sub||'')+'</div><div class="np-meta">'+(n.date||'agora')+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
+      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+postSub(n)+'</div><div class="np-meta">'+(n.date||'agora')+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
       (n.title&&!n.colorBg?'<h1 class="np-title">'+n.title+'</h1>':'')+
       (txt?'<div class="np-text">'+txt+'</div>':'')+media+
       '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span></span> '+rc+' · '+cc+' comentários</div>'+
@@ -11203,11 +11248,13 @@ function openArticle(n){
   }
   const a = n.article;
   if (a.paras || a.html){
+    /* o ramo montava o HTML e descartava: faltava a atribuicao */
+    $('#nvArtBody').innerHTML =
       (n.image ? '<div class="art-herowrap"><img src="'+n.image+'" alt=""></div>' : '') +
       artCatPill(a.kicker)+
       '<h1>'+n.title+'</h1>'+
       (a.lead ? '<p class="art-lead">'+a.lead+'</p>' : '')+
-      '<div class="art-byline"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div><b>SULTS</b><span>'+n.date+' · '+(a.readTime||'')+'</span></div>'+
+      '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+(a.readTime||'')+'</span></div>'+
         '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
       '<div class="art-body">'+(a.html ? a.html : a.paras.map(p=>'<p>'+p.replace(/</g,'&lt;')+'</p>').join(''))+'</div>'+
       (function(){ const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0); const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0); return '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span> '+rc+' · '+cc+' comentários</div>'+
@@ -11228,7 +11275,7 @@ function openArticle(n){
     artCatPill(a.kicker)+
     '<h1>'+n.title+'</h1>'+
     '<p class="art-lead">'+a.lead+'</p>'+
-    '<div class="art-byline"><span class="avatar av-brand">'+BRAND_LOGO+'</span><div><b>SULTS</b><span>'+n.date+' · '+a.readTime+'</span></div>'+
+    '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+a.readTime+'</span></div>'+
       '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
     '<div class="art-stats">'+stats+'</div>'+
     '<div class="art-body">'+
@@ -12327,11 +12374,21 @@ const CRUNCH_URL = 'https://www.crunchyroll.com';
 function crunchLink(caminho){
   return '\n\n<a href="' + CRUNCH_URL + caminho + '" target="_blank" rel="noopener">Ler na Crunchyroll News →</a>';
 }
+/* o lead segue o padrão dos artigos do SULTS: sem o emoji do fim do resumo */
+function crunchLead(s){ return String(s || '').replace(/\s*[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]+\s*$/u, '').trim(); }
 function crunchPost(n){
+  const artigo = n.article || {
+    kicker: n.sub + ' · Crunchyroll News',
+    lead: crunchLead(n.text),
+    readTime: (2 + (n.id % 3)) + ' min de leitura',
+    html: '<p>' + crunchLead(n.text) + '</p>' +
+          '<p>A matéria completa, com todos os detalhes, imagens e declarações, está na Crunchyroll News.</p>' +
+          '<p><a href="' + CRUNCH_URL + n.link + '" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>'
+  };
   return Object.assign({
     author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
     unit:'Crunchyroll', reach:'rede', status:'pub'
-  }, n, { text: n.text + crunchLink(n.link) });
+  }, n, { text: n.text + crunchLink(n.link), article: artigo });
 }
 
 const CRUNCH_CATS = [
@@ -12339,6 +12396,10 @@ const CRUNCH_CATS = [
   { id:'noticias', name:'Notícias',         color:'#0088FF', icon:'fa-newspaper',       active:true },
   { id:'artigos',  name:'Artigos',          color:'#8161d8', icon:'fa-pen-nib',         active:true },
   { id:'quizzes',  name:'Quizzes e testes', color:'#27a689', icon:'fa-circle-question', active:true },
+  { id:'dublagem', name:'Dublagem',         color:'#e3444f', icon:'fa-microphone-lines',active:true },
+  { id:'mangas',   name:'Mangás',           color:'#c98a00', icon:'fa-book-open',       active:true },
+  { id:'games',    name:'Games',            color:'#2f6fe4', icon:'fa-gamepad',         active:true },
+  { id:'filmes',   name:'Filmes',           color:'#c2185b', icon:'fa-film',            active:true },
   { id:'animes',   name:'Animes',           color:'#a93438', icon:'fa-tv',              active:true },
   { id:'time',     name:'Time Crunchyroll',  color:'#F47521', icon:'fa-users',           active:true }
 ];
@@ -12346,25 +12407,27 @@ const CRUNCH_CATS = [
 /* As pessoas da rede são personagens: nome real do personagem, retrato como
    foto e a "unidade" é de onde ele vem. */
 const CRUNCH_PESSOAS = {
-  naruto:  { nome:'Naruto Uzumaki',  ini:'NU', unidade:'Konoha' },
-  sasuke:  { nome:'Sasuke Uchiha',   ini:'SU', unidade:'Konoha' },
-  luffy:   { nome:'Monkey D. Luffy', ini:'ML', unidade:'Grand Line' },
-  tanjiro: { nome:'Tanjiro Kamado',  ini:'TK', unidade:'Corpo de Caçadores' },
-  gojo:    { nome:'Satoru Gojo',     ini:'SG', unidade:'Escola Jujutsu de Tóquio' },
-  levi:    { nome:'Levi Ackerman',   ini:'LA', unidade:'Tropa de Exploração' },
-  anya:    { nome:'Anya Forger',     ini:'AF', unidade:'Academia Eden' },
-  spike:   { nome:'Spike Spiegel',   ini:'SS', unidade:'Bebop' },
-  frieren: { nome:'Frieren',         ini:'F',  unidade:'Reino Central' },
-  saitama: { nome:'Saitama',         ini:'S',  unidade:'Cidade Z' }
+  naruto:  { nome:'Naruto Uzumaki',  ini:'NU', cargo:'Sétimo Hokage',          unidade:'Konoha' },
+  sasuke:  { nome:'Sasuke Uchiha',   ini:'SU', cargo:'Shinobi · Missões externas', unidade:'Konoha' },
+  luffy:   { nome:'Monkey D. Luffy', ini:'ML', cargo:'Capitão',                 unidade:'Bando do Chapéu de Palha' },
+  tanjiro: { nome:'Tanjiro Kamado',  ini:'TK', cargo:'Caçador de Onis',         unidade:'Corpo de Caçadores' },
+  gojo:    { nome:'Satoru Gojo',     ini:'SG', cargo:'Professor',               unidade:'Escola Jujutsu de Tóquio' },
+  levi:    { nome:'Levi Ackerman',   ini:'LA', cargo:'Capitão',                 unidade:'Tropa de Exploração' },
+  anya:    { nome:'Anya Forger',     ini:'AF', cargo:'Estudante',               unidade:'Academia Eden' },
+  spike:   { nome:'Spike Spiegel',   ini:'SS', cargo:'Caçador de recompensas',  unidade:'Bebop' },
+  frieren: { nome:'Frieren',         ini:'F',  cargo:'Maga',                    unidade:'Grupo do Herói Himmel' },
+  saitama: { nome:'Saitama',         ini:'S',  cargo:'Herói · Classe B',        unidade:'Cidade Z' }
 };
+/* a linha abaixo do nome mostra cargo · unidade; a categoria (n.sub) segue
+   "Time Crunchyroll" só para os filtros da coluna */
 function crunchPessoa(chave, n){
   const q = CRUNCH_PESSOAS[chave];
   return Object.assign({ author:q.nome, av:'av-cr-'+chave, ini:q.ini, autorNome:q.nome, autorAv:'av-cr-'+chave,
-    unit:q.unidade, sub:'Time Crunchyroll', reach:'rede', status:'pub' }, n);
+    cargo:q.cargo, unit:q.unidade, sub:'Time Crunchyroll', reach:'rede', status:'pub' }, n);
 }
 function crunchComent(chave, texto, quando){
   const q = CRUNCH_PESSOAS[chave];
-  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.unidade, text:texto, time:quando };
+  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.cargo + ' · ' + q.unidade, text:texto, time:quando };
 }
 /* ordena por data e hora, da mais nova para a mais antiga; o fixado vai na frente */
 function crunchTs(s){
@@ -12380,7 +12443,7 @@ const CRUNCH_SHORT_CATS = [
 
 /* Matérias da Crunchyroll News (pt-BR), lidas em 02/09/2026 */
 const CRUNCH_MATERIAS = [
-  { id:9001, sub:'Notícias', date:'02/09/2026', datetime:'02/09/26 11:17', reactions:388, comments:29,
+  { id:9001, sub:'Mangás', date:'02/09/2026', datetime:'02/09/26 11:17', reactions:388, comments:29,
     title:"Harada, popular autora de boys' love, anuncia novo mangá",
     image:'uploads/crunch/news-harada-manga.jpg',
     text:"Harada, um dos nomes mais conhecidos do boys' love, tem obra nova a caminho. A matéria reúne o que já se sabe sobre o anúncio. 📚",
@@ -12395,7 +12458,7 @@ const CRUNCH_MATERIAS = [
     image:'uploads/crunch/news-sirotan.webp',
     text:'O anime de Sirotan já tem data de estreia e ganhou uma nova arte promocional. Os detalhes estão na matéria completa. 🦭',
     link:'/pt-br/news/latest/2026/9/1/anime-sirotan-estreia-3-de-outubro-arte' },
-  { id:9004, sub:'Notícias', date:'01/09/2026', datetime:'01/09/26 14:56', reactions:297, comments:18,
+  { id:9004, sub:'Games', date:'01/09/2026', datetime:'01/09/26 14:56', reactions:297, comments:18,
     title:'Code Vein II ganha vídeo preparando os jogadores para seu DLC pago e atualização gratuita',
     image:'uploads/crunch/news-code-vein-2.webp',
     text:'A equipe de Code Vein II publicou um vídeo apresentando o que vem por aí: um DLC pago e uma atualização gratuita. Confira o resumo do que muda no jogo. 🗡️',
@@ -12405,17 +12468,17 @@ const CRUNCH_MATERIAS = [
     image:'uploads/crunch/news-quiz-slime.webp',
     text:'Quiz da semana: responda algumas perguntas e descubra qual nação do mundo de Tensura você governaria. Compartilhe o resultado com o time! 🧪',
     link:'/pt-br/news/quizzes/2026/8/28/that-time-i-got-reincarnated-as-a-slime-nacoes-quiz' },
-  { id:9006, sub:'Anúncios', date:'24/08/2026', datetime:'24/08/26 13:30', reactions:1284, comments:96, pinned:true,
+  { id:9006, sub:'Dublagem', date:'24/08/2026', datetime:'24/08/26 13:30', reactions:1284, comments:96, pinned:true,
     title:'Dublagem brasileira de ONE PIECE HEROINES chega à Crunchyroll em breve',
     image:'uploads/crunch/news-one-piece-heroines.webp',
     text:'A versão dublada em português de ONE PIECE HEROINES foi confirmada para o catálogo. Quem prefere acompanhar as heroínas do bando do Chapéu de Palha em PT-BR já pode se preparar. 🏴‍☠️',
     link:'/pt-br/news/announcements/2026/8/24/one-piece-heroines-dublagem-brasileira-data-lancamento' },
-  { id:9007, sub:'Anúncios', date:'21/08/2026', datetime:'21/08/26 12:30', reactions:932, comments:71,
+  { id:9007, sub:'Dublagem', date:'21/08/2026', datetime:'21/08/26 12:30', reactions:932, comments:71,
     title:'Dublagem de Kaguya-sama: Love Is War -Stairway to Adulthood- está disponível na Crunchyroll',
     image:'uploads/crunch/news-kaguya-sama.webp',
     text:'A dublagem de Kaguya-sama: Love Is War -Stairway to Adulthood- já está no ar. Boa hora para rever a guerra de orgulho entre Kaguya e Miyuki com as vozes brasileiras. 💘',
     link:'/pt-br/news/announcements/2026/8/21/dublagem-kaguya-sama-love-is-war-stairway-to-adulthood-disponivel-crunchyroll' },
-  { id:9008, sub:'Anúncios', date:'15/08/2026', datetime:'15/08/26 13:02', reactions:743, comments:58,
+  { id:9008, sub:'Dublagem', date:'15/08/2026', datetime:'15/08/26 13:02', reactions:743, comments:58,
     title:'Conheça os dubladores brasileiros de Jaadugar: A Witch in Mongolia',
     image:'uploads/crunch/news-jaadugar-dubladores.webp',
     text:'O elenco brasileiro de Jaadugar: A Witch in Mongolia foi revelado. A matéria apresenta quem dá voz a cada personagem na versão em português. 🎙️',
@@ -12424,8 +12487,14 @@ const CRUNCH_MATERIAS = [
     title:'10 animes sobre fazer uma pausa',
     image:'uploads/crunch/news-animes-pausa.webp',
     text:'Nem todo anime precisa de batalha épica. Nesta lista, dez séries que celebram o descanso, a rotina e o prazer de não fazer nada — perfeitas para um fim de semana tranquilo. ☕',
-    link:'/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa' },
-  { id:9010, sub:'Anúncios', date:'11/08/2026', datetime:'11/08/26 20:00', reactions:2107, comments:188,
+    link:'/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa',
+    article:{ kicker:'Artigos · Lista', readTime:'6 min de leitura',
+      lead:'Nem todo anime precisa de batalha épica. Dez séries que celebram o descanso, a rotina e o prazer de não fazer nada — perfeitas para um fim de semana tranquilo.',
+      html:'<p>Há um gênero inteiro de anime dedicado a desacelerar: personagens que cozinham, caminham, cuidam de uma horta ou simplesmente observam o dia passar. A lista da Crunchyroll News reúne dez títulos assim, do slice of life clássico às histórias mais recentes sobre viver devagar.</p>' +
+           '<p>A ideia por trás da seleção é simples: pausar também faz parte da história. São animes que funcionam como companhia para um fim de semana sem compromisso, com episódios curtos e um ritmo que convida a ficar mais um pouco.</p>' +
+           '<p>A matéria completa apresenta cada uma das dez séries, com o que esperar de cada uma e onde assistir.</p>' +
+           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>' } },
+  { id:9010, sub:'Filmes', date:'11/08/2026', datetime:'11/08/26 20:00', reactions:2107, comments:188,
     title:'Crunchyroll e Sony Pictures Entertainment se juntam para distribuir o novo filme de Makoto Shinkai',
     image:'uploads/crunch/news-shinkai-sony.webp',
     text:'Parceria fechada: Crunchyroll e Sony Pictures Entertainment vão distribuir o próximo longa de Makoto Shinkai, diretor de Your Name e Suzume. Mais um grande lançamento de cinema no nosso radar. 🎬',
@@ -12439,7 +12508,13 @@ const CRUNCH_MATERIAS = [
     title:'Descubra qual anime assistir baseado no seu time em MARVEL Tokon: Fighting Souls',
     image:'uploads/crunch/news-marvel-tokon.webp',
     text:'Montou seu time em MARVEL Tokon: Fighting Souls? A matéria cruza o estilo de cada equipe com um anime que combina com ela. Um guia divertido para a próxima maratona. 🎮',
-    link:'/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls' }
+    link:'/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls',
+    article:{ kicker:'Artigos · Guia', readTime:'5 min de leitura',
+      lead:'Montou seu time em MARVEL Tokon: Fighting Souls? A matéria cruza o estilo de cada equipe com um anime que combina com ela — um guia para a próxima maratona.',
+      html:'<p>MARVEL Tokon: Fighting Souls é o jogo de luta em equipe da Arc System Works com os heróis da Marvel, e cada composição de time diz algo sobre quem joga: tem quem prefira pressão constante, quem aposte em defesa e contra-ataque, quem monte o time só pelo visual.</p>' +
+           '<p>A matéria parte desses perfis e sugere, para cada estilo de equipe, um anime que segue a mesma lógica — de shounen de ação frenética a histórias mais táticas e cerebrais.</p>' +
+           '<p>O texto completo traz as combinações uma a uma, com o porquê de cada escolha.</p>' +
+           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>' } }
 ].map(crunchPost);
 
 /* Posts das pessoas: um de imagem (o Naruto achou o Sasuke) e o resto só texto */
