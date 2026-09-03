@@ -1466,24 +1466,9 @@ function qpCatRender(){ const c=NEWS_CATS.find(x=>x.name===qpCatSel)||NEWS_CATS[
 $('#qpCatBtn') && $('#qpCatBtn').addEventListener('click', e=>{ e.stopPropagation(); $('#qpCatMenu').hidden=!$('#qpCatMenu').hidden; });
 $('#qpCatMenu') && $('#qpCatMenu').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return; fgToast('Nota DEV: esse botão de categoria aparece apenas para matriz / unidade principal. Unidades fazem post com categoriaId NULL'); qpCatSel=b.dataset.cat; qpCatRender(); $('#qpCatMenu').hidden=true; });
 document.addEventListener('click', e=>{ if($('#qpCatMenu') && !e.target.closest('.qp-catwrap')) $('#qpCatMenu').hidden=true; });
-var crAud='rede', crUnit=null;
-function crUnitRender(){
-  const m=$('#crUnitMenu'); if(!m) return;
-  m.innerHTML='<button type="button" data-unit=""><i class="fa-solid fa-ban"></i>Não vincular unidade</button>'+
-    STORES.map(s=>'<button type="button" data-unit="'+s.code+'"><span class="qp-unitini" style="background:'+s.color+'">'+s.ini+'</span>'+s.name+'</button>').join('');
-}
-$('#crUnitBtn') && $('#crUnitBtn').addEventListener('click', e=>{ e.stopPropagation(); const m=$('#crUnitMenu'); if(!m.innerHTML) crUnitRender(); m.hidden=!m.hidden; });
-$('#crUnitMenu') && $('#crUnitMenu').addEventListener('click', e=>{
-  const b=e.target.closest('button'); if(!b) return;
-  fgToast('Nota DEV: apareço apenas para unidades quando elas têm mais de um vínculo empresarial');
-  crUnit=b.dataset.unit||null;
-  const s=STORES.find(x=>x.code===crUnit);
-  $('#crUnitLbl').textContent = s ? s.name : 'Não vincular unidade';
-  $('#crUnitMenu').hidden=true;
-});
-document.addEventListener('click', e=>{ const m=$('#crUnitMenu'); if(m && !e.target.closest('.cr-unitwrap')) m.hidden=true; });
+var crAud='rede';
 $('#crAudBtn') && $('#crAudBtn').addEventListener('click', e=>{ e.stopPropagation(); const m=$('#crAudMenu'); m.hidden=!m.hidden; });
-$('#crAudMenu') && $('#crAudMenu').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; fgToast('Nota DEV: mostra apenas para EMPRESA PRINCIPAL / MATRIZ. Unidades sempre publica para TODOS'); crAud=b.dataset.aud; $('#crAudLbl').textContent=b.textContent.trim(); $('#crAudIc').className='fa-solid '+b.dataset.ic; $('#crAudSub').textContent='Publicando para '+b.dataset.sub; $('#crAudMenu').hidden=true; });
+$('#crAudMenu') && $('#crAudMenu').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; fgToast('Nota DEV: mostra apenas para EMPRESA PRINCIPAL / MATRIZ. Unidades sempre publica para TODOS'); crAud=b.dataset.aud; $('#crAudLbl').textContent=(b.dataset.aud==='rede'?'Publicar para Todos':b.textContent.trim()); $('#crAudIc').className='fa-solid '+b.dataset.ic; $('#crAudMenu').hidden=true; });
 document.addEventListener('click', e=>{ if($('#crAudMenu') && !e.target.closest('.cr-audwrap')) $('#crAudMenu').hidden=true; });
 var crCatSel=null;
 function crCatRender(){

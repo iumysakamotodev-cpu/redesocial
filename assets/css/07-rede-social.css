@@ -767,7 +767,7 @@
 .qp-audmenu button{gap:10px}
 .qp-audmenu button>i{width:16px;font-size:13px;color:#8E8E93;text-align:center;flex-shrink:0}
 .qp-audmenu button:hover>i{color:#48484A}
-.qp-catwrap{margin-left:auto;position:relative;margin-right:16px}
+.qp-catwrap{margin-left:auto;position:relative}
 .qp-catwrap .qp-cat{margin-left:0}
 .qp-catmenu{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px -12px rgba(16,32,48,.4);padding:6px;z-index:10;min-width:220px;max-height:280px;overflow-y:auto}
 .qp-catmenu button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:9px 10px;border-radius:8px;font:inherit;font-size:13px;font-weight:600;color:#465364;cursor:pointer;text-align:left}
@@ -873,13 +873,78 @@
 .qp-adv{border:0;background:none;font:inherit;font-size:13px;font-weight:700;color:#8161d8;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
 .qp-adv:hover{text-decoration:underline}
 .qp-adv.on{color:#00acac}
-.cr-cover{position:absolute;top:24px;right:24px;z-index:1;display:inline-flex;align-items:center;gap:7px;
-  height:32px;padding:0 14px;border:0;border-radius:32px;background:rgba(28,28,30,.62);color:#fff;
-  font:inherit;font-size:13px;line-height:18px;font-weight:600;letter-spacing:.3px;cursor:pointer;
-  transition:background 120ms cubic-bezier(.4,0,.2,1)}
-.cr-cover i{font-size:12px}
-.cr-cover:hover{background:rgba(28,28,30,.78)}
-.cr-cover:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
+/* ---- Novo short: corpo com 20px de respiro, midia com a tab Video/Capa ---- */
+.cr-corpo{display:flex;gap:20px;padding:20px;align-items:stretch;flex:1;min-height:0}
+.cr-medcol{flex-shrink:0;width:250px;display:flex;flex-direction:column;gap:12px;min-height:0}
+/* a caixa segue a altura do conteudo: com o modal apertado pela tela, o passo 2
+   rola em vez de esmagar o video */
+.cr-medbox{flex:0 0 auto;background:#f2f5f7;border-radius:24px;display:flex;flex-direction:column;
+  align-items:center;gap:10px;padding:10px}
+/* o palco tem o formato do short e cabe na caixa; video e capa ficam sobrepostos,
+   entao trocar de aba nao redimensiona nada. O raio da caixa e o do video mais o
+   padding (14 + 12), para os cantos ficarem concentricos. */
+.cr-medstage{position:relative;width:100%;aspect-ratio:9/16;
+  border-radius:14px;overflow:hidden;background:#111}
+/* controles proprios: play grande no meio, play e som no topo, barra embaixo */
+.cr-vbig{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;
+  width:64px;height:64px;border:0;border-radius:50%;background:rgba(28,28,30,.55);color:#fff;font-size:22px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,opacity .15s}
+.cr-vbig[hidden]{display:none}
+.cr-vbig:hover{background:rgba(28,28,30,.72)}
+.cr-vbig i{margin-left:3px}
+.cr-vctl{position:absolute;left:10px;top:10px;z-index:3;display:flex;gap:8px}
+.cr-vctl[hidden]{display:none}
+.cr-vmini{width:32px;height:32px;border:0;border-radius:50%;background:rgba(28,28,30,.55);color:#fff;font-size:12px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.cr-vmini:hover{background:rgba(28,28,30,.72)}
+.cr-vbar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:14px;display:flex;align-items:flex-end;cursor:pointer}
+.cr-vbar[hidden]{display:none}
+.cr-vbar::before{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.35)}
+.cr-vbar-in{position:relative;height:3px;width:0;background:#fff;border-radius:0 2px 2px 0}
+.cr-medstage > img,.cr-medstage > video{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;display:block;background:none}
+/* capa ou video fora do formato: preenche a largura e o resto fica com ela
+   mesma desfocada atras, como no player de shorts */
+.cr-medstage > img.wide,.cr-medstage > video.wide{object-fit:contain}
+.cr-medstage.tem-fundo::before{content:'';position:absolute;inset:0;z-index:0;
+  background-image:var(--fundo-src);background-size:cover;background-position:center;
+  transform:scale(1.2);filter:blur(20px) brightness(.82) saturate(1.1)}
+/* botao de trocar a capa, visivel so na aba Capa */
+.cr-altcapa{position:absolute;left:10px;right:10px;bottom:10px;z-index:2;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 12px;border:0;border-radius:6px;
+  background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:700;white-space:nowrap;cursor:pointer;
+  box-shadow:0 6px 18px -6px rgba(16,32,48,.5),0 0 0 1px rgba(16,32,48,.08);transition:background .15s}
+.cr-altcapa[hidden]{display:none}
+.cr-altcapa i{font-size:14px;flex-shrink:0}
+.cr-altcapa span,.cr-altcapa{overflow:hidden;text-overflow:ellipsis}
+.cr-altcapa:hover{background:#f2f5f7}
+/* tab de trocar entre o video e a capa, no mesmo desenho dos segmentados */
+.cr-tabs{display:flex;gap:4px;padding:4px;background:#e0e6ea;border-radius:999px;flex-shrink:0;width:100%}
+/* o drop de publicar na linha do autor: pilula da altura dos campos, sem a
+   margem antiga que o descolava da direita */
+#crModal .cr-audwrap{display:flex}
+#crModal .cr-audwrap .qp-aud{height:36px;margin-top:0;border-radius:999px;padding:0 14px}
+/* Enviar e Avancado em 14px */
+#crModal #crShare,#crModal .qp-adv{font-size:14px}
+/* campos do modal: 36px, raio 6 e a mesma borda dos demais campos */
+#crModal .fg-input,#crModal .fg-textarea,#crModal .cr-catwrap .qp-cat{border:1px solid var(--linha-campo);border-radius:6px;font-size:14px}
+#crModal .fg-input,#crModal .cr-catwrap .qp-cat{height:36px;padding:0 12px}
+#crModal .fg-textarea{padding:8px 12px}
+#crModal .fg-input:focus,#crModal .fg-textarea:focus,#crModal .cr-catwrap .qp-cat:hover,#crModal .cr-catwrap .qp-cat:focus{border-color:var(--linha-campo-forte)}
+.cr-tabs[hidden]{display:none}
+.cr-tabs button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;
+  border:0;border-radius:999px;background:none;font:inherit;font-size:14px;font-weight:700;color:#5b6672;cursor:pointer;transition:background .15s,color .15s}
+.cr-tabs button i{font-size:14px}
+.cr-tabs button:hover{color:var(--ink)}
+.cr-tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,32,48,.16)}
+/* a capa aberta pede um clique na imagem para trocar */
+.cr-medbox.trocavel{cursor:pointer}
+.cr-form{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+#crModal .fg-label{font-size:14px;line-height:20px;margin-bottom:8px}
+/* categoria como campo padrao: largura toda, borda dos campos e chevron na ponta */
+.cr-catwrap{width:100%}
+.cr-catwrap .qp-cat{margin-left:0;width:100%;font-weight:400;letter-spacing:.3px}
+.cr-catwrap .qp-cat > span:not(.qp-cat-ic){flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cr-catwrap .qp-catmenu{width:100%}
 .cr-advover{position:absolute;inset:0;z-index:3;background:#fff;display:flex;flex-direction:column}
 .cr-advover[hidden]{display:none}
 .cr-advhd{display:flex;align-items:center;gap:12px;height:56px;flex-shrink:0;padding:0 20px;box-shadow:inset 0 -1px 0 #E9EAED;font-size:15px;font-weight:600;letter-spacing:.3px;color:#1C1C1E}
@@ -1270,3 +1335,15 @@
 
 /* capa do artigo, no cartao (home e feed) e no leitor: sempre 16:9, cortando o que sobra */
 .nvf-arthero img,.art-herowrap img{width:100%;height:auto;max-height:none;aspect-ratio:16 / 9;object-fit:cover;display:block}
+
+/* o modal respeita 12px de respiro na tela e rola quando nao cabe */
+#crModal{padding:12px}
+
+/* o X do modal com a mesma bolinha de hover dos tres pontinhos */
+.fg-close{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;transition:background .15s,color .15s}
+.fg-close:hover{background:#f3f5f8;color:var(--ink)}
+
+/* o modal abraca o conteudo; escolher a midia e o processando recebem a mesma
+   altura util do formulario, para os tres passos nao mudarem de tamanho */
+#crModal{--cr-util:578px}
+#crStep1,#crStepUp{min-height:var(--cr-util);box-sizing:border-box}

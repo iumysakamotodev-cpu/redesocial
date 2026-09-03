@@ -672,7 +672,7 @@ document.addEventListener('keydown', e => { if(e.key==='Escape' && ntModal.class
 /* ---------- Modal Criar reel (estilo Instagram, sem etapa de edição) ---------- */
 const crModal = $('#crModal');
 let crURL = null, crIsVideo = false;
-function crOpen(){ crURL=null; crIsVideo=false; crCoverURL=null; const _pv=document.getElementById('crPreviewVid'); if(_pv) _pv.style.display='none'; const _p=document.getElementById('crPreview'); if(_p) _p.style.display=''; const sc=$('#crStepCrop'); if(sc) sc.style.display='none'; $('#crStep1').style.display='flex'; $('#crStep2').style.display='none'; $('#crTitle').textContent='Criar novo short'; $('#crCaption').value=''; $('#crTitleInput').value=''; if(typeof crCatRender==='function') crCatRender(); $('#crShare').disabled=true; $('#crFile').value=''; crModal.classList.add('open'); }
+function crOpen(){ crURL=null; crIsVideo=false; crCoverURL=null; crCapaAuto=false; crTab='video'; const _up=document.getElementById('crStepUp'); if(_up) _up.style.display='none'; const _pv=document.getElementById('crPreviewVid'); if(_pv) _pv.style.display='none'; const _p=document.getElementById('crPreview'); if(_p) _p.style.display=''; const sc=$('#crStepCrop'); if(sc) sc.style.display='none'; $('#crStep1').style.display='flex'; $('#crStep2').style.display='none'; $('#crTitle').textContent='Novo short'; $('#crCaption').value=''; $('#crTitleInput').value=''; if(typeof crCatRender==='function') crCatRender(); $('#crShare').disabled=true; $('#crFile').value=''; crModal.classList.add('open'); }
 function crClose(){ crModal.classList.remove('open'); const u=document.getElementById('crStepUp'); if(u) u.style.display='none'; }
 $('#crClose').addEventListener('click', crClose);
 crModal.addEventListener('click', e => { if (e.target === crModal) crClose(); });
@@ -711,16 +711,12 @@ function crcClamp(){
 function crcApply(){ const im=crcMedia(); if(!im) return; crcClamp(); im.style.transform='translate(-50%,-50%) translate('+crcX+'px,'+crcY+'px) scale('+(crcZoomV/100)+')'; }
 function crOpenCrop(){ crGoStep2(); }
 function crGoStep2(){
+  crHideLoading();
   $('#crStep1').style.display='none';
   const st=$('#crStepCrop'); if(st) st.style.display='none';
   $('#crStep2').style.display='';
   $('#crTitle').textContent='Novo short';
-  const pv=$('#crPreview');
-  if(crIsVideo){ let pvv=document.getElementById('crPreviewVid');
-    if(!pvv){ pvv=document.createElement('video'); pvv.id='crPreviewVid'; pvv.muted=true; pvv.loop=true; pvv.autoplay=true; pvv.playsInline=true; pvv.style.cssText=pv.style.cssText; pv.parentNode.insertBefore(pvv, pv); }
-    pvv.src=crURL; pvv.style.display=''; pv.style.display='none';
-  } else { const pvv=document.getElementById('crPreviewVid'); if(pvv) pvv.style.display='none'; pv.style.display=''; pv.src=crURL; }
-  const cb=document.getElementById('crCoverBtn'); if(cb) cb.hidden=!crIsVideo;
+  crPreviaMonta();
 }
 function crOpenCropLegacy(){
   $('#crStep2').style.display='none';
@@ -770,27 +766,159 @@ function crTrimInit(){
 $('#crcFrame') && $('#crcFrame').addEventListener('pointerdown', e=>{ crcDrag={x:e.clientX-crcX,y:e.clientY-crcY}; $('#crcFrame').classList.add('drag'); $('#crcFrame').setPointerCapture(e.pointerId); });
 $('#crcFrame') && $('#crcFrame').addEventListener('pointermove', e=>{ if(!crcDrag) return; crcX=e.clientX-crcDrag.x; crcY=e.clientY-crcDrag.y; crcApply(); });
 $('#crcFrame') && $('#crcFrame').addEventListener('pointerup', ()=>{ crcDrag=null; $('#crcFrame').classList.remove('drag'); });
-$('#crcBack') && $('#crcBack').addEventListener('click', ()=>{ $('#crStepCrop').style.display='none'; $('#crStep1').style.display='flex'; $('#crTitle').textContent='Criar novo short'; $('#crFile').value=''; });
+$('#crcBack') && $('#crcBack').addEventListener('click', ()=>{ $('#crStepCrop').style.display='none'; $('#crStep1').style.display='flex'; $('#crTitle').textContent='Novo short'; $('#crFile').value=''; });
 $('#crcNext') && $('#crcNext').addEventListener('click', ()=>{
   $('#crStepCrop').style.display='none'; $('#crStep2').style.display=''; $('#crTitle').textContent='Nova publicação';
   const v=$('#crcVid'); if(v) v.pause();
-  const pv=$('#crPreview');
-  if(crIsVideo){ let pvv=document.getElementById('crPreviewVid');
-    if(!pvv){ pvv=document.createElement('video'); pvv.id='crPreviewVid'; pvv.muted=true; pvv.loop=true; pvv.autoplay=true; pvv.playsInline=true; pvv.style.cssText=pv.style.cssText; pv.parentNode.insertBefore(pvv, pv); }
-    pvv.src=crURL; pvv.style.display=''; pv.style.display='none';
-  } else { const pvv=document.getElementById('crPreviewVid'); if(pvv) pvv.style.display='none'; pv.style.display=''; pv.src=crURL; }
-  const cb=document.getElementById('crCoverBtn'); if(cb) cb.hidden=!crIsVideo;
+  crPreviaMonta();
 });
-let crCoverURL = null;
-$('#crCoverBtn') && $('#crCoverBtn').addEventListener('click', ()=>$('#crCoverFile').click());
+let crCoverURL = null, crCapaAuto = false, crTab = 'video';
+/* A previa fica num palco de tamanho fixo (formato do short): o video e a capa
+   se sobrepoem, entao trocar de aba nao redimensiona nada. O video mostra os
+   controles nativos para pausar e avancar. */
+function crPreviaMonta(){
+  const pv=document.getElementById('crPreview'), palco=document.getElementById('crStage');
+  if(!pv || !palco) return;
+  let pvv=document.getElementById('crPreviewVid');
+  if(crIsVideo){
+    if(!pvv){ pvv=document.createElement('video'); pvv.id='crPreviewVid'; pvv.muted=true; pvv.loop=true;
+      pvv.autoplay=true; pvv.playsInline=true; palco.insertBefore(pvv, pv); crVideoLiga(pvv); }
+    if(pvv.getAttribute('src')!==crURL) pvv.src=crURL;
+    crCapaPrimeiroFrame();
+  } else if(pvv){ pvv.removeAttribute('src'); pvv.load(); }
+  crMostra(crIsVideo ? crTab : 'video');
+}
+/* Capa padrao: o primeiro quadro do video, tirado num elemento separado para
+   nao mexer na previa que esta tocando. So substitui a capa automatica. */
+function crCapaPrimeiroFrame(){
+  if(!crIsVideo || !crURL || (crCoverURL && !crCapaAuto)) return;
+  const v=document.createElement('video');
+  v.muted=true; v.playsInline=true; v.preload='auto'; v.src=crURL;
+  let pego=false;
+  function pega(){
+    if(pego) return; pego=true;
+    try{
+      const c=document.createElement('canvas');
+      c.width=v.videoWidth||720; c.height=v.videoHeight||1280;
+      c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+      crCoverURL=c.toDataURL('image/jpeg', .86); crCapaAuto=true;
+      if(crTab==='capa') crMostra('capa');
+    }catch(e){}
+    v.removeAttribute('src'); v.load();
+  }
+  v.addEventListener('loadeddata', function(){
+    const alvo=Math.min(.1, (v.duration||1)/10);
+    if(v.currentTime<alvo){ try{ v.currentTime=alvo; }catch(e){ pega(); } } else pega();
+  });
+  v.addEventListener('seeked', pega);
+  v.addEventListener('error', pega);
+}
+/* Controles proprios, como na referencia: play grande no meio, play e som no
+   topo e uma barra fina embaixo para avancar. */
+function crVideoLiga(v){
+  const big=document.getElementById('crVbig'), barra=document.getElementById('crVbarIn');
+  function pinta(){
+    const tocando=!v.paused && !v.ended;
+    if(big) big.hidden = tocando || !(crIsVideo && crTab==='video');
+    document.querySelectorAll('#crVctl [data-vplay] i').forEach(function(i){ i.className='fa-solid fa-'+(tocando?'pause':'play'); });
+    document.querySelectorAll('#crVctl [data-vmute] i').forEach(function(i){ i.className='fa-solid fa-volume-'+(v.muted?'xmark':'high'); });
+  }
+  v.addEventListener('play', pinta); v.addEventListener('pause', pinta);
+  v.addEventListener('volumechange', pinta);
+  v.addEventListener('timeupdate', function(){ if(barra && v.duration) barra.style.width=(v.currentTime/v.duration*100)+'%'; });
+  v.addEventListener('click', function(){ crVideoPlay(); });
+  const bar=document.getElementById('crVbar');
+  if(bar) bar.addEventListener('click', function(e){
+    const r=bar.getBoundingClientRect();
+    if(v.duration) v.currentTime = Math.max(0, Math.min(1, (e.clientX-r.left)/r.width)) * v.duration;
+  });
+  pinta();
+}
+function crVideoPlay(){
+  const v=document.getElementById('crPreviewVid'); if(!v) return;
+  if(v.paused) v.play().catch(function(){}); else v.pause();
+}
+/* Ajuste da midia no palco. Diferente dos cards, aqui nada e recortado: se a
+   proporcao nao for a do short (9:16, com 2% de tolerancia), a midia aparece
+   inteira e a sobra fica com ela mesma desfocada atras. O 0.85 do ajustaFundo
+   deixava passar tudo entre 9:16 e 0.85 no modo recorte, que era o caso das
+   fotos 3:4 e 4:5 cortadas em cima e embaixo. */
+function crAjustaPalco(el){
+  const palco=document.getElementById('crStage'); if(!el || !palco) return;
+  function aplica(){
+    const w=el.videoWidth||el.naturalWidth, h=el.videoHeight||el.naturalHeight;
+    if(!w || !h) return;
+    const alvo=9/16, fora=Math.abs((w/h)-alvo)/alvo > .02;
+    el.classList.toggle('wide', fora);
+    const fonte = el.tagName==='VIDEO' ? (el.poster||el.currentSrc||el.src) : (el.currentSrc||el.src);
+    if(fora && fonte){ palco.style.setProperty('--fundo-src','url("'+fonte+'")'); palco.classList.add('tem-fundo'); }
+    else { palco.classList.remove('tem-fundo'); palco.style.removeProperty('--fundo-src'); }
+  }
+  if(el.tagName==='VIDEO'){ el.readyState>=1 ? aplica() : el.addEventListener('loadedmetadata', aplica, {once:true}); }
+  else { (el.complete && el.naturalWidth) ? aplica() : el.addEventListener('load', aplica, {once:true}); }
+}
+function crTabsSync(){
+  const tabs=document.getElementById('crTabs'); if(!tabs) return;
+  tabs.hidden = !crIsVideo;
+  if(!crIsVideo) crTab='video';
+  tabs.querySelectorAll('[data-crtab]').forEach(function(b){ b.classList.toggle('on', b.dataset.crtab===crTab); });
+  const bt=document.getElementById('crAltCapa');
+  if(bt){
+    bt.hidden = !(crIsVideo && crTab==='capa');
+    /* com capa enviada, o botao passa a remover; sem ela, volta a enviar */
+    const propria = !!crCoverURL && !crCapaAuto;
+    const tx=document.getElementById('crAltCapaTx'); if(tx) tx.textContent = propria ? 'Remover capa' : 'Enviar personalizada';
+    const ic=bt.querySelector('i'); if(ic) ic.className = 'fa-solid ' + (propria ? 'fa-trash-can' : 'fa-cloud-arrow-up');
+    bt.classList.toggle('remover', propria);
+  }
+  const noVideo = crIsVideo && crTab==='video';
+  const v=document.getElementById('crPreviewVid');
+  ['crVctl','crVbar'].forEach(function(id){ const e=document.getElementById(id); if(e) e.hidden=!noVideo; });
+  const big=document.getElementById('crVbig'); if(big) big.hidden = !noVideo || !!(v && !v.paused && !v.ended);
+}
+function crMostra(qual){
+  crTab = qual;
+  const pv=document.getElementById('crPreview'), pvv=document.getElementById('crPreviewVid');
+  if(crIsVideo && qual==='video'){
+    if(pvv){ pvv.style.display=''; pvv.play().catch(function(){}); }
+    if(pv) pv.style.display='none';
+    crAjustaPalco(pvv);
+  } else {
+    if(pvv){ pvv.pause(); pvv.style.display='none'; }
+    if(pv){
+      pv.style.display='';
+      const nova = crIsVideo ? (crCoverURL || crURL) : crURL;
+      if(pv.getAttribute('src')!==nova) pv.src=nova;
+      /* o fundo desfocado e recalculado para a midia que esta na tela */
+      pv.classList.remove('wide'); crAjustaPalco(pv);
+    }
+  }
+  crTabsSync();
+}
+document.addEventListener('click', function(e){
+  const b=e.target.closest('#crTabs [data-crtab]'); if(b){ crMostra(b.dataset.crtab); return; }
+  if(e.target.closest('#crAltCapa')){
+    if(crCoverURL && !crCapaAuto) crCapaRemove(); else $('#crCoverFile').click();
+    return;
+  }
+  if(e.target.closest('#crVbig,#crVctl [data-vplay]')){ crVideoPlay(); return; }
+  const mu=e.target.closest('#crVctl [data-vmute]');
+  if(mu){ const v=document.getElementById('crPreviewVid'); if(v) v.muted=!v.muted; }
+});
 $('#crCoverFile') && $('#crCoverFile').addEventListener('change', e=>{
   const f=e.target.files[0]; if(!f) return;
-  crCoverURL=URL.createObjectURL(f);
-  const pvv=document.getElementById('crPreviewVid'), pv=$('#crPreview');
-  if(pvv) pvv.style.display='none';
-  if(pv){ pv.src=crCoverURL; pv.style.display=''; }
+  crCoverURL=URL.createObjectURL(f); crCapaAuto=false;
+  crMostra('capa');
   fgToast('Capa atualizada');
 });
+/* volta para o primeiro quadro do video */
+function crCapaRemove(){
+  crCoverURL=null; crCapaAuto=false;
+  const inp=$('#crCoverFile'); if(inp) inp.value='';
+  crCapaPrimeiroFrame();
+  crMostra('capa');
+  fgToast('Capa personalizada removida');
+}
 $('#crTitleInput') && $('#crTitleInput').addEventListener('input', e=>{ $('#crShare').disabled = !e.target.value.trim(); });
 $('#crShare').addEventListener('click', () => {
   if (!crURL) return;

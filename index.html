@@ -1056,8 +1056,8 @@ input,textarea,select{font-size:14px}
 /* Modal Criar grupo */
 .fg-backdrop{position:fixed;inset:0;z-index:200;background:rgba(16,28,40,.55);display:none;align-items:center;justify-content:center;padding:20px}
 .fg-backdrop.open{display:flex}
-.fg-modal{width:560px;max-width:100%;max-height:92vh;overflow-y:auto;background:#fff;border-radius:18px;box-shadow:0 30px 70px -20px rgba(16,32,48,.5)}
-.fg-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.fg-modal{width:560px;max-width:100%;max-height:92vh;overflow-y:auto;background:#fff;border-radius:14px;box-shadow:0 30px 70px -20px rgba(16,32,48,.5)}
+.fg-head{display:flex;align-items:center;gap:14px;padding:10px 20px;border-bottom:1px solid var(--line)}
 .fg-head h2{font-size:17px;font-weight:700;color:var(--ink)}
 .fg-steps{display:flex;gap:8px;margin-left:auto}
 .fg-step{font-size:11px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:6px}
@@ -2294,7 +2294,7 @@ input,textarea,select{font-size:14px}
 .qp-audmenu button{gap:10px}
 .qp-audmenu button>i{width:16px;font-size:13px;color:#8E8E93;text-align:center;flex-shrink:0}
 .qp-audmenu button:hover>i{color:#48484A}
-.qp-catwrap{margin-left:auto;position:relative;margin-right:16px}
+.qp-catwrap{margin-left:auto;position:relative}
 .qp-catwrap .qp-cat{margin-left:0}
 .qp-catmenu{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px -12px rgba(16,32,48,.4);padding:6px;z-index:10;min-width:220px;max-height:280px;overflow-y:auto}
 .qp-catmenu button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:9px 10px;border-radius:8px;font:inherit;font-size:13px;font-weight:600;color:#465364;cursor:pointer;text-align:left}
@@ -2400,13 +2400,78 @@ input,textarea,select{font-size:14px}
 .qp-adv{border:0;background:none;font:inherit;font-size:13px;font-weight:700;color:#8161d8;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
 .qp-adv:hover{text-decoration:underline}
 .qp-adv.on{color:#00acac}
-.cr-cover{position:absolute;top:24px;right:24px;z-index:1;display:inline-flex;align-items:center;gap:7px;
-  height:32px;padding:0 14px;border:0;border-radius:32px;background:rgba(28,28,30,.62);color:#fff;
-  font:inherit;font-size:13px;line-height:18px;font-weight:600;letter-spacing:.3px;cursor:pointer;
-  transition:background 120ms cubic-bezier(.4,0,.2,1)}
-.cr-cover i{font-size:12px}
-.cr-cover:hover{background:rgba(28,28,30,.78)}
-.cr-cover:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
+/* ---- Novo short: corpo com 20px de respiro, midia com a tab Video/Capa ---- */
+.cr-corpo{display:flex;gap:20px;padding:20px;align-items:stretch;flex:1;min-height:0}
+.cr-medcol{flex-shrink:0;width:250px;display:flex;flex-direction:column;gap:12px;min-height:0}
+/* a caixa segue a altura do conteudo: com o modal apertado pela tela, o passo 2
+   rola em vez de esmagar o video */
+.cr-medbox{flex:0 0 auto;background:#f2f5f7;border-radius:24px;display:flex;flex-direction:column;
+  align-items:center;gap:10px;padding:10px}
+/* o palco tem o formato do short e cabe na caixa; video e capa ficam sobrepostos,
+   entao trocar de aba nao redimensiona nada. O raio da caixa e o do video mais o
+   padding (14 + 12), para os cantos ficarem concentricos. */
+.cr-medstage{position:relative;width:100%;aspect-ratio:9/16;
+  border-radius:14px;overflow:hidden;background:#111}
+/* controles proprios: play grande no meio, play e som no topo, barra embaixo */
+.cr-vbig{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;
+  width:64px;height:64px;border:0;border-radius:50%;background:rgba(28,28,30,.55);color:#fff;font-size:22px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,opacity .15s}
+.cr-vbig[hidden]{display:none}
+.cr-vbig:hover{background:rgba(28,28,30,.72)}
+.cr-vbig i{margin-left:3px}
+.cr-vctl{position:absolute;left:10px;top:10px;z-index:3;display:flex;gap:8px}
+.cr-vctl[hidden]{display:none}
+.cr-vmini{width:32px;height:32px;border:0;border-radius:50%;background:rgba(28,28,30,.55);color:#fff;font-size:12px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.cr-vmini:hover{background:rgba(28,28,30,.72)}
+.cr-vbar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:14px;display:flex;align-items:flex-end;cursor:pointer}
+.cr-vbar[hidden]{display:none}
+.cr-vbar::before{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.35)}
+.cr-vbar-in{position:relative;height:3px;width:0;background:#fff;border-radius:0 2px 2px 0}
+.cr-medstage > img,.cr-medstage > video{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;display:block;background:none}
+/* capa ou video fora do formato: preenche a largura e o resto fica com ela
+   mesma desfocada atras, como no player de shorts */
+.cr-medstage > img.wide,.cr-medstage > video.wide{object-fit:contain}
+.cr-medstage.tem-fundo::before{content:'';position:absolute;inset:0;z-index:0;
+  background-image:var(--fundo-src);background-size:cover;background-position:center;
+  transform:scale(1.2);filter:blur(20px) brightness(.82) saturate(1.1)}
+/* botao de trocar a capa, visivel so na aba Capa */
+.cr-altcapa{position:absolute;left:10px;right:10px;bottom:10px;z-index:2;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 12px;border:0;border-radius:6px;
+  background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:700;white-space:nowrap;cursor:pointer;
+  box-shadow:0 6px 18px -6px rgba(16,32,48,.5),0 0 0 1px rgba(16,32,48,.08);transition:background .15s}
+.cr-altcapa[hidden]{display:none}
+.cr-altcapa i{font-size:14px;flex-shrink:0}
+.cr-altcapa span,.cr-altcapa{overflow:hidden;text-overflow:ellipsis}
+.cr-altcapa:hover{background:#f2f5f7}
+/* tab de trocar entre o video e a capa, no mesmo desenho dos segmentados */
+.cr-tabs{display:flex;gap:4px;padding:4px;background:#e0e6ea;border-radius:999px;flex-shrink:0;width:100%}
+/* o drop de publicar na linha do autor: pilula da altura dos campos, sem a
+   margem antiga que o descolava da direita */
+#crModal .cr-audwrap{display:flex}
+#crModal .cr-audwrap .qp-aud{height:36px;margin-top:0;border-radius:999px;padding:0 14px}
+/* Enviar e Avancado em 14px */
+#crModal #crShare,#crModal .qp-adv{font-size:14px}
+/* campos do modal: 36px, raio 6 e a mesma borda dos demais campos */
+#crModal .fg-input,#crModal .fg-textarea,#crModal .cr-catwrap .qp-cat{border:1px solid var(--linha-campo);border-radius:6px;font-size:14px}
+#crModal .fg-input,#crModal .cr-catwrap .qp-cat{height:36px;padding:0 12px}
+#crModal .fg-textarea{padding:8px 12px}
+#crModal .fg-input:focus,#crModal .fg-textarea:focus,#crModal .cr-catwrap .qp-cat:hover,#crModal .cr-catwrap .qp-cat:focus{border-color:var(--linha-campo-forte)}
+.cr-tabs[hidden]{display:none}
+.cr-tabs button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;
+  border:0;border-radius:999px;background:none;font:inherit;font-size:14px;font-weight:700;color:#5b6672;cursor:pointer;transition:background .15s,color .15s}
+.cr-tabs button i{font-size:14px}
+.cr-tabs button:hover{color:var(--ink)}
+.cr-tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,32,48,.16)}
+/* a capa aberta pede um clique na imagem para trocar */
+.cr-medbox.trocavel{cursor:pointer}
+.cr-form{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+#crModal .fg-label{font-size:14px;line-height:20px;margin-bottom:8px}
+/* categoria como campo padrao: largura toda, borda dos campos e chevron na ponta */
+.cr-catwrap{width:100%}
+.cr-catwrap .qp-cat{margin-left:0;width:100%;font-weight:400;letter-spacing:.3px}
+.cr-catwrap .qp-cat > span:not(.qp-cat-ic){flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cr-catwrap .qp-catmenu{width:100%}
 .cr-advover{position:absolute;inset:0;z-index:3;background:#fff;display:flex;flex-direction:column}
 .cr-advover[hidden]{display:none}
 .cr-advhd{display:flex;align-items:center;gap:12px;height:56px;flex-shrink:0;padding:0 20px;box-shadow:inset 0 -1px 0 #E9EAED;font-size:15px;font-weight:600;letter-spacing:.3px;color:#1C1C1E}
@@ -2797,6 +2862,18 @@ input,textarea,select{font-size:14px}
 
 /* capa do artigo, no cartao (home e feed) e no leitor: sempre 16:9, cortando o que sobra */
 .nvf-arthero img,.art-herowrap img{width:100%;height:auto;max-height:none;aspect-ratio:16 / 9;object-fit:cover;display:block}
+
+/* o modal respeita 12px de respiro na tela e rola quando nao cabe */
+#crModal{padding:12px}
+
+/* o X do modal com a mesma bolinha de hover dos tres pontinhos */
+.fg-close{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;transition:background .15s,color .15s}
+.fg-close:hover{background:#f3f5f8;color:var(--ink)}
+
+/* o modal abraca o conteudo; escolher a midia e o processando recebem a mesma
+   altura util do formulario, para os tres passos nao mudarem de tamanho */
+#crModal{--cr-util:578px}
+#crStep1,#crStepUp{min-height:var(--cr-util);box-sizing:border-box}
 
 /* feed da home, destaque e coluna direita */
 /* ============ Central "Para hoje" v2 ============ */
@@ -6431,10 +6508,10 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
 
 <!-- Modal Criar reel -->
 <div class="fg-backdrop" id="crModal">
-  <div class="fg-modal" style="width:760px;max-width:95vw;height:640px;max-height:92vh;border-radius:20px;display:flex;flex-direction:column">
-    <div class="fg-head" style="justify-content:center;position:relative">
-      <h2 id="crTitle" style="font-size:16px">Criar novo short</h2>
-      <button class="fg-close" id="crClose" style="position:absolute;right:18px;top:16px"><i class="fa-solid fa-xmark"></i></button>
+  <div class="fg-modal" style="width:760px;max-width:95vw;height:auto;max-height:calc(100vh - 24px);display:flex;flex-direction:column">
+    <div class="fg-head" style="position:relative;justify-content:center">
+      <h2 id="crTitle" style="font-size:18px">Novo short</h2>
+      <button class="fg-close" id="crClose" style="position:absolute;right:20px"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="fg-body" id="crStep1" style="padding:0;flex:1;display:flex;flex-direction:column;justify-content:center">
       <div id="crDrop" style="margin:22px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border:1.5px dashed rgba(0,172,172,.5);border-radius:14px;text-align:center;background:radial-gradient(120% 90% at 50% -10%, rgba(0,172,172,.10), transparent 60%),#fbfdfd">
@@ -6445,7 +6522,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
       </div>
       <input type="file" id="crFile" accept="image/*,video/*" hidden>
     </div>
-    <div class="fg-body" id="crStep2" style="display:none;padding:0;flex:1;min-height:0;overflow:hidden;flex-direction:column;position:relative">
+    <div class="fg-body" id="crStep2" style="display:none;padding:0;flex:1;min-height:0;overflow-y:auto;flex-direction:column;position:relative">
       <div class="cr-advover" id="crAdvPanel" hidden>
         <div class="cr-advhd"><button type="button" class="cr-advback" id="crAdvBack"><i class="fa-solid fa-arrow-left"></i> Voltar</button><b>Avançado</b></div>
         <div class="cr-advbody">
@@ -6464,38 +6541,49 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           </div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;padding:16px 26px;background:#f7fafb;border-bottom:1px solid var(--line)">
+      <div style="display:flex;align-items:center;gap:12px;padding:8px 20px;background:#f7fafb;border-bottom:1px solid var(--line)">
         <span class="avatar av-rc" style="width:38px;height:38px"></span>
-        <div><b style="font-size:14px;color:var(--ink);display:block">Rodrigo Caetano</b><span style="font-size:12px;color:var(--muted)" id="crAudSub">Publicando para toda a rede</span></div>
-        <div class="qp-catwrap cr-audwrap" style="margin-left:auto"><button type="button" class="qp-aud qp-audhidden" id="crAudBtn"><i class="fa-solid fa-earth-americas" id="crAudIc"></i> <span id="crAudLbl">Toda a rede</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
+        <div><b style="font-size:14px;color:var(--ink);display:block">Rodrigo Caetano</b></div>
+        <div class="qp-catwrap cr-audwrap" style="margin-left:auto"><button type="button" class="qp-aud" id="crAudBtn"><i class="fa-solid fa-earth-americas" id="crAudIc"></i> <span id="crAudLbl">Publicar para Todos</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
           <div class="qp-catmenu qp-audmenu" id="crAudMenu" hidden>
             <button type="button" data-aud="rede" data-ic="fa-earth-americas" data-sub="toda a rede"><i class="fa-solid fa-earth-americas"></i>Toda a rede</button>
             <button type="button" data-aud="unidades" data-ic="fa-store" data-sub="as unidades"><i class="fa-solid fa-store"></i>Unidades</button>
             <button type="button" data-aud="matriz" data-ic="fa-building" data-sub="a Sua Marca (Matriz)"><i class="fa-solid fa-building"></i>Sua Marca (Matriz)</button>
           </div></div>
-        <div class="qp-unitwrap cr-unitwrap"><button type="button" class="qp-aud qp-unit" id="crUnitBtn"><i class="fa-solid fa-store"></i> <span id="crUnitLbl">Não vincular unidade</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
-          <div class="qp-catmenu qp-unitmenu" id="crUnitMenu" hidden></div>
-        </div>
       </div>
-      <div style="display:flex;gap:26px;padding:22px 26px;align-items:stretch;flex:1;min-height:0">
-        <div style="flex-shrink:0;width:250px;background:#f2f5f7;border-radius:14px;display:flex;align-items:center;justify-content:center;padding:14px;position:relative">
-          <img id="crPreview" style="max-width:100%;max-height:100%;aspect-ratio:9/16;object-fit:cover;border-radius:12px;background:#111" alt="Pré-visualização">
-          <button type="button" class="cr-cover" id="crCoverBtn" hidden><i class="fa-solid fa-image"></i> Trocar capa</button>
+      <div class="cr-corpo">
+        <div class="cr-medcol">
+          <div class="cr-medbox">
+            <div class="cr-medstage" id="crStage">
+              <img id="crPreview" alt="Pré-visualização">
+              <div class="cr-vctl" id="crVctl" hidden>
+                <button type="button" class="cr-vmini" data-vplay title="Reproduzir"><i class="fa-solid fa-play"></i></button>
+                <button type="button" class="cr-vmini" data-vmute title="Som"><i class="fa-solid fa-volume-xmark"></i></button>
+              </div>
+              <button type="button" class="cr-vbig" id="crVbig" hidden data-vplay aria-label="Reproduzir"><i class="fa-solid fa-play"></i></button>
+              <div class="cr-vbar" id="crVbar" hidden><span class="cr-vbar-in" id="crVbarIn"></span></div>
+              <button type="button" class="cr-altcapa" id="crAltCapa" hidden><i class="fa-solid fa-cloud-arrow-up"></i> <span id="crAltCapaTx">Enviar personalizada</span></button>
+            </div>
+            <div class="cr-tabs" id="crTabs" hidden>
+              <button type="button" data-crtab="video" class="on"><i class="fa-solid fa-circle-play"></i> Vídeo</button>
+              <button type="button" data-crtab="capa"><i class="fa-solid fa-image"></i> Capa</button>
+            </div>
+          </div>
           <input type="file" id="crCoverFile" accept="image/*" hidden>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:20px;min-width:0">
+        <div class="cr-form">
           <div><label class="fg-label">Título <span style="color:#FF383C">*</span></label><input class="fg-input" id="crTitleInput" maxlength="60"></div>
           <div><label class="fg-label">Descrição <span style="font-weight:400;color:var(--muted)">(opcional)</span></label><textarea class="fg-textarea" id="crCaption" style="min-height:110px"></textarea></div>
           <div><label class="fg-label">Categoria</label><div class="qp-catwrap cr-catwrap"><button type="button" class="qp-cat" id="crCatBtn"><span class="qp-cat-ic" id="crCatIc"></span><span id="crCatLbl">Categoria</span><i class="fa-solid fa-chevron-down" style="font-size:10px;color:#8E8E93"></i></button><div class="qp-catmenu" id="crCatMenu" hidden></div></div></div>
           <div style="margin-top:auto;display:flex;align-items:center;gap:12px">
             <button class="qp-adv" id="crAdv" type="button"><i class="fa-solid fa-sliders"></i> Avançado</button>
             <span style="flex:1"></span>
-            <button class="fo-btn" id="crShare" style="justify-content:center;padding:13px" disabled><i class="fa-solid fa-paper-plane"></i> Compartilhar</button>
+            <button class="fo-btn" id="crShare" style="justify-content:center;width:150px;padding:0;height:36px;border-radius:6px" disabled>Enviar <i class="fa-solid fa-paper-plane"></i></button>
           </div>
         </div>
       </div>
     </div>
-    <div class="fg-body" id="crStepUp" style="display:none;padding:0;flex:1;min-height:0;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+    <div class="fg-body" id="crStepUp" style="display:none;padding:0;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:18px">
       <span class="cr-spin"></span>
       <p class="cr-uptitle" style="font-size:15px;font-weight:600;letter-spacing:.3px;color:#1C1C1E;margin:0">Enviando seu short…</p>
       <p class="cr-upsub" style="font-size:13px;color:#8E8E93;margin:0">Isso leva alguns minutos. Não feche esta janela.</p>
@@ -10921,24 +11009,9 @@ function qpCatRender(){ const c=NEWS_CATS.find(x=>x.name===qpCatSel)||NEWS_CATS[
 $('#qpCatBtn') && $('#qpCatBtn').addEventListener('click', e=>{ e.stopPropagation(); $('#qpCatMenu').hidden=!$('#qpCatMenu').hidden; });
 $('#qpCatMenu') && $('#qpCatMenu').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return; fgToast('Nota DEV: esse botão de categoria aparece apenas para matriz / unidade principal. Unidades fazem post com categoriaId NULL'); qpCatSel=b.dataset.cat; qpCatRender(); $('#qpCatMenu').hidden=true; });
 document.addEventListener('click', e=>{ if($('#qpCatMenu') && !e.target.closest('.qp-catwrap')) $('#qpCatMenu').hidden=true; });
-var crAud='rede', crUnit=null;
-function crUnitRender(){
-  const m=$('#crUnitMenu'); if(!m) return;
-  m.innerHTML='<button type="button" data-unit=""><i class="fa-solid fa-ban"></i>Não vincular unidade</button>'+
-    STORES.map(s=>'<button type="button" data-unit="'+s.code+'"><span class="qp-unitini" style="background:'+s.color+'">'+s.ini+'</span>'+s.name+'</button>').join('');
-}
-$('#crUnitBtn') && $('#crUnitBtn').addEventListener('click', e=>{ e.stopPropagation(); const m=$('#crUnitMenu'); if(!m.innerHTML) crUnitRender(); m.hidden=!m.hidden; });
-$('#crUnitMenu') && $('#crUnitMenu').addEventListener('click', e=>{
-  const b=e.target.closest('button'); if(!b) return;
-  fgToast('Nota DEV: apareço apenas para unidades quando elas têm mais de um vínculo empresarial');
-  crUnit=b.dataset.unit||null;
-  const s=STORES.find(x=>x.code===crUnit);
-  $('#crUnitLbl').textContent = s ? s.name : 'Não vincular unidade';
-  $('#crUnitMenu').hidden=true;
-});
-document.addEventListener('click', e=>{ const m=$('#crUnitMenu'); if(m && !e.target.closest('.cr-unitwrap')) m.hidden=true; });
+var crAud='rede';
 $('#crAudBtn') && $('#crAudBtn').addEventListener('click', e=>{ e.stopPropagation(); const m=$('#crAudMenu'); m.hidden=!m.hidden; });
-$('#crAudMenu') && $('#crAudMenu').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; fgToast('Nota DEV: mostra apenas para EMPRESA PRINCIPAL / MATRIZ. Unidades sempre publica para TODOS'); crAud=b.dataset.aud; $('#crAudLbl').textContent=b.textContent.trim(); $('#crAudIc').className='fa-solid '+b.dataset.ic; $('#crAudSub').textContent='Publicando para '+b.dataset.sub; $('#crAudMenu').hidden=true; });
+$('#crAudMenu') && $('#crAudMenu').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; fgToast('Nota DEV: mostra apenas para EMPRESA PRINCIPAL / MATRIZ. Unidades sempre publica para TODOS'); crAud=b.dataset.aud; $('#crAudLbl').textContent=(b.dataset.aud==='rede'?'Publicar para Todos':b.textContent.trim()); $('#crAudIc').className='fa-solid '+b.dataset.ic; $('#crAudMenu').hidden=true; });
 document.addEventListener('click', e=>{ if($('#crAudMenu') && !e.target.closest('.cr-audwrap')) $('#crAudMenu').hidden=true; });
 var crCatSel=null;
 function crCatRender(){
@@ -11805,7 +11878,7 @@ document.addEventListener('keydown', e => { if(e.key==='Escape' && ntModal.class
 /* ---------- Modal Criar reel (estilo Instagram, sem etapa de edição) ---------- */
 const crModal = $('#crModal');
 let crURL = null, crIsVideo = false;
-function crOpen(){ crURL=null; crIsVideo=false; crCoverURL=null; const _pv=document.getElementById('crPreviewVid'); if(_pv) _pv.style.display='none'; const _p=document.getElementById('crPreview'); if(_p) _p.style.display=''; const sc=$('#crStepCrop'); if(sc) sc.style.display='none'; $('#crStep1').style.display='flex'; $('#crStep2').style.display='none'; $('#crTitle').textContent='Criar novo short'; $('#crCaption').value=''; $('#crTitleInput').value=''; if(typeof crCatRender==='function') crCatRender(); $('#crShare').disabled=true; $('#crFile').value=''; crModal.classList.add('open'); }
+function crOpen(){ crURL=null; crIsVideo=false; crCoverURL=null; crCapaAuto=false; crTab='video'; const _up=document.getElementById('crStepUp'); if(_up) _up.style.display='none'; const _pv=document.getElementById('crPreviewVid'); if(_pv) _pv.style.display='none'; const _p=document.getElementById('crPreview'); if(_p) _p.style.display=''; const sc=$('#crStepCrop'); if(sc) sc.style.display='none'; $('#crStep1').style.display='flex'; $('#crStep2').style.display='none'; $('#crTitle').textContent='Novo short'; $('#crCaption').value=''; $('#crTitleInput').value=''; if(typeof crCatRender==='function') crCatRender(); $('#crShare').disabled=true; $('#crFile').value=''; crModal.classList.add('open'); }
 function crClose(){ crModal.classList.remove('open'); const u=document.getElementById('crStepUp'); if(u) u.style.display='none'; }
 $('#crClose').addEventListener('click', crClose);
 crModal.addEventListener('click', e => { if (e.target === crModal) crClose(); });
@@ -11844,16 +11917,12 @@ function crcClamp(){
 function crcApply(){ const im=crcMedia(); if(!im) return; crcClamp(); im.style.transform='translate(-50%,-50%) translate('+crcX+'px,'+crcY+'px) scale('+(crcZoomV/100)+')'; }
 function crOpenCrop(){ crGoStep2(); }
 function crGoStep2(){
+  crHideLoading();
   $('#crStep1').style.display='none';
   const st=$('#crStepCrop'); if(st) st.style.display='none';
   $('#crStep2').style.display='';
   $('#crTitle').textContent='Novo short';
-  const pv=$('#crPreview');
-  if(crIsVideo){ let pvv=document.getElementById('crPreviewVid');
-    if(!pvv){ pvv=document.createElement('video'); pvv.id='crPreviewVid'; pvv.muted=true; pvv.loop=true; pvv.autoplay=true; pvv.playsInline=true; pvv.style.cssText=pv.style.cssText; pv.parentNode.insertBefore(pvv, pv); }
-    pvv.src=crURL; pvv.style.display=''; pv.style.display='none';
-  } else { const pvv=document.getElementById('crPreviewVid'); if(pvv) pvv.style.display='none'; pv.style.display=''; pv.src=crURL; }
-  const cb=document.getElementById('crCoverBtn'); if(cb) cb.hidden=!crIsVideo;
+  crPreviaMonta();
 }
 function crOpenCropLegacy(){
   $('#crStep2').style.display='none';
@@ -11903,27 +11972,159 @@ function crTrimInit(){
 $('#crcFrame') && $('#crcFrame').addEventListener('pointerdown', e=>{ crcDrag={x:e.clientX-crcX,y:e.clientY-crcY}; $('#crcFrame').classList.add('drag'); $('#crcFrame').setPointerCapture(e.pointerId); });
 $('#crcFrame') && $('#crcFrame').addEventListener('pointermove', e=>{ if(!crcDrag) return; crcX=e.clientX-crcDrag.x; crcY=e.clientY-crcDrag.y; crcApply(); });
 $('#crcFrame') && $('#crcFrame').addEventListener('pointerup', ()=>{ crcDrag=null; $('#crcFrame').classList.remove('drag'); });
-$('#crcBack') && $('#crcBack').addEventListener('click', ()=>{ $('#crStepCrop').style.display='none'; $('#crStep1').style.display='flex'; $('#crTitle').textContent='Criar novo short'; $('#crFile').value=''; });
+$('#crcBack') && $('#crcBack').addEventListener('click', ()=>{ $('#crStepCrop').style.display='none'; $('#crStep1').style.display='flex'; $('#crTitle').textContent='Novo short'; $('#crFile').value=''; });
 $('#crcNext') && $('#crcNext').addEventListener('click', ()=>{
   $('#crStepCrop').style.display='none'; $('#crStep2').style.display=''; $('#crTitle').textContent='Nova publicação';
   const v=$('#crcVid'); if(v) v.pause();
-  const pv=$('#crPreview');
-  if(crIsVideo){ let pvv=document.getElementById('crPreviewVid');
-    if(!pvv){ pvv=document.createElement('video'); pvv.id='crPreviewVid'; pvv.muted=true; pvv.loop=true; pvv.autoplay=true; pvv.playsInline=true; pvv.style.cssText=pv.style.cssText; pv.parentNode.insertBefore(pvv, pv); }
-    pvv.src=crURL; pvv.style.display=''; pv.style.display='none';
-  } else { const pvv=document.getElementById('crPreviewVid'); if(pvv) pvv.style.display='none'; pv.style.display=''; pv.src=crURL; }
-  const cb=document.getElementById('crCoverBtn'); if(cb) cb.hidden=!crIsVideo;
+  crPreviaMonta();
 });
-let crCoverURL = null;
-$('#crCoverBtn') && $('#crCoverBtn').addEventListener('click', ()=>$('#crCoverFile').click());
+let crCoverURL = null, crCapaAuto = false, crTab = 'video';
+/* A previa fica num palco de tamanho fixo (formato do short): o video e a capa
+   se sobrepoem, entao trocar de aba nao redimensiona nada. O video mostra os
+   controles nativos para pausar e avancar. */
+function crPreviaMonta(){
+  const pv=document.getElementById('crPreview'), palco=document.getElementById('crStage');
+  if(!pv || !palco) return;
+  let pvv=document.getElementById('crPreviewVid');
+  if(crIsVideo){
+    if(!pvv){ pvv=document.createElement('video'); pvv.id='crPreviewVid'; pvv.muted=true; pvv.loop=true;
+      pvv.autoplay=true; pvv.playsInline=true; palco.insertBefore(pvv, pv); crVideoLiga(pvv); }
+    if(pvv.getAttribute('src')!==crURL) pvv.src=crURL;
+    crCapaPrimeiroFrame();
+  } else if(pvv){ pvv.removeAttribute('src'); pvv.load(); }
+  crMostra(crIsVideo ? crTab : 'video');
+}
+/* Capa padrao: o primeiro quadro do video, tirado num elemento separado para
+   nao mexer na previa que esta tocando. So substitui a capa automatica. */
+function crCapaPrimeiroFrame(){
+  if(!crIsVideo || !crURL || (crCoverURL && !crCapaAuto)) return;
+  const v=document.createElement('video');
+  v.muted=true; v.playsInline=true; v.preload='auto'; v.src=crURL;
+  let pego=false;
+  function pega(){
+    if(pego) return; pego=true;
+    try{
+      const c=document.createElement('canvas');
+      c.width=v.videoWidth||720; c.height=v.videoHeight||1280;
+      c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+      crCoverURL=c.toDataURL('image/jpeg', .86); crCapaAuto=true;
+      if(crTab==='capa') crMostra('capa');
+    }catch(e){}
+    v.removeAttribute('src'); v.load();
+  }
+  v.addEventListener('loadeddata', function(){
+    const alvo=Math.min(.1, (v.duration||1)/10);
+    if(v.currentTime<alvo){ try{ v.currentTime=alvo; }catch(e){ pega(); } } else pega();
+  });
+  v.addEventListener('seeked', pega);
+  v.addEventListener('error', pega);
+}
+/* Controles proprios, como na referencia: play grande no meio, play e som no
+   topo e uma barra fina embaixo para avancar. */
+function crVideoLiga(v){
+  const big=document.getElementById('crVbig'), barra=document.getElementById('crVbarIn');
+  function pinta(){
+    const tocando=!v.paused && !v.ended;
+    if(big) big.hidden = tocando || !(crIsVideo && crTab==='video');
+    document.querySelectorAll('#crVctl [data-vplay] i').forEach(function(i){ i.className='fa-solid fa-'+(tocando?'pause':'play'); });
+    document.querySelectorAll('#crVctl [data-vmute] i').forEach(function(i){ i.className='fa-solid fa-volume-'+(v.muted?'xmark':'high'); });
+  }
+  v.addEventListener('play', pinta); v.addEventListener('pause', pinta);
+  v.addEventListener('volumechange', pinta);
+  v.addEventListener('timeupdate', function(){ if(barra && v.duration) barra.style.width=(v.currentTime/v.duration*100)+'%'; });
+  v.addEventListener('click', function(){ crVideoPlay(); });
+  const bar=document.getElementById('crVbar');
+  if(bar) bar.addEventListener('click', function(e){
+    const r=bar.getBoundingClientRect();
+    if(v.duration) v.currentTime = Math.max(0, Math.min(1, (e.clientX-r.left)/r.width)) * v.duration;
+  });
+  pinta();
+}
+function crVideoPlay(){
+  const v=document.getElementById('crPreviewVid'); if(!v) return;
+  if(v.paused) v.play().catch(function(){}); else v.pause();
+}
+/* Ajuste da midia no palco. Diferente dos cards, aqui nada e recortado: se a
+   proporcao nao for a do short (9:16, com 2% de tolerancia), a midia aparece
+   inteira e a sobra fica com ela mesma desfocada atras. O 0.85 do ajustaFundo
+   deixava passar tudo entre 9:16 e 0.85 no modo recorte, que era o caso das
+   fotos 3:4 e 4:5 cortadas em cima e embaixo. */
+function crAjustaPalco(el){
+  const palco=document.getElementById('crStage'); if(!el || !palco) return;
+  function aplica(){
+    const w=el.videoWidth||el.naturalWidth, h=el.videoHeight||el.naturalHeight;
+    if(!w || !h) return;
+    const alvo=9/16, fora=Math.abs((w/h)-alvo)/alvo > .02;
+    el.classList.toggle('wide', fora);
+    const fonte = el.tagName==='VIDEO' ? (el.poster||el.currentSrc||el.src) : (el.currentSrc||el.src);
+    if(fora && fonte){ palco.style.setProperty('--fundo-src','url("'+fonte+'")'); palco.classList.add('tem-fundo'); }
+    else { palco.classList.remove('tem-fundo'); palco.style.removeProperty('--fundo-src'); }
+  }
+  if(el.tagName==='VIDEO'){ el.readyState>=1 ? aplica() : el.addEventListener('loadedmetadata', aplica, {once:true}); }
+  else { (el.complete && el.naturalWidth) ? aplica() : el.addEventListener('load', aplica, {once:true}); }
+}
+function crTabsSync(){
+  const tabs=document.getElementById('crTabs'); if(!tabs) return;
+  tabs.hidden = !crIsVideo;
+  if(!crIsVideo) crTab='video';
+  tabs.querySelectorAll('[data-crtab]').forEach(function(b){ b.classList.toggle('on', b.dataset.crtab===crTab); });
+  const bt=document.getElementById('crAltCapa');
+  if(bt){
+    bt.hidden = !(crIsVideo && crTab==='capa');
+    /* com capa enviada, o botao passa a remover; sem ela, volta a enviar */
+    const propria = !!crCoverURL && !crCapaAuto;
+    const tx=document.getElementById('crAltCapaTx'); if(tx) tx.textContent = propria ? 'Remover capa' : 'Enviar personalizada';
+    const ic=bt.querySelector('i'); if(ic) ic.className = 'fa-solid ' + (propria ? 'fa-trash-can' : 'fa-cloud-arrow-up');
+    bt.classList.toggle('remover', propria);
+  }
+  const noVideo = crIsVideo && crTab==='video';
+  const v=document.getElementById('crPreviewVid');
+  ['crVctl','crVbar'].forEach(function(id){ const e=document.getElementById(id); if(e) e.hidden=!noVideo; });
+  const big=document.getElementById('crVbig'); if(big) big.hidden = !noVideo || !!(v && !v.paused && !v.ended);
+}
+function crMostra(qual){
+  crTab = qual;
+  const pv=document.getElementById('crPreview'), pvv=document.getElementById('crPreviewVid');
+  if(crIsVideo && qual==='video'){
+    if(pvv){ pvv.style.display=''; pvv.play().catch(function(){}); }
+    if(pv) pv.style.display='none';
+    crAjustaPalco(pvv);
+  } else {
+    if(pvv){ pvv.pause(); pvv.style.display='none'; }
+    if(pv){
+      pv.style.display='';
+      const nova = crIsVideo ? (crCoverURL || crURL) : crURL;
+      if(pv.getAttribute('src')!==nova) pv.src=nova;
+      /* o fundo desfocado e recalculado para a midia que esta na tela */
+      pv.classList.remove('wide'); crAjustaPalco(pv);
+    }
+  }
+  crTabsSync();
+}
+document.addEventListener('click', function(e){
+  const b=e.target.closest('#crTabs [data-crtab]'); if(b){ crMostra(b.dataset.crtab); return; }
+  if(e.target.closest('#crAltCapa')){
+    if(crCoverURL && !crCapaAuto) crCapaRemove(); else $('#crCoverFile').click();
+    return;
+  }
+  if(e.target.closest('#crVbig,#crVctl [data-vplay]')){ crVideoPlay(); return; }
+  const mu=e.target.closest('#crVctl [data-vmute]');
+  if(mu){ const v=document.getElementById('crPreviewVid'); if(v) v.muted=!v.muted; }
+});
 $('#crCoverFile') && $('#crCoverFile').addEventListener('change', e=>{
   const f=e.target.files[0]; if(!f) return;
-  crCoverURL=URL.createObjectURL(f);
-  const pvv=document.getElementById('crPreviewVid'), pv=$('#crPreview');
-  if(pvv) pvv.style.display='none';
-  if(pv){ pv.src=crCoverURL; pv.style.display=''; }
+  crCoverURL=URL.createObjectURL(f); crCapaAuto=false;
+  crMostra('capa');
   fgToast('Capa atualizada');
 });
+/* volta para o primeiro quadro do video */
+function crCapaRemove(){
+  crCoverURL=null; crCapaAuto=false;
+  const inp=$('#crCoverFile'); if(inp) inp.value='';
+  crCapaPrimeiroFrame();
+  crMostra('capa');
+  fgToast('Capa personalizada removida');
+}
 $('#crTitleInput') && $('#crTitleInput').addEventListener('input', e=>{ $('#crShare').disabled = !e.target.value.trim(); });
 $('#crShare').addEventListener('click', () => {
   if (!crURL) return;
