@@ -13,7 +13,7 @@
 
 const CRUNCH_URL = 'https://www.crunchyroll.com';
 function crunchLink(caminho){
-  return '\n\n<a href="' + CRUNCH_URL + caminho + '" target="_blank" rel="noopener">Ler na Crunchyroll News →</a>';
+  return '\n\n<a href="' + CRUNCH_URL + caminho + '" target="_blank" rel="noopener">Ler na Crunchyroll News</a>';
 }
 /* o lead segue o padrão dos artigos do SULTS: sem o emoji do fim do resumo */
 function crunchLead(s){ return String(s || '').replace(/\s*[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]+\s*$/u, '').trim(); }
@@ -24,7 +24,7 @@ function crunchPost(n){
     readTime: (2 + (n.id % 3)) + ' min de leitura',
     html: '<p>' + crunchLead(n.text) + '</p>' +
           '<p>A matéria completa, com todos os detalhes, imagens e declarações, está na Crunchyroll News.</p>' +
-          '<p><a href="' + CRUNCH_URL + n.link + '" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>'
+          '<p><a href="' + CRUNCH_URL + n.link + '" target="_blank" rel="noopener">Ler na Crunchyroll News</a></p>'
   };
   return Object.assign({
     author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
@@ -164,7 +164,7 @@ const CRUNCH_MATERIAS = [
       html:'<p>Há um gênero inteiro de anime dedicado a desacelerar: personagens que cozinham, caminham, cuidam de uma horta ou simplesmente observam o dia passar. A lista da Crunchyroll News reúne dez títulos assim, do slice of life clássico às histórias mais recentes sobre viver devagar.</p>' +
            '<p>A ideia por trás da seleção é simples: pausar também faz parte da história. São animes que funcionam como companhia para um fim de semana sem compromisso, com episódios curtos e um ritmo que convida a ficar mais um pouco.</p>' +
            '<p>A matéria completa apresenta cada uma das dez séries, com o que esperar de cada uma e onde assistir.</p>' +
-           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>' } },
+           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/14/animes-sobre-fazer-uma-pausa" target="_blank" rel="noopener">Ler na Crunchyroll News</a></p>' } },
   { id:9010, sub:'Filmes', date:'11/08/2026', datetime:'11/08/26 20:00', reactions:2107, comments:188,
     title:'Crunchyroll e Sony Pictures Entertainment se juntam para distribuir o novo filme de Makoto Shinkai',
     image:'uploads/crunch/news-shinkai-sony.webp',
@@ -185,7 +185,7 @@ const CRUNCH_MATERIAS = [
       html:'<p>MARVEL Tokon: Fighting Souls é o jogo de luta em equipe da Arc System Works com os heróis da Marvel, e cada composição de time diz algo sobre quem joga: tem quem prefira pressão constante, quem aposte em defesa e contra-ataque, quem monte o time só pelo visual.</p>' +
            '<p>A matéria parte desses perfis e sugere, para cada estilo de equipe, um anime que segue a mesma lógica — de shounen de ação frenética a histórias mais táticas e cerebrais.</p>' +
            '<p>O texto completo traz as combinações uma a uma, com o porquê de cada escolha.</p>' +
-           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls" target="_blank" rel="noopener">Ler na Crunchyroll News →</a></p>' } }
+           '<p><a href="' + CRUNCH_URL + '/pt-br/news/features/2026/8/6/animes-tipo-marvel-tokon-fighting-souls" target="_blank" rel="noopener">Ler na Crunchyroll News</a></p>' } }
 ].map(crunchPost);
 
 /* Posts das pessoas: um de imagem (o Naruto achou o Sasuke) e o resto só texto */
@@ -212,7 +212,16 @@ const CRUNCH_POSTS_PESSOAS = [
   crunchPessoa('spike', { id:9109, date:'18/08/2026', datetime:'18/08/26 19:20', reactions:44, comments:6,
     text:'Alguém tem um isqueiro? Perguntando por um amigo. Também aceito dica de onde almoçar com 3 woolongs.' }),
   crunchPessoa('sasuke', { id:9110, date:'12/08/2026', datetime:'12/08/26 10:00', reactions:88, comments:19,
-    text:'Não estou desaparecido. Estou em home office.' })
+    text:'Não estou desaparecido. Estou em home office.' }),
+  /* artigo do Levi, ainda aguardando aprovação */
+  crunchPessoa('levi', { id:9111, date:'03/09/2026', datetime:'03/09/26 08:15', reactions:0, comments:0, pendAppr:true, cmts:[],
+    title:'Manual da copa do 3º andar: as 15 regras',
+    image:'uploads/crunch/levi-copa.jpg',
+    article:{ kicker:'Time Crunchyroll · Guia', readTime:'4 min de leitura',
+      lead:'Quinze regras para a copa continuar limpa depois das 18h. Leitura obrigatória. A verificação é diária.',
+      html:'<p>A copa do 3º andar não é um campo de batalha, mas anda parecendo um. Este manual existe para que ninguém mais precise perguntar de quem é a caneca com café de terça-feira. As regras valem para todos, sem exceção, inclusive para quem "só passou para pegar água".</p>' +
+           '<p>Regra 1: lavou, secou, guardou. Regra 2: a geladeira não é arquivo morto — o que ficar depois de sexta vai para o lixo, com nome ou sem nome. Regra 3: a pia vazia não é uma sugestão. As outras doze seguem a mesma lógica: a copa fica como você gostaria de encontrá-la.</p>' +
+           '<p>A verificação acontece todo dia às 18h. Quem for encontrado deixando louça para trás recebe um lembrete pessoal. Não vão gostar do lembrete.</p>' } })
 ];
 const CRUNCH_NEWS = crunchOrdena(CRUNCH_MATERIAS.concat(CRUNCH_POSTS_PESSOAS));
 

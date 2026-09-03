@@ -413,11 +413,12 @@
 .artreview-tx{font-size:14px;color:#7a5c10;font-weight:600}
 .artreview-tx i{margin-right:8px}
 .artreview-tx b{font-weight:700}
-.artreview-ok,.artreview-no{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 24px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .14s}
-.artreview-ok{background:var(--teal);color:#fff}
-.artreview-ok:hover{background:var(--teal-dark)}
-.artreview-no{background:#fff;color:#c62828;border:1.5px solid #f2c9c4}
-.artreview-no:hover{background:#fdecea}
+/* mesmo desenho dos botoes de aprovar comentario (.comment-mod) */
+.artreview-ok,.artreview-no{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 16px;border:0;border-radius:6px;font:inherit;font-size:14px;line-height:20px;font-weight:700;cursor:pointer;transition:background .14s}
+.artreview-ok{background:#1E8E3E;color:#fff}
+.artreview-ok:hover{background:#17722F}
+.artreview-no{--vermelho:#B3261E;background:#fff;color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
+.artreview-no:hover{--vermelho:var(--red);background:#fff;color:var(--vermelho);box-shadow:inset 0 0 0 1px var(--vermelho)}
 .itbl tbody tr.is-new td:first-child{position:relative}
 .itbl tbody tr.is-new td:first-child::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#25d366}
 .rx-filters{margin:14px 0 14px 14px;align-self:flex-start;width:280px;flex-shrink:0;overflow-y:auto;max-height:calc(100vh - 162px);

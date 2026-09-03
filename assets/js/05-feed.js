@@ -228,7 +228,8 @@ function initComments(post, comments){
   const postLabel=(post.querySelector('.post-name')?post.querySelector('.post-name').textContent.trim():'Publicação');
   const made = makeComposer('Adicione um comentário...', txt => {
     const pend = pmNeedsApproval();
-    box.appendChild(buildComment({ av:'av-rc', ini:'RC', name:'Rodrigo Caetano', role:'CEO · SULTS', text:txt, time:'agora', likes:0, postLabel:postLabel }, true, pend));
+    const eu = usuarioAtual();
+    box.appendChild(buildComment({ av:eu.av, ini:eu.ini, name:eu.nome, role:eu.cargo, text:txt, time:'agora', likes:0, postLabel:postLabel }, true, pend));
     if (pend) fgToast('Comentário enviado para aprovação');
   });
   box.appendChild(made.composer);
@@ -275,21 +276,33 @@ function addHomePost(n, append){
   /* Artigo: o mesmo cartao do artigo fixo da home (capa com selo, titulo, lead e
      "Ler artigo completo"), abrindo o leitor do modulo. */
   if (n.article){
-    art.className = 'card post nvf-artcard fresh';
-    art.innerHTML = cabecalho +
+    art.className = 'card post nvf-artcard fresh' + (n.pendAppr ? ' is-pend' : '');
+    art.innerHTML = (n.pendAppr && typeof pendBarHTML === 'function' ? pendBarHTML() : '') + cabecalho +
       '<div class="nvf-arthero" data-abre-artigo><img src="'+n.image+'" alt=""></div>'+
       '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div>'+
         '<div class="nvf-arttitle" data-abre-artigo>'+n.title+'</div>'+
         '<div class="nvf-artlead">'+(n.article.lead||'')+'</div>'+
         '<div class="nvf-artread" data-abre-artigo>Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>' +
-      rodape;
+      (n.pendAppr ? '' : rodape);
     art.querySelectorAll('[data-abre-artigo]').forEach(el => el.addEventListener('click', () => {
       if (typeof openNewsModule === 'function') openNewsModule();
       if (typeof openArticle === 'function') openArticle(n);
     }));
     if (append) feed.appendChild(art); else feed.insertBefore(art, feed.firstChild);
-    initReactions(art.querySelector('.p-act.like'));
-    initComments(art, []);
+    if (!n.pendAppr){ initReactions(art.querySelector('.p-act.like')); initComments(art, []); }
+    else {
+      /* aprovar redesenha o cartao no mesmo lugar, ja liberado; reprovar tira
+         do ar. O feed do modulo le o mesmo objeto e acompanha. */
+      const redesenha = () => {
+        addHomePost(n, true);
+        const novo = feed.lastElementChild;
+        if (art.hasAttribute('data-crunch')) novo.setAttribute('data-crunch', '');
+        art.replaceWith(novo);
+      };
+      const okBtn = art.querySelector('[data-act="pubapr"]'), noBtn = art.querySelector('[data-act="pubrej"]');
+      if (okBtn) okBtn.addEventListener('click', () => { n.pendAppr = false; n.apprStatus = 'aprovado'; redesenha(); if (typeof renderNewsFeed === 'function') renderNewsFeed(); fgToast('Publicação aprovada'); });
+      if (noBtn) noBtn.addEventListener('click', () => { n.pendAppr = false; n.status = 'draft'; n.apprStatus = 'rejeitado'; art.remove(); if (typeof renderNewsFeed === 'function') renderNewsFeed(); fgToast('Publicação reprovada'); });
+    }
     return;
   }
   art.innerHTML =

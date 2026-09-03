@@ -1113,6 +1113,10 @@ function feedCmList(n){
         '</div>'+
       '</div></div>').join('');
 }
+/* barra de publicacao pendente: a mesma no post comum e no cartao de artigo */
+function pendBarHTML(){
+  return '<div class="nvf-modbar"><span class="nvf-modtx"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><span style="flex:1"></span><div class="comment-mod"><button class="cmod-no" data-act="pubrej"><i class="fa-solid fa-xmark"></i> Reprovar</button><button class="cmod-ok" data-act="pubapr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>';
+}
 function renderNewsFeed(){
   const el = $('#nvFeed');
   var q=(nvfAuthorQuery||'').toLowerCase();
@@ -1131,7 +1135,7 @@ function renderNewsFeed(){
     if(nvFeedType==='enquete' && !n.poll) return false;
     if(nvFeedReach && (n.reach||'rede')!==nvFeedReach) return false;
     if(nvFeedMine==='curti' && !newsLiked.has(n.id)) return false;
-    if(nvFeedMine==='comentei' && !((n.cmts||[]).some(c=>(c.author||'').indexOf('Rodrigo')===0))) return false;
+    if(nvFeedMine==='comentei' && !((n.cmts||[]).some(c=>(c.author||'')===usuarioAtual().nome))) return false;
     if(nvFeedMine==='minhas' && !((n.author||'SULTS')==='SULTS')) return false;
     if(nvFeedMine==='naovistos' && newsSeen.has(n.id)) return false;
     if(nvFeedText){ var hay=((n.title||'')+' '+(n.text||'')+' '+(n.sub||'')+' '+(n.author||'')+' '+((n.article&&n.article.lead)||'')).toLowerCase(); if(!hay.includes(nvFeedText.toLowerCase())) return false; }
@@ -1164,14 +1168,16 @@ function renderNewsFeed(){
       const menuA = '<div class="nvf-menu" hidden><button data-menu="pin"><i class="fa-solid fa-thumbtack"></i> '+(n.pinned?'Desafixar':'Fixar no topo')+'</button><button data-menu="copy"><i class="fa-solid fa-link"></i> Copiar link</button></div>';
       const pinA = (n.pinned && nvFeedType!=='pinned') ? '<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>' : '';
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
-      return '<article class="card post nvf-artcard" data-id="'+n.id+'">'+
+      return '<article class="card post nvf-artcard'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
+        (n.pendAppr ? pendBarHTML() : '')+
         '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+nomeComSelo(n)+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
+        (n.pendAppr ? '' :
         '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clapA+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
         '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-act="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-act="comment"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>'+
+        '<div class="nvf-cm" hidden><div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" placeholder="Adicione um comentário..."><button class="nvf-cm-send" data-act="cmsend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list">'+feedCmList(n)+'</div></div>')+
       '</article>';
     }
     const av = n.av ? '<span class="avatar '+n.av+'">'+(n.ini||'')+'</span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
@@ -1191,7 +1197,7 @@ function renderNewsFeed(){
     const bodyTxt = n.colorBg ? '' : txt;
     const cmList = feedCmList(n);
     const menu = '<div class="nvf-menu" hidden><button data-menu="edit"><i class="fa-solid fa-pen"></i> Editar publicação</button><button data-menu="pin"><i class="fa-solid fa-thumbtack"></i> '+(n.pinned?'Desafixar':'Fixar no topo')+'</button><button data-menu="copy"><i class="fa-solid fa-link"></i> Copiar link</button><button class="danger" data-menu="del"><i class="fa-solid fa-trash"></i> Excluir</button></div>';
-    const pendBar = n.pendAppr ? '<div class="nvf-modbar"><span class="nvf-modtx"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><span style="flex:1"></span><div class="comment-mod"><button class="cmod-no" data-act="pubrej"><i class="fa-solid fa-xmark"></i> Reprovar</button><button class="cmod-ok" data-act="pubapr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>' : '';
+    const pendBar = n.pendAppr ? pendBarHTML() : '';
     return '<article class="card post'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
       pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
       (bodyTxt?'<p class="post-text nvf-postlink" data-act="open">'+bodyTxt+'</p>':'') + colored + banner + image + event + poll +
@@ -1659,7 +1665,7 @@ $('#nvFeed').addEventListener('click', e => {
   if (act==='open'){ openArticle(n); return; }
   if (act==='like'){ e.stopPropagation(); nvRxPicker(b, art, n, true); }
   else if (act==='comment'){ const cm=art.querySelector('.nvf-cm'); cm.hidden=!cm.hidden; if(!cm.hidden) cm.querySelector('.nvf-cm-in').focus(); }
-  else if (act==='cmsend'){ const inp=art.querySelector('.nvf-cm-in'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); const list=art.querySelector('.nvf-cm-list'); if(pend){ const it=document.createElement('div'); it.className='nvf-cm-item pending'; it.innerHTML='<span class="avatar av-rc"></span><div><div class="nvf-cm-bub"><b>Rodrigo Caetano</b><span>'+v+'</span></div><div class="comment-modbar"><span class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><div class="comment-mod"><button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button></div></div></div>'; list.appendChild(it); it.querySelector('.cmod-ok').addEventListener('click',()=>{ it.classList.remove('pending'); it.querySelector('.comment-pend').remove(); it.querySelector('.comment-mod').remove(); (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; modRemove(mq.mid); fgToast('Comentário aprovado'); }); it.querySelector('.cmod-no').addEventListener('click',()=>{ it.remove(); modRemove(mq.mid); fgToast('Comentário recusado'); }); const mq={author:'Rodrigo Caetano',av:'av-rc',text:v,post:(n.title||'Publicação'),approve:()=>{ it.classList.remove('pending'); const pe=it.querySelector('.comment-pend'); if(pe)pe.remove(); const me=it.querySelector('.comment-mod'); if(me)me.remove(); (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; },reject:()=>it.remove()}; modAdd(mq); fgToast('Comentário enviado para aprovação'); } else { (n.cmts=n.cmts||[]).push({author:'Rodrigo Caetano',av:'av-rc',text:v}); list.insertAdjacentHTML('beforeend','<div class="nvf-cm-item"><span class="avatar av-rc"></span><div class="nvf-cm-bub"><b>Rodrigo Caetano</b><span>'+v+'</span></div></div>'); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; } inp.value=''; b.disabled=true; }
+  else if (act==='cmsend'){ const inp=art.querySelector('.nvf-cm-in'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); const list=art.querySelector('.nvf-cm-list'); if(pend){ const it=document.createElement('div'); it.className='nvf-cm-item pending'; it.innerHTML='<span class="avatar av-rc"></span><div><div class="nvf-cm-bub"><b>'+usuarioAtual().nome+'</b><span>'+v+'</span></div><div class="comment-modbar"><span class="comment-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</span><div class="comment-mod"><button class="cmod-no"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="cmod-ok"><i class="fa-solid fa-check"></i> Aprovar</button></div></div></div>'; list.appendChild(it); it.querySelector('.cmod-ok').addEventListener('click',()=>{ it.classList.remove('pending'); it.querySelector('.comment-pend').remove(); it.querySelector('.comment-mod').remove(); (n.cmts=n.cmts||[]).push({author:usuarioAtual().nome,av:'av-rc',role:usuarioAtual().cargo,text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; modRemove(mq.mid); fgToast('Comentário aprovado'); }); it.querySelector('.cmod-no').addEventListener('click',()=>{ it.remove(); modRemove(mq.mid); fgToast('Comentário recusado'); }); const mq={author:usuarioAtual().nome,av:'av-rc',role:usuarioAtual().cargo,text:v,post:(n.title||'Publicação'),approve:()=>{ it.classList.remove('pending'); const pe=it.querySelector('.comment-pend'); if(pe)pe.remove(); const me=it.querySelector('.comment-mod'); if(me)me.remove(); (n.cmts=n.cmts||[]).push({author:usuarioAtual().nome,av:'av-rc',role:usuarioAtual().cargo,text:v}); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; },reject:()=>it.remove()}; modAdd(mq); fgToast('Comentário enviado para aprovação'); } else { (n.cmts=n.cmts||[]).push({author:usuarioAtual().nome,av:'av-rc',role:usuarioAtual().cargo,text:v}); list.insertAdjacentHTML('beforeend','<div class="nvf-cm-item"><span class="avatar av-rc"></span><div class="nvf-cm-bub"><b>'+usuarioAtual().nome+'</b><span>'+v+'</span></div></div>'); art.querySelector('.nvf-cc').textContent=(n.comments+n.cmts.length)+' comentários'; } inp.value=''; b.disabled=true; }
   else if (act==='more'){ const m=art.querySelector('.nvf-menu'); const wasHidden=m.hidden; $$('#nvFeed .nvf-menu').forEach(x=>x.hidden=true); m.hidden=!wasHidden; }
 });
 $('#nvFeed').addEventListener('input', e => { const inp=e.target.closest('.nvf-cm-in'); if(!inp) return; inp.parentNode.querySelector('.nvf-cm-send').disabled=!inp.value.trim(); });

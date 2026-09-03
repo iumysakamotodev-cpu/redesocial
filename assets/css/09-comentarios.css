@@ -28,7 +28,7 @@
 .comment-main{flex:1;min-width:0}
 .comment-bubble{background:#f0f3f6;border-radius:4px 12px 12px 12px;padding:12px 12px 12px 14px}
 .comment-top{display:flex;align-items:baseline;gap:10px}
-.comment-name{font-weight:700;color:var(--ink);font-size:15px}
+.comment-name{font-weight:700;color:var(--ink);font-size:14px}
 .comment-time{margin-left:auto;font-size:12px;color:var(--muted);flex-shrink:0}
 .comment-menu{position:relative;flex-shrink:0}
 .comment-dots{border:0;background:none;color:#5b6672;cursor:pointer;font-size:15px;padding:0 2px;line-height:1}

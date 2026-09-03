@@ -115,7 +115,6 @@ $('#nvArtBack').addEventListener('click', () => {
   if (newsView.classList.contains('env-social')){ newsShow('feed'); return; }
   newsView.classList.remove('user-mode'); newsView.classList.add('open','mod-mode'); newsShow('list');
 });
-$('#nvArtEdit') && $('#nvArtEdit').addEventListener('click', () => { if(npCurrent) nvEdit(npCurrent.id); });
 $('#nvArtApr') && $('#nvArtApr').addEventListener('click', ()=>reviewDecide(true));
 $('#nvArtRej') && $('#nvArtRej').addEventListener('click', ()=>reviewDecide(false));
 /* arranque: posts da home desenhados antes de TEAM existir ganham o selo de
@@ -143,6 +142,12 @@ function catInk(hex){
   let k=0;
   while(ratio()<5 && k++<40){ r=Math.round(r*.9); g=Math.round(g*.9); b=Math.round(b*.9); }
   return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+/* Quem esta logado. O avatar e sempre a classe av-rc (o cenario troca a foto
+   por CSS); nome, iniciais e cargo mudam com o cenario. */
+function usuarioAtual(){
+  if (document.body.classList.contains('demo-crunch')) return { nome:'Pikachu', ini:'P', cargo:'Funcionário · Crunchyroll', av:'av-rc' };
+  return { nome:'Rodrigo Caetano', ini:'RC', cargo:'CEO · SULTS', av:'av-rc' };
 }
 /* Selo de verificado no desenho do Twitter (dentado, com o check dentro).
    Vai para a conta oficial e para quem esta na equipe de administradores. */
@@ -322,7 +327,7 @@ $('#nvArtBody') && $('#nvArtBody').addEventListener('click', e=>{
   if(cp){ const url=(n.link && typeof CRUNCH_URL!=='undefined' && n.link.indexOf('/')===0) ? CRUNCH_URL+n.link : (location.href.split('#')[0]+'#pub-'+n.id);
     const ok=()=>fgToast('Link copiado'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok,ok); else ok(); return; }
   const rs=e.target.closest('.post-stats .rx, .post-stats .rx-count'); if(rs){ e.stopPropagation(); openReactions(nvRxIndex(n.id)); return; }
-  const s=e.target.closest('#npCmSend'); if(s){ const inp=$('#npCmIn'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); (n.cmts=n.cmts||[]).unshift({author:'Rodrigo Caetano',av:'av-rc',ini:'RC',role:'CEO · SULTS',text:v,time:'agora'}); renderNpComments(n); npRefreshStats(n); if(pend) fgToast('Comentário enviado para aprovação'); }
+  const s=e.target.closest('#npCmSend'); if(s){ const inp=$('#npCmIn'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); const eu=usuarioAtual(); (n.cmts=n.cmts||[]).unshift({author:eu.nome,av:eu.av,ini:eu.ini,role:eu.cargo,text:v,time:'agora'}); renderNpComments(n); npRefreshStats(n); if(pend) fgToast('Comentário enviado para aprovação'); }
 });
 $('#nvArtBody') && $('#nvArtBody').addEventListener('input', e=>{ const inp=e.target.closest('#npCmIn'); if(inp) $('#npCmSend').disabled=!inp.value.trim(); });
 $('#nvArtBody') && $('#nvArtBody').addEventListener('keydown', e=>{ const inp=e.target.closest('#npCmIn'); if(inp&&e.key==='Enter'){ e.preventDefault(); if(!$('#npCmSend').disabled) $('#npCmSend').click(); } });
