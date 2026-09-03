@@ -258,7 +258,9 @@ body.demo-empty .demo-empty-state{display:flex}
   cursor:pointer;transition:background .15s}
 .demo-empty-state .de-btn:hover{background:var(--teal-dark)}
 .demo-empty-state .de-sub{font-size:13px;color:var(--muted);margin-top:7px;max-width:340px;line-height:1.55;position:relative}
-.com-empty.demo-empty-state{margin:0;padding:20px;border-radius:8px}
+/* laterais mais justas: o painel e estreito e o texto precisa da largura
+   para fechar em duas linhas */
+.com-empty.demo-empty-state{margin:0;padding:20px 10px;border-radius:8px}
 .com-empty .de-ic{width:60px;height:60px;font-size:24px;border-radius:18px}
 .com-empty .de-ic::after{inset:-8px;border-radius:24px}
 .com-empty .de-title{margin-top:18px}
