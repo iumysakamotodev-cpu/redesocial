@@ -321,7 +321,7 @@ body.demo-empty .demo-empty-state{display:flex}
 .post .post-stats:last-child{padding-bottom:0}
 .post-head{display:flex;gap:11px;align-items:flex-start}
 .post-id{flex:1;min-width:0}
-.post-name{font-weight:700;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:6px}
+.post-name{font-weight:700;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:8px}
 .verified{color:var(--teal);font-size:14px}
 .post-sub{font-size:13px;color:var(--muted);margin-top:1px}
 .post-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px}

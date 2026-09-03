@@ -976,7 +976,7 @@
 .nvf-menu button:hover{background:#f3f6f9}
 .nvf-menu button.danger{color:#c62828}.nvf-menu button.danger:hover{background:#fdecea}
 .nvf-menu i{width:16px;text-align:center;color:#8a94a0}.nvf-menu button.danger i{color:#c62828}
-.nvf-pinchip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#0c7d7d;background:rgba(0,172,172,.12);padding:2px 9px;border-radius:999px;margin-left:8px}
+.nvf-pinchip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#0c7d7d;background:rgba(0,172,172,.12);padding:2px 9px;border-radius:999px}
 .nvf-cm{border-top:1px solid var(--line);padding:10px 2px 8px;margin-top:10px}
 .nvf-cm-box{display:flex;gap:10px;align-items:center}
 .nvf-cm-box .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}
