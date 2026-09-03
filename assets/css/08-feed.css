@@ -95,9 +95,12 @@
 .stories-wrap{position:relative;display:flow-root;--reel-h:198px}
 .shorts{
   display:flex;gap:12px;overflow-x:auto;cursor:grab;-webkit-user-drag:none;
-  /* o overflow-x recorta o que sai da caixa: 12px em cima cobrem os ~6px
-     que o hover levanta, e 20px embaixo cobrem os ~15px da sombra */
-  padding:12px 0 20px;margin:0;
+  /* o overflow-x obriga o eixo vertical a recortar junto. Os 12px de cima
+     cobrem os ~6px que o hover levanta; embaixo sao 32px porque a sombra do
+     hover (0 16px 30px -12px, ainda ampliada pelo scale) chega a ~20px, e com
+     os 20px antigos ela raspava no corte. A margem negativa devolve 12px ao
+     layout, entao a folga visivel continua a mesma de antes. */
+  padding:12px 0 32px;margin:0 0 -12px;
   scroll-behavior:smooth;scrollbar-width:none;
 }
 .shorts::-webkit-scrollbar{display:none}

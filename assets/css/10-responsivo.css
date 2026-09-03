@@ -66,8 +66,29 @@
   .nf-item.unread .nf-dot .fa-check{opacity:0}
   .nf-mob-head{display:flex}
   .nf-scroll{flex:1}
-  .content{padding:16px 16px 48px;gap:20px}
-  .apps-panel{padding:14px 14px 22px;border-radius:22px}
+  /* o conteudo nao tem mais folga propria: o cartao de modulos ocupa a largura
+     toda e os outros blocos recebem a folga por margem, sem mexer no padding
+     que cada um ja tem */
+  .content{padding:0 0 48px;gap:20px}
+  .col-main > *:not(.apps-panel):not(.feed):not(.nvf-composer),.col-right > *{margin-left:16px;margin-right:16px}
+  /* o compositor vai de ponta a ponta; o topo arredonda como o painel de
+     modulos, e o pe fica reto porque os posts vem logo abaixo */
+  .col-main > .nvf-composer{border-radius:22px 22px 0 0}
+  /* no celular o nome e o cargo ja aparecem no topo: o cartao do perfil sai */
+  #homeProfileCard{display:none}
+  /* o titulo do feed tem margem propria por id: recupera a folga lateral e
+     encurta a distancia ate os shorts */
+  .col-main > #homeFeedTitle{margin-left:16px;margin-right:16px;margin-top:24px}
+  /* mesma folga entre o painel de modulos e os shorts */
+  .col-main > #homeShorts .section-title-row{margin-top:24px}
+  /* o overflow-x obriga o eixo vertical a recortar junto, entao a sombra do
+     card precisa de espaco dentro da fita. A margem negativa devolve esse
+     espaco ao layout: a sombra aparece inteira sem empurrar o que vem depois. */
+  .shorts{margin-bottom:-32px}
+  /* o painel encosta no cabecalho: so o pe fica arredondado */
+  .apps-panel{padding:14px 14px 22px;border-radius:0 0 22px 22px}
+  /* os posts tambem vao de ponta a ponta, sem cantos */
+  .col-main > .feed .post{border-radius:0}
   .apps-head{flex-wrap:wrap}
   .apps-search{max-width:none;min-width:200px}
   /* arrastar para reordenar é um gesto de mouse: fora do celular */
@@ -101,8 +122,9 @@
   padding:10px 2px 6px;font-size:10px;font-weight:700;letter-spacing:-.2px;
   color:#7c8794;position:relative;white-space:nowrap;transition:color .15s;
 }
+/* os icones de arquivo ficam do mesmo tamanho dos Font Awesome da barra (20px) */
 .mnav__ic{
-  width:22px;height:22px;background-color:currentColor;
+  width:20px;height:20px;background-color:currentColor;
   -webkit-mask:var(--ic) center / contain no-repeat;mask:var(--ic) center / contain no-repeat;
 }
 .mnav button i{font-size:20px;line-height:1;transition:transform .15s}

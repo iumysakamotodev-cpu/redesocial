@@ -289,12 +289,8 @@
   /* nomes longos de módulo viram a versão curta na coluna de ~78px */
   .tl-full{display:none}
   .tl-curto{display:inline}
-  /* o "Ver +N módulos" passa para dentro do cartão dos aplicativos, e vira
-     só o texto em verdigris fechado com o chevron à direita — sem a caixinha */
+  /* o "Ver +N módulos" mantém a pílula do desktop também no celular */
   .apps-panel .apps-expand{margin:20px 0 0}
-  .apps-expand button{background:none;box-shadow:none;color:#0c7d7d;padding:0;font-size:13px;height:auto}
-  .apps-expand button:hover,.apps-expand button:active{background:none;color:#0c7d7d}
-  .apps-expand button i{font-size:12px}
   /* as 4 ações do compositor não cabem lado a lado com rótulo na horizontal:
      empilha ícone e texto, como o resto do mobile */
   .nvf-composer{padding:14px}

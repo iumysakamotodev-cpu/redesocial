@@ -5,7 +5,7 @@
 (() => {
   const mnav = $('#mnav');
   if (!mnav) return;
-  const alvos = { home: null, shorts: '#homeShorts', modulos: '#appsPanel', comunicados: '#homeComPanel' };
+  const alvos = { home: null, shorts: '#homeShorts', feed: '#homeFeedTitle', comunicados: '#homeComPanel' };
   const fecharModulos = () => {
     ['closeStories', 'closeForum', 'closeNewsModule'].forEach(f => { if (typeof window[f] === 'function') window[f](); });
   };

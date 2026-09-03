@@ -2987,9 +2987,12 @@ input,textarea,select{font-size:14px}
 .stories-wrap{position:relative;display:flow-root;--reel-h:198px}
 .shorts{
   display:flex;gap:12px;overflow-x:auto;cursor:grab;-webkit-user-drag:none;
-  /* o overflow-x recorta o que sai da caixa: 12px em cima cobrem os ~6px
-     que o hover levanta, e 20px embaixo cobrem os ~15px da sombra */
-  padding:12px 0 20px;margin:0;
+  /* o overflow-x obriga o eixo vertical a recortar junto. Os 12px de cima
+     cobrem os ~6px que o hover levanta; embaixo sao 32px porque a sombra do
+     hover (0 16px 30px -12px, ainda ampliada pelo scale) chega a ~20px, e com
+     os 20px antigos ela raspava no corte. A margem negativa devolve 12px ao
+     layout, entao a folga visivel continua a mesma de antes. */
+  padding:12px 0 32px;margin:0 0 -12px;
   scroll-behavior:smooth;scrollbar-width:none;
 }
 .shorts::-webkit-scrollbar{display:none}
@@ -3661,8 +3664,29 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   .nf-item.unread .nf-dot .fa-check{opacity:0}
   .nf-mob-head{display:flex}
   .nf-scroll{flex:1}
-  .content{padding:16px 16px 48px;gap:20px}
-  .apps-panel{padding:14px 14px 22px;border-radius:22px}
+  /* o conteudo nao tem mais folga propria: o cartao de modulos ocupa a largura
+     toda e os outros blocos recebem a folga por margem, sem mexer no padding
+     que cada um ja tem */
+  .content{padding:0 0 48px;gap:20px}
+  .col-main > *:not(.apps-panel):not(.feed):not(.nvf-composer),.col-right > *{margin-left:16px;margin-right:16px}
+  /* o compositor vai de ponta a ponta; o topo arredonda como o painel de
+     modulos, e o pe fica reto porque os posts vem logo abaixo */
+  .col-main > .nvf-composer{border-radius:22px 22px 0 0}
+  /* no celular o nome e o cargo ja aparecem no topo: o cartao do perfil sai */
+  #homeProfileCard{display:none}
+  /* o titulo do feed tem margem propria por id: recupera a folga lateral e
+     encurta a distancia ate os shorts */
+  .col-main > #homeFeedTitle{margin-left:16px;margin-right:16px;margin-top:24px}
+  /* mesma folga entre o painel de modulos e os shorts */
+  .col-main > #homeShorts .section-title-row{margin-top:24px}
+  /* o overflow-x obriga o eixo vertical a recortar junto, entao a sombra do
+     card precisa de espaco dentro da fita. A margem negativa devolve esse
+     espaco ao layout: a sombra aparece inteira sem empurrar o que vem depois. */
+  .shorts{margin-bottom:-32px}
+  /* o painel encosta no cabecalho: so o pe fica arredondado */
+  .apps-panel{padding:14px 14px 22px;border-radius:0 0 22px 22px}
+  /* os posts tambem vao de ponta a ponta, sem cantos */
+  .col-main > .feed .post{border-radius:0}
   .apps-head{flex-wrap:wrap}
   .apps-search{max-width:none;min-width:200px}
   /* arrastar para reordenar é um gesto de mouse: fora do celular */
@@ -3696,8 +3720,9 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   padding:10px 2px 6px;font-size:10px;font-weight:700;letter-spacing:-.2px;
   color:#7c8794;position:relative;white-space:nowrap;transition:color .15s;
 }
+/* os icones de arquivo ficam do mesmo tamanho dos Font Awesome da barra (20px) */
 .mnav__ic{
-  width:22px;height:22px;background-color:currentColor;
+  width:20px;height:20px;background-color:currentColor;
   -webkit-mask:var(--ic) center / contain no-repeat;mask:var(--ic) center / contain no-repeat;
 }
 .mnav button i{font-size:20px;line-height:1;transition:transform .15s}
@@ -4478,12 +4503,8 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   /* nomes longos de módulo viram a versão curta na coluna de ~78px */
   .tl-full{display:none}
   .tl-curto{display:inline}
-  /* o "Ver +N módulos" passa para dentro do cartão dos aplicativos, e vira
-     só o texto em verdigris fechado com o chevron à direita — sem a caixinha */
+  /* o "Ver +N módulos" mantém a pílula do desktop também no celular */
   .apps-panel .apps-expand{margin:20px 0 0}
-  .apps-expand button{background:none;box-shadow:none;color:#0c7d7d;padding:0;font-size:13px;height:auto}
-  .apps-expand button:hover,.apps-expand button:active{background:none;color:#0c7d7d}
-  .apps-expand button i{font-size:12px}
   /* as 4 ações do compositor não cabem lado a lado com rótulo na horizontal:
      empilha ícone e texto, como o resto do mobile */
   .nvf-composer{padding:14px}
@@ -4682,15 +4703,15 @@ body.demo-crunch #homeComPanel .com-featured{display:none}
      A contraparte do rail no celular. Leva às mesmas seções que a home já
      tem: módulos, shorts, comunicados e o feed, mais o "+" das ações rápidas. -->
 <nav class="mnav" id="mnav">
-  <button class="on" data-t="home" title="Início"><span class="mnav__ic hm-ic--home" aria-hidden="true"></span>Início</button>
-  <button data-t="shorts" title="Shorts"><i class="mdi mdi-play-box-multiple"></i>Shorts</button>
+  <button class="on" data-t="home" title="Home"><span class="mnav__ic hm-ic--home" aria-hidden="true"></span>Home</button>
+  <button data-t="shorts" title="Shorts"><i class="fa-solid fa-clapperboard"></i>Shorts</button>
   <button class="fab" data-t="novo" title="Ações rápidas" aria-label="Ações rápidas"><i class="fa-solid fa-plus"></i></button>
-  <button data-t="modulos" title="Módulos"><span class="mnav__ic hm-ic--apps" aria-hidden="true"></span>Módulos</button>
+  <button data-t="feed" title="Feed"><i class="fa-solid fa-rectangle-list"></i>Feed</button>
   <button data-t="comunicados" title="Comunicados"><span class="mnav__ic hm-ic--comunicados" aria-hidden="true"></span>Comunicados</button>
   <!-- só aparecem dentro do módulo (classe mnav--modulo): trocam a navegação da
        home pelas duas abas do módulo, mantendo o "+" no meio -->
   <button data-t="mod-pub" title="Publicações"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
-  <button data-t="mod-shorts" title="Shorts"><i class="mdi mdi-play-box-multiple"></i>Shorts</button>
+  <button data-t="mod-shorts" title="Shorts"><i class="fa-solid fa-clapperboard"></i>Shorts</button>
 </nav>
 
 <!-- ==================== ÁREA PRINCIPAL ==================== -->
@@ -7433,7 +7454,7 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
 (() => {
   const mnav = $('#mnav');
   if (!mnav) return;
-  const alvos = { home: null, shorts: '#homeShorts', modulos: '#appsPanel', comunicados: '#homeComPanel' };
+  const alvos = { home: null, shorts: '#homeShorts', feed: '#homeFeedTitle', comunicados: '#homeComPanel' };
   const fecharModulos = () => {
     ['closeStories', 'closeForum', 'closeNewsModule'].forEach(f => { if (typeof window[f] === 'function') window[f](); });
   };
