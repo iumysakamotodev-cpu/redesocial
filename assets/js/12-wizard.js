@@ -110,7 +110,11 @@ $('#nvPeoNone').addEventListener('click', () => { NV_PEO.clear(); renderPessoas(
 $('#nvPeoSearch').addEventListener('input', renderPessoas);
 $('#nvPeoList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const id=+tr.dataset.id; if(e.target.checked) NV_PEO.add(id); else NV_PEO.delete(id); $('#nvPeoCount').textContent = NV_PEO.size+(NV_PEO.size===1?' selecionada':' selecionadas'); });
 $('#nvEmpList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const c=tr.dataset.code; if(e.target.checked) NV_EMP.add(c); else NV_EMP.delete(c); $('#nvEmpCount').textContent = NV_EMP.size+(NV_EMP.size===1?' selecionada':' selecionadas'); });
-$('#nvArtBack').addEventListener('click', () => { newsView.classList.remove('user-mode'); newsView.classList.add('open','mod-mode'); newsShow('list'); });
+$('#nvArtBack').addEventListener('click', () => {
+  /* na visao do funcionario o voltar devolve ao feed; no Gerenciar, a lista */
+  if (newsView.classList.contains('env-social')){ newsShow('feed'); return; }
+  newsView.classList.remove('user-mode'); newsView.classList.add('open','mod-mode'); newsShow('list');
+});
 $('#nvArtEdit') && $('#nvArtEdit').addEventListener('click', () => { if(npCurrent) nvEdit(npCurrent.id); });
 $('#nvArtApr') && $('#nvArtApr').addEventListener('click', ()=>reviewDecide(true));
 $('#nvArtRej') && $('#nvArtRej').addEventListener('click', ()=>reviewDecide(false));
@@ -187,6 +191,7 @@ function artCatPill(kicker){
 }
 function openArticle(n){
   npCurrent=n;
+  const tt=document.getElementById('nvArtTitulo'); if(tt) tt.textContent = n.article ? 'Artigo' : 'Publicação';
   if (!n.article){
     const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
     const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
@@ -201,12 +206,10 @@ function openArticle(n){
     const catChip=cat?'<span class="np-cat" style="background:'+cat.color+'"><i class="fa-solid '+(cat.icon||'fa-tag')+'"></i> '+cat.name+'</span>':'';
     const txt=(n.text||'').replace(/\n/g,'<br>');
     $('#nvArtBody').innerHTML=
-      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+postSub(n)+'</div><div class="np-meta">'+(n.date||'agora')+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
+      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+postSub(n)+'</div><div class="np-meta">'+((typeof fmtQuando==='function')?fmtQuando(n):(n.date||'agora'))+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
       (n.title&&!n.colorBg?'<h1 class="np-title">'+n.title+'</h1>':'')+
       (txt?'<div class="np-text">'+txt+'</div>':'')+media+
-      '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span></span> '+rc+' · '+cc+' comentários</div>'+
-      '<div class="np-acts"><button class="p-act'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-      '<div class="np-comments" id="npComments"></div>';
+      npBlocoSocial(n);
     npCurrent=n; renderNpComments(n);
     newsShow('article'); $('.nv-artscroll').scrollTop=0; return;
   }
@@ -218,12 +221,9 @@ function openArticle(n){
       artCatPill(a.kicker)+
       '<h1>'+n.title+'</h1>'+
       (a.lead ? '<p class="art-lead">'+a.lead+'</p>' : '')+
-      '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+(a.readTime||'')+'</span></div>'+
-        '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
+      npAssinatura(n, a)+
       '<div class="art-body">'+(a.html ? a.html : a.paras.map(p=>'<p>'+p.replace(/</g,'&lt;')+'</p>').join(''))+'</div>'+
-      (function(){ const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0); const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0); return '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span> '+rc+' · '+cc+' comentários</div>'+
-        '<div class="np-acts"><button class="p-act'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-        '<div class="np-comments" id="npComments"></div>'; })();
+      npBlocoSocial(n);
     renderNpComments(n);
     newsShow('article'); $('.nv-artscroll').scrollTop = 0; return;
   }
@@ -239,8 +239,7 @@ function openArticle(n){
     artCatPill(a.kicker)+
     '<h1>'+n.title+'</h1>'+
     '<p class="art-lead">'+a.lead+'</p>'+
-    '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+a.readTime+'</span></div>'+
-      '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
+    npAssinatura(n, a)+
     '<div class="art-stats">'+stats+'</div>'+
     '<div class="art-body">'+
       '<div class="art-eyebrow">O desafio</div><h2>Organizar informações estratégicas para uma rede em expansão acelerada</h2>'+
@@ -259,9 +258,7 @@ function openArticle(n){
       '<div class="art-mods">'+mods+'</div>'+
       '<div class="art-tags"><span class="art-tag">#HistóriasDeSucesso</span><span class="art-tag">#Franquias</span><span class="art-tag">#Gestão</span><span class="art-tag">#PowerUps</span></div>'+
     '</div>'+
-    (function(){ const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0); const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0); return '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span> '+rc+' · '+cc+' comentários</div>'+
-      '<div class="np-acts"><button class="p-act'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-      '<div class="np-comments" id="npComments"></div>'; })();
+    npBlocoSocial(n);
   renderNpComments(n);
   newsShow('article');
   $('.nv-artscroll').scrollTop = 0;
@@ -269,29 +266,62 @@ function openArticle(n){
 function newsShowArticle(){ $('#nvArticleScreen').classList.add('active'); }
 let npCurrent=null, reviewingPub=null;
 function npRefreshStats(n){
-  var st=document.querySelector('#nvArtBody .np-stats'); if(!st||!n) return;
+  var st=document.querySelector('#nvArtBody .post-stats'); if(!st||!n) return;
   var liked=newsLiked.has(n.id);
   var rc=(n.reactions||0)+(liked?1:0);
   var cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
-  var clap=(n.reactions||0)>=120?'<span class="rxs" data-rx="celebrate"></span>':'';
-  st.innerHTML='<span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span> '+rc+' · '+cc+' comentários';
+  var rcEl=st.querySelector('.rx-count'), ccEl=st.querySelector('.right');
+  if(rcEl) rcEl.textContent=rc;
+  if(ccEl) ccEl.textContent=(cc?'Ver ':'')+cc+' comentários';
+}
+/* Bloco de curtidas, botoes e comentarios do leitor: os mesmos componentes do
+   feed (.post-stats, .post-actions e .nvf-cm), com o mesmo respiro. */
+function npBlocoSocial(n){
+  const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
+  const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
+  const clap=(n.reactions||0)>=120?'<span class="rxs" data-rx="celebrate"></span>':'';
+  return '<div class="art-social">'+
+    '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc" data-np="cmt">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
+    '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
+    '<div class="nvf-cm" id="npComments"></div>'+
+  '</div>';
+}
+/* assinatura: autor, data completa e "Copiar link" */
+function npAssinatura(n, a){
+  const av = n.av ? '<span class="avatar '+n.av+'"></span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
+  const quando = (typeof fmtQuando==='function') ? fmtQuando(n) : (n.date||'');
+  return '<div class="art-byline">'+av+'<div><b>'+(n.author||'SULTS')+'</b><span>'+quando+(a&&a.readTime?' · '+a.readTime:'')+'</span></div>'+
+    '<div class="art-share"><button type="button" data-copiar title="Copiar link"><i class="fa-regular fa-copy"></i> Copiar link</button></div></div>';
+}
+/* quem comenta quando o post so tem a contagem: na visao Crunchyroll, os
+   personagens; fora dela, as pessoas do SULTS */
+function npPoolComentaristas(){
+  if (document.body.classList.contains('demo-crunch') && typeof CRUNCH_PESSOAS!=='undefined'){
+    return Object.keys(CRUNCH_PESSOAS).map(function(k){ const q=CRUNCH_PESSOAS[k]; return { name:q.nome, av:'av-cr-'+k, role:q.cargo+' · '+q.unidade }; });
+  }
+  return (typeof PEOPLE!=='undefined') ? PEOPLE : [];
 }
 function renderNpComments(n){
   const el=$('#npComments'); if(!el) return;
-  if((!n.cmts||!n.cmts.length) && (n.comments||0)>0 && typeof PEOPLE!=='undefined'){
+  const pool = npPoolComentaristas();
+  if((!n.cmts||!n.cmts.length) && (n.comments||0)>0 && pool.length){
     var texts=['Parabéns pelo trabalho! 👏','Que notícia incrível!','Muito bom, seguimos juntos! 🚀','Orgulho da rede. 💙','Sensacional, time!','Vamos com tudo!','Isso motiva demais.','Excelente novidade.','Show de bola! 🔥','Que marco histórico.'];
     n.cmts=[]; var qt=Math.min(n.comments||0, 8);
-    for(var i=0;i<qt;i++){ var p=PEOPLE[(i+(n.id||1))%PEOPLE.length]; n.cmts.push({author:p.name,av:p.av,role:p.role,text:texts[(i+(n.id||0))%texts.length],time:(i+1)*17+' min',likes:(i*3)%7}); }
+    for(var i=0;i<qt;i++){ var p=pool[(i+(n.id||1))%pool.length]; n.cmts.push({author:p.name,av:p.av,role:p.role,text:texts[(i+(n.id||0))%texts.length],time:(i+1)*17+' min',likes:(i*3)%7}); }
     n.comments=Math.max(0,(n.comments||0)-qt);
   }
-  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="mdi mdi-send"></i></button></div><div class="comments open" id="npCmList" style="max-height:none"></div>';
+  /* o mesmo compositor do feed: avatar + campo com o botao de enviar dentro */
+  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list" id="npCmList"></div>';
   const list=$('#npCmList');
   (n.cmts||[]).forEach(c=>list.appendChild(buildComment({av:c.av||'av-rc',ini:c.ini||'',name:c.author||c.name,role:c.role||n.sub||'SULTS',text:c.text,dt:c.dt,time:c.time,likes:c.likes||0,replies:c.replies},false)));
 }
 $('#nvArtBody') && $('#nvArtBody').addEventListener('click', e=>{
   const b=e.target.closest('[data-np]'); const n=npCurrent; if(!n) return;
   if(b){ if(b.dataset.np==='like'){ if(newsLiked.has(n.id)) newsLiked.delete(n.id); else newsLiked.add(n.id); const on=newsLiked.has(n.id); b.classList.toggle('liked',on); b.innerHTML='<i class="fa-'+(on?'solid':'regular')+' fa-thumbs-up"></i> Gostei'; npRefreshStats(n); } else { $('#npCmIn') && $('#npCmIn').focus(); } return; }
-  const rs=e.target.closest('.np-stats'); if(rs){ e.stopPropagation(); openReactions(nvRxIndex(n.id)); return; }
+  const cp=e.target.closest('[data-copiar]');
+  if(cp){ const url=(n.link && typeof CRUNCH_URL!=='undefined' && n.link.indexOf('/')===0) ? CRUNCH_URL+n.link : (location.href.split('#')[0]+'#pub-'+n.id);
+    const ok=()=>fgToast('Link copiado'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok,ok); else ok(); return; }
+  const rs=e.target.closest('.post-stats .rx, .post-stats .rx-count'); if(rs){ e.stopPropagation(); openReactions(nvRxIndex(n.id)); return; }
   const s=e.target.closest('#npCmSend'); if(s){ const inp=$('#npCmIn'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); (n.cmts=n.cmts||[]).unshift({author:'Rodrigo Caetano',av:'av-rc',ini:'RC',role:'CEO · SULTS',text:v,time:'agora'}); renderNpComments(n); npRefreshStats(n); if(pend) fgToast('Comentário enviado para aprovação'); }
 });
 $('#nvArtBody') && $('#nvArtBody').addEventListener('input', e=>{ const inp=e.target.closest('#npCmIn'); if(inp) $('#npCmSend').disabled=!inp.value.trim(); });

@@ -30,7 +30,7 @@ function crunchPost(n){
     author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
     /* a linha abaixo do nome e o cargo, nao a categoria: 'Canal oficial · Crunchyroll' */
     cargo:'Canal oficial', unit:'Crunchyroll', reach:'rede', status:'pub', oficial:true
-  }, n, { text: n.text + crunchLink(n.link), article: artigo });
+  }, n, { text: n.text + crunchLink(n.link), article: artigo, cmts: n.cmts || (CRUNCH_CMTS[n.id] || []) });
 }
 
 const CRUNCH_CATS = [
@@ -69,7 +69,8 @@ function crunchPessoa(chave, n){
 }
 function crunchComent(chave, texto, quando){
   const q = CRUNCH_PESSOAS[chave];
-  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.cargo + ' · ' + q.unidade, text:texto, time:quando };
+  /* dt e a data pronta que o componente de comentario mostra; time fica para quem le o campo cru */
+  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.cargo + ' · ' + q.unidade, text:texto, time:quando, dt:quando };
 }
 /* ordena por data e hora, da mais nova para a mais antiga; o fixado vai na frente */
 function crunchTs(s){
@@ -82,6 +83,34 @@ function crunchOrdena(lista){
 const CRUNCH_SHORT_CATS = [
   { id:'animes', name:'Animes', color:'#F47521', icon:'fa-tv', active:true }
 ];
+
+/* Comentários dos personagens nas matérias (dois por matéria) */
+const CRUNCH_CMTS = {
+  9001: [ crunchComent('anya',    'waku waku! mangá novo! 📚', '02/09/2026 às 11:40'),
+          crunchComent('frieren', 'Espero esse tempo todo por um capítulo e ainda dizem que sou lenta.', '02/09/2026 às 12:15') ],
+  9002: [ crunchComent('spike',   'A abertura tem cara de bebop. Aprovado.', '02/09/2026 às 10:30'),
+          crunchComent('tanjiro', 'Coloquei o som no máximo na copa. Desculpa, pessoal do 2º andar. 🙏', '02/09/2026 às 10:52') ],
+  9003: [ crunchComent('anya',    'FOCA! 🦭🦭🦭', '01/09/2026 às 15:31'),
+          crunchComent('levi',    'Bonitinho. Agora voltem ao trabalho.', '01/09/2026 às 15:58') ],
+  9004: [ crunchComent('gojo',    'DLC pago e atualização grátis no mesmo dia. Equilíbrio, gosto disso.', '01/09/2026 às 15:10'),
+          crunchComent('saitama', 'Vou esperar a promoção.', '01/09/2026 às 16:02') ],
+  9005: [ crunchComent('luffy',   'Deu que eu governaria a nação da carne. Faz sentido. 🍖', '28/08/2026 às 13:22'),
+          crunchComent('sasuke',  'Não respondo quiz.', '28/08/2026 às 14:05') ],
+  9006: [ crunchComent('luffy',   'AS MENINAS DO MEU BANDO DUBLADAS!!! 🏴‍☠️', '24/08/2026 às 13:45'),
+          crunchComent('naruto',  'Dá pra fazer a dublagem do Sasuke também? Só pra ele falar mais.', '24/08/2026 às 14:20') ],
+  9007: [ crunchComent('gojo',    'Guerra de orgulho é a minha especialidade. Vou rever dublado.', '21/08/2026 às 12:48'),
+          crunchComent('anya',    'a moça ganha no final? não conta. ou conta.', '21/08/2026 às 13:10') ],
+  9008: [ crunchComent('frieren', 'Bruxa na Mongólia. Finalmente uma colega de profissão.', '15/08/2026 às 13:30'),
+          crunchComent('tanjiro', 'Parabéns ao elenco! Dublagem boa faz a história chegar em mais gente. 🙌', '15/08/2026 às 14:02') ],
+  9009: [ crunchComent('saitama', 'Dez animes sobre não fazer nada. Finalmente uma lista pra mim.', '14/08/2026 às 13:25'),
+          crunchComent('levi',    'Pausa? Quem escreveu isso não viu o estado da copa.', '14/08/2026 às 13:50') ],
+  9010: [ crunchComent('spike',   'Shinkai no cinema de novo. Vou guardar uns woolongs pro ingresso.', '12/08/2026 às 10:40'),
+          crunchComent('frieren', 'Filme novo. Dez anos depois eu assisto.', '12/08/2026 às 11:15') ],
+  9011: [ crunchComent('sasuke',  'Lara? Nunca ouvi falar.', '08/08/2026 às 12:20'),
+          crunchComent('naruto',  'Mentira, ele já viu a primeira temporada inteira. 😏', '08/08/2026 às 12:26') ],
+  9012: [ crunchComent('gojo',    'Meu time é só tanque. O quiz me mandou assistir shounen de pancadaria. Justo.', '06/08/2026 às 12:30'),
+          crunchComent('tanjiro', 'Montei um time equilibrado e ganhei um slice of life. Tá certo. ☕', '06/08/2026 às 13:05') ]
+};
 
 /* Matérias da Crunchyroll News (pt-BR), lidas em 02/09/2026 */
 const CRUNCH_MATERIAS = [

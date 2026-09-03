@@ -316,7 +316,7 @@ body.demo-empty .demo-empty-state{display:flex}
 /* ============ Feed (estilo LinkedIn) ============ */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
 .feed{display:flex;flex-direction:column;gap:8px}
-.post{padding:16px 16px 10px}
+.post{padding:16px}
 .post>.post-img:last-child,.post>.banner:last-child{margin-bottom:-10px;border-radius:0 0 var(--radius) var(--radius);overflow:hidden}
 .post .post-stats:last-child{padding-bottom:0}
 .post-head{display:flex;gap:11px;align-items:flex-start}

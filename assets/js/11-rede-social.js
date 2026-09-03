@@ -902,6 +902,9 @@ function newsShow(screen){
   $$('.nv-screen').forEach(s => s.classList.remove('active'));
   newsView.classList.toggle('reelsmode', screen==='shorts');
   if (screen!=='compose' && screen!=='article') nvSetEnv((screen==='shorts'||screen==='shortsb'||screen==='feed'||!screen) ? 'social' : 'gerenciar');
+  /* ler um artigo e coisa da visao do funcionario: header branco. So a revisao
+     de uma publicacao pendente (vinda de Aprovacoes) fica no Gerenciar. */
+  if (screen==='article') nvSetEnv((typeof reviewingPub!=='undefined' && reviewingPub) ? 'gerenciar' : 'social');
   if (screen==='shorts') screen='shortsb';
   /* o campo diz onde a busca vai agir, e o escopo e sempre a aba aberta */
   const campoBusca = $('#nmodSearchIn');

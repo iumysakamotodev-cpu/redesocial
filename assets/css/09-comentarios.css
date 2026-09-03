@@ -3,7 +3,7 @@
 .post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:10px 0 0}
 /* o divider de baixo fica a 10px dos botoes e o campo a 10px do divider,
    os mesmos 10px que o .post-actions usa em cima */
-.comments{display:none;flex-direction:column;gap:14px;padding:10px 4px 16px;border-top:1px solid var(--line);margin-top:10px}
+.comments{display:none;flex-direction:column;gap:14px;padding:10px 4px 0;border-top:1px solid var(--line);margin-top:10px}
 .comments.open{display:flex}
 .comment-composer{display:flex;gap:10px;align-items:center}
 .comment-composer .avatar{width:38px;height:38px;font-size:13px}

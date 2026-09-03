@@ -2465,14 +2465,24 @@ input,textarea,select{font-size:14px}
 .art-byline b{display:block;font-size:14px;color:var(--ink)}
 .art-byline span{font-size:12px;color:var(--muted)}
 .art-byline .art-share{margin-left:auto;display:flex;gap:8px}
-.art-byline .art-share button{width:38px;height:38px;border-radius:50%;background:#f0f3f6;color:#5b6672;font-size:14px;transition:background .15s}
+.art-byline .art-share button{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border:0;border-radius:999px;
+  background:#f0f3f6;color:#5b6672;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+.art-byline .art-share button i{font-size:13px}
+/* bloco social do leitor: os componentes do feed, com o recuo do artigo */
+.art-social{padding:0 32px 8px}
+.art-social .post-stats{padding-top:0}
+.art-social .nvf-cm{padding-bottom:0}
+/* barra de cima do artigo alinhada com o header branco */
+.news-view.env-social #nvArticleScreen .cat-head{padding-inline:max(20px, calc((100% - 1400px) / 2))}
 .art-byline .art-share button:hover{background:#e4e9ee;color:var(--ink)}
 .art-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:30px 0}
 .art-stat{background:linear-gradient(180deg,#f6fbfb,#eef7f7);border:1px solid #d9ecec;border-radius:14px;padding:18px 16px;text-align:center}
 .art-stat b{display:block;font-size:26px;font-weight:700;color:var(--teal);line-height:1}
 .art-stat span{display:block;font-size:11px;color:var(--muted);margin-top:7px;line-height:1.35}
-.art-body{font-size:16px;line-height:1.75;color:#333e49}
-.art-body p{margin:18px 0}
+.art-body{font-size:14px;line-height:1.75;color:#333e49}
+/* links no corpo do artigo ("Ler na Crunchyroll News") */
+.art-body a{color:#0088FF;font-weight:700}
+.art-body p{margin:12px 0}
 .art-body h2{font-size:24px;font-weight:700;color:var(--ink);line-height:1.3;margin:38px 0 6px;letter-spacing:-.2px}
 .art-eyebrow{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--teal);margin-top:36px}
 .art-eyebrow + h2{margin-top:6px}
@@ -2504,7 +2514,7 @@ input,textarea,select{font-size:14px}
 .nvf-menu button.danger{color:#c62828}.nvf-menu button.danger:hover{background:#fdecea}
 .nvf-menu i{width:16px;text-align:center;color:#8a94a0}.nvf-menu button.danger i{color:#c62828}
 .nvf-pinchip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#0c7d7d;background:rgba(0,172,172,.12);padding:2px 9px;border-radius:999px}
-.nvf-cm{border-top:1px solid var(--line);padding:10px 2px 8px;margin-top:10px}
+.nvf-cm{border-top:1px solid var(--line);padding:12px 2px 8px;margin-top:10px}
 .nvf-cm-box{display:flex;gap:10px;align-items:center}
 .nvf-cm-box .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}
 /* A pilula e o involucro, nao o input: assim o botao de enviar fica dentro
@@ -2532,7 +2542,7 @@ input,textarea,select{font-size:14px}
 .nvf-modbar .nvf-modtx{font-size:14px;line-height:20px}
 .nvf-modbar .nvf-modtx i{font-size:15px}
 /* os botoes vem do padrao em 09-comentarios: aqui nao ha mais nada a dizer */
-.nvf-cm-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.nvf-cm-list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
 .nvf-cm-item{display:flex;gap:10px}
 .nvf-cm-item .avatar{width:34px;height:34px;font-size:0;flex-shrink:0}
 .nvf-cm-bub{background:#f1f4f6;border-radius:14px;padding:9px 14px}
@@ -3089,7 +3099,7 @@ body.demo-empty .demo-empty-state{display:flex}
 /* ============ Feed (estilo LinkedIn) ============ */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
 .feed{display:flex;flex-direction:column;gap:8px}
-.post{padding:16px 16px 10px}
+.post{padding:16px}
 .post>.post-img:last-child,.post>.banner:last-child{margin-bottom:-10px;border-radius:0 0 var(--radius) var(--radius);overflow:hidden}
 .post .post-stats:last-child{padding-bottom:0}
 .post-head{display:flex;gap:11px;align-items:flex-start}
@@ -3390,7 +3400,7 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
 .post-actions{display:flex;border-top:1px solid var(--line);margin-top:0;padding:10px 0 0}
 /* o divider de baixo fica a 10px dos botoes e o campo a 10px do divider,
    os mesmos 10px que o .post-actions usa em cima */
-.comments{display:none;flex-direction:column;gap:14px;padding:10px 4px 16px;border-top:1px solid var(--line);margin-top:10px}
+.comments{display:none;flex-direction:column;gap:14px;padding:10px 4px 0;border-top:1px solid var(--line);margin-top:10px}
 .comments.open{display:flex}
 .comment-composer{display:flex;gap:10px;align-items:center}
 .comment-composer .avatar{width:38px;height:38px;font-size:13px}
@@ -6034,7 +6044,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
   </div>
   <!-- ARTIGO (leitor) -->
   <div class="nv-screen" id="nvArticleScreen">
-    <div class="cat-head"><button class="nv-back" id="nvArtBack"><i class="fa-solid fa-arrow-left"></i></button><div class="rx-title"><i class="fa-solid fa-newspaper"></i><h2>Publicação</h2></div><span style="flex:1"></span><button class="cat-add" id="nvArtEdit" style="background:#eef2f5;color:#5b6672"><i class="fa-solid fa-pen"></i> Editar</button></div>
+    <div class="cat-head"><button class="nv-back" id="nvArtBack"><i class="fa-solid fa-arrow-left"></i></button><div class="rx-title"><h2 id="nvArtTitulo">Artigo</h2></div><span style="flex:1"></span><button class="cat-add" id="nvArtEdit" style="background:#eef2f5;color:#5b6672"><i class="fa-solid fa-pen"></i> Editar</button></div>
     <div id="nvArtReview" hidden class="artreview"><div class="artreview-in"><span class="artreview-tx"><i class="fa-solid fa-clock"></i> Esta publicação está <b>aguardando aprovação</b></span><span style="flex:1"></span><button class="artreview-no" id="nvArtRej"><i class="fa-solid fa-xmark"></i> Recusar</button><button class="artreview-ok" id="nvArtApr"><i class="fa-solid fa-check"></i> Aprovar</button></div></div>
     <div class="nv-artscroll"><div class="art" id="nvArtBody"></div></div>
   </div>
@@ -10314,6 +10324,9 @@ function newsShow(screen){
   $$('.nv-screen').forEach(s => s.classList.remove('active'));
   newsView.classList.toggle('reelsmode', screen==='shorts');
   if (screen!=='compose' && screen!=='article') nvSetEnv((screen==='shorts'||screen==='shortsb'||screen==='feed'||!screen) ? 'social' : 'gerenciar');
+  /* ler um artigo e coisa da visao do funcionario: header branco. So a revisao
+     de uma publicacao pendente (vinda de Aprovacoes) fica no Gerenciar. */
+  if (screen==='article') nvSetEnv((typeof reviewingPub!=='undefined' && reviewingPub) ? 'gerenciar' : 'social');
   if (screen==='shorts') screen='shortsb';
   /* o campo diz onde a busca vai agir, e o escopo e sempre a aba aberta */
   const campoBusca = $('#nmodSearchIn');
@@ -11189,7 +11202,11 @@ $('#nvPeoNone').addEventListener('click', () => { NV_PEO.clear(); renderPessoas(
 $('#nvPeoSearch').addEventListener('input', renderPessoas);
 $('#nvPeoList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const id=+tr.dataset.id; if(e.target.checked) NV_PEO.add(id); else NV_PEO.delete(id); $('#nvPeoCount').textContent = NV_PEO.size+(NV_PEO.size===1?' selecionada':' selecionadas'); });
 $('#nvEmpList').addEventListener('change', e => { const tr=e.target.closest('tr'); if(!tr) return; const c=tr.dataset.code; if(e.target.checked) NV_EMP.add(c); else NV_EMP.delete(c); $('#nvEmpCount').textContent = NV_EMP.size+(NV_EMP.size===1?' selecionada':' selecionadas'); });
-$('#nvArtBack').addEventListener('click', () => { newsView.classList.remove('user-mode'); newsView.classList.add('open','mod-mode'); newsShow('list'); });
+$('#nvArtBack').addEventListener('click', () => {
+  /* na visao do funcionario o voltar devolve ao feed; no Gerenciar, a lista */
+  if (newsView.classList.contains('env-social')){ newsShow('feed'); return; }
+  newsView.classList.remove('user-mode'); newsView.classList.add('open','mod-mode'); newsShow('list');
+});
 $('#nvArtEdit') && $('#nvArtEdit').addEventListener('click', () => { if(npCurrent) nvEdit(npCurrent.id); });
 $('#nvArtApr') && $('#nvArtApr').addEventListener('click', ()=>reviewDecide(true));
 $('#nvArtRej') && $('#nvArtRej').addEventListener('click', ()=>reviewDecide(false));
@@ -11266,6 +11283,7 @@ function artCatPill(kicker){
 }
 function openArticle(n){
   npCurrent=n;
+  const tt=document.getElementById('nvArtTitulo'); if(tt) tt.textContent = n.article ? 'Artigo' : 'Publicação';
   if (!n.article){
     const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
     const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
@@ -11280,12 +11298,10 @@ function openArticle(n){
     const catChip=cat?'<span class="np-cat" style="background:'+cat.color+'"><i class="fa-solid '+(cat.icon||'fa-tag')+'"></i> '+cat.name+'</span>':'';
     const txt=(n.text||'').replace(/\n/g,'<br>');
     $('#nvArtBody').innerHTML=
-      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+postSub(n)+'</div><div class="np-meta">'+(n.date||'agora')+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
+      '<div class="np-head">'+av+'<div class="np-id"><div class="np-name">'+nm+'</div><div class="np-sub">'+postSub(n)+'</div><div class="np-meta">'+((typeof fmtQuando==='function')?fmtQuando(n):(n.date||'agora'))+' · <i class="fa-solid fa-earth-americas"></i>'+(n.edited?' · <span class="np-edited">Editado</span>':'')+'</div></div>'+catChip+'</div>'+
       (n.title&&!n.colorBg?'<h1 class="np-title">'+n.title+'</h1>':'')+
       (txt?'<div class="np-text">'+txt+'</div>':'')+media+
-      '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span></span> '+rc+' · '+cc+' comentários</div>'+
-      '<div class="np-acts"><button class="p-act'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-      '<div class="np-comments" id="npComments"></div>';
+      npBlocoSocial(n);
     npCurrent=n; renderNpComments(n);
     newsShow('article'); $('.nv-artscroll').scrollTop=0; return;
   }
@@ -11297,12 +11313,9 @@ function openArticle(n){
       artCatPill(a.kicker)+
       '<h1>'+n.title+'</h1>'+
       (a.lead ? '<p class="art-lead">'+a.lead+'</p>' : '')+
-      '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+(a.readTime||'')+'</span></div>'+
-        '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
+      npAssinatura(n, a)+
       '<div class="art-body">'+(a.html ? a.html : a.paras.map(p=>'<p>'+p.replace(/</g,'&lt;')+'</p>').join(''))+'</div>'+
-      (function(){ const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0); const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0); return '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span> '+rc+' · '+cc+' comentários</div>'+
-        '<div class="np-acts"><button class="p-act'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-        '<div class="np-comments" id="npComments"></div>'; })();
+      npBlocoSocial(n);
     renderNpComments(n);
     newsShow('article'); $('.nv-artscroll').scrollTop = 0; return;
   }
@@ -11318,8 +11331,7 @@ function openArticle(n){
     artCatPill(a.kicker)+
     '<h1>'+n.title+'</h1>'+
     '<p class="art-lead">'+a.lead+'</p>'+
-    '<div class="art-byline">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div><b>'+(n.author||'SULTS')+'</b><span>'+n.date+' · '+a.readTime+'</span></div>'+
-      '<div class="art-share"><button title="Compartilhar"><i class="fa-solid fa-share-nodes"></i></button></div></div>'+
+    npAssinatura(n, a)+
     '<div class="art-stats">'+stats+'</div>'+
     '<div class="art-body">'+
       '<div class="art-eyebrow">O desafio</div><h2>Organizar informações estratégicas para uma rede em expansão acelerada</h2>'+
@@ -11338,9 +11350,7 @@ function openArticle(n){
       '<div class="art-mods">'+mods+'</div>'+
       '<div class="art-tags"><span class="art-tag">#HistóriasDeSucesso</span><span class="art-tag">#Franquias</span><span class="art-tag">#Gestão</span><span class="art-tag">#PowerUps</span></div>'+
     '</div>'+
-    (function(){ const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0); const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0); return '<div class="np-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span><span class="rxs" data-rx="celebrate"></span></span> '+rc+' · '+cc+' comentários</div>'+
-      '<div class="np-acts"><button class="p-act'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
-      '<div class="np-comments" id="npComments"></div>'; })();
+    npBlocoSocial(n);
   renderNpComments(n);
   newsShow('article');
   $('.nv-artscroll').scrollTop = 0;
@@ -11348,29 +11358,62 @@ function openArticle(n){
 function newsShowArticle(){ $('#nvArticleScreen').classList.add('active'); }
 let npCurrent=null, reviewingPub=null;
 function npRefreshStats(n){
-  var st=document.querySelector('#nvArtBody .np-stats'); if(!st||!n) return;
+  var st=document.querySelector('#nvArtBody .post-stats'); if(!st||!n) return;
   var liked=newsLiked.has(n.id);
   var rc=(n.reactions||0)+(liked?1:0);
   var cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
-  var clap=(n.reactions||0)>=120?'<span class="rxs" data-rx="celebrate"></span>':'';
-  st.innerHTML='<span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span> '+rc+' · '+cc+' comentários';
+  var rcEl=st.querySelector('.rx-count'), ccEl=st.querySelector('.right');
+  if(rcEl) rcEl.textContent=rc;
+  if(ccEl) ccEl.textContent=(cc?'Ver ':'')+cc+' comentários';
+}
+/* Bloco de curtidas, botoes e comentarios do leitor: os mesmos componentes do
+   feed (.post-stats, .post-actions e .nvf-cm), com o mesmo respiro. */
+function npBlocoSocial(n){
+  const liked=newsLiked.has(n.id); const rc=(n.reactions||0)+(liked?1:0);
+  const cc=(n.comments||0)+((n.cmts&&n.cmts.length)||0);
+  const clap=(n.reactions||0)>=120?'<span class="rxs" data-rx="celebrate"></span>':'';
+  return '<div class="art-social">'+
+    '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc" data-np="cmt">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
+    '<div class="post-actions"><button class="p-act like'+(liked?' liked':'')+'" data-np="like"><i class="fa-'+(liked?'solid':'regular')+' fa-thumbs-up"></i> Gostei</button><button class="p-act" data-np="cmt"><i class="fa-regular fa-comment"></i> Comentar</button></div>'+
+    '<div class="nvf-cm" id="npComments"></div>'+
+  '</div>';
+}
+/* assinatura: autor, data completa e "Copiar link" */
+function npAssinatura(n, a){
+  const av = n.av ? '<span class="avatar '+n.av+'"></span>' : '<span class="avatar av-brand">'+BRAND_LOGO+'</span>';
+  const quando = (typeof fmtQuando==='function') ? fmtQuando(n) : (n.date||'');
+  return '<div class="art-byline">'+av+'<div><b>'+(n.author||'SULTS')+'</b><span>'+quando+(a&&a.readTime?' · '+a.readTime:'')+'</span></div>'+
+    '<div class="art-share"><button type="button" data-copiar title="Copiar link"><i class="fa-regular fa-copy"></i> Copiar link</button></div></div>';
+}
+/* quem comenta quando o post so tem a contagem: na visao Crunchyroll, os
+   personagens; fora dela, as pessoas do SULTS */
+function npPoolComentaristas(){
+  if (document.body.classList.contains('demo-crunch') && typeof CRUNCH_PESSOAS!=='undefined'){
+    return Object.keys(CRUNCH_PESSOAS).map(function(k){ const q=CRUNCH_PESSOAS[k]; return { name:q.nome, av:'av-cr-'+k, role:q.cargo+' · '+q.unidade }; });
+  }
+  return (typeof PEOPLE!=='undefined') ? PEOPLE : [];
 }
 function renderNpComments(n){
   const el=$('#npComments'); if(!el) return;
-  if((!n.cmts||!n.cmts.length) && (n.comments||0)>0 && typeof PEOPLE!=='undefined'){
+  const pool = npPoolComentaristas();
+  if((!n.cmts||!n.cmts.length) && (n.comments||0)>0 && pool.length){
     var texts=['Parabéns pelo trabalho! 👏','Que notícia incrível!','Muito bom, seguimos juntos! 🚀','Orgulho da rede. 💙','Sensacional, time!','Vamos com tudo!','Isso motiva demais.','Excelente novidade.','Show de bola! 🔥','Que marco histórico.'];
     n.cmts=[]; var qt=Math.min(n.comments||0, 8);
-    for(var i=0;i<qt;i++){ var p=PEOPLE[(i+(n.id||1))%PEOPLE.length]; n.cmts.push({author:p.name,av:p.av,role:p.role,text:texts[(i+(n.id||0))%texts.length],time:(i+1)*17+' min',likes:(i*3)%7}); }
+    for(var i=0;i<qt;i++){ var p=pool[(i+(n.id||1))%pool.length]; n.cmts.push({author:p.name,av:p.av,role:p.role,text:texts[(i+(n.id||0))%texts.length],time:(i+1)*17+' min',likes:(i*3)%7}); }
     n.comments=Math.max(0,(n.comments||0)-qt);
   }
-  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="mdi mdi-send"></i></button></div><div class="comments open" id="npCmList" style="max-height:none"></div>';
+  /* o mesmo compositor do feed: avatar + campo com o botao de enviar dentro */
+  el.innerHTML='<div class="nvf-cm-box"><span class="avatar av-rc"></span><div class="nvf-cm-field"><input class="nvf-cm-in" id="npCmIn" placeholder="Adicione um comentário..."><button class="nvf-cm-send" id="npCmSend" disabled><i class="mdi mdi-send"></i></button></div></div><div class="nvf-cm-list" id="npCmList"></div>';
   const list=$('#npCmList');
   (n.cmts||[]).forEach(c=>list.appendChild(buildComment({av:c.av||'av-rc',ini:c.ini||'',name:c.author||c.name,role:c.role||n.sub||'SULTS',text:c.text,dt:c.dt,time:c.time,likes:c.likes||0,replies:c.replies},false)));
 }
 $('#nvArtBody') && $('#nvArtBody').addEventListener('click', e=>{
   const b=e.target.closest('[data-np]'); const n=npCurrent; if(!n) return;
   if(b){ if(b.dataset.np==='like'){ if(newsLiked.has(n.id)) newsLiked.delete(n.id); else newsLiked.add(n.id); const on=newsLiked.has(n.id); b.classList.toggle('liked',on); b.innerHTML='<i class="fa-'+(on?'solid':'regular')+' fa-thumbs-up"></i> Gostei'; npRefreshStats(n); } else { $('#npCmIn') && $('#npCmIn').focus(); } return; }
-  const rs=e.target.closest('.np-stats'); if(rs){ e.stopPropagation(); openReactions(nvRxIndex(n.id)); return; }
+  const cp=e.target.closest('[data-copiar]');
+  if(cp){ const url=(n.link && typeof CRUNCH_URL!=='undefined' && n.link.indexOf('/')===0) ? CRUNCH_URL+n.link : (location.href.split('#')[0]+'#pub-'+n.id);
+    const ok=()=>fgToast('Link copiado'); if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok,ok); else ok(); return; }
+  const rs=e.target.closest('.post-stats .rx, .post-stats .rx-count'); if(rs){ e.stopPropagation(); openReactions(nvRxIndex(n.id)); return; }
   const s=e.target.closest('#npCmSend'); if(s){ const inp=$('#npCmIn'); const v=inp.value.trim(); if(!v) return; const pend=pmNeedsApproval(); (n.cmts=n.cmts||[]).unshift({author:'Rodrigo Caetano',av:'av-rc',ini:'RC',role:'CEO · SULTS',text:v,time:'agora'}); renderNpComments(n); npRefreshStats(n); if(pend) fgToast('Comentário enviado para aprovação'); }
 });
 $('#nvArtBody') && $('#nvArtBody').addEventListener('input', e=>{ const inp=e.target.closest('#npCmIn'); if(inp) $('#npCmSend').disabled=!inp.value.trim(); });
@@ -12432,7 +12475,7 @@ function crunchPost(n){
     author:'Crunchyroll', av:'av-crunch', ini:'', autorNome:'Crunchyroll', autorAv:'av-crunch',
     /* a linha abaixo do nome e o cargo, nao a categoria: 'Canal oficial · Crunchyroll' */
     cargo:'Canal oficial', unit:'Crunchyroll', reach:'rede', status:'pub', oficial:true
-  }, n, { text: n.text + crunchLink(n.link), article: artigo });
+  }, n, { text: n.text + crunchLink(n.link), article: artigo, cmts: n.cmts || (CRUNCH_CMTS[n.id] || []) });
 }
 
 const CRUNCH_CATS = [
@@ -12471,7 +12514,8 @@ function crunchPessoa(chave, n){
 }
 function crunchComent(chave, texto, quando){
   const q = CRUNCH_PESSOAS[chave];
-  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.cargo + ' · ' + q.unidade, text:texto, time:quando };
+  /* dt e a data pronta que o componente de comentario mostra; time fica para quem le o campo cru */
+  return { author:q.nome, av:'av-cr-'+chave, ini:q.ini, role:q.cargo + ' · ' + q.unidade, text:texto, time:quando, dt:quando };
 }
 /* ordena por data e hora, da mais nova para a mais antiga; o fixado vai na frente */
 function crunchTs(s){
@@ -12484,6 +12528,34 @@ function crunchOrdena(lista){
 const CRUNCH_SHORT_CATS = [
   { id:'animes', name:'Animes', color:'#F47521', icon:'fa-tv', active:true }
 ];
+
+/* Comentários dos personagens nas matérias (dois por matéria) */
+const CRUNCH_CMTS = {
+  9001: [ crunchComent('anya',    'waku waku! mangá novo! 📚', '02/09/2026 às 11:40'),
+          crunchComent('frieren', 'Espero esse tempo todo por um capítulo e ainda dizem que sou lenta.', '02/09/2026 às 12:15') ],
+  9002: [ crunchComent('spike',   'A abertura tem cara de bebop. Aprovado.', '02/09/2026 às 10:30'),
+          crunchComent('tanjiro', 'Coloquei o som no máximo na copa. Desculpa, pessoal do 2º andar. 🙏', '02/09/2026 às 10:52') ],
+  9003: [ crunchComent('anya',    'FOCA! 🦭🦭🦭', '01/09/2026 às 15:31'),
+          crunchComent('levi',    'Bonitinho. Agora voltem ao trabalho.', '01/09/2026 às 15:58') ],
+  9004: [ crunchComent('gojo',    'DLC pago e atualização grátis no mesmo dia. Equilíbrio, gosto disso.', '01/09/2026 às 15:10'),
+          crunchComent('saitama', 'Vou esperar a promoção.', '01/09/2026 às 16:02') ],
+  9005: [ crunchComent('luffy',   'Deu que eu governaria a nação da carne. Faz sentido. 🍖', '28/08/2026 às 13:22'),
+          crunchComent('sasuke',  'Não respondo quiz.', '28/08/2026 às 14:05') ],
+  9006: [ crunchComent('luffy',   'AS MENINAS DO MEU BANDO DUBLADAS!!! 🏴‍☠️', '24/08/2026 às 13:45'),
+          crunchComent('naruto',  'Dá pra fazer a dublagem do Sasuke também? Só pra ele falar mais.', '24/08/2026 às 14:20') ],
+  9007: [ crunchComent('gojo',    'Guerra de orgulho é a minha especialidade. Vou rever dublado.', '21/08/2026 às 12:48'),
+          crunchComent('anya',    'a moça ganha no final? não conta. ou conta.', '21/08/2026 às 13:10') ],
+  9008: [ crunchComent('frieren', 'Bruxa na Mongólia. Finalmente uma colega de profissão.', '15/08/2026 às 13:30'),
+          crunchComent('tanjiro', 'Parabéns ao elenco! Dublagem boa faz a história chegar em mais gente. 🙌', '15/08/2026 às 14:02') ],
+  9009: [ crunchComent('saitama', 'Dez animes sobre não fazer nada. Finalmente uma lista pra mim.', '14/08/2026 às 13:25'),
+          crunchComent('levi',    'Pausa? Quem escreveu isso não viu o estado da copa.', '14/08/2026 às 13:50') ],
+  9010: [ crunchComent('spike',   'Shinkai no cinema de novo. Vou guardar uns woolongs pro ingresso.', '12/08/2026 às 10:40'),
+          crunchComent('frieren', 'Filme novo. Dez anos depois eu assisto.', '12/08/2026 às 11:15') ],
+  9011: [ crunchComent('sasuke',  'Lara? Nunca ouvi falar.', '08/08/2026 às 12:20'),
+          crunchComent('naruto',  'Mentira, ele já viu a primeira temporada inteira. 😏', '08/08/2026 às 12:26') ],
+  9012: [ crunchComent('gojo',    'Meu time é só tanque. O quiz me mandou assistir shounen de pancadaria. Justo.', '06/08/2026 às 12:30'),
+          crunchComent('tanjiro', 'Montei um time equilibrado e ganhei um slice of life. Tá certo. ☕', '06/08/2026 às 13:05') ]
+};
 
 /* Matérias da Crunchyroll News (pt-BR), lidas em 02/09/2026 */
 const CRUNCH_MATERIAS = [
