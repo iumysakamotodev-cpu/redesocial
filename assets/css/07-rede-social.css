@@ -921,7 +921,9 @@
 .cr-tabs{display:flex;gap:4px;padding:4px;background:#e0e6ea;border-radius:999px;flex-shrink:0;width:100%}
 /* o drop de publicar na linha do autor: pilula da altura dos campos, sem a
    margem antiga que o descolava da direita */
-#crModal .cr-audwrap{display:flex}
+.cr-autor{display:flex;align-items:center;gap:12px;padding:8px 20px;background:#f7fafb;border-bottom:1px solid var(--line)}
+.cr-autor > b,.cr-autor > div > b{white-space:nowrap}
+#crModal .cr-audwrap{display:flex;margin-left:auto}
 #crModal .cr-audwrap .qp-aud{height:36px;margin-top:0;border-radius:999px;padding:0 14px}
 /* Enviar e Avancado em 14px */
 #crModal #crShare,#crModal .qp-adv{font-size:14px}

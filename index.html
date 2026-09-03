@@ -2489,7 +2489,9 @@ input,textarea,select{font-size:14px}
 .cr-tabs{display:flex;gap:4px;padding:4px;background:#e0e6ea;border-radius:999px;flex-shrink:0;width:100%}
 /* o drop de publicar na linha do autor: pilula da altura dos campos, sem a
    margem antiga que o descolava da direita */
-#crModal .cr-audwrap{display:flex}
+.cr-autor{display:flex;align-items:center;gap:12px;padding:8px 20px;background:#f7fafb;border-bottom:1px solid var(--line)}
+.cr-autor > b,.cr-autor > div > b{white-space:nowrap}
+#crModal .cr-audwrap{display:flex;margin-left:auto}
 #crModal .cr-audwrap .qp-aud{height:36px;margin-top:0;border-radius:999px;padding:0 14px}
 /* Enviar e Avancado em 14px */
 #crModal #crShare,#crModal .qp-adv{font-size:14px}
@@ -3762,16 +3764,16 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
 .mnav button:active i,.mnav button:active .mnav__ic{transform:scale(.9)}
 .mnav button.on{color:var(--teal)}
 .mnav button.on::before{
-  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:40px;height:5px;border-radius:0 0 3px 3px;background:var(--teal);
+  content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  width:40px;height:6px;border-radius:0 0 3px 3px;background:var(--teal);
 }
 .mnav .fab{flex:0 0 62px;margin-bottom:6px}
 .mnav .fab i{
   width:52px;height:52px;margin-top:-26px;border-radius:50%;
   background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;
-  /* a sombra desce e espalha mais, para o circulo aparecer flutuando sobre o
-     conteudo que passa atras da barra */
-  font-size:20px;box-shadow:0 12px 28px -6px rgba(0,172,172,.55),0 6px 18px -6px rgba(16,32,48,.45),0 0 0 5px #fff;
+  /* sombra curta: o suficiente para o circulo descolar do conteudo que passa
+     atras da barra, sem virar mancha */
+  font-size:20px;box-shadow:0 8px 18px -8px rgba(0,172,172,.42),0 4px 12px -6px rgba(16,32,48,.26),0 0 0 5px #fff;
 }
 /* só aparece no celular; vem depois do .mnav{display:none} de propósito */
 @media(max-width:640px){
@@ -3780,7 +3782,7 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
     background:#fff;border-top:1px solid var(--line);
     align-items:stretch;gap:2px;
     padding:0 6px calc(8px + env(safe-area-inset-bottom,0px));
-    box-shadow:0 -10px 30px -10px rgba(16,32,48,.55);
+    box-shadow:0 -8px 20px -14px rgba(16,32,48,.34);
   }
 }
 .cml-ic{width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
@@ -4558,11 +4560,22 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   #crModal{padding:0}
   .cr-card{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;box-shadow:none}
   /* video em cima e formulario embaixo: lado a lado nao cabe nessa largura */
-  .cr-corpo{flex-direction:column;gap:16px;padding:16px;align-items:stretch;overflow-y:auto}
+  /* quem rola e o passo inteiro (#crStep2), nao so o corpo: assim o autor e o
+     seletor de alcance sobem junto com o resto em vez de ficarem fixos */
+  .cr-corpo{flex-direction:column;gap:16px;padding:16px;align-items:stretch;overflow:visible;flex:none}
   .cr-medcol{width:auto}
-  .cr-medstage{max-height:46vh}
+  /* a previa ocupa 80% da largura: sozinha ela empurrava o formulario todo
+     para fora da primeira tela */
+  .cr-medbox{width:80%;align-self:center}
   /* a altura util fixa e do desktop; aqui quem manda e a tela */
   #crStep1,#crStepUp{min-height:0}
+  /* o seletor de alcance desce para uma linha propria, de ponta a ponta:
+     ao lado do nome ele roubava a largura e quebrava "Rodrigo Caetano" */
+  .cr-autor{flex-wrap:wrap;padding:10px 16px}
+  #crModal .cr-audwrap{flex:1 0 100%;margin-left:0}
+  #crModal .cr-audwrap .qp-aud{width:100%;justify-content:flex-start}
+  #crModal .cr-audwrap .qp-aud .fa-chevron-down{margin-left:auto}
+  #crModal .qp-audmenu{min-width:0;right:0}
 
   /* ---- editor de publicação: tela cheia, no formato do LinkedIn ----
      Linha 1 do cabeçalho: [X] .......... [Publicar]
@@ -6679,10 +6692,10 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           </div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;padding:8px 20px;background:#f7fafb;border-bottom:1px solid var(--line)">
+      <div class="cr-autor">
         <span class="avatar av-rc" style="width:38px;height:38px"></span>
         <div><b style="font-size:14px;color:var(--ink);display:block">Rodrigo Caetano</b></div>
-        <div class="qp-catwrap cr-audwrap" style="margin-left:auto"><button type="button" class="qp-aud" id="crAudBtn"><i class="fa-solid fa-earth-americas" id="crAudIc"></i> <span id="crAudLbl">Publicar para Todos</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
+        <div class="qp-catwrap cr-audwrap"><button type="button" class="qp-aud" id="crAudBtn"><i class="fa-solid fa-earth-americas" id="crAudIc"></i> <span id="crAudLbl">Publicar para Todos</span> <i class="fa-solid fa-chevron-down" style="font-size:9px"></i></button>
           <div class="qp-catmenu qp-audmenu" id="crAudMenu" hidden>
             <button type="button" data-aud="rede" data-ic="fa-earth-americas" data-sub="toda a rede"><i class="fa-solid fa-earth-americas"></i>Toda a rede</button>
             <button type="button" data-aud="unidades" data-ic="fa-store" data-sub="as unidades"><i class="fa-solid fa-store"></i>Unidades</button>

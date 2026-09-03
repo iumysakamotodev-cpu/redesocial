@@ -309,11 +309,22 @@
   #crModal{padding:0}
   .cr-card{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;box-shadow:none}
   /* video em cima e formulario embaixo: lado a lado nao cabe nessa largura */
-  .cr-corpo{flex-direction:column;gap:16px;padding:16px;align-items:stretch;overflow-y:auto}
+  /* quem rola e o passo inteiro (#crStep2), nao so o corpo: assim o autor e o
+     seletor de alcance sobem junto com o resto em vez de ficarem fixos */
+  .cr-corpo{flex-direction:column;gap:16px;padding:16px;align-items:stretch;overflow:visible;flex:none}
   .cr-medcol{width:auto}
-  .cr-medstage{max-height:46vh}
+  /* a previa ocupa 80% da largura: sozinha ela empurrava o formulario todo
+     para fora da primeira tela */
+  .cr-medbox{width:80%;align-self:center}
   /* a altura util fixa e do desktop; aqui quem manda e a tela */
   #crStep1,#crStepUp{min-height:0}
+  /* o seletor de alcance desce para uma linha propria, de ponta a ponta:
+     ao lado do nome ele roubava a largura e quebrava "Rodrigo Caetano" */
+  .cr-autor{flex-wrap:wrap;padding:10px 16px}
+  #crModal .cr-audwrap{flex:1 0 100%;margin-left:0}
+  #crModal .cr-audwrap .qp-aud{width:100%;justify-content:flex-start}
+  #crModal .cr-audwrap .qp-aud .fa-chevron-down{margin-left:auto}
+  #crModal .qp-audmenu{min-width:0;right:0}
 
   /* ---- editor de publicação: tela cheia, no formato do LinkedIn ----
      Linha 1 do cabeçalho: [X] .......... [Publicar]
