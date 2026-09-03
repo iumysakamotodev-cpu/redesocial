@@ -1122,6 +1122,8 @@ function renderNewsFeed(){
   var q=(nvfAuthorQuery||'').toLowerCase();
   const list = NEWS.filter(n => {
     if(n.status!=='pub') return false;
+    /* publicacao aguardando aprovacao so aparece para quem pode aprovar */
+    if(n.pendAppr && typeof podeAprovar==='function' && !podeAprovar()) return false;
     if(nvSearchQuery){
       const t=rxNorm(nvSearchQuery);
       const hay=rxNorm([n.title||'',n.text||'',n.author||'',(n.article&&n.article.lead)||''].join(' '));

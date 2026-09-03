@@ -351,9 +351,8 @@
 .sb-likes i{font-size:13px}
 .sb-cat{position:absolute;top:var(--selo-topo);left:10px;z-index:3;display:inline-flex;align-items:center;gap:6px;height:var(--selo-alt);padding:0 10px;border-radius:32px;background:rgba(12,31,56,.72);color:#fff;font-size:12px;line-height:16px;font-weight:600;letter-spacing:.3px}
 .sb-cat i{font-size:11px}
-.sb-newdot{position:absolute;right:10px;z-index:3;border-radius:50%;background:#0BA84A;
+.sb-newdot{position:absolute;right:10px;top:10px;z-index:3;border-radius:50%;background:#0BA84A;
   width:var(--ponto);height:var(--ponto);
-  top:calc(var(--selo-topo) + (var(--selo-alt) - var(--ponto)) / 2);
   box-shadow:0 0 0 2px #fff}
 .sb-author{display:flex;align-items:center;gap:8px;padding:8px;min-width:0}
 .sb-auid{min-width:0;display:flex;flex-direction:column;gap:0}
@@ -1260,3 +1259,6 @@
   .rv-card{height:100%;width:100%;border-radius:0;aspect-ratio:auto}
 }
 
+
+/* capa do artigo, no cartao (home e feed) e no leitor: sempre 16:9, cortando o que sobra */
+.nvf-arthero img,.art-herowrap img{width:100%;height:auto;max-height:none;aspect-ratio:16 / 9;object-fit:cover;display:block}

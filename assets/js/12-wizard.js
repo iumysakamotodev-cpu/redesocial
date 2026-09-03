@@ -146,7 +146,7 @@ function catInk(hex){
 /* Quem esta logado. O avatar e sempre a classe av-rc (o cenario troca a foto
    por CSS); nome, iniciais e cargo mudam com o cenario. */
 function usuarioAtual(){
-  if (document.body.classList.contains('demo-crunch')) return { nome:'Pikachu', ini:'P', cargo:'Funcionário · Crunchyroll', av:'av-rc' };
+  if (document.body.classList.contains('demo-crunch')) return { nome:'Pikachu', ini:'P', cargo:(typeof crunchPapel === 'function' ? crunchPapel() : 'Funcionário · Crunchyroll'), av:'av-rc' };
   return { nome:'Rodrigo Caetano', ini:'RC', cargo:'CEO · SULTS', av:'av-rc' };
 }
 /* Selo de verificado no desenho do Twitter (dentado, com o check dentro).

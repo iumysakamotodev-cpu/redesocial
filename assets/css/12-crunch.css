@@ -13,12 +13,13 @@ body.demo-crunch .nvf-pcover{background:#23252B}
 .profile-banner .profile-logo--crunch{display:none}
 body.demo-crunch .profile-banner svg{display:none}
 body.demo-crunch .profile-banner .profile-logo--crunch{display:block}
-/* sem permissão de criar: somem o compositor, o "Criar short" e o Gerenciar */
-body.demo-crunch .nvf-composer,
-body.demo-crunch .reel-create,
-body.demo-crunch #sbNew,
-body.demo-crunch #nmodEnvSwitch,
-body.demo-crunch #nvManageBtn{display:none !important}
+/* sem permissão de criar: somem o compositor, o "Criar short" e o Gerenciar.
+   Quando o Pikachu vira administrador (clique no nome dele no header), tudo volta. */
+body.demo-crunch:not(.crunch-admin) .nvf-composer,
+body.demo-crunch:not(.crunch-admin) .reel-create,
+body.demo-crunch:not(.crunch-admin) #sbNew,
+body.demo-crunch:not(.crunch-admin) #nmodEnvSwitch,
+body.demo-crunch:not(.crunch-admin) #nvManageBtn{display:none !important}
 /* os posts do SULTS ficam no lugar, só escondidos, para voltarem intactos */
 body.demo-crunch .col-main > .feed > .post[data-sults]{display:none}
 /* short vindo do YouTube: o embed ocupa o card inteiro */

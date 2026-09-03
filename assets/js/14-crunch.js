@@ -288,15 +288,21 @@ const CRUNCH_REELS = CRUNCH_SHORTS.map(function(s, i){
 
 /* ---------- liga / desliga ---------- */
 let CRUNCH_BK = null;
+/* O Pikachu comeca so consumindo; um clique no nome dele no header o torna
+   administrador (e outro clique desfaz). Quem pode aprovar ve as publicacoes
+   pendentes e ganha de volta compositor, "Criar short" e Gerenciar. */
+function crunchEhAdmin(){ return document.body.classList.contains('crunch-admin'); }
+function crunchPapel(){ return crunchEhAdmin() ? 'Administrador · Crunchyroll' : 'Funcionário · Crunchyroll'; }
+function podeAprovar(){ return !document.body.classList.contains('demo-crunch') || crunchEhAdmin(); }
 const CRUNCH_TEXTOS = [
-  ['.profile-name', 'Pikachu'], ['.profile-role', 'Funcionário · Crunchyroll'],
-  ['.nvf-pname', 'Pikachu'],    ['.nvf-prole', 'Funcionário · Crunchyroll'],
+  ['.profile-name', 'Pikachu'], ['.profile-role', crunchPapel],
+  ['.nvf-pname', 'Pikachu'],    ['.nvf-prole', crunchPapel],
   ['#topUserChip .uname', 'Pikachu']
 ];
 function crunchTextos(ligar){
   CRUNCH_TEXTOS.forEach(function(par){
     document.querySelectorAll(par[0]).forEach(function(el){
-      if (ligar){ if (el.dataset.sults == null) el.dataset.sults = el.textContent; el.textContent = par[1]; }
+      if (ligar){ if (el.dataset.sults == null) el.dataset.sults = el.textContent; el.textContent = (typeof par[1] === 'function') ? par[1]() : par[1]; }
       else if (el.dataset.sults != null){ el.textContent = el.dataset.sults; delete el.dataset.sults; }
     });
   });
@@ -324,19 +330,30 @@ function crunchLigar(){
   document.body.classList.add('demo-crunch');
   crunchTextos(true);
   crunchComunicados(true);
-
-  /* feed da home: os posts do SULTS ficam escondidos e as matérias entram no fim */
-  const feed = document.querySelector('.col-main > .feed');
-  if (feed && typeof addHomePost === 'function'){
-    feed.querySelectorAll(':scope > .post').forEach(function(p){ p.setAttribute('data-sults', ''); });
-    CRUNCH_NEWS.forEach(function(n){
-      addHomePost(n, true);
-      const novo = feed.lastElementChild;
-      if (novo && !novo.hasAttribute('data-sults')) novo.setAttribute('data-crunch', '');
-    });
-  }
+  crunchInjetaHome();
   crunchRedesenha();
   if (typeof fgToast === 'function') fgToast('Cenário: funcionário da Crunchyroll (só consome)');
+}
+/* feed da home: os posts do SULTS ficam escondidos e as matérias entram no fim.
+   Pendentes so para quem pode aprovar. Chamado de novo ao mudar o papel. */
+function crunchInjetaHome(){
+  const feed = document.querySelector('.col-main > .feed');
+  if (!feed || typeof addHomePost !== 'function') return;
+  feed.querySelectorAll(':scope > .post[data-crunch]').forEach(function(p){ p.remove(); });
+  feed.querySelectorAll(':scope > .post').forEach(function(p){ p.setAttribute('data-sults', ''); });
+  CRUNCH_NEWS.forEach(function(n){
+    if (n.pendAppr && !podeAprovar()) return;
+    addHomePost(n, true);
+    const novo = feed.lastElementChild;
+    if (novo && !novo.hasAttribute('data-sults')) novo.setAttribute('data-crunch', '');
+  });
+}
+function crunchAdmin(ligar){
+  document.body.classList.toggle('crunch-admin', !!ligar);
+  document.querySelectorAll('.profile-role, .nvf-prole').forEach(function(el){ el.textContent = crunchPapel(); });
+  crunchInjetaHome();
+  if (typeof renderNewsFeed === 'function') renderNewsFeed();
+  if (typeof fgToast === 'function') fgToast(ligar ? 'Pikachu agora é administrador: publica e aprova' : 'Pikachu voltou a só consumir');
 }
 function crunchDesligar(){
   if (!document.body.classList.contains('demo-crunch') || !CRUNCH_BK) return;
@@ -346,7 +363,7 @@ function crunchDesligar(){
   delete SB_CAT_ALIAS.animes;
   CRUNCH_BK = null;
 
-  document.body.classList.remove('demo-crunch');
+  document.body.classList.remove('demo-crunch', 'crunch-admin');
   crunchTextos(false);
   crunchComunicados(false);
   document.querySelectorAll('.col-main > .feed > .post[data-crunch]').forEach(function(p){ p.remove(); });
@@ -362,6 +379,14 @@ function crunchAlternar(){
   if (ic) ic.addEventListener('click', function(e){ e.preventDefault(); crunchAlternar(); });
   /* no mobile o rodapé do menu não aparece: o Comunicados da barra de baixo
      liga e desliga o cenário, e a rolagem até o painel segue acontecendo */
+  /* clique no nome do Pikachu no header alterna o papel; fora do cenario o
+     chip segue abrindo o perfil (captura, para passar na frente desse handler) */
+  const chip = document.getElementById('topUserChip');
+  if (chip) chip.addEventListener('click', function(e){
+    if (!document.body.classList.contains('demo-crunch')) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    crunchAdmin(!crunchEhAdmin());
+  }, true);
   const mnav = document.getElementById('mnav');
   if (mnav) mnav.addEventListener('click', function(e){
     const b = e.target.closest('button[data-t="comunicados"]');
