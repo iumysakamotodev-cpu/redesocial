@@ -303,6 +303,18 @@
   .section-title{font-size:18px}
   .see-all{font-size:13px}
 
+  /* no toque nao existe hover: o cinza so aparecia grudado depois do tap */
+  .p-act:hover,.np-acts .p-act:hover{background:none}
+
+  /* ---- Reações: só abrem no toque longo, centradas na tela ----
+     O mouseover que o navegador emula no tap chega a marcar .open; sem o
+     .rx-toque do toque longo a barra continua escondida. */
+  .react-wrap.open:not(.rx-toque) .react-bar{opacity:0;visibility:hidden;pointer-events:none}
+  .react-wrap.rx-toque.open .react-bar{
+    position:fixed;left:50%;right:auto;transform:translateX(-50%);
+    bottom:var(--rx-bottom,120px);z-index:120;
+  }
+
   /* ---- Novo short: tela cheia, como o editor de publicação ----
      Em 375px o respiro de 12px so encolheria o conteudo, entao o cartao
      ocupa a tela inteira e perde os cantos. */

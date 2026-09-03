@@ -390,18 +390,8 @@ document.addEventListener('click', function(e){
     });
   });
 
-  /* 2) criar short: a mídia aparece cheia antes da tela de legenda */
-  const crInp = document.querySelector('#crFile');
-  if (crInp) crInp.addEventListener('change', (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (!soMobile() || !f) return;
-    abrir({
-      src: URL.createObjectURL(f),
-      ehVideo: /^video\//.test(f.type),
-      canto: true,                       /* Próximo como pílula no canto direito */
-      fechar: () => { crInp.value = ''; if (typeof crClose === 'function') crClose(); },
-    });
-  });
+  /* O short nao passa por aqui: no celular ele segue o mesmo caminho do
+     desktop -- carregamento e, logo depois, a tela de editar. */
 })();
 
 /* No celular os dois seletores do editor (unidade e categoria) ganham uma linha
@@ -548,4 +538,66 @@ document.addEventListener('click', function(e){
     newsShow(tela || 'shorts');
   };
   window.abrirShorts = function () { window.abrirModuloSocial('shorts'); };
+})();
+
+/* No celular o toque curto no "Gostei" da o like, e o toque longo abre as
+   reacoes. A barra vai para o centro da tela: alinhada ao botao, que fica na
+   ponta esquerda do post, ela nao caberia em 375px.
+   A classe .rx-toque marca que quem abriu foi o toque — sem ela o mouseover
+   que o navegador emula no tap abriria a barra em qualquer toque. */
+(() => {
+  const soMobile = () => window.matchMedia('(max-width:640px)').matches;
+  const ESPERA = 420;      /* o que separa um toque de um toque longo */
+  const TOLERANCIA = 8;    /* arrastar mais que isso e rolagem, nao toque longo */
+  let timer = null, alvo = null, abriu = false, x0 = 0, y0 = 0;
+
+  const fecha = () => document.querySelectorAll('.react-wrap.open,.react-wrap.rx-toque')
+    .forEach(w => w.classList.remove('open', 'rx-toque'));
+
+  const abre = btn => {
+    let wrap = btn.closest('.react-wrap');
+    /* no feed de publicacoes o wrap so nasce quando o picker roda a primeira vez */
+    if (!wrap) {
+      const art = btn.closest('.post[data-id]');
+      const n = (art && typeof NEWS !== 'undefined') ? NEWS.find(x => x.id === +art.dataset.id) : null;
+      if (n && typeof nvRxPicker === 'function') nvRxPicker(btn, art, n);
+      wrap = btn.closest('.react-wrap');
+    }
+    if (!wrap) return;
+    fecha();
+    const r = btn.getBoundingClientRect();
+    /* a barra sobe a partir do botao, mas nunca passa do topo da tela */
+    const acima = window.innerHeight - r.top + 8;
+    wrap.style.setProperty('--rx-bottom', Math.round(Math.min(acima, window.innerHeight - 84)) + 'px');
+    wrap.classList.add('rx-toque', 'open');
+    abriu = true;
+    if (navigator.vibrate) navigator.vibrate(12);
+  };
+
+  const cancela = () => { clearTimeout(timer); alvo = null; };
+
+  document.addEventListener('pointerdown', e => {
+    if (!soMobile()) return;
+    if (!e.target.closest('.react-wrap')) fecha();
+    const btn = e.target.closest('.p-act.like'); if (!btn) return;
+    const w = btn.closest('.react-wrap'); if (w) w.classList.remove('open', 'rx-toque');
+    alvo = btn; abriu = false; x0 = e.clientX; y0 = e.clientY;
+    clearTimeout(timer);
+    timer = setTimeout(() => { if (alvo) abre(alvo); }, ESPERA);
+  }, true);
+
+  document.addEventListener('pointermove', e => {
+    if (!alvo) return;
+    if (Math.abs(e.clientX - x0) > TOLERANCIA || Math.abs(e.clientY - y0) > TOLERANCIA) cancela();
+  }, true);
+  document.addEventListener('pointerup', cancela, true);
+  document.addEventListener('pointercancel', cancela, true);
+
+  /* o clique que vem logo depois do toque longo nao pode virar um "Gostei" */
+  document.addEventListener('click', e => {
+    if (e.target.closest('.react-btn')) { abriu = false; setTimeout(fecha, 260); return; }
+    if (!abriu) return;
+    if (e.target.closest('.p-act.like')) { e.preventDefault(); e.stopImmediatePropagation(); }
+    abriu = false;
+  }, true);
 })();
