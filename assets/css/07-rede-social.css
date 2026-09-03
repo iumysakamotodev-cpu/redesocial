@@ -729,10 +729,11 @@
 .qp-head{display:flex;align-items:center;gap:12px;padding:16px 20px}
 .qp-head .avatar{width:48px;height:48px;font-size:0;flex-shrink:0}
 .qp-head b{font-size:15px;color:var(--ink);display:block}
-.qp-aud{display:inline-flex;align-items:center;gap:8px;height:28px;margin-top:6px;font-size:13px;line-height:18px;font-weight:600;letter-spacing:.3px;color:var(--ink);background:#fff;box-shadow:inset 0 0 0 1px var(--line);border:0;border-radius:32px;padding:0 12px;cursor:pointer}
+.qp-aud{display:inline-flex;align-items:center;gap:8px;height:28px;margin-top:6px;font-size:13px;line-height:18px;font-weight:600;letter-spacing:.3px;color:var(--ink);background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);border:0;border-radius:32px;padding:0 12px;cursor:pointer}
 .qp-aud .fa-chevron-down{font-size:11px !important}
 .qp-aud{transition:background 120ms cubic-bezier(.4,0,.2,1),color 120ms cubic-bezier(.4,0,.2,1)}
-.qp-aud:hover{box-shadow:inset 0 0 0 1px var(--teal)}
+/* mesma borda dos campos: normal em --linha-campo, hover na mais escura */
+.qp-aud:hover{box-shadow:inset 0 0 0 1px var(--linha-campo-forte)}
 .qp-aud>.fa-earth-americas,.qp-aud>.fa-store,.qp-aud>.fa-building{color:#1667B8}
 .qp-aud:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 .qp-x{width:38px;height:38px;border:0;background:none;border-radius:50%;color:#5b6672;font-size:18px;cursor:pointer;flex-shrink:0}

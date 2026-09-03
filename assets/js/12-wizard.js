@@ -672,7 +672,7 @@ document.addEventListener('keydown', e => { if(e.key==='Escape' && ntModal.class
 /* ---------- Modal Criar reel (estilo Instagram, sem etapa de edição) ---------- */
 const crModal = $('#crModal');
 let crURL = null, crIsVideo = false;
-function crOpen(){ crURL=null; crIsVideo=false; crCoverURL=null; crCapaAuto=false; crTab='video'; const _up=document.getElementById('crStepUp'); if(_up) _up.style.display='none'; const _pv=document.getElementById('crPreviewVid'); if(_pv) _pv.style.display='none'; const _p=document.getElementById('crPreview'); if(_p) _p.style.display=''; const sc=$('#crStepCrop'); if(sc) sc.style.display='none'; $('#crStep1').style.display='flex'; $('#crStep2').style.display='none'; $('#crTitle').textContent='Novo short'; $('#crCaption').value=''; $('#crTitleInput').value=''; if(typeof crCatRender==='function') crCatRender(); $('#crShare').disabled=true; $('#crFile').value=''; crModal.classList.add('open'); }
+function crOpen(){ crURL=null; crIsVideo=false; crCoverURL=null; crCapaAuto=false; crTab='video'; const _up=document.getElementById('crStepUp'); if(_up) _up.style.display='none'; const _x=document.getElementById('crClose'); if(_x) _x.hidden=false; const _pv=document.getElementById('crPreviewVid'); if(_pv) _pv.style.display='none'; const _p=document.getElementById('crPreview'); if(_p) _p.style.display=''; const sc=$('#crStepCrop'); if(sc) sc.style.display='none'; $('#crStep1').style.display='flex'; $('#crStep2').style.display='none'; $('#crTitle').textContent='Novo short'; $('#crCaption').value=''; $('#crTitleInput').value=''; if(typeof crCatRender==='function') crCatRender(); $('#crShare').disabled=true; $('#crFile').value=''; crModal.classList.add('open'); }
 function crClose(){ crModal.classList.remove('open'); const u=document.getElementById('crStepUp'); if(u) u.style.display='none'; }
 $('#crClose').addEventListener('click', crClose);
 crModal.addEventListener('click', e => { if (e.target === crModal) crClose(); });
@@ -684,7 +684,7 @@ $('#crFile').addEventListener('change', e => {
   crURL = URL.createObjectURL(f);
   $('#crPreview').src = crURL;
   $('#crStep1').style.display='none';
-  crShowLoading(crIsVideo?'Carregando seu vídeo…':'Carregando sua imagem…', crIsVideo?'Estamos preparando a pré-visualização do seu vídeo.':'Estamos preparando a pré-visualização da sua imagem.');
+  crShowLoading(crIsVideo?'Carregando seu vídeo…':'Carregando sua imagem…', (crIsVideo?'Estamos preparando a pré-visualização do seu vídeo.':'Estamos preparando a pré-visualização da sua imagem.')+' Não feche esta janela.');
   setTimeout(function(){ crHideLoading(); crOpenCrop(); }, 2100);
 });
 function crShowLoading(t,s){
@@ -694,8 +694,13 @@ function crShowLoading(t,s){
   u.querySelector('.cr-uptitle').textContent=t;
   u.querySelector('.cr-upsub').textContent=s;
   u.style.display='flex';
+  /* nada de fechar no meio do carregamento */
+  const x=$('#crClose'); if(x) x.hidden=true;
 }
-function crHideLoading(){ const u=$('#crStepUp'); if(u) u.style.display='none'; }
+function crHideLoading(){
+  const u=$('#crStepUp'); if(u) u.style.display='none';
+  const x=$('#crClose'); if(x) x.hidden=false;
+}
 let crcZoomV=100, crcX=0, crcY=0, crcDrag=null;
 function crcMedia(){ return crIsVideo ? $('#crcVid') : $('#crcImg'); }
 function crcClamp(){

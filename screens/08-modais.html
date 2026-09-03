@@ -46,7 +46,7 @@
       <button class="fg-close" id="crClose" style="position:absolute;right:20px"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="fg-body" id="crStep1" style="padding:0;flex:1;display:flex;flex-direction:column;justify-content:center">
-      <div id="crDrop" style="margin:22px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;border:1.5px dashed rgba(0,172,172,.5);border-radius:14px;text-align:center;background:radial-gradient(120% 90% at 50% -10%, rgba(0,172,172,.10), transparent 60%),#fbfdfd">
+      <div id="crDrop" class="cr-caixa">
         <img class="cr-gif" src="uploads/illustra/novo-short.gif" alt="" width="120" height="120">
         <div class="cr-uptx">
           <p class="cr-uptitle">Selecione a mídia do short</p>
@@ -117,11 +117,13 @@
         </div>
       </div>
     </div>
-    <div class="fg-body" id="crStepUp" style="display:none;padding:0;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:12px">
-      <img class="cr-gif" src="uploads/illustra/carregando.gif" alt="" width="120" height="120">
-      <div class="cr-uptx">
-        <p class="cr-uptitle">Enviando seu short…</p>
-        <p class="cr-upsub">Isso leva alguns minutos. Não feche esta janela.</p>
+    <div class="fg-body" id="crStepUp" style="display:none;padding:0;flex:1;flex-direction:column">
+      <div class="cr-caixa">
+        <img class="cr-gif" src="uploads/illustra/carregando.gif" alt="" width="120" height="120">
+        <div class="cr-uptx">
+          <p class="cr-uptitle">Enviando seu short…</p>
+          <p class="cr-upsub">Isso leva alguns minutos. Não feche esta janela.</p>
+        </div>
       </div>
     </div>
   </div>
