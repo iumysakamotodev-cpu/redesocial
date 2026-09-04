@@ -741,14 +741,14 @@
     <div class="cat-toprow">
       <div class="rx-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M5.5,9A1.5,1.5 0 0,0 7,7.5A1.5,1.5 0 0,0 5.5,6A1.5,1.5 0 0,0 4,7.5A1.5,1.5 0 0,0 5.5,9M17.41,11.58C17.77,11.94 18,12.44 18,13C18,13.55 17.78,14.05 17.41,14.41L12.41,19.41C12.05,19.77 11.55,20 11,20C10.45,20 9.95,19.78 9.58,19.41L2.59,12.42C2.22,12.05 2,11.55 2,11V6C2,4.89 2.89,4 4,4H9C9.55,4 10.05,4.22 10.41,4.58L17.41,11.58M13.54,5.71L14.54,4.71L21.41,11.58C21.78,11.94 22,12.45 22,13C22,13.55 21.78,14.05 21.42,14.41L16.04,19.79L15.04,18.79L20.75,13L13.54,5.71Z" /></svg><h2>Categorias</h2></div>
       <span style="flex:1"></span>
-      <button type="button" class="cat-helpbtn" id="nvCatHelp"><i class="fa-solid fa-circle-question"></i> Como usar categorias?</button>
+      <button type="button" class="cat-helpbtn" id="nvCatHelp"><svg viewBox="0 0 24 24"><path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z" /></svg> Como usar categorias?</button>
     </div>
     <div class="cat-head">
-      <button class="cat-add" id="nvCatAdd"><i class="fa-solid fa-plus"></i> Nova categoria</button>
+      <button class="cat-add" id="nvCatAdd"><svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg> Nova categoria</button>
       <span style="flex:1"></span>
-      <select class="nv-fsel nvcat-sel" id="nvCatSeg"><option value="ativos">Ativos</option><option value="inativos">Inativos</option></select>
+      <select class="nv-fsel nvcat-sel" id="nvCatSeg"><option value="ativos">Ativas</option><option value="inativos">Inativas</option></select>
       <div class="nv-catsearch">
-        <div class="rx-search" style="max-width:280px"><input type="text" id="nvCatSearch" placeholder="Buscar categoria" autocomplete="off"></div>
+        <div class="rx-search" style="width:300px;max-width:300px"><input type="text" id="nvCatSearch" placeholder="Pesquisar categoria..." autocomplete="off"></div>
         <button type="button" class="nv-catsearch-btn" id="nvCatSearchBtn" aria-label="Buscar categoria"><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
     </div>
@@ -763,7 +763,23 @@
         <div style="margin-top:18px"><label class="fg-label">Ícone</label><div class="cat-icons" id="nvCatIcons"></div></div>
         <div style="margin-top:24px;display:flex;justify-content:flex-end;gap:10px">
           <button class="fo-btn ghost" id="nvCatCancel">Cancelar</button>
-          <button class="fo-btn" id="nvCatSave"><i class="fa-solid fa-check"></i> Salvar</button>
+          <button class="fo-btn" id="nvCatSave"><svg viewBox="0 0 24 24"><path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" /></svg> Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fg-backdrop" id="nvCatHelpModal">
+    <div class="cat-help-modal">
+      <div class="cat-help-hero">
+        <img src="uploads/tutorial/image-categories.svg" alt="">
+        <button type="button" class="cat-help-close" id="nvCatHelpClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="cat-help-body">
+        <h2>Como usar categorias?</h2>
+        <p>Use categorias para separar os comunicados por <b>assunto, área ou finalidade</b>, facilitando a busca, a gestão dos conteúdos e mostrando ao leitor <b>sobre o que cada comunicado se trata</b>.</p>
+        <div class="cat-help-actions">
+          <button type="button" class="cat-help-btn ghost" id="nvCatHelpDoubt">Ainda tenho dúvidas</button>
+          <button type="button" class="cat-help-btn primary" id="nvCatHelpOk"><i class="fa-solid fa-check"></i> Entendi</button>
         </div>
       </div>
     </div>
