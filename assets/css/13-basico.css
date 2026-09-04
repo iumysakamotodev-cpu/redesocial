@@ -27,7 +27,7 @@ body.demo-basico .mnav .fab{display:none}
      body e o do .content; sem elas o branco do painel corre ate o fim e a
      altura da barra fica reservada por dentro dele */
   body.demo-basico{padding-bottom:0}
-  body.demo-basico .content{padding-bottom:0;gap:24px}
+  body.demo-basico .content{padding-bottom:0;gap:16px}
 
   body.demo-basico .col-right > #homeComPanel{
     margin-left:0;margin-right:0;border-radius:22px 22px 0 0;
