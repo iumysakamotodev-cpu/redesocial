@@ -130,7 +130,7 @@ updArrows();
 
 /* ---------- Tela de Shorts · Explorar + Player ---------- */
 const REELS_DATA = [
-  { p:0, cat:'eventos',     cap:'4º dia de ABF Franchising Expo 2026! Bora conhecer o SULTS no estande. 🚀', likes:'3,1 mil', comments:212, views:'62,4 mil', rec:true, music:'SULTS · ABF 2026' },
+  { p:0, cat:'eventos', pendAppr:true, cap:'4º dia de ABF Franchising Expo 2026! Bora conhecer o SULTS no estande. 🚀', likes:'3,1 mil', comments:212, views:'62,4 mil', rec:true, music:'SULTS · ABF 2026' },
   { p:25, format:'imagem', cat:'depoimentos', cap:'Casa do Construtor: 780 lojas em 4 países com a gestão centralizada no SULTS. 🏗️', likes:'2,6 mil', comments:129, views:'47,3 mil', rec:true, music:'Casa do Construtor · Case' },
   { p:10, cat:'eventos',    cap:'ABF Expo 2026 · 2º dia. O time SULTS no meio de tudo. 💙', likes:'2,2 mil', comments:118, views:'44,9 mil', rec:false, music:'SULTS · ABF 2026' },
   { p:7, cat:'depoimentos', cap:'Mormaii: o SULTS facilita nosso processo de implantação. 🌊', likes:'1,2 mil', comments:64, views:'22,1 mil', rec:false, music:'Mormaii · Depoimento' },
@@ -228,7 +228,13 @@ var newsSeen = new Set();
 /* a fileira nao filtra por busca: quem pesquisa em Publicacoes esta buscando
    publicacoes, e a busca de Shorts age na tela de Shorts */
 function orderedShorts(vistosNoFim){
-  const lista = REELS_DATA.filter(function(r){ return !r.removido; });
+  /* short aguardando aprovacao so aparece para quem pode aprovar, como ja
+     acontece com a publicacao pendente */
+  const lista = REELS_DATA.filter(function(r){
+    if (r.removido) return false;
+    if (r.pendAppr && typeof podeAprovar === 'function' && !podeAprovar()) return false;
+    return true;
+  });
   if (vistosNoFim === false) return lista;
   const vistos = [...seenShorts];
   const posicao = r => isSeen(r.p) ? 1 + vistos.indexOf(r.p) : 0;
@@ -254,21 +260,37 @@ function reelCardHTML(r){
   '</div>';
 }
 
+/* Aprovacao dentro do player: faixa no topo do card e a caixa com "Enviado
+   em" + Aprovar/Reprovar. No desktop ela mora na coluna da esquerda, acima da
+   autora (e a informacao do short); abaixo de 1100px essa coluna nao existe,
+   entao a mesma caixa nasce dentro do card, no canto inferior esquerdo. As
+   duas sao renderizadas e o CSS mostra uma por vez. */
+function rvModboxHTML(r){
+  const post = POSTS[r.p];
+  return '<div class="rv-modbox">' +
+      '<span class="rv-sent"><i class="fa-solid fa-clock"></i> Enviado ' + fmtQuando(post) + '</span>' +
+      '<button type="button" class="cmod-ok" data-rvapr><i class="fa-solid fa-check"></i> Aprovar</button>' +
+      '<button type="button" class="cmod-no" data-rvrej><i class="fa-solid fa-xmark"></i> Reprovar</button>' +
+    '</div>';
+}
 function reelSlideHTML(r, idx, total){
   const post = POSTS[r.p];
+  const pend = !!r.pendAppr;
   const timer = '<div class="rv-timer'+(post.video?' isvid':'')+'"><span></span></div>';
-  return '<div class="rv-reel"><div class="rv-card">' +
+  return '<div class="rv-reel' + (pend ? ' is-pend' : '') + '"><div class="rv-card">' +
+    (pend ? '<div class="rv-pend"><i class="fa-solid fa-clock"></i> Aguardando aprovação</div>' + rvModboxHTML(r) : '') +
     (post.embed ? '<iframe data-src="https://www.youtube.com/embed/' + post.embed + '?autoplay=1&mute=1&loop=1&playlist=' + post.embed + '&controls=0&rel=0&playsinline=1&modestbranding=1" title="' + post.alt + '" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
      : post.video ? '<video data-src="' + post.video + '"' + ((post.img||post.poster) ? ' poster="' + (post.img||post.poster) + '"' : '') + ' preload="none" muted loop playsinline></video>'
                 : '<img src="' + post.img + '" alt="' + post.alt + '">') +
     timer + (post.video ? '<div class="rv-audio" data-rvaudio><button class="rv-mute" data-rvmute title="Ativar som"><i class="fa-solid fa-volume-xmark"></i></button><input class="rv-vol" type="range" min="0" max="100" step="1" value="70" data-rvvol aria-label="Volume"></div>' : '') +
     '<div class="rv-tap"></div><div class="rv-pauseic"><i class="fa-solid fa-play"></i></div>' +
   '</div>' +
-    '<div class="rv-rail">' +
+    (pend ? '' : '<div class="rv-rail">' +
       '<div class="rv-act share" data-rvshare><button title="Compartilhar" aria-label="Compartilhar"><i class="fa-solid fa-paper-plane"></i></button><span>Compartilhar</span></div>' +
       '<div class="rv-act like' + (isLiked(r.p) ? ' on' : '') + '" data-p="' + r.p + '"><button><i class="fa-solid fa-heart"></i></button><span>' + likeDisplay(r) + '</span></div>' +
-    '</div>' +
+    '</div>') +
     '<div class="rv-footer">' +
+      (pend ? rvModboxHTML(r) : '') +
       '<div class="rv-author"><span class="avatar ' + post.av + '">' + post.initials + '</span>' +
         '<div class="rv-authorinfo">' +
           '<span class="rv-name">' + post.name + '</span>' +
@@ -726,6 +748,14 @@ function markVisibleSeen(){
   const w = rvFeed.clientHeight || 1;
   const i = Math.min(Math.max(Math.round(rvFeed.scrollTop / w), 0), playerList.length - 1);
   if (playerList[i]) markReelSeen(playerList[i].p);
+}
+function rvDecidir(r, aprovar){
+  if (!r) return;
+  r.pendAppr = false;
+  if (!aprovar) r.removido = true;
+  closePlayer();
+  if (typeof renderShortsB === 'function') renderShortsB();
+  if (typeof fgToast === 'function') fgToast(aprovar ? 'Short aprovado' : 'Short reprovado');
 }
 function closePlayer(){
   clearTimeout(window.__rvT);

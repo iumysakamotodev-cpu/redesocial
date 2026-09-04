@@ -334,6 +334,14 @@ reelsPlayer.addEventListener('click', e => {
     rvTogglePause(rvFeed.querySelector('.rv-reel.playing') || rvFeed.querySelector('.rv-reel'));
     return;
   }
+  /* aprovar/reprovar: o slide diz qual short e, pela posicao na lista */
+  const dec = e.target.closest('[data-rvapr],[data-rvrej]');
+  if (dec){
+    const slide = dec.closest('.rv-reel');
+    const i = slide ? [...rvFeed.children].indexOf(slide) : -1;
+    if (i > -1 && typeof rvDecidir === 'function') rvDecidir(playerList[i], dec.hasAttribute('data-rvapr'));
+    return;
+  }
   const like = e.target.closest('.rv-act.like');
   if (like){
     const p = parseInt(like.dataset.p, 10);
@@ -407,8 +415,9 @@ function renderShortsInto(row){
   list.forEach((r, i) => {
     const post = POSTS[r.p];
     const b = document.createElement('button');
-    b.className = 'reel' + (isSeen(r.p) ? ' seen' : '');
+    b.className = 'reel' + (isSeen(r.p) ? ' seen' : '') + (r.pendAppr ? ' is-pend' : '');
     b.innerHTML =
+      (r.pendAppr ? '<span class="reel-pend" title="Aguardando aprovação"><i class="fa-solid fa-clock"></i> Aguardando</span><span class="pend-borda"></span>' : '') +
       '<span class="reel-fundo"></span>' +
       ((post.img||post.poster) ? '<img class="reel-img" src="' + (post.img||post.poster) + '" alt="' + post.alt + '" loading="lazy">'
                 : '<video class="reel-img" src="' + post.video + '" muted preload="metadata"></video>') +
