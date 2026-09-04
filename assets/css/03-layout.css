@@ -94,7 +94,9 @@
 .new-menu{transform-origin:top right}
 @keyframes sheetIn{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
 /* Folha dos comunicados no celular: sobe de baixo, com o topo arredondado */
-.com-sheet-back{position:fixed;inset:0;z-index:70;background:rgba(16,28,40,.55);display:flex;align-items:flex-end}
+/* z-index: a folha cobre o conteudo — a home ou o modulo (125) — e passa por
+   baixo da barra de baixo (128), que continua visivel e clicavel por cima dela */
+.com-sheet-back{position:fixed;inset:0;z-index:127;background:rgba(16,28,40,.55);display:flex;align-items:flex-end}
 .com-sheet-back[hidden]{display:none}
 .com-sheet{width:100%;max-height:78vh;display:flex;flex-direction:column;background:#fff;
   border-radius:18px 18px 0 0;animation:sheetIn .22s ease;overflow:hidden}

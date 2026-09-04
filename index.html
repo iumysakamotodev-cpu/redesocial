@@ -280,7 +280,9 @@ input,textarea,select{font-size:14px}
 .new-menu{transform-origin:top right}
 @keyframes sheetIn{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
 /* Folha dos comunicados no celular: sobe de baixo, com o topo arredondado */
-.com-sheet-back{position:fixed;inset:0;z-index:70;background:rgba(16,28,40,.55);display:flex;align-items:flex-end}
+/* z-index: a folha cobre o conteudo — a home ou o modulo (125) — e passa por
+   baixo da barra de baixo (128), que continua visivel e clicavel por cima dela */
+.com-sheet-back{position:fixed;inset:0;z-index:127;background:rgba(16,28,40,.55);display:flex;align-items:flex-end}
 .com-sheet-back[hidden]{display:none}
 .com-sheet{width:100%;max-height:78vh;display:flex;flex-direction:column;background:#fff;
   border-radius:18px 18px 0 0;animation:sheetIn .22s ease;overflow:hidden}
@@ -1633,7 +1635,19 @@ input,textarea,select{font-size:14px}
    ainda pinta o fundo. */
 .news-view.env-social #nmtApps:hover{background:none;color:var(--ink)}
 .nmod-switch:hover{background:linear-gradient(rgba(28,28,30,.08),rgba(28,28,30,.08)),#00ACAC}
-.news-view.env-social .nmod-switch{background:#0C334A;color:#fff}
+.news-view.env-social .nmod-switch{
+  background:#0C334A;color:#fff;
+  flex-direction:column;justify-content:center;gap:2px;
+  height:48px;min-width:96px;padding:0 12px;border-radius:4px;
+  font-size:14px;line-height:18px;
+}
+.news-view.env-social .nmod-switch i{font-size:20px}
+/* os quatro botoes da barra com o mesmo texto e o mesmo icone: 13px de fonte,
+   mesmo peso, e 20px de altura reservados para o icone nos dois formatos */
+.news-view.env-social .nmod-tab,
+.news-view.env-social .nmod-switch{font-size:13px;line-height:17px;font-weight:600}
+.news-view.env-social .nmod-tab i,
+.news-view.env-social .nmod-switch i{font-size:20px;line-height:20px;height:20px}
 .news-view.env-social .nmod-switch:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#0C334A}
 .nmod-switch:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 /* Ambiente Social, fundo claro */
@@ -1664,11 +1678,13 @@ input,textarea,select{font-size:14px}
 .news-view.env-social #nmodGrpSocial .nmod-tab{height:100%;border-radius:0;padding:0 20px}
 .news-view.env-social #nmodGrpSocial .nmod-tab:hover{background:none;color:var(--ink)}
 .news-view.env-social #nmodGrpSocial .nmod-tab.active,
-.news-view.env-social #nmodGrpSocial .nmod-tab.active:hover{background:none;color:var(--ink)}
+.news-view.env-social #nmodGrpSocial .nmod-tab.active:hover{background:none;color:var(--teal)}
 /* o peso do texto e o mesmo nas duas abas de proposito: engrossar so a
    aberta alargaria o botao e faria o traco pular a cada troca */
 .news-view.env-social #nmodGrpSocial .nmod-tab.active::after{
-  content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--ink);
+  /* mesma espessura do tracinho da barra do celular, com o raio espelhado:
+     la ele nasce no topo do botao, aqui na base da aba */
+  content:'';position:absolute;left:0;right:0;bottom:0;height:5px;border-radius:3px 3px 0 0;background:var(--teal);
 }
 .news-view.env-social .nmod-tab.active{background:#00ACAC;color:#fff}
 .news-view.env-social .nmod-tab.active:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#00ACAC;color:#fff}
@@ -3243,6 +3259,11 @@ body.demo-empty .demo-empty-state{display:flex}
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
 .feed{display:flex;flex-direction:column;gap:8px}
 .post{padding:16px}
+/* sem cargo nem unidade a linha do meio fica vazia: escondida, o cabecalho
+   passa a ter duas linhas em vez de um espaco morto */
+.post-sub:empty{display:none}
+/* a categoria vive na linha da data, no mesmo cinza: e metadado, nao titulo */
+.post-cat{color:inherit}
 /* com os comentarios fechados o rodape fica mais justo; abertos, volta aos 16px
    (a home usa .comments.open e o feed do modulo usa .nvf-cm sem o hidden) */
 .post{padding-bottom:10px}
@@ -5291,8 +5312,8 @@ body.demo-basico .mnav .fab{display:none}
             <span class="avatar av-brand"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
             <div class="post-id">
               <div class="post-name">SULTS <svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg><span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span></div>
-              <div class="post-sub">Histórias de sucesso · SULTS</div>
-              <div class="post-meta">22/07/2026 às 09:14 · <i class="fa-solid fa-earth-americas"></i></div>
+              <div class="post-sub">Canal oficial · SULTS</div>
+              <div class="post-meta">22/07/2026 às 09:14 · <i class="fa-solid fa-earth-americas"></i> · <span class="post-cat">Histórias de sucesso</span></div>
             </div>
             <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
           </div>
@@ -5313,8 +5334,8 @@ body.demo-basico .mnav .fab{display:none}
             <span class="avatar av-brand"><svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg></span>
             <div class="post-id">
               <div class="post-name">SULTS <svg class="verified" viewBox="0 0 24 24" aria-label="Verificado" role="img"><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/></svg></div>
-              <div class="post-sub">Comunicados oficiais · SULTS</div>
-              <div class="post-meta">22/07/2026 às 07:02 · <i class="fa-solid fa-earth-americas"></i></div>
+              <div class="post-sub">Canal oficial · SULTS</div>
+              <div class="post-meta">22/07/2026 às 07:02 · <i class="fa-solid fa-earth-americas"></i> · <span class="post-cat">Comunicados oficiais</span></div>
             </div>
             <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
           </div>
@@ -5342,8 +5363,8 @@ body.demo-basico .mnav .fab{display:none}
             <span class="avatar av-lf">LF</span>
             <div class="post-id">
               <div class="post-name">Livia Fernandes</div>
-              <div class="post-sub">Head de Customer Success · SULTS</div>
-              <div class="post-meta">21/07/2026 às 16:48 · <i class="fa-solid fa-earth-americas"></i></div>
+              <div class="post-sub">Head de Customer Success · Shopping Plazza Rio +2 unidades</div>
+              <div class="post-meta">21/07/2026 às 16:48 · <i class="fa-solid fa-earth-americas"></i> · <span class="post-cat">Histórias de sucesso</span></div>
             </div>
             <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
           </div>
@@ -5367,8 +5388,8 @@ Obrigada a todos que abraçaram as novas rotinas de onboarding e acompanhamento.
             <span class="avatar av-wm">WM</span>
             <div class="post-id">
               <div class="post-name">Willer Paim Matayoshi</div>
-              <div class="post-sub">CTO e Co-fundador · SULTS</div>
-              <div class="post-meta">21/07/2026 às 10:25 · <i class="fa-solid fa-earth-americas"></i></div>
+              <div class="post-sub">CTO e Co-fundador · Bella Capri Centro</div>
+              <div class="post-meta">21/07/2026 às 10:25 · <i class="fa-solid fa-earth-americas"></i> · <span class="post-cat">Produto</span></div>
             </div>
             <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
           </div>
@@ -5393,7 +5414,7 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
             <div class="post-id">
               <div class="post-name">Gente &amp; Cultura</div>
               <div class="post-sub">Recursos Humanos · SULTS</div>
-              <div class="post-meta">21/07/2026 às 08:30 · <i class="fa-solid fa-earth-americas"></i></div>
+              <div class="post-meta">21/07/2026 às 08:30 · <i class="fa-solid fa-earth-americas"></i> · <span class="post-cat">Gente &amp; Cultura</span></div>
             </div>
             <button class="post-more"><i class="fa-solid fa-ellipsis"></i></button>
           </div>
@@ -7716,8 +7737,6 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     const fundo = $('#comSheetBack'); if (!fundo) return;
     fundo.hidden = true;
     document.body.style.overflow = '';
-    const mnav = $('#mnav');
-    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
   };
   /* folha de "Criar nova publicação": as mesmas opções do compositor da home,
      mais o short, para o "+" da barra virar uma escolha e não um atalho unico */
@@ -7734,8 +7753,6 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
   window.novoSheetFechar = function(){
     const fundo = $('#novoSheetBack'); if (!fundo) return;
     fundo.hidden = true; document.body.style.overflow = '';
-    const mnav = $('#mnav');
-    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
   };
   $('#novoSheetClose') && $('#novoSheetClose').addEventListener('click', novoSheetFechar);
   $('#novoSheetBack') && $('#novoSheetBack').addEventListener('click', e => { if (e.target.id === 'novoSheetBack') novoSheetFechar(); });
@@ -7767,8 +7784,18 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     const b = e.target.closest('button');
     if (!b) return;
     const t = b.dataset.t;
-    /* o "+" abre a folha de opções, e não direto o editor */
+    /* o "+" e os Comunicados sobem por cima da tela em que a pessoa esta:
+       vem antes de fecharModulos(), que os mandaria de volta para a home, e
+       nao trocam o item aceso, porque sao sobreposicoes e nao destinos */
     if (t === 'novo') { novoSheetAbrir(); return; }
+    if (t === 'comunicados') {
+      if (document.body.classList.contains('demo-basico') && !$('#newsView').classList.contains('open')) {
+        mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+        b.classList.add('on');
+        fecharModulos(); irPara('#homeComPanel'); return;
+      }
+      comSheetAbrir(); return;
+    }
     /* numa barra de abas, tocar em Shorts abre o Shorts — nao rola ate um
        pedaco da home. Vem antes de fecharModulos(), que desfaria a abertura. */
     if (t === 'shorts' || t === 'feed') {
@@ -7780,11 +7807,7 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
     b.classList.add('on');
     fecharModulos();
-    /* sobrou a Home, que rola ate o topo; os Comunicados abrem a folha */
-    if (t === 'comunicados') {
-      if (document.body.classList.contains('demo-basico')) { irPara('#homeComPanel'); return; }
-      comSheetAbrir(); return;
-    }
+    /* sobrou a Home, que rola ate o topo */
     if (t === 'home') {
       document.body.classList.remove('demo-suporte');
       if (document.body.classList.contains('demo-empty') && typeof demoToggle !== 'undefined') demoToggle.click();
@@ -8697,7 +8720,7 @@ function addHomePost(n, append){
     '<div class="post-head">'+avatarHtml+
       '<div class="post-id"><div class="post-name">'+nameHtml+(n.pinned?'<span class="nvf-pinchip"><i class="fa-solid fa-thumbtack"></i> Fixado</span>':'')+'</div>'+
       '<div class="post-sub">'+postSub(n)+'</div>'+
-      '<div class="post-meta">'+metaTxt+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div>'+
+      '<div class="post-meta">'+metaTxt+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i>'+postCatMeta(n)+'</div></div>'+
       '<button class="post-more"><i class="fa-solid fa-ellipsis"></i></button></div>';
   const rodape =
     '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span>'+(rcount>=90?'<span class="rxs" data-rx="love"></span>':'')+(rcount>=120?'<span class="rxs" data-rx="celebrate"></span>':'')+'</span><span class="rx-count">'+rcount+'</span><span class="right">'+(ccount?'Ver ':'')+ccount+' comentários</span></div>'+
@@ -8738,7 +8761,7 @@ function addHomePost(n, append){
     '<div class="post-head">'+avatarHtml+
       '<div class="post-id"><div class="post-name">'+nameHtml+'</div>'+
       '<div class="post-sub">'+postSub(n)+'</div>'+
-      '<div class="post-meta">'+metaTxt+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div>'+
+      '<div class="post-meta">'+metaTxt+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i>'+postCatMeta(n)+'</div></div>'+
       '<button class="post-more"><i class="fa-solid fa-ellipsis"></i></button></div>'+
     title + (bodyTxt?'<p class="post-text">'+bodyTxt+'</p>':'') + media +
     '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span>'+(rcount>=90?'<span class="rxs" data-rx="love"></span>':'')+(rcount>=120?'<span class="rxs" data-rx="celebrate"></span>':'')+'</span><span class="rx-count">'+rcount+'</span><span class="right">'+(ccount?'Ver ':'')+ccount+' comentários</span></div>'+
@@ -9901,14 +9924,14 @@ let NEWS = [
   { id:1, title:'Bem-vindos, Boatlux e Constance!', author:'SULTS', av:null, sub:'Comunicados oficiais', date:'2 h', reactions:128, comments:24, status:'pub',
     text:'',
     banner:{ title:'Bem-vindos, Boatlux e Constance!', sub:'+1.647 marcas · +92.000 unidades · +600.000 usuários' } },
-  { id:2, title:'NPS 87 no Customer Success', author:'Livia Fernandes', av:'av-lf', ini:'LF', sub:'Head de Customer Success', date:'5 h', reactions:96, comments:18, status:'pub',
+  { id:2, title:'NPS 87 no Customer Success', author:'Livia Fernandes', av:'av-lf', ini:'LF', sub:'Head de Customer Success', cat:'Histórias de sucesso', date:'5 h', reactions:96, comments:18, status:'pub',
     text:'Fechamos o trimestre com NPS 87 no Customer Success! 🚀 Esse número é resultado de um time que trata cada rede como se fosse a única, todos os dias.\n\nCliente feliz é a nossa melhor métrica, e o melhor ainda está por vir. 💙' },
-  { id:3, title:'SULTS Open entra em beta', author:'Willer Matayoshi', av:'av-wm', ini:'WM', sub:'CTO e Co-fundador', date:'ontem', reactions:154, comments:31, status:'pub',
+  { id:3, title:'SULTS Open entra em beta', cat:'Produto', author:'Willer Matayoshi', av:'av-wm', ini:'WM', sub:'CTO e Co-fundador', date:'ontem', reactions:154, comments:31, status:'pub',
     text:'Bora de SULTS Open! 🔓 API completa e MCP server para conectar a plataforma a agentes de IA e a qualquer sistema da sua stack. Quem quiser participar dos primeiros testes de integração, chama o time de Produto.' },
-  { id:4, title:'Aniversário do Breno!', author:'Gente & Cultura', av:'av-gc', ini:'GC', sub:'Recursos Humanos · SULTS', date:'1 d', reactions:210, comments:45, status:'pub',
+  { id:4, title:'Aniversário do Breno!', cat:'Gente & Cultura', author:'Gente & Cultura', av:'av-gc', ini:'GC', sub:'Recursos Humanos · SULTS', date:'1 d', reactions:210, comments:45, status:'pub',
     text:'',
     banner:{ variant:'bday', emoji:'🎂', title:'Feliz aniversário, Breno!', sub:'Deixe sua mensagem no mural' } },
-  { id:5, title:'Resultados do 2º trimestre', author:'Matheus Scussel', av:'av-ms', ini:'MS', sub:'COO', date:'3 d', reactions:0, comments:0, status:'draft',
+  { id:5, title:'Resultados do 2º trimestre', cat:'Comunicados oficiais', author:'Matheus Scussel', av:'av-ms', ini:'MS', sub:'COO', date:'3 d', reactions:0, comments:0, status:'draft',
     text:'Prévia dos resultados do 2º trimestre. Ainda em revisão.' },
   { id:6, author:'SULTS', av:null, sub:'Histórias de sucesso', date:'22/07/2026', reactions:342, comments:57, status:'pub', pinned:true,
     title:'Como a Casa do Construtor centraliza a gestão de mais de 780 lojas em 4 países com a SULTS',
@@ -9977,14 +10000,72 @@ let newsEditId = null, newsQuery = '', nvBanner = false, nvFrom = 'feed';
 let composeImg = null, nvEvent = false, composePoll = false, nvType = null;
 (function(){
   const un=["Shopping Plazza Rio","Bella Capri Centro","Lugano Gramado","Boatlux Marina Sul","Pit Stop Barra","FarMelhor Savassi","Mormaii Balneário","Casa do Construtor Norte"];
-  NEWS.filter(n=>n.status==='pub' && n.author && n.author!=='SULTS').forEach((n,i)=>{ if(i%3!==2) n.unit=un[i%un.length]; });
+  NEWS.filter(n=>n.status==='pub' && n.author && n.author!=='SULTS').forEach((n,i)=>{
+    if(i%3===2) return;
+    n.unit = un[i%un.length];
+    /* uma em cada tres vale para varias unidades, para o cabecalho ter onde
+       mostrar o "+N unidades" */
+    if(i%3===0) n.units = [n.unit, un[(i+1)%un.length], un[(i+2)%un.length]];
+  });
 })();
 const newsLiked = new Set();
 (function(){ NEWS.filter(n=>n.status==='pub').slice(0,3).forEach(n=>newsLiked.add(n.id)); })();
+let NEWS_CATS = [
+  { id:'oficiais', name:'Comunicados oficiais', color:'#2f6fe4', icon:'fa-bullhorn', active:true },
+  { id:'eventos', name:'Eventos', color:'#a93438', icon:'fa-calendar-day', active:true },
+  { id:'cultura', name:'Gente & Cultura', color:'#e08a1e', icon:'fa-hand-holding-heart', active:true },
+  { id:'produto', name:'Produto', color:'#8161d8', icon:'fa-box', active:true },
+  { id:'expansao', name:'Expansão', color:'#27a689', icon:'fa-arrow-trend-up', active:false },
+  { id:'sucesso', name:'Histórias de sucesso', color:'#00acac', icon:'fa-trophy', active:true },
+  { id:'noticias', name:'Notícias', color:'#0088FF', icon:'fa-newspaper', active:false }
+];
+
+/* Cabecalho da publicacao, sempre nas mesmas tres linhas:
+     nome
+     cargo · empresa   (varias unidades viram "a primeira +N unidades")
+     data · alcance · categoria                                        */
+const AUTOR_CARGO = {
+  'SULTS':'Canal oficial',
+  'Livia Fernandes':'Head de Customer Success',
+  'Willer Matayoshi':'CTO e Co-fundador',
+  'Gente & Cultura':'Recursos Humanos',
+  'Matheus Scussel':'COO',
+  'Ana Souza':'Marketing',
+  'Ellen Rocha':'Conteúdo'
+};
+function postCargo(n){
+  if (n.cargo) return n.cargo;
+  /* o "sub" antigo guardava o cargo quando nao guardava a categoria */
+  const s = String(n.sub||'').split('·')[0].trim();
+  if (s && !postCatNome(n)) return s;
+  return AUTOR_CARGO[String(n.author||n.autorNome||'').trim()] || '';
+}
+function postEmpresa(n){
+  const lista = (Array.isArray(n.units) ? n.units : (n.unit ? [n.unit] : [])).filter(Boolean);
+  if (!lista.length) return 'SULTS';
+  if (lista.length === 1) return lista[0];
+  const resto = lista.length - 1;
+  return lista[0] + ' +' + resto + ' unidade' + (resto > 1 ? 's' : '');
+}
+/* a categoria vem do campo proprio; nas publicacoes antigas ela ainda mora no
+   "sub", e o que decide e bater com a lista de NEWS_CATS */
+function postCatNome(n){
+  const nome = String(n.cat || '').trim() || String(n.sub||'').split('·')[0].trim();
+  if (!nome) return '';
+  /* NEWS_CATS e um let declarado mais adiante no script unico: ate typeof
+     lanca ReferenceError enquanto ele esta na zona morta */
+  let cats = null; try { cats = NEWS_CATS; } catch (e) { cats = null; }
+  return (cats && cats.some(c => c.name === nome)) ? nome : '';
+}
+/* a categoria entra na linha da data, depois do icone de alcance */
+function postCatMeta(n){
+  const c = postCatNome(n);
+  return c ? ' · <span class="post-cat">'+c+'</span>' : '';
+}
 function postSub(n){
-  const base = n.cargo || n.sub || 'Comunicados oficiais';
-  const un = n.unit || 'SULTS';
-  return base.indexOf('·')>-1 ? base : base+' · '+un;
+  const cargo = postCargo(n);
+  const empresa = postEmpresa(n);
+  return cargo ? cargo + ' · ' + empresa : empresa;
 }
 const BRAND_LOGO = '<svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>';
 const WHITE_LOGO = '<svg class="logo-mark" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#fff" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#fff" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>';
@@ -11099,7 +11180,7 @@ function renderNewsFeed(){
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
       return '<article class="card post nvf-artcard'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
         (n.pendAppr ? pendBarHTML() : '')+
-        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+nomeComSelo(n)+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
+        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+nomeComSelo(n)+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i>'+postCatMeta(n)+'</div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
@@ -11128,7 +11209,7 @@ function renderNewsFeed(){
     const menu = '<div class="nvf-menu" hidden><button data-menu="edit"><i class="fa-solid fa-pen"></i> Editar publicação</button><button data-menu="pin"><i class="fa-solid fa-thumbtack"></i> '+(n.pinned?'Desafixar':'Fixar no topo')+'</button><button data-menu="copy"><i class="fa-solid fa-link"></i> Copiar link</button><button class="danger" data-menu="del"><i class="fa-solid fa-trash"></i> Excluir</button></div>';
     const pendBar = n.pendAppr ? pendBarHTML() : '';
     return '<article class="card post'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
-      pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
+      pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i>'+postCatMeta(n)+'</div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
       (bodyTxt?'<p class="post-text nvf-postlink" data-act="open">'+bodyTxt+'</p>':'') + colored + banner + image + event + poll +
       (n.pendAppr ? '' :
       '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
@@ -11292,15 +11373,6 @@ $('#nmodApps').addEventListener('click', () => { closeNewsModule(); setNav($('#n
 $('#nmodPub').addEventListener('click', () => newsShow('list'));
 $('#nmodPerm').addEventListener('click', () => newsShow('perm'));
 $('#nmodCats').addEventListener('click', () => newsShow('cats'));
-let NEWS_CATS = [
-  { id:'oficiais', name:'Comunicados oficiais', color:'#2f6fe4', icon:'fa-bullhorn', active:true },
-  { id:'eventos', name:'Eventos', color:'#a93438', icon:'fa-calendar-day', active:true },
-  { id:'cultura', name:'Gente & Cultura', color:'#e08a1e', icon:'fa-hand-holding-heart', active:true },
-  { id:'produto', name:'Produto', color:'#8161d8', icon:'fa-box', active:true },
-  { id:'expansao', name:'Expansão', color:'#27a689', icon:'fa-arrow-trend-up', active:false },
-  { id:'sucesso', name:'Histórias de sucesso', color:'#00acac', icon:'fa-trophy', active:true },
-  { id:'noticias', name:'Notícias', color:'#0088FF', icon:'fa-newspaper', active:false }
-];
 const NEWS_CAT_ICONS = ['fa-bullhorn','fa-calendar-day','fa-hand-holding-heart','fa-box','fa-arrow-trend-up','fa-trophy','fa-newspaper','fa-star','fa-lightbulb','fa-graduation-cap','fa-users','fa-gift','fa-fire','fa-bell','fa-briefcase','fa-heart'];
 let nvCatQuery='', nvCatEditId=null, nvCatColor=CAT_COLORS[0], nvCatIcon=NEWS_CAT_ICONS[0];
 function newsCatByName(name){ return NEWS_CATS.find(c=>c.name===name); }

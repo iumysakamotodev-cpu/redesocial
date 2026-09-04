@@ -5,14 +5,14 @@ let NEWS = [
   { id:1, title:'Bem-vindos, Boatlux e Constance!', author:'SULTS', av:null, sub:'Comunicados oficiais', date:'2 h', reactions:128, comments:24, status:'pub',
     text:'',
     banner:{ title:'Bem-vindos, Boatlux e Constance!', sub:'+1.647 marcas · +92.000 unidades · +600.000 usuários' } },
-  { id:2, title:'NPS 87 no Customer Success', author:'Livia Fernandes', av:'av-lf', ini:'LF', sub:'Head de Customer Success', date:'5 h', reactions:96, comments:18, status:'pub',
+  { id:2, title:'NPS 87 no Customer Success', author:'Livia Fernandes', av:'av-lf', ini:'LF', sub:'Head de Customer Success', cat:'Histórias de sucesso', date:'5 h', reactions:96, comments:18, status:'pub',
     text:'Fechamos o trimestre com NPS 87 no Customer Success! 🚀 Esse número é resultado de um time que trata cada rede como se fosse a única, todos os dias.\n\nCliente feliz é a nossa melhor métrica, e o melhor ainda está por vir. 💙' },
-  { id:3, title:'SULTS Open entra em beta', author:'Willer Matayoshi', av:'av-wm', ini:'WM', sub:'CTO e Co-fundador', date:'ontem', reactions:154, comments:31, status:'pub',
+  { id:3, title:'SULTS Open entra em beta', cat:'Produto', author:'Willer Matayoshi', av:'av-wm', ini:'WM', sub:'CTO e Co-fundador', date:'ontem', reactions:154, comments:31, status:'pub',
     text:'Bora de SULTS Open! 🔓 API completa e MCP server para conectar a plataforma a agentes de IA e a qualquer sistema da sua stack. Quem quiser participar dos primeiros testes de integração, chama o time de Produto.' },
-  { id:4, title:'Aniversário do Breno!', author:'Gente & Cultura', av:'av-gc', ini:'GC', sub:'Recursos Humanos · SULTS', date:'1 d', reactions:210, comments:45, status:'pub',
+  { id:4, title:'Aniversário do Breno!', cat:'Gente & Cultura', author:'Gente & Cultura', av:'av-gc', ini:'GC', sub:'Recursos Humanos · SULTS', date:'1 d', reactions:210, comments:45, status:'pub',
     text:'',
     banner:{ variant:'bday', emoji:'🎂', title:'Feliz aniversário, Breno!', sub:'Deixe sua mensagem no mural' } },
-  { id:5, title:'Resultados do 2º trimestre', author:'Matheus Scussel', av:'av-ms', ini:'MS', sub:'COO', date:'3 d', reactions:0, comments:0, status:'draft',
+  { id:5, title:'Resultados do 2º trimestre', cat:'Comunicados oficiais', author:'Matheus Scussel', av:'av-ms', ini:'MS', sub:'COO', date:'3 d', reactions:0, comments:0, status:'draft',
     text:'Prévia dos resultados do 2º trimestre. Ainda em revisão.' },
   { id:6, author:'SULTS', av:null, sub:'Histórias de sucesso', date:'22/07/2026', reactions:342, comments:57, status:'pub', pinned:true,
     title:'Como a Casa do Construtor centraliza a gestão de mais de 780 lojas em 4 países com a SULTS',
@@ -81,14 +81,72 @@ let newsEditId = null, newsQuery = '', nvBanner = false, nvFrom = 'feed';
 let composeImg = null, nvEvent = false, composePoll = false, nvType = null;
 (function(){
   const un=["Shopping Plazza Rio","Bella Capri Centro","Lugano Gramado","Boatlux Marina Sul","Pit Stop Barra","FarMelhor Savassi","Mormaii Balneário","Casa do Construtor Norte"];
-  NEWS.filter(n=>n.status==='pub' && n.author && n.author!=='SULTS').forEach((n,i)=>{ if(i%3!==2) n.unit=un[i%un.length]; });
+  NEWS.filter(n=>n.status==='pub' && n.author && n.author!=='SULTS').forEach((n,i)=>{
+    if(i%3===2) return;
+    n.unit = un[i%un.length];
+    /* uma em cada tres vale para varias unidades, para o cabecalho ter onde
+       mostrar o "+N unidades" */
+    if(i%3===0) n.units = [n.unit, un[(i+1)%un.length], un[(i+2)%un.length]];
+  });
 })();
 const newsLiked = new Set();
 (function(){ NEWS.filter(n=>n.status==='pub').slice(0,3).forEach(n=>newsLiked.add(n.id)); })();
+let NEWS_CATS = [
+  { id:'oficiais', name:'Comunicados oficiais', color:'#2f6fe4', icon:'fa-bullhorn', active:true },
+  { id:'eventos', name:'Eventos', color:'#a93438', icon:'fa-calendar-day', active:true },
+  { id:'cultura', name:'Gente & Cultura', color:'#e08a1e', icon:'fa-hand-holding-heart', active:true },
+  { id:'produto', name:'Produto', color:'#8161d8', icon:'fa-box', active:true },
+  { id:'expansao', name:'Expansão', color:'#27a689', icon:'fa-arrow-trend-up', active:false },
+  { id:'sucesso', name:'Histórias de sucesso', color:'#00acac', icon:'fa-trophy', active:true },
+  { id:'noticias', name:'Notícias', color:'#0088FF', icon:'fa-newspaper', active:false }
+];
+
+/* Cabecalho da publicacao, sempre nas mesmas tres linhas:
+     nome
+     cargo · empresa   (varias unidades viram "a primeira +N unidades")
+     data · alcance · categoria                                        */
+const AUTOR_CARGO = {
+  'SULTS':'Canal oficial',
+  'Livia Fernandes':'Head de Customer Success',
+  'Willer Matayoshi':'CTO e Co-fundador',
+  'Gente & Cultura':'Recursos Humanos',
+  'Matheus Scussel':'COO',
+  'Ana Souza':'Marketing',
+  'Ellen Rocha':'Conteúdo'
+};
+function postCargo(n){
+  if (n.cargo) return n.cargo;
+  /* o "sub" antigo guardava o cargo quando nao guardava a categoria */
+  const s = String(n.sub||'').split('·')[0].trim();
+  if (s && !postCatNome(n)) return s;
+  return AUTOR_CARGO[String(n.author||n.autorNome||'').trim()] || '';
+}
+function postEmpresa(n){
+  const lista = (Array.isArray(n.units) ? n.units : (n.unit ? [n.unit] : [])).filter(Boolean);
+  if (!lista.length) return 'SULTS';
+  if (lista.length === 1) return lista[0];
+  const resto = lista.length - 1;
+  return lista[0] + ' +' + resto + ' unidade' + (resto > 1 ? 's' : '');
+}
+/* a categoria vem do campo proprio; nas publicacoes antigas ela ainda mora no
+   "sub", e o que decide e bater com a lista de NEWS_CATS */
+function postCatNome(n){
+  const nome = String(n.cat || '').trim() || String(n.sub||'').split('·')[0].trim();
+  if (!nome) return '';
+  /* NEWS_CATS e um let declarado mais adiante no script unico: ate typeof
+     lanca ReferenceError enquanto ele esta na zona morta */
+  let cats = null; try { cats = NEWS_CATS; } catch (e) { cats = null; }
+  return (cats && cats.some(c => c.name === nome)) ? nome : '';
+}
+/* a categoria entra na linha da data, depois do icone de alcance */
+function postCatMeta(n){
+  const c = postCatNome(n);
+  return c ? ' · <span class="post-cat">'+c+'</span>' : '';
+}
 function postSub(n){
-  const base = n.cargo || n.sub || 'Comunicados oficiais';
-  const un = n.unit || 'SULTS';
-  return base.indexOf('·')>-1 ? base : base+' · '+un;
+  const cargo = postCargo(n);
+  const empresa = postEmpresa(n);
+  return cargo ? cargo + ' · ' + empresa : empresa;
 }
 const BRAND_LOGO = '<svg viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#00acac" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#00acac" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#00acac" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>';
 const WHITE_LOGO = '<svg class="logo-mark" viewBox="0 0 76.6 76.6" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M59.4 28.2 28.2 59.4c-.4.4-1.2.4-1.6 0L17.2 50c-.4-.4-.4-1.2 0-1.6l31.2-31.2c.4-.4 1.2-.4 1.6 0l9.3 9.3c.4.4.4 1.1 0 1.7z"/><path fill="#fff" d="M32.6.2 5.5 27.4c-3 3-3 7.9 0 10.9l5 5c.2.2.6.2.9 0L53.6 1.1C54 .7 53.8 0 53.2 0H33.1c-.2 0-.3.1-.5.2z"/><path fill="#fff" d="M65.2 33.3 22.9 75.5c-.4.4-.1 1.1.4 1.1h20.1c.2 0 .3-.1.4-.2l27.2-27.2c3-3 3-7.9 0-10.9l-5-5c-.3-.3-.7-.3-.9 0z"/></svg>';
@@ -1203,7 +1261,7 @@ function renderNewsFeed(){
       const clapA = n.reactions>=120 ? '<span class="rxs" data-rx="celebrate"></span>' : '';
       return '<article class="card post nvf-artcard'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
         (n.pendAppr ? pendBarHTML() : '')+
-        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+nomeComSelo(n)+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
+        '<div class="post-head">'+(n.av?'<span class="avatar '+n.av+'"></span>':'<span class="avatar av-brand">'+BRAND_LOGO+'</span>')+'<div class="post-id"><div class="post-name">'+nomeComSelo(n)+pinA+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+' · <i class="fa-solid fa-earth-americas"></i>'+postCatMeta(n)+'</div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menuA+'</div>'+
         '<div class="nvf-arthero" data-act="read"><img src="'+n.image+'"></div>'+
         '<div class="nvf-artbody"><div class="nvf-artkicker">'+catPillHTML(n.sub||'')+'</div><div class="nvf-arttitle" data-act="read">'+n.title+'</div><div class="nvf-artlead">'+n.article.lead+'</div>'+
         '<div class="nvf-artread" data-act="read">Ler artigo completo <i class="fa-solid fa-arrow-right"></i></div></div>'+
@@ -1232,7 +1290,7 @@ function renderNewsFeed(){
     const menu = '<div class="nvf-menu" hidden><button data-menu="edit"><i class="fa-solid fa-pen"></i> Editar publicação</button><button data-menu="pin"><i class="fa-solid fa-thumbtack"></i> '+(n.pinned?'Desafixar':'Fixar no topo')+'</button><button data-menu="copy"><i class="fa-solid fa-link"></i> Copiar link</button><button class="danger" data-menu="del"><i class="fa-solid fa-trash"></i> Excluir</button></div>';
     const pendBar = n.pendAppr ? pendBarHTML() : '';
     return '<article class="card post'+(n.pendAppr?' is-pend':'')+'" data-id="'+n.id+'">'+
-      pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i></div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
+      pendBar + '<div class="post-head">'+av+'<div class="post-id"><div class="post-name">'+nm+pin+'</div><div class="post-sub">'+postSub(n)+'</div><div class="post-meta">'+fmtQuando(n)+(n.edited?' · <span class="edited-tag">editado</span>':'')+' · <i class="fa-solid fa-earth-americas"></i>'+postCatMeta(n)+'</div></div><button class="post-more" data-act="more"><i class="fa-solid fa-ellipsis"></i></button>'+menu+'</div>'+
       (bodyTxt?'<p class="post-text nvf-postlink" data-act="open">'+bodyTxt+'</p>':'') + colored + banner + image + event + poll +
       (n.pendAppr ? '' :
       '<div class="post-stats"><span class="rx"><span class="rxs" data-rx="like"></span><span class="rxs" data-rx="love"></span>'+clap+'</span><span class="rx-count">'+rc+'</span><span class="right nvf-cc">'+(cc?'Ver ':'')+cc+' comentários</span></div>'+
@@ -1396,15 +1454,6 @@ $('#nmodApps').addEventListener('click', () => { closeNewsModule(); setNav($('#n
 $('#nmodPub').addEventListener('click', () => newsShow('list'));
 $('#nmodPerm').addEventListener('click', () => newsShow('perm'));
 $('#nmodCats').addEventListener('click', () => newsShow('cats'));
-let NEWS_CATS = [
-  { id:'oficiais', name:'Comunicados oficiais', color:'#2f6fe4', icon:'fa-bullhorn', active:true },
-  { id:'eventos', name:'Eventos', color:'#a93438', icon:'fa-calendar-day', active:true },
-  { id:'cultura', name:'Gente & Cultura', color:'#e08a1e', icon:'fa-hand-holding-heart', active:true },
-  { id:'produto', name:'Produto', color:'#8161d8', icon:'fa-box', active:true },
-  { id:'expansao', name:'Expansão', color:'#27a689', icon:'fa-arrow-trend-up', active:false },
-  { id:'sucesso', name:'Histórias de sucesso', color:'#00acac', icon:'fa-trophy', active:true },
-  { id:'noticias', name:'Notícias', color:'#0088FF', icon:'fa-newspaper', active:false }
-];
 const NEWS_CAT_ICONS = ['fa-bullhorn','fa-calendar-day','fa-hand-holding-heart','fa-box','fa-arrow-trend-up','fa-trophy','fa-newspaper','fa-star','fa-lightbulb','fa-graduation-cap','fa-users','fa-gift','fa-fire','fa-bell','fa-briefcase','fa-heart'];
 let nvCatQuery='', nvCatEditId=null, nvCatColor=CAT_COLORS[0], nvCatIcon=NEWS_CAT_ICONS[0];
 function newsCatByName(name){ return NEWS_CATS.find(c=>c.name===name); }

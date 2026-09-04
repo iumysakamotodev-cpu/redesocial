@@ -65,7 +65,19 @@
    ainda pinta o fundo. */
 .news-view.env-social #nmtApps:hover{background:none;color:var(--ink)}
 .nmod-switch:hover{background:linear-gradient(rgba(28,28,30,.08),rgba(28,28,30,.08)),#00ACAC}
-.news-view.env-social .nmod-switch{background:#0C334A;color:#fff}
+.news-view.env-social .nmod-switch{
+  background:#0C334A;color:#fff;
+  flex-direction:column;justify-content:center;gap:2px;
+  height:48px;min-width:96px;padding:0 12px;border-radius:4px;
+  font-size:14px;line-height:18px;
+}
+.news-view.env-social .nmod-switch i{font-size:20px}
+/* os quatro botoes da barra com o mesmo texto e o mesmo icone: 13px de fonte,
+   mesmo peso, e 20px de altura reservados para o icone nos dois formatos */
+.news-view.env-social .nmod-tab,
+.news-view.env-social .nmod-switch{font-size:13px;line-height:17px;font-weight:600}
+.news-view.env-social .nmod-tab i,
+.news-view.env-social .nmod-switch i{font-size:20px;line-height:20px;height:20px}
 .news-view.env-social .nmod-switch:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#0C334A}
 .nmod-switch:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 /* Ambiente Social, fundo claro */
@@ -96,11 +108,13 @@
 .news-view.env-social #nmodGrpSocial .nmod-tab{height:100%;border-radius:0;padding:0 20px}
 .news-view.env-social #nmodGrpSocial .nmod-tab:hover{background:none;color:var(--ink)}
 .news-view.env-social #nmodGrpSocial .nmod-tab.active,
-.news-view.env-social #nmodGrpSocial .nmod-tab.active:hover{background:none;color:var(--ink)}
+.news-view.env-social #nmodGrpSocial .nmod-tab.active:hover{background:none;color:var(--teal)}
 /* o peso do texto e o mesmo nas duas abas de proposito: engrossar so a
    aberta alargaria o botao e faria o traco pular a cada troca */
 .news-view.env-social #nmodGrpSocial .nmod-tab.active::after{
-  content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--ink);
+  /* mesma espessura do tracinho da barra do celular, com o raio espelhado:
+     la ele nasce no topo do botao, aqui na base da aba */
+  content:'';position:absolute;left:0;right:0;bottom:0;height:5px;border-radius:3px 3px 0 0;background:var(--teal);
 }
 .news-view.env-social .nmod-tab.active{background:#00ACAC;color:#fff}
 .news-view.env-social .nmod-tab.active:hover{background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.08)),#00ACAC;color:#fff}

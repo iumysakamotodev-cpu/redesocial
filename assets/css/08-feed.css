@@ -321,6 +321,11 @@ body.demo-empty .demo-empty-state{display:flex}
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
 .feed{display:flex;flex-direction:column;gap:8px}
 .post{padding:16px}
+/* sem cargo nem unidade a linha do meio fica vazia: escondida, o cabecalho
+   passa a ter duas linhas em vez de um espaco morto */
+.post-sub:empty{display:none}
+/* a categoria vive na linha da data, no mesmo cinza: e metadado, nao titulo */
+.post-cat{color:inherit}
 /* com os comentarios fechados o rodape fica mais justo; abertos, volta aos 16px
    (a home usa .comments.open e o feed do modulo usa .nvf-cm sem o hidden) */
 .post{padding-bottom:10px}

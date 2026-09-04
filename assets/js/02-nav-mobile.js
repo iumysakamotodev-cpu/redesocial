@@ -35,8 +35,6 @@
     const fundo = $('#comSheetBack'); if (!fundo) return;
     fundo.hidden = true;
     document.body.style.overflow = '';
-    const mnav = $('#mnav');
-    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
   };
   /* folha de "Criar nova publicação": as mesmas opções do compositor da home,
      mais o short, para o "+" da barra virar uma escolha e não um atalho unico */
@@ -53,8 +51,6 @@
   window.novoSheetFechar = function(){
     const fundo = $('#novoSheetBack'); if (!fundo) return;
     fundo.hidden = true; document.body.style.overflow = '';
-    const mnav = $('#mnav');
-    if (mnav){ mnav.querySelectorAll('button').forEach(x => x.classList.remove('on')); const h = mnav.querySelector('[data-t="home"]'); if (h) h.classList.add('on'); }
   };
   $('#novoSheetClose') && $('#novoSheetClose').addEventListener('click', novoSheetFechar);
   $('#novoSheetBack') && $('#novoSheetBack').addEventListener('click', e => { if (e.target.id === 'novoSheetBack') novoSheetFechar(); });
@@ -86,8 +82,18 @@
     const b = e.target.closest('button');
     if (!b) return;
     const t = b.dataset.t;
-    /* o "+" abre a folha de opções, e não direto o editor */
+    /* o "+" e os Comunicados sobem por cima da tela em que a pessoa esta:
+       vem antes de fecharModulos(), que os mandaria de volta para a home, e
+       nao trocam o item aceso, porque sao sobreposicoes e nao destinos */
     if (t === 'novo') { novoSheetAbrir(); return; }
+    if (t === 'comunicados') {
+      if (document.body.classList.contains('demo-basico') && !$('#newsView').classList.contains('open')) {
+        mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+        b.classList.add('on');
+        fecharModulos(); irPara('#homeComPanel'); return;
+      }
+      comSheetAbrir(); return;
+    }
     /* numa barra de abas, tocar em Shorts abre o Shorts — nao rola ate um
        pedaco da home. Vem antes de fecharModulos(), que desfaria a abertura. */
     if (t === 'shorts' || t === 'feed') {
@@ -99,11 +105,7 @@
     mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
     b.classList.add('on');
     fecharModulos();
-    /* sobrou a Home, que rola ate o topo; os Comunicados abrem a folha */
-    if (t === 'comunicados') {
-      if (document.body.classList.contains('demo-basico')) { irPara('#homeComPanel'); return; }
-      comSheetAbrir(); return;
-    }
+    /* sobrou a Home, que rola ate o topo */
     if (t === 'home') {
       document.body.classList.remove('demo-suporte');
       if (document.body.classList.contains('demo-empty') && typeof demoToggle !== 'undefined') demoToggle.click();
