@@ -1241,9 +1241,9 @@ input,textarea,select{font-size:14px}
 .rx-viewtg button{border:0;background:none;padding:8px 13px;cursor:pointer;color:var(--muted);font-size:13px}
 .rx-viewtg button.active{background:var(--teal);color:#fff}
 .rlist{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.rlist table{width:100%;border-collapse:collapse;font-size:12px}
+.rlist table{width:100%;border-collapse:collapse;font-size:14px}
 .rlist th{text-align:left;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);padding:11px 14px;border-bottom:1px solid var(--line);background:#fafbfc}
-.rlist td{padding:10px 14px;border-bottom:1px solid #f0f3f6;color:#465364;vertical-align:middle}
+.rlist td{padding:12px;border-bottom:1px solid #f0f3f6;color: #5f666c;vertical-align:middle}
 #nvList table{font-size:13px}
 #nvList th{padding:13px 18px;font-size:11px;color:#98a2ac;font-weight:700}
 #nvList td{padding:14px 18px;vertical-align:middle}
@@ -1369,7 +1369,7 @@ input,textarea,select{font-size:14px}
 .cat-list th:not(:last-child),.cat-list td:not(:last-child){border-right:1px solid var(--line)}
 .cat-list tbody tr:nth-child(odd){background:#eef2f6}
 .cat-list tbody tr:hover{background:#e7f1fb}
-.cat-name{display:flex;align-items:center;gap:13px;font-weight:700;color:var(--ink);font-size:13px}
+.cat-name{display:flex;align-items:center;gap:12px;font-weight:700;color:#101C26;font-size:14px}
 .cat-bar{width:5px;height:22px;border-radius:3px;flex-shrink:0}
 .cat-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0}
 .cat-icons{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
@@ -2935,6 +2935,63 @@ input,textarea,select{font-size:14px}
    altura util do formulario, para os tres passos nao mudarem de tamanho */
 #crModal{--cr-util:578px}
 #crStep1,#crStepUp{min-height:var(--cr-util);box-sizing:border-box}
+
+/* Categorias (Gerenciar > Configuracoes): tres blocos empilhados (titulo,
+   filtros e tabela), 8px de gap entre eles, 12px de respiro ate a borda da
+   tela, e a tabela esticando ate o fim (sem sobra de espaco vazio abaixo). */
+#nvCatsScreen{margin:12px;gap:8px}
+.news-view.cfg #nvCatsScreen,.news-view.cfg.catmode #nvCatsScreen{margin-left:262px}
+#nvCatsScreen .cat-toprow,
+#nvCatsScreen .cat-head{margin:0;padding:12px 16px;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:none;flex-shrink:0}
+#nvCatsScreen .cat-toprow{height:54px;display:flex;align-items:center}
+#nvCatsScreen .cat-head{height:62px}
+#nvCatsScreen .cat-body{flex:1;min-height:0;padding:0;display:flex;flex-direction:column}
+#nvCatsScreen .rlist{flex:1;min-height:0}
+#nvCatsScreen .rlist th{text-transform:none;font-size:14px;font-weight:700;color:#0c334a;background:#fafbfc;height:46px;box-sizing:border-box}
+#nvCatsScreen .cat-th-in{display:inline-flex;align-items:center;gap:6px}
+#nvCatsScreen .cat-sortbtn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;padding:0;border:0;background:none;color:#9aa7b3;cursor:pointer;flex-shrink:0}
+#nvCatsScreen .cat-sortbtn svg{width:24px;height:24px;display:block}
+#nvCatsScreen .cat-sortbtn:hover{color:#2F8EE5}
+/* tabela nativa (table/tr/td): largura por porcentagem, nao grid do Bootstrap.
+   table-layout:fixed faz o navegador respeitar as porcentagens de verdade —
+   sem isso, o layout automatico deixa o conteudo (o bloco de botoes de 224px)
+   esticar a tabela alem do cartao, e o overflow:hidden do .rlist corta a
+   coluna Acoes.
+   !important pra vencer a regra generica .rlist th:first-child{width:84px !important}
+   de 06-shorts.css, que e' de outra tela e nao deveria valer aqui. */
+#nvCatsScreen .rlist table{width:100%;table-layout:fixed}
+#nvCatsScreen .rlist th:nth-child(1),#nvCatsScreen .rlist td:nth-child(1){width:50% !important;min-width:0 !important;max-width:none !important}
+#nvCatsScreen .rlist th:nth-child(2),#nvCatsScreen .rlist td:nth-child(2),
+#nvCatsScreen .rlist th:nth-child(3),#nvCatsScreen .rlist td:nth-child(3),
+#nvCatsScreen .rlist th:nth-child(4),#nvCatsScreen .rlist td:nth-child(4){width:16.66% !important;min-width:0 !important;max-width:none !important}
+#nvCatsScreen .rx-title svg{color:var(--teal)}
+/* Acoes: os dois botoes dividem o espaco igualmente (flex:1) dentro de um
+   bloco de largura fixa, que fica centralizado na coluna.
+   Editar: outline azul, preenche de azul (texto/icone branco) no hover.
+   Inativar: neutro (#5f666c/#999), preenche de preto (texto/icone branco) no hover. */
+#nvCatsScreen .rl-acts{display:flex;align-items:center;justify-content:center}
+#nvCatsScreen .cat-actwrap{display:flex;gap:8px;width:224px}
+#nvCatsScreen .cat-actwrap .cat-editbtn,
+#nvCatsScreen .cat-actwrap .cat-arch{flex:1;justify-content:center;height:36px;padding:0 12px;margin-left:0;border-radius:6px;font-size:14px}
+#nvCatsScreen .cat-actwrap .cat-editbtn{background:#fff;color:#2F8EE5;border:1px solid #2F8EE5}
+#nvCatsScreen .cat-actwrap .cat-editbtn:hover{background:#2F8EE5;color:#fff}
+#nvCatsScreen .cat-actwrap .cat-arch{background:#fff;color:#5f666c;border:1px solid #999}
+#nvCatsScreen .cat-actwrap .cat-arch:hover{background:#5F666C;color:#fff;border-color:#5F666C}
+#nvCatsScreen .cat-head #nvCatAdd{background:#57C279;padding:12px;border-radius:6px}
+#nvCatsScreen .cat-head #nvCatAdd:hover{background:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.12)),#57C279}
+#nvCatsScreen .cat-helpbtn{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border:1px solid #bfe0fb;
+  border-radius:6px;background:#eaf4fe;color:#2F8EE5;font:inherit;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;
+  transition:background .15s}
+#nvCatsScreen .cat-helpbtn:hover{background:#dcecfc}
+#nvCatsScreen .nv-fsel{border-radius:6px}
+
+/* busca de categorias: campo + botao grudados, em vez do icone dentro do campo */
+.nv-catsearch{display:flex;align-items:center;min-width:0;flex-shrink:1}
+.nv-catsearch .rx-search{flex:1;min-width:0}
+#nvCatsScreen .cat-head .nv-catsearch .rx-search{border-radius:6px 0 0 6px;border-right:0}
+.nv-catsearch-btn{height:36px;width:38px;border:0;border-radius:0 6px 6px 0;background:var(--teal);color:#fff;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:13px}
+.nv-catsearch-btn:hover{background:var(--teal-dark)}
 
 /* feed da home, destaque e coluna direita */
 /* ============ Central "Para hoje" v2 ============ */
@@ -6442,12 +6499,19 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
   </div>
   <!-- CATEGORIAS -->
   <div class="nv-screen" id="nvCatsScreen">
+    <div class="cat-toprow">
+      <div class="rx-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0"><path d="M5.5,9A1.5,1.5 0 0,0 7,7.5A1.5,1.5 0 0,0 5.5,6A1.5,1.5 0 0,0 4,7.5A1.5,1.5 0 0,0 5.5,9M17.41,11.58C17.77,11.94 18,12.44 18,13C18,13.55 17.78,14.05 17.41,14.41L12.41,19.41C12.05,19.77 11.55,20 11,20C10.45,20 9.95,19.78 9.58,19.41L2.59,12.42C2.22,12.05 2,11.55 2,11V6C2,4.89 2.89,4 4,4H9C9.55,4 10.05,4.22 10.41,4.58L17.41,11.58M13.54,5.71L14.54,4.71L21.41,11.58C21.78,11.94 22,12.45 22,13C22,13.55 21.78,14.05 21.42,14.41L16.04,19.79L15.04,18.79L20.75,13L13.54,5.71Z" /></svg><h2>Categorias</h2></div>
+      <span style="flex:1"></span>
+      <button type="button" class="cat-helpbtn" id="nvCatHelp"><i class="fa-solid fa-circle-question"></i> Como usar categorias?</button>
+    </div>
     <div class="cat-head">
-      <div class="rx-title"><i class="fa-solid fa-tags"></i><h2>Categorias</h2></div>
       <button class="cat-add" id="nvCatAdd"><i class="fa-solid fa-plus"></i> Nova categoria</button>
       <span style="flex:1"></span>
       <select class="nv-fsel nvcat-sel" id="nvCatSeg"><option value="ativos">Ativos</option><option value="inativos">Inativos</option></select>
-      <div class="rx-search" style="max-width:280px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="nvCatSearch" placeholder="Buscar categoria" autocomplete="off"></div>
+      <div class="nv-catsearch">
+        <div class="rx-search" style="max-width:280px"><input type="text" id="nvCatSearch" placeholder="Buscar categoria" autocomplete="off"></div>
+        <button type="button" class="nv-catsearch-btn" id="nvCatSearchBtn" aria-label="Buscar categoria"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
     </div>
     <div class="cat-body"><div class="rlist" id="nvCatList"></div></div>
   </div>
@@ -11377,18 +11441,42 @@ const NEWS_CAT_ICONS = ['fa-bullhorn','fa-calendar-day','fa-hand-holding-heart',
 let nvCatQuery='', nvCatEditId=null, nvCatColor=CAT_COLORS[0], nvCatIcon=NEWS_CAT_ICONS[0];
 function newsCatByName(name){ return NEWS_CATS.find(c=>c.name===name); }
 function newsCatCount(name){ return NEWS.filter(n=>(n.sub||'')===name).length; }
+const NV_ICON_EDIT='<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z"/></svg>';
+const NV_ICON_CANCEL='<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C17.5 2 22 6.5 22 12S17.5 22 12 22 2 17.5 2 12 6.5 2 12 2M12 4C10.1 4 8.4 4.6 7.1 5.7L18.3 16.9C19.3 15.5 20 13.8 20 12C20 7.6 16.4 4 12 4M16.9 18.3L5.7 7.1C4.6 8.4 4 10.1 4 12C4 16.4 7.6 20 12 20C13.9 20 15.6 19.4 16.9 18.3Z"/></svg>';
+const NV_SORT_ICONS = {
+  swap:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12,6L7,11H17L12,6M7,13L12,18L17,13H7Z"/></svg>',
+  up:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7,15L12,10L17,15H7Z"/></svg>',
+  down:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7,10L12,15L17,10H7Z"/></svg>'
+};
+let nvCatSortCol=null, nvCatSortDir=0; // dir: 0 neutro, 1 asc (up), 2 desc (down)
+function nvCatTh(label,col,style){
+  const dir=(nvCatSortCol===col)?nvCatSortDir:0;
+  const icon=dir===1?NV_SORT_ICONS.up:dir===2?NV_SORT_ICONS.down:NV_SORT_ICONS.swap;
+  return '<th'+(style?' style="'+style+'"':'')+'><span class="cat-th-in"><span>'+label+'</span>'+
+    '<button type="button" class="cat-sortbtn" data-sortcol="'+col+'" aria-label="Ordenar por '+label+'">'+icon+'</button></span></th>';
+}
 function renderNewsCats(){
   const q=rxNorm(nvCatQuery);
   const list=NEWS_CATS.filter(c=>(nvCatStatus==='inativos' ? c.active===false : c.active!==false) && (!q||rxNorm(c.name).includes(q)));
   const el=$('#nvCatList');
   if(!list.length){ el.innerHTML='<div class="cat-empty">Nenhuma categoria '+(nvCatStatus==='inativos'?'inativa':'ativa')+'.</div>'; return; }
   const reelCount = name => { const cat=(typeof CATEGORIES!=='undefined'?CATEGORIES.find(x=>x.name===name):null); return (cat&&typeof REELS_DATA!=='undefined') ? REELS_DATA.filter(r=>r.cat===cat.id).length : 0; };
-  el.innerHTML='<table><thead><tr><th>Categoria</th><th style="width:130px">Publicações</th><th style="width:110px">Shorts</th><th style="text-align:right;width:200px">Ações</th></tr></thead><tbody>'+
+  if(nvCatSortDir){
+    const dir=nvCatSortDir===1?1:-1;
+    if(nvCatSortCol==='name') list.sort((a,b)=>dir*a.name.localeCompare(b.name));
+    else if(nvCatSortCol==='pub') list.sort((a,b)=>dir*(newsCatCount(a.name)-newsCatCount(b.name)));
+    else if(nvCatSortCol==='shorts') list.sort((a,b)=>dir*(reelCount(a.name)-reelCount(b.name)));
+  }
+  el.innerHTML='<table><thead><tr>'+
+    nvCatTh('Categoria ('+list.length+')','name')+
+    nvCatTh('Publicações','pub')+
+    nvCatTh('Shorts','shorts')+
+    '<th style="text-align:right">Ações</th></tr></thead><tbody>'+
     list.map(c=>'<tr data-id="'+c.id+'"><td><div class="cat-name"><span class="cat-ic" style="background:'+c.color+'"><i class="fa-solid '+(c.icon||'fa-tag')+'"></i></span>'+c.name+'</div></td>'+
       '<td style="white-space:nowrap">'+newsCatCount(c.name)+' publicações</td>'+
       '<td style="white-space:nowrap">'+reelCount(c.name)+' shorts</td>'+
-      '<td class="rl-acts"><button class="cat-editbtn" data-act="edit"><i class="fa-solid fa-pen"></i> Editar</button>'+
-      '<button class="cat-arch" data-act="arch"><i class="fa-solid fa-'+(c.active!==false?'ban':'rotate-left')+'"></i> '+(c.active!==false?'Inativar':'Reativar')+'</button></td></tr>').join('')+'</tbody></table>';
+      '<td class="rl-acts"><div class="cat-actwrap"><button class="cat-editbtn" data-act="edit">'+NV_ICON_EDIT+' Editar</button>'+
+      '<button class="cat-arch" data-act="arch">'+(c.active!==false?NV_ICON_CANCEL:'<i class="fa-solid fa-rotate-left"></i>')+' '+(c.active!==false?'Inativar':'Reativar')+'</button></div></td></tr>').join('')+'</tbody></table>';
 }
 function nvCatSwatches(){ $('#nvCatSw').innerHTML=CAT_COLORS.map(c=>'<span class="cat-sw'+(c===nvCatColor?' sel':'')+'" data-col="'+c+'" style="background:'+c+'">'+(c===nvCatColor?'<i class="fa-solid fa-check"></i>':'')+'</span>').join(''); }
 function nvCatIcons(){ $('#nvCatIcons').innerHTML=NEWS_CAT_ICONS.map(ic=>'<span class="cat-icpick'+(ic===nvCatIcon?' sel':'')+'" data-ic="'+ic+'"><i class="fa-solid '+ic+'"></i></span>').join(''); }
@@ -11400,6 +11488,14 @@ $('#nvCatSearch').addEventListener('input', e=>{ nvCatQuery=e.target.value; rend
 $('#nvCatList').addEventListener('click', e=>{ const _tr=e.target.closest('tr'), _a=e.target.closest('[data-act]');
   if(_tr && _a && _a.dataset.act==='arch'){ const c=NEWS_CATS.find(x=>x.id===_tr.dataset.id); if(c){ c.active = c.active===false; renderNewsCats(); syncNewsCatSelect(); fgToast(c.active===false?'Categoria inativada':'Categoria reativada'); } return; }
   const tr=e.target.closest('tr'); if(!tr) return; const act=e.target.closest('[data-act]'); if(!act) return; const id=tr.dataset.id; if(act.dataset.act==='edit') nvCatOpenModal(id); else { NEWS_CATS=NEWS_CATS.filter(c=>c.id!==id); renderNewsCats(); fgToast('Categoria excluída'); } });
+$('#nvCatList').addEventListener('click', e=>{
+  const btn=e.target.closest('.cat-sortbtn'); if(!btn) return;
+  const col=btn.dataset.sortcol;
+  if(nvCatSortCol!==col){ nvCatSortCol=col; nvCatSortDir=1; }
+  else if(nvCatSortDir===1){ nvCatSortDir=2; }
+  else { nvCatSortCol=null; nvCatSortDir=0; }
+  renderNewsCats();
+});
 $('#nvCatSw').addEventListener('click', e=>{ const s=e.target.closest('.cat-sw'); if(!s) return; nvCatColor=s.dataset.col; nvCatSwatches(); });
 $('#nvCatIcons').addEventListener('click', e=>{ const s=e.target.closest('.cat-icpick'); if(!s) return; nvCatIcon=s.dataset.ic; nvCatIcons(); });
 $('#nvCatModalClose').addEventListener('click', ()=>$('#nvCatModal').classList.remove('open'));

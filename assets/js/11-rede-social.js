@@ -1458,18 +1458,42 @@ const NEWS_CAT_ICONS = ['fa-bullhorn','fa-calendar-day','fa-hand-holding-heart',
 let nvCatQuery='', nvCatEditId=null, nvCatColor=CAT_COLORS[0], nvCatIcon=NEWS_CAT_ICONS[0];
 function newsCatByName(name){ return NEWS_CATS.find(c=>c.name===name); }
 function newsCatCount(name){ return NEWS.filter(n=>(n.sub||'')===name).length; }
+const NV_ICON_EDIT='<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z"/></svg>';
+const NV_ICON_CANCEL='<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C17.5 2 22 6.5 22 12S17.5 22 12 22 2 17.5 2 12 6.5 2 12 2M12 4C10.1 4 8.4 4.6 7.1 5.7L18.3 16.9C19.3 15.5 20 13.8 20 12C20 7.6 16.4 4 12 4M16.9 18.3L5.7 7.1C4.6 8.4 4 10.1 4 12C4 16.4 7.6 20 12 20C13.9 20 15.6 19.4 16.9 18.3Z"/></svg>';
+const NV_SORT_ICONS = {
+  swap:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12,6L7,11H17L12,6M7,13L12,18L17,13H7Z"/></svg>',
+  up:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7,15L12,10L17,15H7Z"/></svg>',
+  down:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7,10L12,15L17,10H7Z"/></svg>'
+};
+let nvCatSortCol=null, nvCatSortDir=0; // dir: 0 neutro, 1 asc (up), 2 desc (down)
+function nvCatTh(label,col,style){
+  const dir=(nvCatSortCol===col)?nvCatSortDir:0;
+  const icon=dir===1?NV_SORT_ICONS.up:dir===2?NV_SORT_ICONS.down:NV_SORT_ICONS.swap;
+  return '<th'+(style?' style="'+style+'"':'')+'><span class="cat-th-in"><span>'+label+'</span>'+
+    '<button type="button" class="cat-sortbtn" data-sortcol="'+col+'" aria-label="Ordenar por '+label+'">'+icon+'</button></span></th>';
+}
 function renderNewsCats(){
   const q=rxNorm(nvCatQuery);
   const list=NEWS_CATS.filter(c=>(nvCatStatus==='inativos' ? c.active===false : c.active!==false) && (!q||rxNorm(c.name).includes(q)));
   const el=$('#nvCatList');
   if(!list.length){ el.innerHTML='<div class="cat-empty">Nenhuma categoria '+(nvCatStatus==='inativos'?'inativa':'ativa')+'.</div>'; return; }
   const reelCount = name => { const cat=(typeof CATEGORIES!=='undefined'?CATEGORIES.find(x=>x.name===name):null); return (cat&&typeof REELS_DATA!=='undefined') ? REELS_DATA.filter(r=>r.cat===cat.id).length : 0; };
-  el.innerHTML='<table><thead><tr><th>Categoria</th><th style="width:130px">Publicações</th><th style="width:110px">Shorts</th><th style="text-align:right;width:200px">Ações</th></tr></thead><tbody>'+
+  if(nvCatSortDir){
+    const dir=nvCatSortDir===1?1:-1;
+    if(nvCatSortCol==='name') list.sort((a,b)=>dir*a.name.localeCompare(b.name));
+    else if(nvCatSortCol==='pub') list.sort((a,b)=>dir*(newsCatCount(a.name)-newsCatCount(b.name)));
+    else if(nvCatSortCol==='shorts') list.sort((a,b)=>dir*(reelCount(a.name)-reelCount(b.name)));
+  }
+  el.innerHTML='<table><thead><tr>'+
+    nvCatTh('Categoria ('+list.length+')','name')+
+    nvCatTh('Publicações','pub')+
+    nvCatTh('Shorts','shorts')+
+    '<th style="text-align:right">Ações</th></tr></thead><tbody>'+
     list.map(c=>'<tr data-id="'+c.id+'"><td><div class="cat-name"><span class="cat-ic" style="background:'+c.color+'"><i class="fa-solid '+(c.icon||'fa-tag')+'"></i></span>'+c.name+'</div></td>'+
       '<td style="white-space:nowrap">'+newsCatCount(c.name)+' publicações</td>'+
       '<td style="white-space:nowrap">'+reelCount(c.name)+' shorts</td>'+
-      '<td class="rl-acts"><button class="cat-editbtn" data-act="edit"><i class="fa-solid fa-pen"></i> Editar</button>'+
-      '<button class="cat-arch" data-act="arch"><i class="fa-solid fa-'+(c.active!==false?'ban':'rotate-left')+'"></i> '+(c.active!==false?'Inativar':'Reativar')+'</button></td></tr>').join('')+'</tbody></table>';
+      '<td class="rl-acts"><div class="cat-actwrap"><button class="cat-editbtn" data-act="edit">'+NV_ICON_EDIT+' Editar</button>'+
+      '<button class="cat-arch" data-act="arch">'+(c.active!==false?NV_ICON_CANCEL:'<i class="fa-solid fa-rotate-left"></i>')+' '+(c.active!==false?'Inativar':'Reativar')+'</button></div></td></tr>').join('')+'</tbody></table>';
 }
 function nvCatSwatches(){ $('#nvCatSw').innerHTML=CAT_COLORS.map(c=>'<span class="cat-sw'+(c===nvCatColor?' sel':'')+'" data-col="'+c+'" style="background:'+c+'">'+(c===nvCatColor?'<i class="fa-solid fa-check"></i>':'')+'</span>').join(''); }
 function nvCatIcons(){ $('#nvCatIcons').innerHTML=NEWS_CAT_ICONS.map(ic=>'<span class="cat-icpick'+(ic===nvCatIcon?' sel':'')+'" data-ic="'+ic+'"><i class="fa-solid '+ic+'"></i></span>').join(''); }
@@ -1481,6 +1505,14 @@ $('#nvCatSearch').addEventListener('input', e=>{ nvCatQuery=e.target.value; rend
 $('#nvCatList').addEventListener('click', e=>{ const _tr=e.target.closest('tr'), _a=e.target.closest('[data-act]');
   if(_tr && _a && _a.dataset.act==='arch'){ const c=NEWS_CATS.find(x=>x.id===_tr.dataset.id); if(c){ c.active = c.active===false; renderNewsCats(); syncNewsCatSelect(); fgToast(c.active===false?'Categoria inativada':'Categoria reativada'); } return; }
   const tr=e.target.closest('tr'); if(!tr) return; const act=e.target.closest('[data-act]'); if(!act) return; const id=tr.dataset.id; if(act.dataset.act==='edit') nvCatOpenModal(id); else { NEWS_CATS=NEWS_CATS.filter(c=>c.id!==id); renderNewsCats(); fgToast('Categoria excluída'); } });
+$('#nvCatList').addEventListener('click', e=>{
+  const btn=e.target.closest('.cat-sortbtn'); if(!btn) return;
+  const col=btn.dataset.sortcol;
+  if(nvCatSortCol!==col){ nvCatSortCol=col; nvCatSortDir=1; }
+  else if(nvCatSortDir===1){ nvCatSortDir=2; }
+  else { nvCatSortCol=null; nvCatSortDir=0; }
+  renderNewsCats();
+});
 $('#nvCatSw').addEventListener('click', e=>{ const s=e.target.closest('.cat-sw'); if(!s) return; nvCatColor=s.dataset.col; nvCatSwatches(); });
 $('#nvCatIcons').addEventListener('click', e=>{ const s=e.target.closest('.cat-icpick'); if(!s) return; nvCatIcon=s.dataset.ic; nvCatIcons(); });
 $('#nvCatModalClose').addEventListener('click', ()=>$('#nvCatModal').classList.remove('open'));
