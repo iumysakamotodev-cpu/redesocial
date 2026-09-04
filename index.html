@@ -2306,8 +2306,8 @@ input,textarea,select{font-size:14px}
 .qp-aud>.fa-earth-americas,.qp-aud>.fa-store,.qp-aud>.fa-building{color:#1667B8}
 .qp-aud:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,136,255,.16)}
 .qp-x{width:38px;height:38px;border:0;background:none;border-radius:50%;color:#5b6672;font-size:18px;cursor:pointer;flex-shrink:0}
-.qp-cat{margin-left:auto;display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;outline:none}
-.qp-cat:hover{border-color:var(--teal)}
+.qp-cat{margin-left:auto;display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:#fff;border:1px solid var(--linha-campo);border-radius:999px;padding:8px 14px;cursor:pointer;outline:none;transition:border-color 120ms cubic-bezier(.4,0,.2,1)}
+.qp-cat:hover,.qp-cat:focus{border-color:var(--linha-campo-forte)}
 .qp-cat-ic{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;flex-shrink:0}
 .qp-audwrap{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0}
 .qp-audwrap>b{width:100%}
@@ -3707,9 +3707,13 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   #homeProfileCard,#homeComPanel{display:none}
   /* o titulo do feed tem margem propria por id: recupera a folga lateral e
      encurta a distancia ate os shorts */
-  .col-main > #homeFeedTitle{margin-left:16px;margin-right:16px;margin-top:24px}
+  /* sem titulos de secao: a fileira de shorts se explica sozinha e o feed e o
+     resto da pagina. O "Ver todos" ia junto — quem leva aos modulos agora e a
+     barra de baixo. O respiro que eles davam passa para as proprias secoes. */
+  #homeShorts .section-title-row,#homeFeedTitle{display:none}
+  .col-main > #homeShorts{margin-top:12px}
+  .col-main > .nvf-composer{margin-top:24px}
   /* mesma folga entre o painel de modulos e os shorts */
-  .col-main > #homeShorts .section-title-row{margin-top:24px}
   /* o overflow-x obriga o eixo vertical a recortar junto, entao a sombra do
      card precisa de espaco dentro da fita. A margem negativa devolve esse
      espaco ao layout: a sombra aparece inteira sem empurrar o que vem depois. */
@@ -3721,6 +3725,27 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
   #homeShorts .shorts{gap:8px;margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:0}
   /* o painel encosta no cabecalho: so o pe fica arredondado */
   .apps-panel{padding:14px 14px 22px;border-radius:0 0 22px 22px}
+  /* Powerups: no desktop ele ja e um dos modulos da grade; aqui vira um
+     atalho de uma linha, com o mesmo icone e o mesmo tamanho dos tiles */
+  /* mais especifico que o .pw-card{display:none} da base, que vem depois
+     neste arquivo e venceria por ordem */
+  .col-main > .pw-card{
+    display:flex;align-items:center;gap:12px;text-decoration:none;
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:12px;
+    /* o mesmo respiro dos outros blocos da home no celular */
+    margin-top:24px;
+  }
+  .pw-card:active{background:#f7fafb}
+  /* o icone e o mesmo .tile-ic dos modulos: nao precisa de tamanho proprio */
+  .pw-card .tile-ic{flex:none}
+  .pw-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .pw-tx b{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.2px}
+  .pw-tx > span{font-size:12px;line-height:16px;color:var(--muted);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  /* a seta ganha um fundo proprio: sozinha ela nao lia como algo clicavel */
+  .pw-go{flex:none;width:32px;height:32px;border-radius:50%;background:#f2f5f7;color:#5b6672;
+    display:flex;align-items:center;justify-content:center;font-size:12px}
   /* os posts tambem vao de ponta a ponta, sem cantos */
   .col-main > .feed .post{border-radius:0}
   .apps-head{flex-wrap:wrap}
@@ -3983,6 +4008,8 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
 .nvf-side .nvf-fclear{margin:0}
 /* Localizar: o campo e o botao formam um controle unico, com o raio de 8px
    dividido entre as duas pontas */
+/* Powerups: so aparece no celular (o desktop tem o tile na grade) */
+.pw-card{display:none}
 .nvf-busca{display:flex;align-items:stretch;height:42px}
 .nvf-busca input{flex:1;min-width:0;border:0;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);
   border-radius:8px 0 0 8px;padding:0 12px;font:inherit;font-size:14px;line-height:20px;color:#1C1C1E;outline:none;
@@ -4691,11 +4718,8 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
 
   /* barra inferior dentro do módulo: Publicações · + · Shorts */
   .mnav [data-t="mod-pub"],.mnav [data-t="mod-shorts"]{display:none}
-  .mnav--modulo [data-t="home"],.mnav--modulo [data-t="modulos"],
-  .mnav--modulo [data-t="comunicados"],.mnav--modulo [data-t="shorts"]{display:none}
-  .mnav--modulo [data-t="mod-pub"]{display:flex;order:1}
-  .mnav--modulo .fab{order:2}
-  .mnav--modulo [data-t="mod-shorts"]{display:flex;order:3}
+  /* dentro do modulo a barra continua a mesma: Shorts e Publicacoes ja sao as
+     duas abas dele, entao nao ha o que trocar */
 }
 
 
@@ -4846,14 +4870,10 @@ body.demo-basico .mnav .fab{display:none}
      tem: módulos, shorts, comunicados e o feed, mais o "+" das ações rápidas. -->
 <nav class="mnav" id="mnav">
   <button class="on" data-t="home" title="Home"><span class="mnav__ic hm-ic--home" aria-hidden="true"></span>Home</button>
-  <button data-t="shorts" title="Shorts"><i class="fa-solid fa-clapperboard"></i>Shorts</button>
+  <button data-t="feed" title="Publicações"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
   <button class="fab" data-t="novo" title="Ações rápidas" aria-label="Ações rápidas"><i class="fa-solid fa-plus"></i></button>
-  <button data-t="feed" title="Feed"><i class="fa-solid fa-rectangle-list"></i>Feed</button>
+  <button data-t="shorts" title="Shorts"><i class="fa-solid fa-clapperboard"></i>Shorts</button>
   <button data-t="comunicados" title="Comunicados"><span class="mnav__ic hm-ic--comunicados" aria-hidden="true"></span>Comunicados</button>
-  <!-- só aparecem dentro do módulo (classe mnav--modulo): trocam a navegação da
-       home pelas duas abas do módulo, mantendo o "+" no meio -->
-  <button data-t="mod-pub" title="Publicações"><i class="fa-solid fa-rectangle-list"></i>Publicações</button>
-  <button data-t="mod-shorts" title="Shorts"><i class="fa-solid fa-clapperboard"></i>Shorts</button>
 </nav>
 
 <!-- Comunicados no celular: o painel sai da home e vira uma folha que sobe -->
@@ -5222,6 +5242,16 @@ body.demo-basico .mnav .fab{display:none}
           <button id="appsToggle" title="Ver mais aplicativos"><span id="appsToggleLbl">Ver mais módulos</span> <i class="fa-solid fa-chevron-down"></i></button>
         </div>
       </section>
+
+      <!-- ========== Powerups: atalho de uma linha, so no celular ========== -->
+      <a class="pw-card" id="homePowerups" href="#" style="--c1:#5aa2f2;--c2:#1460c4">
+        <span class="tile-ic"><span class="smi smi-powerups" aria-hidden="true"></span></span>
+        <span class="pw-tx">
+          <b>PowerUps</b>
+          <span>Relatórios, links e atalhos</span>
+        </span>
+        <span class="pw-go"><i class="fa-solid fa-chevron-right"></i></span>
+      </a>
 
       <!-- ========== EM DESTAQUE: Shorts ========== -->
       <section class="stories-section" id="homeShorts">
@@ -7656,7 +7686,7 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
 (() => {
   const mnav = $('#mnav');
   if (!mnav) return;
-  const alvos = { home: null, shorts: '#homeShorts', feed: '#homeFeedTitle', comunicados: '#homeComPanel' };
+  const alvos = { home: null, comunicados: '#homeComPanel' };
   const fecharModulos = () => {
     ['closeStories', 'closeForum', 'closeNewsModule'].forEach(f => { if (typeof window[f] === 'function') window[f](); });
   };
@@ -7739,15 +7769,18 @@ $$('.hm-side__nav, .hm-side__foot').forEach(caixa => {
     const t = b.dataset.t;
     /* o "+" abre a folha de opções, e não direto o editor */
     if (t === 'novo') { novoSheetAbrir(); return; }
-    /* as abas do módulo trocam de tela DENTRO dele: vêm antes de fecharModulos(),
-       senão o módulo fecharia e a tela abriria escondida */
-    if (t === 'mod-pub') { const alvo = $('#nmtFeed'); if (alvo) alvo.click(); return; }
-    if (t === 'mod-shorts') { const alvo = $('#nmtStories'); if (alvo) alvo.click(); return; }
+    /* numa barra de abas, tocar em Shorts abre o Shorts — nao rola ate um
+       pedaco da home. Vem antes de fecharModulos(), que desfaria a abertura. */
+    if (t === 'shorts' || t === 'feed') {
+      mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      if (typeof abrirModuloSocial === 'function') abrirModuloSocial(t);
+      return;
+    }
     mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
     b.classList.add('on');
     fecharModulos();
-    /* Home, Shorts e Feed rolam ate o bloco correspondente da home; so os
-       Comunicados abrem tela propria, a folha que sobe de baixo */
+    /* sobrou a Home, que rola ate o topo; os Comunicados abrem a folha */
     if (t === 'comunicados') {
       if (document.body.classList.contains('demo-basico')) { irPara('#homeComPanel'); return; }
       comSheetAbrir(); return;
@@ -13025,9 +13058,9 @@ document.addEventListener('click', function(e){
     };
   });
 
-  /* A barra inferior acompanha o módulo: aberta, ela mostra as abas dele
-     (Publicações · + · Shorts); fechada, volta para a navegação da home.
-     Um observer cobre todos os caminhos que abrem ou fecham o módulo. */
+  /* A barra é a mesma dentro e fora do módulo; o que muda é qual item fica
+     aceso. Um observer cobre todos os caminhos que abrem, fecham ou trocam de
+     tela dentro dele. */
   (() => {
     const nv = document.getElementById('newsView');
     const mnav = document.getElementById('mnav');
@@ -13038,7 +13071,7 @@ document.addEventListener('click', function(e){
       if (!aberto) return;
       const emShorts = !!document.querySelector('#nvShortsBScreen.active');
       mnav.querySelectorAll('button').forEach(b => b.classList.remove('on'));
-      const alvo = mnav.querySelector(emShorts ? '[data-t="mod-shorts"]' : '[data-t="mod-pub"]');
+      const alvo = mnav.querySelector(emShorts ? '[data-t="shorts"]' : '[data-t="feed"]');
       if (alvo) alvo.classList.add('on');
     };
     new MutationObserver(sincroniza).observe(nv, { attributes: true, attributeFilter: ['class'], subtree: true });

@@ -508,9 +508,9 @@ document.addEventListener('click', function(e){
     };
   });
 
-  /* A barra inferior acompanha o módulo: aberta, ela mostra as abas dele
-     (Publicações · + · Shorts); fechada, volta para a navegação da home.
-     Um observer cobre todos os caminhos que abrem ou fecham o módulo. */
+  /* A barra é a mesma dentro e fora do módulo; o que muda é qual item fica
+     aceso. Um observer cobre todos os caminhos que abrem, fecham ou trocam de
+     tela dentro dele. */
   (() => {
     const nv = document.getElementById('newsView');
     const mnav = document.getElementById('mnav');
@@ -521,7 +521,7 @@ document.addEventListener('click', function(e){
       if (!aberto) return;
       const emShorts = !!document.querySelector('#nvShortsBScreen.active');
       mnav.querySelectorAll('button').forEach(b => b.classList.remove('on'));
-      const alvo = mnav.querySelector(emShorts ? '[data-t="mod-shorts"]' : '[data-t="mod-pub"]');
+      const alvo = mnav.querySelector(emShorts ? '[data-t="shorts"]' : '[data-t="feed"]');
       if (alvo) alvo.classList.add('on');
     };
     new MutationObserver(sincroniza).observe(nv, { attributes: true, attributeFilter: ['class'], subtree: true });

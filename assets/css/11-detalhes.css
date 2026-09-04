@@ -428,10 +428,7 @@
 
   /* barra inferior dentro do módulo: Publicações · + · Shorts */
   .mnav [data-t="mod-pub"],.mnav [data-t="mod-shorts"]{display:none}
-  .mnav--modulo [data-t="home"],.mnav--modulo [data-t="modulos"],
-  .mnav--modulo [data-t="comunicados"],.mnav--modulo [data-t="shorts"]{display:none}
-  .mnav--modulo [data-t="mod-pub"]{display:flex;order:1}
-  .mnav--modulo .fab{order:2}
-  .mnav--modulo [data-t="mod-shorts"]{display:flex;order:3}
+  /* dentro do modulo a barra continua a mesma: Shorts e Publicacoes ja sao as
+     duas abas dele, entao nao ha o que trocar */
 }
 

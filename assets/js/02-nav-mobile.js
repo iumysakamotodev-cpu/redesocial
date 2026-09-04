@@ -5,7 +5,7 @@
 (() => {
   const mnav = $('#mnav');
   if (!mnav) return;
-  const alvos = { home: null, shorts: '#homeShorts', feed: '#homeFeedTitle', comunicados: '#homeComPanel' };
+  const alvos = { home: null, comunicados: '#homeComPanel' };
   const fecharModulos = () => {
     ['closeStories', 'closeForum', 'closeNewsModule'].forEach(f => { if (typeof window[f] === 'function') window[f](); });
   };
@@ -88,15 +88,18 @@
     const t = b.dataset.t;
     /* o "+" abre a folha de opções, e não direto o editor */
     if (t === 'novo') { novoSheetAbrir(); return; }
-    /* as abas do módulo trocam de tela DENTRO dele: vêm antes de fecharModulos(),
-       senão o módulo fecharia e a tela abriria escondida */
-    if (t === 'mod-pub') { const alvo = $('#nmtFeed'); if (alvo) alvo.click(); return; }
-    if (t === 'mod-shorts') { const alvo = $('#nmtStories'); if (alvo) alvo.click(); return; }
+    /* numa barra de abas, tocar em Shorts abre o Shorts — nao rola ate um
+       pedaco da home. Vem antes de fecharModulos(), que desfaria a abertura. */
+    if (t === 'shorts' || t === 'feed') {
+      mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+      if (typeof abrirModuloSocial === 'function') abrirModuloSocial(t);
+      return;
+    }
     mnav.querySelectorAll('button').forEach(x => x.classList.remove('on'));
     b.classList.add('on');
     fecharModulos();
-    /* Home, Shorts e Feed rolam ate o bloco correspondente da home; so os
-       Comunicados abrem tela propria, a folha que sobe de baixo */
+    /* sobrou a Home, que rola ate o topo; os Comunicados abrem a folha */
     if (t === 'comunicados') {
       if (document.body.classList.contains('demo-basico')) { irPara('#homeComPanel'); return; }
       comSheetAbrir(); return;
