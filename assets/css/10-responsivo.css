@@ -353,6 +353,17 @@
 .nvf-fsearch i{font-size:12px;color:var(--muted)}
 .nvf-fsearch input{border:0;background:none;outline:none;flex:1;min-width:0;font:inherit;font-size:13px;color:var(--ink)}
 .nvf-side .nvf-fclear{margin:0}
+/* Localizar: o campo e o botao formam um controle unico, com o raio de 8px
+   dividido entre as duas pontas */
+.nvf-busca{display:flex;align-items:stretch;height:42px}
+.nvf-busca input{flex:1;min-width:0;border:0;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);
+  border-radius:8px 0 0 8px;padding:0 12px;font:inherit;font-size:14px;line-height:20px;color:#1C1C1E;outline:none;
+  transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
+.nvf-busca input::placeholder{color:#8E8E93}
+.nvf-busca input:hover,.nvf-busca input:focus{box-shadow:inset 0 0 0 1px var(--linha-campo-forte)}
+.nvf-busca button{flex:none;width:42px;border:0;border-radius:0 8px 8px 0;background:var(--teal);color:#fff;
+  font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.nvf-busca button:hover{background:var(--teal-dark)}
 .nvf-selbtn{display:flex;align-items:center;gap:10px;width:100%;height:42px;padding:0 12px;border:0;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
 .nvf-selbtn>i:first-child{font-size:14px;color:#8E8E93;flex-shrink:0}
 .nvf-selbtn span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

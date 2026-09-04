@@ -319,7 +319,7 @@
      Em 375px o respiro de 12px so encolheria o conteudo, entao o cartao
      ocupa a tela inteira e perde os cantos. */
   #crModal{padding:0}
-  .cr-card{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;box-shadow:none}
+  .cr-card{width:100%;max-width:none;max-height:none;height:calc(100% - var(--teclado, 0px));border-radius:0;box-shadow:none}
   /* video em cima e formulario embaixo: lado a lado nao cabe nessa largura */
   /* quem rola e o passo inteiro (#crStep2), nao so o corpo: assim o autor e o
      seletor de alcance sobem junto com o resto em vez de ficarem fixos */
@@ -348,7 +348,10 @@
      O ::after é só a quebra entre as duas linhas. */
   .qp-back{padding:0;align-items:stretch;justify-content:stretch}
   .qp-modal{
-    width:100%;max-width:none;height:100%;max-height:none;
+    width:100%;max-width:none;max-height:none;
+    /* --teclado e a altura que o teclado esta cobrindo (assets/js/13-extras.js):
+       o editor encurta e leva as ferramentas e o Publicar para cima dele */
+    height:calc(100% - var(--teclado, 0px));
     border-radius:0;box-shadow:none;overscroll-behavior:contain;
   }
   /* linha 1: foto, nome e o X no canto direito, todos centrados entre si.

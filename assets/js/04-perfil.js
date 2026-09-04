@@ -84,6 +84,7 @@ document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.tar
   const limpar=()=>{
     nvSearchQuery='';
     if(typeof sbQuery!=='undefined'){ sbQuery=''; sbShown=12; const si=$('#sbSearch'); if(si) si.value=''; }
+    const li=$('#nvfSearch'); if(li) li.value='';
     if(typeof renderNewsFeed==='function') renderNewsFeed();
     if(typeof renderShortsB==='function') renderShortsB();
     if(typeof buildStories==='function') buildStories();
@@ -110,6 +111,7 @@ document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.tar
          busca da aba, e leria o valor antigo se viesse primeiro */
       nvSearchQuery=q;
       if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
+      const li=$('#nvfSearch'); if(li) li.value=q;
       newsShow('feed');
       if(typeof renderNewsFeed==='function') renderNewsFeed();
     }

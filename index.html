@@ -3981,6 +3981,17 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
 .nvf-fsearch i{font-size:12px;color:var(--muted)}
 .nvf-fsearch input{border:0;background:none;outline:none;flex:1;min-width:0;font:inherit;font-size:13px;color:var(--ink)}
 .nvf-side .nvf-fclear{margin:0}
+/* Localizar: o campo e o botao formam um controle unico, com o raio de 8px
+   dividido entre as duas pontas */
+.nvf-busca{display:flex;align-items:stretch;height:42px}
+.nvf-busca input{flex:1;min-width:0;border:0;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);
+  border-radius:8px 0 0 8px;padding:0 12px;font:inherit;font-size:14px;line-height:20px;color:#1C1C1E;outline:none;
+  transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
+.nvf-busca input::placeholder{color:#8E8E93}
+.nvf-busca input:hover,.nvf-busca input:focus{box-shadow:inset 0 0 0 1px var(--linha-campo-forte)}
+.nvf-busca button{flex:none;width:42px;border:0;border-radius:0 8px 8px 0;background:var(--teal);color:#fff;
+  font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.nvf-busca button:hover{background:var(--teal-dark)}
 .nvf-selbtn{display:flex;align-items:center;gap:10px;width:100%;height:42px;padding:0 12px;border:0;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--linha-campo);font:inherit;font-size:14px;line-height:20px;letter-spacing:.3px;color:#1C1C1E;cursor:pointer;text-align:left;transition:box-shadow 120ms cubic-bezier(.4,0,.2,1)}
 .nvf-selbtn>i:first-child{font-size:14px;color:#8E8E93;flex-shrink:0}
 .nvf-selbtn span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -4571,7 +4582,7 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
      Em 375px o respiro de 12px so encolheria o conteudo, entao o cartao
      ocupa a tela inteira e perde os cantos. */
   #crModal{padding:0}
-  .cr-card{width:100%;max-width:none;height:100%;max-height:none;border-radius:0;box-shadow:none}
+  .cr-card{width:100%;max-width:none;max-height:none;height:calc(100% - var(--teclado, 0px));border-radius:0;box-shadow:none}
   /* video em cima e formulario embaixo: lado a lado nao cabe nessa largura */
   /* quem rola e o passo inteiro (#crStep2), nao so o corpo: assim o autor e o
      seletor de alcance sobem junto com o resto em vez de ficarem fixos */
@@ -4600,7 +4611,10 @@ svg.verified{width:16px;height:16px;fill:var(--teal);flex:none;display:inline-bl
      O ::after é só a quebra entre as duas linhas. */
   .qp-back{padding:0;align-items:stretch;justify-content:stretch}
   .qp-modal{
-    width:100%;max-width:none;height:100%;max-height:none;
+    width:100%;max-width:none;max-height:none;
+    /* --teclado e a altura que o teclado esta cobrindo (assets/js/13-extras.js):
+       o editor encurta e leva as ferramentas e o Publicar para cima dele */
+    height:calc(100% - var(--teclado, 0px));
     border-radius:0;box-shadow:none;overscroll-behavior:contain;
   }
   /* linha 1: foto, nome e o X no canto direito, todos centrados entre si.
@@ -5713,6 +5727,13 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
             <div class="nvf-prole">CEO · SULTS</div>
           </div>
         </div>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Localizar</div>
+          <div class="nvf-busca">
+            <input type="text" id="nvfSearch" placeholder="Pesquisar publicação..." autocomplete="off">
+            <button type="button" id="nvfSearchBtn" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+        </div>
         <div class="nvf-pcard nvf-unitcard" hidden>
           <div class="nvf-side-hd" style="padding:0 2px 12px">Minhas unidades</div>
           <div class="nvf-unit">
@@ -5858,6 +5879,13 @@ API completa e MCP server para conectar a plataforma a agentes de IA e a qualque
           </div>
         </div>
         <button class="rxs-newbtn" id="sbNew"><span class="rc-plus2"><i class="fa-solid fa-plus"></i></span><span class="rc-label">Criar short</span></button>
+        <div class="nvf-side-card">
+          <div class="nvf-side-hd">Localizar</div>
+          <div class="nvf-busca">
+            <input type="text" id="sbSearch" placeholder="Pesquisar short..." autocomplete="off">
+            <button type="button" id="sbSearchBtn" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+        </div>
         <div class="nvf-side-card">
           <div class="nvf-side-hd">Minha atividade</div>
           <button class="nvf-fitem sb-act active" data-sbact=""><i class="fa-solid fa-list"></i> Tudo</button>
@@ -7932,6 +7960,7 @@ document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.tar
   const limpar=()=>{
     nvSearchQuery='';
     if(typeof sbQuery!=='undefined'){ sbQuery=''; sbShown=12; const si=$('#sbSearch'); if(si) si.value=''; }
+    const li=$('#nvfSearch'); if(li) li.value='';
     if(typeof renderNewsFeed==='function') renderNewsFeed();
     if(typeof renderShortsB==='function') renderShortsB();
     if(typeof buildStories==='function') buildStories();
@@ -7958,6 +7987,7 @@ document.addEventListener('click', e=>{ const m=$('#ppMoreMenu'); if(m && !e.tar
          busca da aba, e leria o valor antigo se viesse primeiro */
       nvSearchQuery=q;
       if(typeof nvfAuthorQuery!=='undefined'){ nvfAuthorQuery=''; }
+      const li=$('#nvfSearch'); if(li) li.value=q;
       newsShow('feed');
       if(typeof renderNewsFeed==='function') renderNewsFeed();
     }
@@ -10016,6 +10046,7 @@ function sbLimparFiltro(chave){
   if (chave === 'period'){ sbPeriod = ''; const p = $('#sbPeriodSel'); if (p) p.value = ''; }
   if (chave === 'query'){ sbQuery = ''; const s = $('#sbSearch'); if (s) s.value = '';
     nvSearchQuery = ''; const h = $('#nmodSearchIn'); if (h) h.value = '';
+    const l = $('#nvfSearch'); if (l) l.value = '';
     if (typeof renderNewsFeed === 'function') renderNewsFeed();
     if (typeof buildStories === 'function') buildStories(); }
   sbShown = 12;
@@ -10166,7 +10197,33 @@ function sbArrows(){
 }
 $('#sbPills') && $('#sbPills').addEventListener('scroll', sbArrows);
 window.addEventListener('resize', sbArrows);
-$('#sbSearch') && $('#sbSearch').addEventListener('input', function(e){ sbQuery=e.target.value.trim(); sbShown=12; renderShortsB(); });
+/* o campo da lateral e o do header mostram a mesma busca da aba */
+$('#sbSearch') && $('#sbSearch').addEventListener('input', function(e){
+  sbQuery=e.target.value.trim(); sbShown=12;
+  const h=$('#nmodSearchIn'); if(h) h.value=sbQuery;
+  renderShortsB();
+});
+/* o botao da lupa nao filtra nada novo — o campo ja filtra ao digitar — mas
+   confirma a busca para quem colou o texto e procura onde clicar */
+$('#sbSearchBtn') && $('#sbSearchBtn').addEventListener('click', function(){
+  const c=$('#sbSearch'); if(!c) return;
+  sbQuery=c.value.trim(); sbShown=12;
+  const h=$('#nmodSearchIn'); if(h) h.value=sbQuery;
+  renderShortsB();
+  if(typeof fgToast==='function') fgToast(sbQuery ? 'Resultados para "'+sbQuery+'"' : 'Busca limpa');
+});
+function nvfBuscaAplica(termo){
+  nvSearchQuery=termo;
+  if(typeof nvfAuthorQuery!=='undefined') nvfAuthorQuery='';
+  const h=$('#nmodSearchIn'); if(h) h.value=termo;
+  if(typeof renderNewsFeed==='function') renderNewsFeed();
+}
+$('#nvfSearch') && $('#nvfSearch').addEventListener('input', function(e){ nvfBuscaAplica(e.target.value.trim()); });
+$('#nvfSearchBtn') && $('#nvfSearchBtn').addEventListener('click', function(){
+  const c=$('#nvfSearch'); if(!c) return;
+  nvfBuscaAplica(c.value.trim());
+  if(typeof fgToast==='function') fgToast(nvSearchQuery ? 'Resultados para "'+nvSearchQuery+'"' : 'Busca limpa');
+});
 $('#sbAuthorBtn') && $('#sbAuthorBtn').addEventListener('click', function(){ sbAuthorQuery=''; const s=$('#sbAuthorSearch'); if(s) s.value=''; sbAuthorPage=1; renderShortsB(); $('#sbAuthorPickModal').classList.add('open'); });
 $('#sbAuthorPickClose') && $('#sbAuthorPickClose').addEventListener('click', ()=>$('#sbAuthorPickModal').classList.remove('open'));
 $('#sbAuthorPickModal') && $('#sbAuthorPickModal').addEventListener('click', function(e){ if(e.target===$('#sbAuthorPickModal')) $('#sbAuthorPickModal').classList.remove('open'); });
@@ -10748,6 +10805,9 @@ function newsShow(screen){
     if (screen==='shortsb' || screen==='feed') campoBusca.value =
       screen==='shortsb' ? (typeof sbQuery!=='undefined' ? sbQuery : '') : nvSearchQuery;
   }
+  /* os campos "Localizar" das laterais mostram a mesma busca da aba */
+  const campoLado = $('#nvfSearch'); if (campoLado) campoLado.value = nvSearchQuery;
+  const campoLadoS = $('#sbSearch'); if (campoLadoS && typeof sbQuery!=='undefined') campoLadoS.value = sbQuery;
   /* a fileira de shorts so tem largura depois que a tela aparece: e aqui
      que da para saber se ha o que rolar */
   if (typeof updNvfArrows==='function') requestAnimationFrame(updNvfArrows);
@@ -10833,6 +10893,7 @@ function nvfLimparFiltro(chave){
 function nvfLimparPesquisa(){
   nvSearchQuery = '';
   const i = document.getElementById('nmodSearchIn'); if (i) i.value = '';
+  const l = document.getElementById('nvfSearch'); if (l) l.value = '';
   if (typeof sbQuery !== 'undefined'){
     sbQuery = ''; sbShown = 12;
     const s = document.getElementById('sbSearch'); if (s) s.value = '';
@@ -13056,6 +13117,28 @@ document.addEventListener('click', function(e){
     if (e.target.closest('.p-act.like')) { e.preventDefault(); e.stopImmediatePropagation(); }
     abriu = false;
   }, true);
+})();
+
+/* No celular o teclado nao encolhe a janela: o layout continua com a altura
+   toda e as ferramentas e o Publicar ficam escondidos atras dele. O
+   visualViewport diz quanto da tela sobrou de verdade; a sobra vira a
+   variavel --teclado, que encurta os editores de tela cheia — o rodape sobe
+   junto com o teclado, como num aplicativo. */
+(() => {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const raiz = document.documentElement;
+  const ajusta = () => {
+    const noCelular = window.matchMedia('(max-width:640px)').matches;
+    /* offsetTop entra na conta porque o iOS rola a pagina por baixo da janela
+       visivel em vez de encolhe-la */
+    const coberto = noCelular ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop) : 0;
+    raiz.style.setProperty('--teclado', Math.round(coberto) + 'px');
+  };
+  vv.addEventListener('resize', ajusta);
+  vv.addEventListener('scroll', ajusta);
+  window.addEventListener('orientationchange', ajusta);
+  ajusta();
 })();
 
 /* ===================== assets/js/14-crunch.js ===================== */

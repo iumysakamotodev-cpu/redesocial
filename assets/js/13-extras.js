@@ -601,3 +601,25 @@ document.addEventListener('click', function(e){
     abriu = false;
   }, true);
 })();
+
+/* No celular o teclado nao encolhe a janela: o layout continua com a altura
+   toda e as ferramentas e o Publicar ficam escondidos atras dele. O
+   visualViewport diz quanto da tela sobrou de verdade; a sobra vira a
+   variavel --teclado, que encurta os editores de tela cheia — o rodape sobe
+   junto com o teclado, como num aplicativo. */
+(() => {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const raiz = document.documentElement;
+  const ajusta = () => {
+    const noCelular = window.matchMedia('(max-width:640px)').matches;
+    /* offsetTop entra na conta porque o iOS rola a pagina por baixo da janela
+       visivel em vez de encolhe-la */
+    const coberto = noCelular ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop) : 0;
+    raiz.style.setProperty('--teclado', Math.round(coberto) + 'px');
+  };
+  vv.addEventListener('resize', ajusta);
+  vv.addEventListener('scroll', ajusta);
+  window.addEventListener('orientationchange', ajusta);
+  ajusta();
+})();

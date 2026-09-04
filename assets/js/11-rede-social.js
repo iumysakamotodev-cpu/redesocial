@@ -183,6 +183,7 @@ function sbLimparFiltro(chave){
   if (chave === 'period'){ sbPeriod = ''; const p = $('#sbPeriodSel'); if (p) p.value = ''; }
   if (chave === 'query'){ sbQuery = ''; const s = $('#sbSearch'); if (s) s.value = '';
     nvSearchQuery = ''; const h = $('#nmodSearchIn'); if (h) h.value = '';
+    const l = $('#nvfSearch'); if (l) l.value = '';
     if (typeof renderNewsFeed === 'function') renderNewsFeed();
     if (typeof buildStories === 'function') buildStories(); }
   sbShown = 12;
@@ -333,7 +334,33 @@ function sbArrows(){
 }
 $('#sbPills') && $('#sbPills').addEventListener('scroll', sbArrows);
 window.addEventListener('resize', sbArrows);
-$('#sbSearch') && $('#sbSearch').addEventListener('input', function(e){ sbQuery=e.target.value.trim(); sbShown=12; renderShortsB(); });
+/* o campo da lateral e o do header mostram a mesma busca da aba */
+$('#sbSearch') && $('#sbSearch').addEventListener('input', function(e){
+  sbQuery=e.target.value.trim(); sbShown=12;
+  const h=$('#nmodSearchIn'); if(h) h.value=sbQuery;
+  renderShortsB();
+});
+/* o botao da lupa nao filtra nada novo — o campo ja filtra ao digitar — mas
+   confirma a busca para quem colou o texto e procura onde clicar */
+$('#sbSearchBtn') && $('#sbSearchBtn').addEventListener('click', function(){
+  const c=$('#sbSearch'); if(!c) return;
+  sbQuery=c.value.trim(); sbShown=12;
+  const h=$('#nmodSearchIn'); if(h) h.value=sbQuery;
+  renderShortsB();
+  if(typeof fgToast==='function') fgToast(sbQuery ? 'Resultados para "'+sbQuery+'"' : 'Busca limpa');
+});
+function nvfBuscaAplica(termo){
+  nvSearchQuery=termo;
+  if(typeof nvfAuthorQuery!=='undefined') nvfAuthorQuery='';
+  const h=$('#nmodSearchIn'); if(h) h.value=termo;
+  if(typeof renderNewsFeed==='function') renderNewsFeed();
+}
+$('#nvfSearch') && $('#nvfSearch').addEventListener('input', function(e){ nvfBuscaAplica(e.target.value.trim()); });
+$('#nvfSearchBtn') && $('#nvfSearchBtn').addEventListener('click', function(){
+  const c=$('#nvfSearch'); if(!c) return;
+  nvfBuscaAplica(c.value.trim());
+  if(typeof fgToast==='function') fgToast(nvSearchQuery ? 'Resultados para "'+nvSearchQuery+'"' : 'Busca limpa');
+});
 $('#sbAuthorBtn') && $('#sbAuthorBtn').addEventListener('click', function(){ sbAuthorQuery=''; const s=$('#sbAuthorSearch'); if(s) s.value=''; sbAuthorPage=1; renderShortsB(); $('#sbAuthorPickModal').classList.add('open'); });
 $('#sbAuthorPickClose') && $('#sbAuthorPickClose').addEventListener('click', ()=>$('#sbAuthorPickModal').classList.remove('open'));
 $('#sbAuthorPickModal') && $('#sbAuthorPickModal').addEventListener('click', function(e){ if(e.target===$('#sbAuthorPickModal')) $('#sbAuthorPickModal').classList.remove('open'); });
@@ -915,6 +942,9 @@ function newsShow(screen){
     if (screen==='shortsb' || screen==='feed') campoBusca.value =
       screen==='shortsb' ? (typeof sbQuery!=='undefined' ? sbQuery : '') : nvSearchQuery;
   }
+  /* os campos "Localizar" das laterais mostram a mesma busca da aba */
+  const campoLado = $('#nvfSearch'); if (campoLado) campoLado.value = nvSearchQuery;
+  const campoLadoS = $('#sbSearch'); if (campoLadoS && typeof sbQuery!=='undefined') campoLadoS.value = sbQuery;
   /* a fileira de shorts so tem largura depois que a tela aparece: e aqui
      que da para saber se ha o que rolar */
   if (typeof updNvfArrows==='function') requestAnimationFrame(updNvfArrows);
@@ -1000,6 +1030,7 @@ function nvfLimparFiltro(chave){
 function nvfLimparPesquisa(){
   nvSearchQuery = '';
   const i = document.getElementById('nmodSearchIn'); if (i) i.value = '';
+  const l = document.getElementById('nvfSearch'); if (l) l.value = '';
   if (typeof sbQuery !== 'undefined'){
     sbQuery = ''; sbShown = 12;
     const s = document.getElementById('sbSearch'); if (s) s.value = '';
